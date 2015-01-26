@@ -1,11 +1,11 @@
-CREATE TABLE `Cancleation` (
+CREATE TABLE `Cancellation` (
   `modulecode` VARCHAR(255) NOT NULL,
   `date` DATE NOT NULL,
   `description` LONGTEXT NOT NULL,
   PRIMARY KEY (`modulecode`, `date`)
 );
 
-CREATE TABLE `Lab` (
+CREATE TABLE `Practical` (
   `modulecode` VARCHAR(255) NOT NULL,
   `semester` VARCHAR(255) NOT NULL,
   `weekday` INTEGER NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `Lab` (
   PRIMARY KEY (`modulecode`, `weekday`)
 );
 
-CREATE TABLE `LabCancellation` (
+CREATE TABLE `PracticalCancellation` (
   `modulecode` VARCHAR(255) NOT NULL,
   `date` DATE NOT NULL,
   PRIMARY KEY (`modulecode`, `date`)
@@ -28,49 +28,49 @@ CREATE TABLE `TakesModule` (
   PRIMARY KEY (`uid`, `modulecode`)
 );
 
-CREATE TABLE `admin` (
+CREATE TABLE `Admin` (
   `uid` INTEGER PRIMARY KEY,
   `adminid` INTEGER NOT NULL
 );
 
-CREATE TABLE `course` (
+CREATE TABLE `Course` (
   `id` INTEGER PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL,
   `department` VARCHAR(255) NOT NULL,
   `year` INTEGER NOT NULL
 );
 
-CREATE TABLE `group` (
+CREATE TABLE `Group` (
   `groupid` INTEGER PRIMARY KEY,
   `groupname` VARCHAR(255) NOT NULL,
   `type` VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE `grouptakescourse` (
+CREATE TABLE `GroupTakesCourse` (
   `gid` INTEGER NOT NULL,
   `coursecode` INTEGER NOT NULL,
   PRIMARY KEY (`gid`, `coursecode`)
 );
 
-CREATE TABLE `grouptakesmodule` (
+CREATE TABLE `GroupTakesModule` (
   `gid` INTEGER NOT NULL,
   `modulecode` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`gid`, `modulecode`)
 );
 
-CREATE TABLE `hasmeeting` (
+CREATE TABLE `HasMeeting` (
   `uid` INTEGER NOT NULL,
   `mid` INTEGER NOT NULL,
   PRIMARY KEY (`uid`, `mid`)
 );
 
-CREATE TABLE `ingroup` (
+CREATE TABLE `InGroup` (
   `uid` INTEGER NOT NULL,
   `gid` INTEGER NOT NULL,
   PRIMARY KEY (`uid`, `gid`)
 );
 
-CREATE TABLE `lecture` (
+CREATE TABLE `Lecture` (
   `modulecode` VARCHAR(255) NOT NULL,
   `semester` INTEGER NOT NULL,
   `weekday` INTEGER NOT NULL,
@@ -81,13 +81,13 @@ CREATE TABLE `lecture` (
   PRIMARY KEY (`modulecode`, `semester`, `weekday`, `time`)
 );
 
-CREATE TABLE `lecturer` (
+CREATE TABLE `Lecturer` (
   `uid` INTEGER PRIMARY KEY,
   `lecturerid` INTEGER NOT NULL,
   `title` VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE `meeting` (
+CREATE TABLE `Meeting` (
   `meetingid` INTEGER PRIMARY KEY,
   `date` DATE NOT NULL,
   `time` INTEGER NOT NULL,
@@ -97,36 +97,36 @@ CREATE TABLE `meeting` (
   `organiser` VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE `module` (
+CREATE TABLE `Module` (
   `modulecode` VARCHAR(255) PRIMARY KEY,
   `description` LONGTEXT NOT NULL
 );
 
-CREATE TABLE `moduleincourse` (
+CREATE TABLE `ModuleInCourse` (
   `modulecode` VARCHAR(255) NOT NULL,
   `courseid` INTEGER NOT NULL,
   PRIMARY KEY (`modulecode`, `courseid`)
 );
 
-CREATE TABLE `roomchange` (
+CREATE TABLE `RoomChange` (
   `modulecode` VARCHAR(255) NOT NULL,
   `date` DATE NOT NULL,
   `room` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`modulecode`, `date`)
 );
 
-CREATE TABLE `student` (
+CREATE TABLE `Student` (
   `uid` INTEGER PRIMARY KEY,
   `studentid` INTEGER NOT NULL
 );
 
-CREATE TABLE `teachesmodule` (
+CREATE TABLE `TeachesModule` (
   `lecturerid` INTEGER NOT NULL,
   `modulecode` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`lecturerid`, `modulecode`)
 );
 
-CREATE TABLE `user` (
+CREATE TABLE `User` (
   `userid` INTEGER PRIMARY KEY AUTO_INCREMENT,
   `passwordhash` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
