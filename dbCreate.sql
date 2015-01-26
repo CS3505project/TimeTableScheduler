@@ -23,16 +23,14 @@ CREATE TABLE `LabCancellation` (
 );
 
 CREATE TABLE `TakesModule` (
-  `sid` INTEGER NOT NULL,
+  `uid` INTEGER NOT NULL,
   `modulecode` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`sid`, `modulecode`)
+  PRIMARY KEY (`uid`, `modulecode`)
 );
 
 CREATE TABLE `admin` (
-  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-  `adminid` INTEGER NOT NULL,
-  `passwordhash` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL
+  `uid` INTEGER PRIMARY KEY,
+  `adminid` INTEGER NOT NULL
 );
 
 CREATE TABLE `course` (
@@ -61,15 +59,15 @@ CREATE TABLE `grouptakesmodule` (
 );
 
 CREATE TABLE `hasmeeting` (
-  `email` VARCHAR(255) NOT NULL,
+  `uid` INTEGER NOT NULL,
   `mid` INTEGER NOT NULL,
-  PRIMARY KEY (`email`, `mid`)
+  PRIMARY KEY (`uid`, `mid`)
 );
 
 CREATE TABLE `ingroup` (
-  `sid` INTEGER NOT NULL,
+  `uid` INTEGER NOT NULL,
   `gid` INTEGER NOT NULL,
-  PRIMARY KEY (`sid`, `gid`)
+  PRIMARY KEY (`uid`, `gid`)
 );
 
 CREATE TABLE `lecture` (
@@ -84,12 +82,9 @@ CREATE TABLE `lecture` (
 );
 
 CREATE TABLE `lecturer` (
-  `lecturerid` INTEGER PRIMARY KEY,
-  `passwordhash` VARCHAR(255) NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `firstname` VARCHAR(255) NOT NULL,
-  `surname` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL
+  `uid` INTEGER PRIMARY KEY,
+  `lecturerid` INTEGER NOT NULL,
+  `title` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE `meeting` (
@@ -121,15 +116,20 @@ CREATE TABLE `roomchange` (
 );
 
 CREATE TABLE `student` (
-  `studentid` INTEGER PRIMARY KEY,
-  `passwordhash` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `firstname` VARCHAR(255) NOT NULL,
-  `surname` VARCHAR(255) NOT NULL
+  `uid` INTEGER PRIMARY KEY,
+  `studentid` INTEGER NOT NULL
 );
 
 CREATE TABLE `teachesmodule` (
   `lecturerid` INTEGER NOT NULL,
   `modulecode` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`lecturerid`, `modulecode`)
+);
+
+CREATE TABLE `user` (
+  `userid` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `passwordhash` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `firstname` VARCHAR(255) NOT NULL,
+  `surname` VARCHAR(255) NOT NULL
 )
