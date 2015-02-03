@@ -5,8 +5,7 @@ import java.sql.Statement;
 
 /**
     Tests a database installation by creating and querying
-    a sample table. Call this program as
-    java -classpath driver_class_path;. TestDB propertiesFile
+    a sample table. 
 */
 public class TestDB {
     public static void main(String[] args) throws Exception {
