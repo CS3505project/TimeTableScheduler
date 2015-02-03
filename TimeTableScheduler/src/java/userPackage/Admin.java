@@ -14,4 +14,19 @@ public class Admin extends User {
         super(email, firstName, surName, userID);
     }
     
+    public boolean removeUser() {
+        return false;
+    }
+    
+    public boolean deleteEntry() {
+        return false;
+    }
+    
+    public boolean validateLecturer() {
+        return false;
+    }
+    
+    public boolean backupDatabse() {
+        return false;
+    }
 }
