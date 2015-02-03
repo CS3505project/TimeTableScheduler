@@ -26,45 +26,29 @@ public class User {
     }
     
     public boolean createGroup(String groupName, String groupType) {
-        Database db = new Database();
-        db.setupFromPropertiesFile("database.properties");
-        if (db.insert("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");")) {
-            db.close();
-            return true;
-        }
-        db.close();
-        return false;
+        return insertToDB("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");");
     }
     
     public boolean joinGroup(int groupID) {
-        Database db = new Database();
-        db.setupFromPropertiesFile("database.properties");
-        if (db.insert("INSERT INTO InGroup (uid, gid) "
-                + "VALUES (" + userID + "\", " + groupID + ");")) {
-            db.close();
-            return true;
-        }
-        db.close();
-        return false;
+        return insertToDB("INSERT INTO InGroup (uid, gid) "
+                + "VALUES (" + userID + "\", " + groupID + ");");
     }
     
     public boolean createMeeting(String room, String description, int priority, String organiser, Date date, Time time) {
-        Database db = new Database();
-        db.setupFromPropertiesFile("database.properties");
-        if (db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
-                + "VALUES ("+ date.toString() + "\", \""+ time.toString() + "\", \"" + room + "\", \"" + description + "\", " + priority + ", \"" + organiser + "\");")) {
-            db.close();
-            return true;
-        }
-        db.close();
-        return false;
+        return insertToDB("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
+                + "VALUES ("+ date.toString() + "\", \""+ time.toString() + "\", \"" + room + "\", \"" 
+                + description + "\", " + priority + ", \"" + organiser + "\");");
     }
     
     public boolean joinMeeting(int meetingID) {
+        return insertToDB("INSERT INTO InGroup (uid, mid) "
+                + "VALUES (" + userID + "\", " + meetingID + ");");
+    }
+    
+    public boolean insertToDB(String insertSQL) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
-        if (db.insert("INSERT INTO InGroup (uid, mid) "
-                + "VALUES (" + userID + "\", " + meetingID + ");")) {
+        if (db.insert(insertSQL)) {
             db.close();
             return true;
         }
