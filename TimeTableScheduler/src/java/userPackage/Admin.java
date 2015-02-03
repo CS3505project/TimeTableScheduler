@@ -9,7 +9,7 @@ package userPackage;
  * 
  * @author John O Riordan
  */
-public class Admin extends User {
+public final class Admin extends User {
 
     public Admin(String email, String firstName, String surName, String userID) {
         super(email, firstName, surName, userID);

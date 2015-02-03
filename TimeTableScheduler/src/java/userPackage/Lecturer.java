@@ -12,7 +12,7 @@ import java.sql.Time;
  * 
  * @author John O Riordan
  */
-public class Lecturer extends User {
+public final class Lecturer extends User {
 
     public Lecturer(String email, String firstName, String surName, String userID) {
         super(email, firstName, surName, userID);

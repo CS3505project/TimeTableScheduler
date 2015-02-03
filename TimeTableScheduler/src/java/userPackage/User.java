@@ -13,7 +13,7 @@ import toolsPackage.Database;
  * 
  * @author John O Riordan
  */
-public class User {
+public abstract class User {
     private String email;
     private String firstName;
     private String surName;

@@ -1,31 +1,32 @@
 package toolsPackage;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Convert Strings to Hashes
  * 
- * @author fitorec
- * @url https://github.com/fitorec/java-hashes
+ * @author John O Riordan
  */
 public class Hash {
     /**
      * Return hash for the given string and hash type
      * 
-     * @param txt The string to be hashed
+     * @param message The string to be hashed
      * @param hashType The type of hash to be performed to the string
      */
-    public static String getHash(String txt, String hashType) 
+    public static String getHash(String message, String hashType) 
     {
         try {
-            MessageDigest md = MessageDigest.getInstance(hashType);
-            byte[] array = md.digest(txt.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            MessageDigest messageDigest = MessageDigest.getInstance(hashType);
+            // hash the message and store the hash in an array
+            byte[] messageHash = messageDigest.digest(message.getBytes());
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < messageHash.length; ++i) {
+                // convert the array containing the hash to its hex form
+                builder.append(Integer.toHexString((messageHash[i] & 0xFF) | 0x100).substring(1, 3));
             }
-        } catch (NoSuchAlgorithmException e) {
+            return builder.toString();
+        } catch (Exception exception) {
             //error action
         }
         return null;
@@ -34,77 +35,77 @@ public class Hash {
     /**
      * Returns the MD2 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String md2(String txt) 
+    public static String md2(String message) 
     {
-        return Hash.getHash(txt, "MD2");
+        return Hash.getHash(message, "MD2");
     }
     
     /**
      * Returns the MD5 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String md5(String txt) 
+    public static String md5(String message) 
     {
-        return Hash.getHash(txt, "MD5");
+        return Hash.getHash(message, "MD5");
     }
     
     /**
      * Returns the SHA1 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String sha1(String txt) 
+    public static String sha1(String message) 
     {
-        return Hash.getHash(txt, "SHA1");
+        return Hash.getHash(message, "SHA1");
     }
     
     /**
      * Returns the SHA-224 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String sha224(String txt) 
+    public static String sha224(String message) 
     {
-        return Hash.getHash(txt, "SHA-224");
+        return Hash.getHash(message, "SHA-224");
     }
     
     /**
      * Returns the SHA-256 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String sha256(String txt) 
+    public static String sha256(String message) 
     {
-        return Hash.getHash(txt, "SHA-256");
+        return Hash.getHash(message, "SHA-256");
     }
     
     /**
      * Returns the SHA-384 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String sha384(String txt) 
+    public static String sha384(String message) 
     {
-        return Hash.getHash(txt, "SHA-384");
+        return Hash.getHash(message, "SHA-384");
     }
     
     /**
      * Returns the SHA-512 hash of the string
      * 
-     * @param txt
+     * @param message
      * @return The hash of the string
      */
-    public static String sha512(String txt) 
+    public static String sha512(String message) 
     {
-        return Hash.getHash(txt, "SHA-512");
+        return Hash.getHash(message, "SHA-512");
     }
 }
