@@ -71,4 +71,24 @@ public class Output {
         //add actual code
         return finalHTML;
     }
+    
+    /**
+     * Creates a dummy table with hardcoded values,
+     * just for demonstration.
+     * @return A string with all the HTML for the table.
+     */
+    public String createDummyTable(){
+        String finalHTML;
+        finalHTML = "<h1>Timetable for this week</h1>\n" +
+    "			<table>\n" +
+    "				<tr><th></th><th>9:00</th><th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th><th>14:00</th><th>15:00</th><th>16:00</th><th>17:00</th></tr>\n" +
+    "				<tr><th>Mon</th><td class=\"meeting\">meet with blah</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
+    "				<tr><th>Tue</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
+    "				<tr><th>Wed</th><td class =\"lecture\">CS1234, G04</td><td></td><td class=\"practical\">CS1234 Lab</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
+    "				<tr><th>Thu</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
+    "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
+    "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
+    "			</table>";
+        return finalHTML;
+    }
 }
