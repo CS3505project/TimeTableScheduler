@@ -4,6 +4,8 @@
  */
 package userPackage;
 
+import java.sql.Date;
+import java.sql.Time;
 import toolsPackage.Database;
 
 /**
@@ -26,8 +28,27 @@ public class User {
     public boolean createGroup(String groupName, String groupType) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
-        return db.insert("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");");
+        if (db.insert("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");")) {
+            db.close();
+            return true;
+        }
+        db.close();
+        return false;
     }
+    
+    public boolean createMeeting(String room, String description, int priority, String organiser, Date date, Time time) {
+        Database db = new Database();
+        db.setupFromPropertiesFile("database.properties");
+        if (db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
+                + "VALUES ("+ date.toString() + "\", \""+ time.toString() + "\", \"" + room + "\", \"" + description + "\", " + priority + ", \"" + organiser + "\");")) {
+            db.close();
+            return true;
+        }
+        db.close();
+        return false;
+    }
+    
+    
 
     public String getEmail() {
         return email;
