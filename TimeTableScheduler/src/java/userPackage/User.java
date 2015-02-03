@@ -6,7 +6,7 @@ package userPackage;
 
 /**
  *
- * @author jjor1
+ * @author John O Riordan
  */
 public class User {
     private String email;
