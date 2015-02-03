@@ -36,6 +36,18 @@ public class User {
         return false;
     }
     
+    public boolean joinGroup(int groupID) {
+        Database db = new Database();
+        db.setupFromPropertiesFile("database.properties");
+        if (db.insert("INSERT INTO InGroup (uid, gid) "
+                + "VALUES (" + userID + "\", " + groupID + ");")) {
+            db.close();
+            return true;
+        }
+        db.close();
+        return false;
+    }
+    
     public boolean createMeeting(String room, String description, int priority, String organiser, Date date, Time time) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
@@ -48,7 +60,17 @@ public class User {
         return false;
     }
     
-    
+    public boolean joinMeeting(int meetingID) {
+        Database db = new Database();
+        db.setupFromPropertiesFile("database.properties");
+        if (db.insert("INSERT INTO InGroup (uid, mid) "
+                + "VALUES (" + userID + "\", " + meetingID + ");")) {
+            db.close();
+            return true;
+        }
+        db.close();
+        return false;
+    }
 
     public String getEmail() {
         return email;
