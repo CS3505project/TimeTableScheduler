@@ -7,7 +7,12 @@ package toolsPackage;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
- 
+
+/**
+ * Utility class to handle interactions with the database.
+ * 
+ * @author John O Riordan (Modified version of Colin McCormack's file)
+ */
 public class Database {
     private Statement statementObject;
     private Connection connectionObject;
@@ -18,6 +23,15 @@ public class Database {
     private String password;
     private boolean setup = false;
    
+    /**
+     * Setup the connection to the database.
+     * 
+     * @param dbserver Hostname/IP address of the server
+     * @param DSN The name of the database
+     * @param username The username to login to the database
+     * @param password The password to login to the database
+     * @return Error message if any errors occured
+     */
     public String setup(String dbserver, String DSN, String username, String password)
     {
         this.dbserver = dbserver;
@@ -26,11 +40,20 @@ public class Database {
         this.password = password;
         String URL = "jdbc:mysql://" + dbserver + "/" + DSN;
        
+        //initialise the driver for a mysql databse
         initialiseDriver("com.mysql.jdbc.Driver");
         
         return createDbConnection(URL, username, password);
     } 
     
+    /**
+     * Establishes a connection with the database.
+     * 
+     * @param URL The url for the database
+     * @param username The username to login with
+     * @param password The password to login with
+     * @return Error message if any errors occured
+     */
     private String createDbConnection(String URL, String username, String password) {
         try {
             // Establish connection to database
@@ -43,20 +66,41 @@ public class Database {
         return "";
     }
     
+    /**
+     * Initialises the driver for the database
+     * 
+     * @param driver The driver to initialise
+     */
     private void initialiseDriver(String driver) {
         try {// Initialiase drivers
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driver);
         } catch (Exception exceptionObject) {
             writeLogSQL("Driver caused error " + exceptionObject.getMessage() + " Error dbclass.setup.1. ");
             System.err.println("Failed to load JDBC/ODBC driver. Error dbclass.setup.1 PLEASE report this error");
         }
     }
  
+    /**
+     * Indicates whether there is a connection to the database
+     * 
+     * @return True if there is connection and false otherwise
+     */
     public boolean issetup()
     {
         return setup;
     }
     
+    /**
+     * Update the contents of the database properties file.
+     * To prevent changing an existing value, use null
+     * 
+     * @param fileName Path to the properties file
+     * @param driver New driver value
+     * @param dbserver New database hostname/ip address of the server
+     * @param DSN New database name
+     * @param username New username value
+     * @param password New password value
+     */
     public void updatePropertiesFile(String fileName, String driver, String dbserver, String DSN, String username, String password)
     {
         Properties props = openPropertiesFile(fileName);
@@ -78,6 +122,13 @@ public class Database {
         }
     }
     
+    /**
+     * Opens the properties file and returns it. May return null if 
+     * unsuccessful attempt to open the file
+     * 
+     * @param fileName The path to the file
+     * @return The properties file, may be null
+     */
     private Properties openPropertiesFile(String fileName) {
         Properties props = new Properties();
         try {
@@ -90,6 +141,12 @@ public class Database {
         return props;
     }
     
+    /**
+     * Setup a database connection using the values in the properties file
+     * 
+     * @param fileName The path to the file
+     * @return Error message if any errors occured
+     */
     public String setupFromPropertiesFile(String fileName)
     {
         Properties props = openPropertiesFile(fileName);
@@ -113,16 +170,28 @@ public class Database {
         return createDbConnection(URL, username, password);
     }
    
+    /**
+     * Closes the connection to the database
+     */
     public void close()
     {
         try {
-            connectionObject.close();
+            if (connectionObject != null) {
+                connectionObject.close();
+            }
         } catch (SQLException exceptionObject) {
             System.out.println("Problem with closing up ");
             writeLogSQL("closing caused error " + exceptionObject.getMessage());
         }
     }
  
+    /**
+     * Execute an update statement in the database.
+     * Executes INSERT, DELETE and UPDATE queries
+     * 
+     * @param SQLinsert The sql query
+     * @return True if query was successful
+     */
     public boolean insert(String SQLinsert)
     {
         try {
@@ -140,6 +209,13 @@ public class Database {
         return false;
     } // End Insert
     
+    /**
+     * Executes a statement in the database that returns values.
+     * Executes SELECT queries
+     * 
+     * @param SQLselect The sql query
+     * @return The result set returned by executing the query
+     */
     public ResultSet select(String SQLselect)
     {
         ResultSet result = null;
@@ -159,6 +235,12 @@ public class Database {
         return result;
     } // End select
     
+    /**
+     * Returns the number of columns in the result set.
+     * 
+     * @param statementResult The result set
+     * @return Number of columns
+     */
     public int getNumColumns(ResultSet statementResult) 
     {
         try {
@@ -171,6 +253,12 @@ public class Database {
         return 0;
     }
     
+    /**
+     * Returns the number of rows in the result set
+     * 
+     * @param statementResult The result set
+     * @return Number of rows
+     */
     public int getNumRows(ResultSet statementResult) 
     {
         int numRows = 0;
@@ -188,10 +276,16 @@ public class Database {
         return numRows;
     }
  
+    /**
+     * Send an SQL query to a database and return the single row result in an array of strings
+     * 
+     * @param SQLquery The sql query to execute
+     * @return Single row result of the query in an array of strings
+     */
     public String[] selectRow(String SQLquery)
     {
         String Result[];
-        // Send an SQL query to a database and return the *single column* result in an array of strings
+        // Send an SQL query to a database and return the *single row* result in an array of strings
         try {// Make connection to database
             statementObject = connectionObject.createStatement();
  
@@ -223,6 +317,12 @@ public class Database {
         return Result;
     } // End SelectRow
    
+    /**
+     * Send an SQL query to a database and return the single column result in an array of strings
+     * 
+     * @param SQLquery The sql query to execute
+     * @return Single column result of the query in an array of strings
+     */
     public String[] selectColumn(String SQLquery)
     {
         String Result[];
@@ -260,6 +360,11 @@ public class Database {
         return Result;
     } // End Select
  
+    /**
+     * Write the message to the log file
+     * 
+     * @param message Message to write to the file
+     */
     public void writeLogSQL(String message) {
         PrintStream output;
         try {

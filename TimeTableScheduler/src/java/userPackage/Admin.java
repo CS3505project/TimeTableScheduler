@@ -5,7 +5,8 @@
 package userPackage;
 
 /**
- *
+ * Administrator for the system
+ * 
  * @author John O Riordan
  */
 public class Admin extends User {
@@ -14,19 +15,27 @@ public class Admin extends User {
         super(email, firstName, surName, userID);
     }
     
+    /**
+     * Remove a user from the database
+     * 
+     * @return True if the user is removed successfully
+     */
     public boolean removeUser() {
         return false;
     }
     
-    public boolean deleteEntry() {
-        return false;
-    }
-    
+    /**
+     * Validate whether a lecturer is actually a lecturer
+     * 
+     * @return True if the lecturer is valid
+     */
     public boolean validateLecturer() {
         return false;
     }
     
-    public boolean backupDatabse() {
-        return false;
+    /**
+     * Perform a backup of the system
+     */
+    public void backupDatabse() {
     }
 }

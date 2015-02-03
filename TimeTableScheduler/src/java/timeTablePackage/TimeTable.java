@@ -5,8 +5,10 @@
 package timeTablePackage;
 
 /**
- *
- * @author jjor1
+ * Represents the users timetable and carries out any actions that may be 
+ * performed on the timetable
+ * 
+ * @author John O Riordan
  */
 public class TimeTable {
     

@@ -8,8 +8,9 @@ import java.sql.Date;
 import java.sql.Time;
 
 /**
- *
- * @author jjor1
+ * Represent a meeting in the timetable
+ * 
+ * @author John O Riordan
  */
 public class Meeting {
     private String meetingID;

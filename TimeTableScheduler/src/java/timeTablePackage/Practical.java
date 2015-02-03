@@ -8,8 +8,9 @@ import java.sql.Date;
 import java.sql.Time;
 
 /**
- *
- * @author jjor1
+ * Represents a practical in the timetable
+ * 
+ * @author John O Riordan
  */
 public class Practical {
     private String moduleCode;

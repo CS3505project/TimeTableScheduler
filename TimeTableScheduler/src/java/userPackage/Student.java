@@ -5,7 +5,8 @@
 package userPackage;
 
 /**
- *
+ * Student system user
+ * 
  * @author John O Riordan
  */
 public class Student extends User {

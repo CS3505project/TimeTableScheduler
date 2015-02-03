@@ -6,10 +6,12 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.logging.Logger;
 
 /**
- *
- * @author jjor1
+ * Represents a lecture object in the timetable
+ * 
+ * @author John O Riordan
  */
 public class Lecture {
     private String moduleCode;
