@@ -12,7 +12,7 @@ public class Hash {
     /**
      * Return hash for the given string and hash type
      * 
-     * @param txt The string to be hashed
+     * @param txt The string to be hashed.
      * @param hashType The type of hash to be performed to the string
      */
     public static String getHash(String txt, String hashType) 
