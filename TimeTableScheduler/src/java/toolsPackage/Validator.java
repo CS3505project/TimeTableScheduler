@@ -11,9 +11,11 @@ import java.sql.ResultSetMetaData;
 public class Validator {
     
     
+    public static boolean isValidEmail(String email) {
+        return EmailValidator.getInstance().isValid(email);
+    }
     
-    
-    public static boolean checkLogin(String email, String password)
+    public static boolean isValidLogin(String email, String password)
     {
         boolean success = false;
         Database db = new Database();
