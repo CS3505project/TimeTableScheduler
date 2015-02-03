@@ -26,26 +26,26 @@ public class User {
     }
     
     public boolean createGroup(String groupName, String groupType) {
-        return insertToDB("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");");
+        return executeDbQuery("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");");
     }
     
     public boolean joinGroup(int groupID) {
-        return insertToDB("INSERT INTO InGroup (uid, gid) "
+        return executeDbQuery("INSERT INTO InGroup (uid, gid) "
                 + "VALUES (" + userID + "\", " + groupID + ");");
     }
     
     public boolean createMeeting(String room, String description, int priority, String organiser, Date date, Time time) {
-        return insertToDB("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
+        return executeDbQuery("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
                 + "VALUES ("+ date.toString() + "\", \""+ time.toString() + "\", \"" + room + "\", \"" 
                 + description + "\", " + priority + ", \"" + organiser + "\");");
     }
     
     public boolean joinMeeting(int meetingID) {
-        return insertToDB("INSERT INTO InGroup (uid, mid) "
+        return executeDbQuery("INSERT INTO InGroup (uid, mid) "
                 + "VALUES (" + userID + "\", " + meetingID + ");");
     }
     
-    public boolean insertToDB(String insertSQL) {
+    public boolean executeDbQuery(String insertSQL) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
         if (db.insert(insertSQL)) {
