@@ -18,9 +18,14 @@ public class Lecturer extends User {
     }
     
     public boolean addPractical(String moduleCode, String semester, int weekDay, Time time, String room, Date startDate, Date endDate) {
-        return this.insertToDB("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
+        return this.executeDbQuery("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
                 + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
                 + time.toString() + "\", " + room + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
+    }
+    
+    public boolean cancelPracticalOrLecture(String moduleCode, Date date, Time time, String description) {
+        return this.executeDbQuery("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
+                + "VALUES ("+ moduleCode + "\", \""+ date.toString() + "\", " + time.toString() + ", \"" + description + "\");");
     }
     
 }
