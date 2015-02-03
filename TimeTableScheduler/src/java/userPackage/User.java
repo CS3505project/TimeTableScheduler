@@ -4,6 +4,8 @@
  */
 package userPackage;
 
+import toolsPackage.Database;
+
 /**
  *
  * @author John O Riordan
@@ -19,6 +21,12 @@ public class User {
         this.firstName = firstName;
         this.surName = surName;
         this.userID = userID;
+    }
+    
+    public boolean createGroup(String groupName, String groupType) {
+        Database db = new Database();
+        db.setupFromPropertiesFile("database.properties");
+        return db.insert("INSERT INTO Groups (groupName, groupType) VALUES ("+ groupName + "\", \"" + groupType + "\");");
     }
 
     public String getEmail() {

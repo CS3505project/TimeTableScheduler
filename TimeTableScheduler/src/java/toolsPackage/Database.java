@@ -123,7 +123,7 @@ public class Database {
         }
     }
  
-    public void insert(String SQLinsert)
+    public boolean insert(String SQLinsert)
     {
         try {
             // Setup statement object
@@ -132,10 +132,12 @@ public class Database {
             // execute SQL commands to insert data
             statementObject.executeUpdate(SQLinsert);
             writeLogSQL(SQLinsert + " Executed OK");
+            return true;
         } catch (SQLException exceptionObject) {
             System.out.println(SQLinsert + " - Problem is : " + exceptionObject.getMessage());
             writeLogSQL(SQLinsert + " caused error " + exceptionObject.getMessage());
         }
+        return false;
     } // End Insert
     
     public ResultSet select(String SQLselect)
