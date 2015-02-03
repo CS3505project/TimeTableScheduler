@@ -13,29 +13,22 @@ public class Validator {
     
     
     
-    public static boolean checkLogin(String username, String password)
+    public static boolean checkLogin(String email, String password)
     {
         boolean success = false;
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
         
-        ResultSet result = db.select("SELECT uid FROM students WHERE studentid = " + username + ";");
-        if (db.getNumRows(result) < 1) {
-            result = db.select("SELECT uid FROM lecturer WHERE lecturerid = " + username + ";");
-            if (db.getNumRows(result) < 1) {
-                result = db.select("SELECT uid FROM admin WHERE adminid = " + username + ";");
-            }
-        }
-        
-        if (db.getNumRows(result) > 0) {
+        EmailValidator emailValidator =  EmailValidator.getInstance();
+        if (emailValidator.isValid(password)) {      
             String passwordHash = Hash.sha1(password);
             try {
-                result = db.select("SELECT passwordHash FROM user WHERE userid = " + result.getString("uid") + ";");
-                if (result.getString("passwordHash").equals(passwordHash)) {
-                   success = true; 
+                ResultSet result = db.select("SELECT passwordHash FROM user WHERE email = " + email + ";");
+                if (db.getNumRows(result) > 0 && result.getString("passwordHash").equals(passwordHash)) {
+                    success = true; 
                 }
             } catch (Exception e) {
-                
+
             }
         }
         
