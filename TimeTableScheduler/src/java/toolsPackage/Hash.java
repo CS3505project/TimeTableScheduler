@@ -20,14 +20,19 @@ public class Hash {
             MessageDigest messageDigest = MessageDigest.getInstance(hashType);
             // hash the message and store the hash in an array
             byte[] messageHash = messageDigest.digest(message.getBytes());
+            
             StringBuilder builder = new StringBuilder();
+            // Start of solution from fitorec
+            // http://stackoverflow.com/questions/415953/how-can-i-generate-an-md5-hash
             for (int i = 0; i < messageHash.length; ++i) {
                 // convert the array containing the hash to its hex form
                 builder.append(Integer.toHexString((messageHash[i] & 0xFF) | 0x100).substring(1, 3));
             }
+            // End of solution from fitorec
+            // http://stackoverflow.com/questions/415953/how-can-i-generate-an-md5-hash
             return builder.toString();
         } catch (Exception exception) {
-            //error action
+            // error action
         }
         return null;
     }
