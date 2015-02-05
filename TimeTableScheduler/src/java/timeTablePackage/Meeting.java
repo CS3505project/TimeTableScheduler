@@ -6,61 +6,33 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import userPackage.User;
 
 /**
  * Represent a meeting in the timetable
  * 
  * @author John O Riordan
  */
-public class Meeting {
-    private String meetingID;
-    private Date date;
-    private Time time;
-    private String room;
+public class Meeting extends Event {
     private String description;
     private int priority;
-    private String organiser;
+    private User organiser;
 
-    public Meeting(String meetingID, Date date, Time time, String room, String description, int priority, String organiser) {
-        this.meetingID = meetingID;
-        this.date = date;
-        this.time = time;
-        this.room = room;
+    public Meeting(String meetingID, Date date, Time time, String room, String description, int priority, User organiser) {
+        super(meetingID, date, time, room);
         this.description = description;
         this.priority = priority;
         this.organiser = organiser;
     }
-
-    public String getMeetingID() {
-        return meetingID;
+    
+    public Meeting(String meetingID, Date date, Time time, String room) {
+        super(meetingID, date, time, room);
     }
-
-    public void setMeetingID(String meetingID) {
-        this.meetingID = meetingID;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
+    
+    @Override
+    public String toString() {
+        // To-Do
+        return "";
     }
 
     public String getDescription() {
@@ -79,11 +51,11 @@ public class Meeting {
         this.priority = priority;
     }
 
-    public String getOrganiser() {
+    public User getOrganiser() {
         return organiser;
     }
 
-    public void setOrganiser(String organiser) {
+    public void setOrganiser(User organiser) {
         this.organiser = organiser;
     }
 }

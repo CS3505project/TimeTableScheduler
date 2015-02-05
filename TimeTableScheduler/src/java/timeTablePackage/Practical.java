@@ -12,31 +12,26 @@ import java.sql.Time;
  * 
  * @author John O Riordan
  */
-public class Practical {
-    private String moduleCode;
+public class Practical extends Event {
     private String semester;
-    private int weekDay;
-    private Time time;
-    private String room;
-    private Date startDate;
+    private Day weekDay;
     private Date endDate;
 
-    public Practical(String moduleCode, String semester, int weekDay, Time time, String room, Date startDate, Date endDate) {
-        this.moduleCode = moduleCode;
+    public Practical(String moduleCode, String semester, int weekDay, Time time, String room, Date date, Date endDate) {
+        super(moduleCode, date, time, room);
         this.semester = semester;
-        this.weekDay = weekDay;
-        this.time = time;
-        this.room = room;
-        this.startDate = startDate;
+        this.weekDay = Day.convertToDay(weekDay);
         this.endDate = endDate;
     }
-
-    public String getModuleCode() {
-        return moduleCode;
+    
+    public Practical(String moduleCode, Date date, Time time, String room) {
+        super(moduleCode, date, time, room);
     }
-
-    public void setModuleCode(String moduleCode) {
-        this.moduleCode = moduleCode;
+    
+    @Override
+    public String toString() {
+        // To-Do
+        return "";
     }
 
     public String getSemester() {
@@ -47,36 +42,41 @@ public class Practical {
         this.semester = semester;
     }
 
-    public int getWeekDay() {
+    /**
+     * Return the day of the week as a Day object
+     * 
+     * @return Day object representing the day 
+     */
+    public Day getWeekDay() {
         return weekDay;
     }
-
-    public void setWeekDay(int weekDay) {
+    
+    /**
+     * Return the index corresponding to this day
+     * 
+     * @return The index for this day 
+     */
+    public int getWeekDayIndex() {
+        return weekDay.getIndex();
+    }
+    
+    /**
+     * Set the day using a Day object
+     * 
+     * @param weekDay New Day object
+     */
+    public void setWeekDay(Day weekDay) {
         this.weekDay = weekDay;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    /**
+     * Set the day by providing an index
+     * May set to null if incorrect index value
+     * 
+     * @param index Index value for the day 
+     */
+    public void setWeekDayIndex(int index) {
+        this.weekDay = Day.convertToDay(index);
     }
 
     public Date getEndDate() {
