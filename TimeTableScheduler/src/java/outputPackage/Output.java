@@ -6,6 +6,8 @@ package outputPackage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,9 +27,10 @@ public class Output {
      * Creates the header which occurs in each page, with side bar etc.
      * @return A string with all the HTML.
      */
-    public String createHeader() throws FileNotFoundException{
+    public String createHeader() throws FileNotFoundException, IOException{
         String finalHTML = "";
-        finalHTML += new Scanner(new File("Z:\\public_html\\newteamproject\\TimeTableScheduler\\TimeTableScheduler\\web\\htmlIncludes\\commonHeader.html")).useDelimiter("\\Z").next();
+        InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeader.html");
+        finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
         return finalHTML;
     }

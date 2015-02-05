@@ -16,7 +16,7 @@ public class TestDB {
         try {
             Statement stat = conn.createStatement();
 
-            ResultSet result = stat.executeQuery("SELECT * FROM test.User");
+            ResultSet result = stat.executeQuery("SELECT * FROM User");
             while (result.next()) {
                 System.out.println(result.getString("email"));
             }
