@@ -27,7 +27,7 @@ public class Output {
      */
     public String createHeader() throws FileNotFoundException{
         String finalHTML = "";
-        finalHTML += new Scanner(new File("Z:\\public_html\\teamproject\\TimeTableScheduler\\TimeTableScheduler\\web\\htmlIncludes\\commonHeader.html")).useDelimiter("\\Z").next();
+        finalHTML += new Scanner(new File("Z:\\public_html\\newteamproject\\TimeTableScheduler\\TimeTableScheduler\\web\\htmlIncludes\\commonHeader.html")).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
         return finalHTML;
     }
