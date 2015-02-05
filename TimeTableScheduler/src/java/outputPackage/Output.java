@@ -4,17 +4,30 @@
  */
 package outputPackage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *
  * @author lam1
  */
 public class Output {
+    
+    HttpServletRequest request;
+    
+    public Output(HttpServletRequest request){
+        this.request = request;
+    }
+    
     /**
      * Creates the header which occurs in each page, with side bar etc.
      * @return A string with all the HTML.
      */
-    public String createHeader(){
+    public String createHeader() throws FileNotFoundException{
         String finalHTML = "";
+        finalHTML += new Scanner(new File("Z:\\public_html\\teamproject\\TimeTableScheduler\\TimeTableScheduler\\web\\htmlIncludes\\commonHeader.html")).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
         return finalHTML;
     }
