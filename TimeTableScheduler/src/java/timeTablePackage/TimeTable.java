@@ -97,7 +97,7 @@ public class TimeTable {
             for (EventTime time : hours) {
                 if (index < eventsThisDay.size() && 
                         time.getTime().equals(eventsThisDay.get(index).getTime())) {
-                    timetable += "<td>" + eventsThisDay.get(index).toString() + "</td>";
+                    timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" + eventsThisDay.get(index).toString() + "</td>";
                     index++;
                 } else {
                     timetable += "<td></td>";

@@ -30,6 +30,8 @@ public abstract class Event {
     @Override
     public abstract String toString();
     
+    public abstract String displayTableHTML();
+    
     /**
      * Gets the day of the week as a string for this event
      * For example "Monday"

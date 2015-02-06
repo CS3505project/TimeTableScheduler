@@ -35,15 +35,6 @@ public class Output {
         InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeader.html");
         finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
-        
-        /*
-         * Test need method to generate timetable HTML from actual event objects
-         * 
-         * TimeTable timetable = new TimeTable();
-         * timetable.addDummyEvents();
-         * finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTTEEN, Day.MONDAY, Day.FRIDAY);
-         */
-        
         return finalHTML;
     }
     
@@ -106,8 +97,22 @@ public class Output {
      * @return A string with all the HTML for the table.
      */
     public String createDummyTable(){
-        String finalHTML;
-        finalHTML = "<h1>Timetable for this week</h1>\n" +
+        /*
+         * Test method to generate timetable HTML from actual event objects
+         * 
+         * TimeTable timetable = new TimeTable();
+         * timetable.addDummyEvents();
+         * finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTTEEN, Day.MONDAY, Day.FRIDAY);
+         */
+        String finalHTML = "";
+        
+        TimeTable timetable = new TimeTable();
+        timetable.addDummyEvents();
+        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTTEEN, Day.MONDAY, Day.FRIDAY);
+        
+       
+        /*finalHTML = "<h1>Timetable for this week</h1>\n" +
     "			<table>\n" +
     "				<tr><th></th><th>9:00</th><th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th><th>14:00</th><th>15:00</th><th>16:00</th><th>17:00</th></tr>\n" +
     "				<tr><th>Mon</th><td class=\"meeting\">meet with blah</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
@@ -116,7 +121,8 @@ public class Output {
     "				<tr><th>Thu</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
-    "			</table>";
+    "			</table>";*/
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         return finalHTML;
     }
 }

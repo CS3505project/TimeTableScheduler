@@ -36,6 +36,11 @@ public class Meeting extends Event {
         // To-Do
         return "Meeting" + this.getTime().toString();
     }
+    
+    @Override
+    public String displayTableHTML() {
+        return "class =\"meeting\"";
+    }
 
     public String getDescription() {
         return description;

@@ -46,7 +46,16 @@ public class Practical extends Event {
     
     @Override
     public String getDayOfWeek() {
-        return getWeekDay().getDay();
+        String day = super.getDayOfWeek();
+        if (weekDay != null) {
+            day = weekDay.getDay();
+        }
+        return day;
+    }
+    
+    @Override
+    public String displayTableHTML() {
+        return "class =\"practical\"";
     }
 
     /**
