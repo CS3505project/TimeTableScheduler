@@ -97,20 +97,14 @@ public class Output {
      * @return A string with all the HTML for the table.
      */
     public String createDummyTable(){
-        /*
-         * Test method to generate timetable HTML from actual event objects
-         * 
-         * TimeTable timetable = new TimeTable();
-         * timetable.addDummyEvents();
-         * finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTTEEN, Day.MONDAY, Day.FRIDAY);
-         */
         String finalHTML = "";
         
+        // Test method to generate timetable HTML from actual event objects
         TimeTable timetable = new TimeTable();
         timetable.addDummyEvents();
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTTEEN, Day.MONDAY, Day.FRIDAY);
-        
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
        
         /*finalHTML = "<h1>Timetable for this week</h1>\n" +
     "			<table>\n" +
@@ -122,7 +116,7 @@ public class Output {
     "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
     "			</table>";*/
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        
         return finalHTML;
     }
 }
