@@ -117,19 +117,19 @@ public class TimeTable {
     public void addDummyEvents() {
         events.add(new Meeting("M", Date.valueOf("2015-03-12"), Time.valueOf("12:00:00"), "WGB 1.11"));
         events.add(new Lecture("L", Date.valueOf("2015-03-13"), Time.valueOf("14:00:00"), "WGB G27"));
-        events.add(new Practical("P", Date.valueOf("2015-03-14"), Time.valueOf("15:00:00"), "WGB G20"));
+        events.add(new Practical("P", Date.valueOf("2015-03-11"), Time.valueOf("15:00:00"), "WGB G20"));
         
         events.add(new Meeting("M2", Date.valueOf("2015-03-12"), Time.valueOf("13:00:00"), "WGB 1.11"));
         events.add(new Lecture("L2", Date.valueOf("2015-03-13"), Time.valueOf("16:00:00"), "WGB G27"));
-        events.add(new Practical("P2", Date.valueOf("2015-03-14"), Time.valueOf("13:00:00"), "WGB G20"));
+        events.add(new Practical("P2", Date.valueOf("2015-03-11"), Time.valueOf("13:00:00"), "WGB G20"));
         
         events.add(new Meeting("M3", Date.valueOf("2015-03-12"), Time.valueOf("11:00:00"), "WGB 1.11"));
         events.add(new Lecture("L3", Date.valueOf("2015-03-13"), Time.valueOf("10:00:00"), "WGB G27"));
-        events.add(new Practical("P3", Date.valueOf("2015-03-14"), Time.valueOf("16:00:00"), "WGB G20"));
+        events.add(new Practical("P3", Date.valueOf("2015-03-11"), Time.valueOf("16:00:00"), "WGB G20"));
         
         events.add(new Meeting("M4", Date.valueOf("2015-03-12"), Time.valueOf("09:00:00"), "WGB 1.11"));
         events.add(new Lecture("L4", Date.valueOf("2015-03-13"), Time.valueOf("17:00:00"), "WGB G27"));
-        events.add(new Practical("P4", Date.valueOf("2015-03-14"), Time.valueOf("14:00:00"), "WGB G20"));
+        events.add(new Practical("P4", Date.valueOf("2015-03-11"), Time.valueOf("14:00:00"), "WGB G20"));
     }
     
     /**
