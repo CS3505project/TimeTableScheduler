@@ -6,6 +6,8 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.Locale;
 import userPackage.User;
 
 /**
@@ -32,7 +34,7 @@ public class Meeting extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "";
+        return "Meeting" + this.getTime().toString();
     }
 
     public String getDescription() {

@@ -6,6 +6,8 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Represents a lecture object in the timetable
@@ -31,7 +33,7 @@ public class Lecture extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "";
+        return "Lecture" + this.getTime().toString();
     }
 
     public String getSemester() {
@@ -42,6 +44,11 @@ public class Lecture extends Event {
         this.semester = semester;
     }
 
+    @Override
+    public String getDayOfWeek() {
+        return getWeekDay().getDay();
+    }
+    
     /**
      * Return the day of the week as a Day object
      * 

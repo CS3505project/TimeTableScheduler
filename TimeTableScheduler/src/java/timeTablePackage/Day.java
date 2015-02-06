@@ -4,6 +4,9 @@
  */
 package timeTablePackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents each day of the week.
  * Returns the specific index for each day which can be 
@@ -36,6 +39,23 @@ public enum Day {
      */
     public String getDay() {
         return this.day;
+    }
+    
+    /**
+     * Returns a list of days between the start and end day specified
+     * 
+     * @param startDay Day to start at
+     * @param endDay Day to end at
+     * @return List of days between start and end days
+     */
+    public static List<Day> getDays(Day startDay, Day endDay) {
+        List<Day> activeDays = new ArrayList<Day>();
+        for (Day day : Day.values()) {
+            if (day.getIndex() >= startDay.getIndex() && day.getIndex() <= endDay.getIndex()) {
+                activeDays.add(day);
+            }
+        }
+        return activeDays;
     }
     
     /**

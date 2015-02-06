@@ -6,6 +6,8 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Represents a practical in the timetable
@@ -31,7 +33,7 @@ public class Practical extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "";
+        return "Practical" + this.getTime().toString();
     }
 
     public String getSemester() {
@@ -40,6 +42,11 @@ public class Practical extends Event {
 
     public void setSemester(String semester) {
         this.semester = semester;
+    }
+    
+    @Override
+    public String getDayOfWeek() {
+        return getWeekDay().getDay();
     }
 
     /**

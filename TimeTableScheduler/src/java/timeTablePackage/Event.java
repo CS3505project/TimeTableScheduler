@@ -6,6 +6,8 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Generic event that can be a lecture, practical or meeting.
@@ -27,6 +29,18 @@ public abstract class Event {
     
     @Override
     public abstract String toString();
+    
+    /**
+     * Gets the day of the week as a string for this event
+     * For example "Monday"
+     * 
+     * @return Day of the week as a string
+     */
+    public String getDayOfWeek() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.getDate());
+        return cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+    }
 
     public String getEventID() {
         return eventID;
