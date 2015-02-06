@@ -30,6 +30,12 @@ public abstract class Event {
     @Override
     public abstract String toString();
     
+    /**
+     * Outputs HTML needed to display the type of event in the timetable 
+     * on the webpage
+     * 
+     * @return HTML to display the type of event 
+     */
     public abstract String displayTableHTML();
     
     /**
