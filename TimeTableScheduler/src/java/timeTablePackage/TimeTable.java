@@ -81,15 +81,10 @@ public class TimeTable {
         List<Day> days = Day.getDays(startDay, endDay);
         
         sortEvents(days, startTime, endTime);
+        
+        String timetable = "<table>";
+        timetable += createTimeTableHeader(hours);
 
-        String timetable = "";
-        
-        timetable += "<table><tr><th></th>";
-        for (EventTime time : hours) {
-            timetable += "<th>" + time.toString() + "</th>";
-        }
-        timetable += "</tr>";
-        
         for (Day day : days) {
             timetable += "<tr><th>" + day.getDay() + "</th>";
             int index = 0;
@@ -111,6 +106,22 @@ public class TimeTable {
     }
     
     /**
+     * Creates the header for the timetable
+     * Displays the hours during the day
+     * 
+     * @param hours The list of times to be displayed
+     * @return The HTML for the timetable header
+     */
+    private String createTimeTableHeader(List<EventTime> hours) {
+        String header = "<tr><th></th>";
+        for (EventTime time : hours) {
+            header += "<th>" + time.toString() + "</th>";
+        }
+        header += "</tr>";
+        return header;
+    }
+    
+    /**
      * Used to test the sorting method by creating fake entries
      * in the timetable
      */
@@ -119,17 +130,17 @@ public class TimeTable {
         events.add(new Lecture("L", Date.valueOf("2015-03-13"), Time.valueOf("14:00:00"), "WGB G27"));
         events.add(new Practical("P", Date.valueOf("2015-03-11"), Time.valueOf("15:00:00"), "WGB G20"));
         
-        events.add(new Meeting("M2", Date.valueOf("2015-03-12"), Time.valueOf("13:00:00"), "WGB 1.11"));
-        events.add(new Lecture("L2", Date.valueOf("2015-03-13"), Time.valueOf("16:00:00"), "WGB G27"));
-        events.add(new Practical("P2", Date.valueOf("2015-03-11"), Time.valueOf("13:00:00"), "WGB G20"));
+        events.add(new Meeting("M2", Date.valueOf("2015-03-12"), Time.valueOf("13:00:00"), "WGB 1.07"));
+        events.add(new Lecture("L2", Date.valueOf("2015-03-13"), Time.valueOf("16:00:00"), "WGB G21"));
+        events.add(new Practical("P2", Date.valueOf("2015-03-11"), Time.valueOf("13:00:00"), "WGB G15"));
         
-        events.add(new Meeting("M3", Date.valueOf("2015-03-12"), Time.valueOf("11:00:00"), "WGB 1.11"));
-        events.add(new Lecture("L3", Date.valueOf("2015-03-13"), Time.valueOf("10:00:00"), "WGB G27"));
-        events.add(new Practical("P3", Date.valueOf("2015-03-11"), Time.valueOf("16:00:00"), "WGB G20"));
+        events.add(new Meeting("M3", Date.valueOf("2015-03-12"), Time.valueOf("11:00:00"), "WGB 1.15"));
+        events.add(new Lecture("L3", Date.valueOf("2015-03-13"), Time.valueOf("10:00:00"), "WGB G22"));
+        events.add(new Practical("P3", Date.valueOf("2015-03-11"), Time.valueOf("16:00:00"), "WGB 2.01"));
         
-        events.add(new Meeting("M4", Date.valueOf("2015-03-12"), Time.valueOf("09:00:00"), "WGB 1.11"));
-        events.add(new Lecture("L4", Date.valueOf("2015-03-13"), Time.valueOf("17:00:00"), "WGB G27"));
-        events.add(new Practical("P4", Date.valueOf("2015-03-11"), Time.valueOf("14:00:00"), "WGB G20"));
+        events.add(new Meeting("M4", Date.valueOf("2015-03-12"), Time.valueOf("09:00:00"), "WGB 1.20"));
+        events.add(new Lecture("L4", Date.valueOf("2015-03-13"), Time.valueOf("17:00:00"), "WGB 2.11"));
+        events.add(new Practical("P4", Date.valueOf("2015-03-11"), Time.valueOf("14:00:00"), "WGB G25"));
     }
     
     /**
