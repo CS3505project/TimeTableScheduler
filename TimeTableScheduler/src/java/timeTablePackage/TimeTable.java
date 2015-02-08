@@ -21,12 +21,12 @@ import java.util.Map;
 public class TimeTable {
     private List<Event> events;
     private Map<String, LinkedList<Event>> sortedEvents;
-    
+
     public TimeTable() {
         events = new ArrayList<Event>();
         sortedEvents = new HashMap<String, LinkedList<Event>>();
     }
-    
+
     /**
      * Sort the events by day and time.
      * Resulting sorted events are placed in the map as lists
@@ -58,7 +58,7 @@ public class TimeTable {
             }
         }
     }
-    
+
     /**
      * Generates a timetable from HTML with all the events listed
      * in order of day and time
@@ -97,7 +97,7 @@ public class TimeTable {
         
         return timetable;
     }
-    
+
     /**
      * Creates the header for the timetable
      * Displays the hours during the day
@@ -113,7 +113,7 @@ public class TimeTable {
         header += "</tr>";
         return header;
     }
-    
+
     /**
      * Used to test the sorting method by creating fake entries
      * in the timetable
@@ -135,7 +135,7 @@ public class TimeTable {
         events.add(new Lecture("L4", Date.valueOf("2015-03-13"), Time.valueOf("17:00:00"), "WGB 2.11"));
         events.add(new Practical("P4", Date.valueOf("2015-03-11"), Time.valueOf("14:00:00"), "WGB G25"));
     }
-    
+
     /**
      * Return a list of events in the timetable
      * 
@@ -144,7 +144,7 @@ public class TimeTable {
     public List<Event> getEvents() {
         return events;
     }
-    
+
     /**
      * Returns the sorted list of events
      * May return null if sortEvents not called first
@@ -154,12 +154,12 @@ public class TimeTable {
     private Map<String, LinkedList<Event>> getSortedEvents() {
         return sortedEvents;
     }
-    
+
     /**
      * Filter the results in the timetable
      */
     public void applyFilter() {
         // filter the events in the table
     }
-    
+
 }
