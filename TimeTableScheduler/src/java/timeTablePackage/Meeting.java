@@ -18,7 +18,8 @@ public class Meeting extends Event {
     private int priority;
     private User organiser;
 
-    public Meeting(String meetingID, Date date, Time time, String room, String description, int priority, User organiser) {
+    public Meeting(String meetingID, Date date, Time time, String room, 
+                   String description, int priority, User organiser) {
         super(meetingID, date, time, room);
         this.description = description;
         this.priority = priority;

@@ -69,7 +69,8 @@ public class TimeTable {
      * @param endDay The day to stop displaying at in the table (inclusive)
      * @return Timetable as HTML code 
      */
-    public String createTimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
+    public String createTimeTable(EventTime startTime, EventTime endTime, 
+                                  Day startDay, Day endDay) {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
@@ -85,7 +86,8 @@ public class TimeTable {
             for (EventTime time : hours) {
                 if (index < eventsThisDay.size() && 
                         time.getTime().equals(eventsThisDay.get(index).getTime())) {
-                    timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" + eventsThisDay.get(index).toString() + "</td>";
+                    timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 
+                                 + eventsThisDay.get(index).toString() + "</td>";
                     index++;
                 } else {
                     timetable += "<td></td>";

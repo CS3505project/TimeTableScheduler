@@ -51,7 +51,8 @@ public enum Day {
     public static List<Day> getDays(Day startDay, Day endDay) {
         List<Day> activeDays = new ArrayList<Day>();
         for (Day day : Day.values()) {
-            if (day.getIndex() >= startDay.getIndex() && day.getIndex() <= endDay.getIndex()) {
+            if (day.getIndex() >= startDay.getIndex() 
+                    && day.getIndex() <= endDay.getIndex()) {
                 activeDays.add(day);
             }
         }

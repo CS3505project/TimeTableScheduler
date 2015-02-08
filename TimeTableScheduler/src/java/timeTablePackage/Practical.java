@@ -17,7 +17,8 @@ public class Practical extends Event {
     private Day weekDay;
     private Date endDate;
 
-    public Practical(String moduleCode, String semester, int weekDay, Time time, String room, Date date, Date endDate) {
+    public Practical(String moduleCode, String semester, int weekDay, Time time, 
+                     String room, Date date, Date endDate) {
         super(moduleCode, date, time, room);
         this.semester = semester;
         this.weekDay = Day.convertToDay(weekDay);

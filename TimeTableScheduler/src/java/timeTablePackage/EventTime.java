@@ -63,7 +63,8 @@ public enum EventTime {
     public static List<EventTime> getTimes(EventTime startTime, EventTime endTime) {
         List<EventTime> activeTimes = new ArrayList<EventTime>();
         for (EventTime time : EventTime.values()) {
-            if (time.getTime().after(startTime.getTime()) && time.getTime().before(endTime.getTime())) {
+            if (time.getTime().after(startTime.getTime()) 
+                    && time.getTime().before(endTime.getTime())) {
                 activeTimes.add(time);
             }
         }
