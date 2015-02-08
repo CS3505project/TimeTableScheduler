@@ -28,13 +28,6 @@ public class TimeTable {
     }
     
     /**
-     * Display the timetable to the user
-     */
-    public void showTimeTable() {
-        // output table
-    }
-    
-    /**
      * Sort the events by day and time.
      * Resulting sorted events are placed in the map as lists
      * corresponding to the day they are scheduled on.
