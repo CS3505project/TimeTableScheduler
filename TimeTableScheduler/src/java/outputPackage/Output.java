@@ -55,7 +55,7 @@ public class Output {
      */
     public String createFooter(){
         String finalHTML = "";
-        InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonFooter.html");
+        InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonEnd.html");
         finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         return finalHTML;
     }
