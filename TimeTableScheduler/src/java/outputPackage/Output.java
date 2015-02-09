@@ -32,7 +32,11 @@ public class Output {
      */
     public String createHeader() throws FileNotFoundException, IOException{
         String finalHTML = "";
+        
         InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeader.html");
+        finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
+        
+        inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeaderEnd.html");
         finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
         return finalHTML;
