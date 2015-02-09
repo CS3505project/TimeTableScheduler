@@ -36,6 +36,7 @@ public class TimeTable {
         db.setupFromPropertiesFile("database.properties");
         
         try {
+            // retrieve list of lectures for a particular user id
             ResultSet userLectureEvents = db.select("");
             
             while (userLectureEvents.next()) {
@@ -48,6 +49,7 @@ public class TimeTable {
                                        userLectureEvents.getDate("")));
             }
             
+            // retrieve list of practicals for a particular user id
             ResultSet userPracticalEvents = db.select("");
             
             while (userPracticalEvents.next()) {
@@ -60,6 +62,7 @@ public class TimeTable {
                                          userPracticalEvents.getDate("")));
             }
             
+            // retrieve list of meetings that a particular user id is involved with
             ResultSet userPersonalEvents = db.select("");
             
             while (userPersonalEvents.next()) {
