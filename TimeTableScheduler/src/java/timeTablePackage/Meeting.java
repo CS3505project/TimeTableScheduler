@@ -33,7 +33,7 @@ public class Meeting extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "Meeting" + this.getTime().toString();
+        return "Meeting " + this.getTime().toString();
     }
     
     @Override
