@@ -38,7 +38,6 @@ public class TimeTable {
         try {
             // retrieve list of lectures for a particular user id
             ResultSet userLectureEvents = db.select("");
-            
             while (userLectureEvents.next()) {
                 events.add(new Lecture(userLectureEvents.getString(""),
                                        userLectureEvents.getString(""),
@@ -51,7 +50,6 @@ public class TimeTable {
             
             // retrieve list of practicals for a particular user id
             ResultSet userPracticalEvents = db.select("");
-            
             while (userPracticalEvents.next()) {
                 events.add(new Practical(userPracticalEvents.getString(""),
                                          userPracticalEvents.getString(""),
@@ -64,7 +62,6 @@ public class TimeTable {
             
             // retrieve list of meetings that a particular user id is involved with
             ResultSet userPersonalEvents = db.select("");
-            
             while (userPersonalEvents.next()) {
                 events.add(new Meeting(userPersonalEvents.getString(""),
                                        userPersonalEvents.getDate(""),
