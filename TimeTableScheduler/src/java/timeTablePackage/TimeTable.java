@@ -31,6 +31,11 @@ public class TimeTable {
         sortedEvents = new HashMap<String, LinkedList<Event>>();
     }
     
+    /**
+     * Enters the events that a specific user has into the list of events
+     * 
+     * @param userID The ID of the user
+     */
     public void getUserEvents(String userID) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
@@ -75,6 +80,8 @@ public class TimeTable {
             System.err.println("Error retrieving user events" + ex.getMessage());
             db.writeLogSQL("Error retrieving users events");
         } 
+        
+        db.close();
     }
 
     /**
