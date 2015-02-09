@@ -3,4 +3,5 @@
     outputPackage.Output output = new outputPackage.Output(request);
     out.println(output.createHeader());
     out.println(output.createAddLabForm());
+    out.println(output.createFooter());
 %>
