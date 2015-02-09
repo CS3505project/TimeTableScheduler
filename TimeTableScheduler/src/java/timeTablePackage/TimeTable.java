@@ -36,7 +36,7 @@ public class TimeTable {
      * 
      * @param userID The ID of the user
      */
-    public void getUserEvents(String userID) {
+    public void addUserEvents(String userID) {
         Database db = new Database();
         db.setupFromPropertiesFile("database.properties");
         
