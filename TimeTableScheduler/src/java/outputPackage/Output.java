@@ -21,6 +21,7 @@ import timeTablePackage.TimeTable;
 public class Output {
     
     HttpServletRequest request;
+    String userType = "";//placeholder
     
     public Output(HttpServletRequest request){
         this.request = request;
@@ -32,7 +33,17 @@ public class Output {
      */
     public String createHeader() throws FileNotFoundException, IOException{
         String finalHTML = "";
+        
         InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeader.html");
+        finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
+        
+        //Switch statement with appropriate controls based on what type of user is loged in
+        switch (this.userType){
+            default: finalHTML +="";
+            break;
+        }
+
+        inStream = this.getClass().getClassLoader().getResourceAsStream("commonHeaderEnd.html");
         finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         //add file include from htmlIncludesfolder, conditional logic based on user type etc.
         return finalHTML;
@@ -44,7 +55,8 @@ public class Output {
      */
     public String createFooter(){
         String finalHTML = "";
-        //add file include from htmlIncludesfolder
+        InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("commonEnd.html");
+        finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
         return finalHTML;
     }
     
