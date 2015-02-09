@@ -31,7 +31,7 @@ public enum EventTime {
     FIFTHTEEN("15:00", Time.valueOf("15:00:00")),
     SIXTEEN("16:00", Time.valueOf("16:00:00")),
     SEVENTEEN("17:00", Time.valueOf("17:00:00")),
-    EIGHTTEEN("18:00", Time.valueOf("18:00:00")),
+    EIGHTEEN("18:00", Time.valueOf("18:00:00")),
     NINETEEN("19:00", Time.valueOf("19:00:00")),
     TWENTY("20:00", Time.valueOf("20:00:00")),
     TWENTYONE("21:00", Time.valueOf("21:00:00")),
