@@ -39,7 +39,9 @@ public class Output {
         
         //Switch statement with appropriate controls based on what type of user is loged in
         switch (this.userType){
-            default: finalHTML +="";
+            default: 
+                inStream = this.getClass().getClassLoader().getResourceAsStream("studentMenu.html");
+                finalHTML += new Scanner(inStream).useDelimiter("\\Z").next();
             break;
         }
 
