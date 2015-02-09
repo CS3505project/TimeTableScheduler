@@ -5,12 +5,16 @@
 package timeTablePackage;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import toolsPackage.Database;
+import userPackage.User;
 
 /**
  * Represents the users timetable and carries out any actions that may be 
@@ -25,6 +29,55 @@ public class TimeTable {
     public TimeTable() {
         events = new ArrayList<Event>();
         sortedEvents = new HashMap<String, LinkedList<Event>>();
+    }
+    
+    public void getUserEvents(String userID) {
+        Database db = new Database();
+        db.setupFromPropertiesFile("database.properties");
+        
+        try {
+            // retrieve list of lectures for a particular user id
+            ResultSet userLectureEvents = db.select("");
+            
+            while (userLectureEvents.next()) {
+                events.add(new Lecture(userLectureEvents.getString(""),
+                                       userLectureEvents.getString(""),
+                                       userLectureEvents.getInt(""),
+                                       userLectureEvents.getTime(""),
+                                       userLectureEvents.getString(""),
+                                       userLectureEvents.getDate(""),
+                                       userLectureEvents.getDate("")));
+            }
+            
+            // retrieve list of practicals for a particular user id
+            ResultSet userPracticalEvents = db.select("");
+            
+            while (userPracticalEvents.next()) {
+                events.add(new Practical(userPracticalEvents.getString(""),
+                                         userPracticalEvents.getString(""),
+                                         userPracticalEvents.getInt(""),
+                                         userPracticalEvents.getTime(""),
+                                         userPracticalEvents.getString(""),
+                                         userPracticalEvents.getDate(""),
+                                         userPracticalEvents.getDate("")));
+            }
+            
+            // retrieve list of meetings that a particular user id is involved with
+            ResultSet userPersonalEvents = db.select("");
+            
+            while (userPersonalEvents.next()) {
+                events.add(new Meeting(userPersonalEvents.getString(""),
+                                       userPersonalEvents.getDate(""),
+                                       userPersonalEvents.getTime(""),
+                                       userPersonalEvents.getString(""),
+                                       userPersonalEvents.getString(""),
+                                       userPersonalEvents.getInt(""),
+                                       (User) userPersonalEvents.getObject("")));
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving user events" + ex.getMessage());
+            db.writeLogSQL("Error retrieving users events");
+        } 
     }
 
     /**
