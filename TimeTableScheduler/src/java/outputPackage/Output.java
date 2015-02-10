@@ -65,7 +65,24 @@ public class Output {
      * @return A string with all the HTML for the form.
      */
     public String createMeetingForm(){
-        String finalHTML = "";
+        String finalHTML = "<hgroup>\n" +
+        "	<h1>Add Meeting</h1>\n" +
+        "	<h2>Step 1 of 2</h2>\n" +
+        "</hgroup>\n" +
+        "<form>\n" +
+        "	<label for=\"bday\">Date:</label>\n" +
+        "	<input type=\"date\" name=\"bday\" id=\"bday\"  required=\"required\"><br>\n" +
+        "	<label for=\"select\">Group:</label>\n" +
+        "	<select id=\"select\">\n" +
+                //stuff from database
+        "	</select><br>\n" +
+        "	<label for=\"formText\">Meeting Name:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
+        "	<label for=\"venueText\">Venue:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
+        "	<label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "</form>";
         //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
         return finalHTML;
     }
@@ -76,7 +93,26 @@ public class Output {
      * @return A string with all the HTML for the form.
      */
     public String createAddLabForm(){
-        String finalHTML = "";
+        String finalHTML = "<hgroup>\n" +
+        "	<h1>Add Lab</h1>\n" +
+        "	<h2>Step 1 of 2</h2>\n" +
+        "</hgroup>\n" +
+        "<form>\n" +
+        "	<label for=\"bday\">Day:</label>\n" +
+        "	<select id=\"bday\">\n" +
+        //stuff from database
+        "	</select><br>\n" +
+        "	<label for=\"select\">Group:</label>\n" +
+        "	<select id=\"select\">\n" +
+        //stuff from database
+        "	</select><br>\n" +
+        "	<label for=\"formText\">Module Code:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
+        "	<label for=\"venueText\">Venue:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
+        "	<label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "</form>";
         //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
         return finalHTML;
     }
@@ -106,7 +142,17 @@ public class Output {
      * @return A string with all the HTML for the form.
      */
     public String createJoinGroupForm(){
-        String finalHTML = "";
+        String finalHTML = "<hgroup>\n" +
+        "	<h1>Join Group</h1>\n" +
+        "</hgroup>\n" +
+        "<form>\n" +
+        "	<label for=\"gname\">Group Name:</label>\n" +
+        "	<select id=\"gname\">\n" +
+                //stuff from database
+        "	</select><br>\n" +
+        "	<label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "</form>";
         //add actual code
         return finalHTML;
     }
@@ -117,7 +163,25 @@ public class Output {
     * @return A string with all the HTML for the form.
     */
     public String createModuleForm(){
-        String finalHTML = "";
+        String finalHTML = "<hgroup>\n" +
+        "	<h1>Add Module</h1>\n" +
+        "	<h2>Step 1 of 2</h2>\n" +
+        "</hgroup>\n" +
+        "<form>\n" +
+        "	<label for=\"bday\">Day:</label>\n" +
+        "	<select id=\"bday\">\n" +
+        //stuff from database for dropdown goes here
+        "	</select><br>\n" +
+        "	<label for=\"select\">Group:</label>\n" +
+        "	<select id=\"select\">\n" +
+        //stuff from database for dropdown goes here
+        "	<label for=\"formText\">Module Name:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
+        "	<label for=\"venueText\">Venue:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
+        "	<label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "</form>";
         //add actual code
         return finalHTML;
     }

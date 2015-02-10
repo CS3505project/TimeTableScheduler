@@ -132,17 +132,21 @@ public class TimeTable {
         List<Day> days = Day.getDays(startDay, endDay);
         
         sortEvents(days, startTime, endTime);
-        
+        //create table
         String timetable = "<table>";
+        //create header for timetable
         timetable += createTimeTableHeader(hours);
-
+        // loop through days
         for (Day day : days) {
+            //generate days of time table
             timetable += "<tr><th>" + day.getDay() + "</th>";
             int index = 0;
+            // store events of the day
             List<Event> eventsThisDay = sortedEvents.get(day.getDay());
             for (EventTime time : hours) {
                 if (index < eventsThisDay.size() && 
                         time.getTime().equals(eventsThisDay.get(index).getTime())) {
+                            //puts event into correct time slot 
                     timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 
                                  + eventsThisDay.get(index).toString() + "</td>";
                     index++;
@@ -150,6 +154,7 @@ public class TimeTable {
                     timetable += "<td></td>";
                 }
             }
+            //end tags 
             timetable += "</tr>";
         }
         timetable += "</table>";
@@ -164,9 +169,11 @@ public class TimeTable {
      * @param hours The list of times to be displayed
      * @return The HTML for the timetable header
      */
-    private String createTimeTableHeader(List<EventTime> hours) {
+    private String createTimeTableHeader(List<EventTime> hours) 
         String header = "<tr><th></th>";
+        
         for (EventTime time : hours) {
+            // create header converting time to string
             header += "<th>" + time.toString() + "</th>";
         }
         header += "</tr>";
