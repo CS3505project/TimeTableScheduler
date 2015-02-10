@@ -256,7 +256,7 @@ td:nth-child(even){
 /************/
 /* HEADINGS */
 /************/
-hgroup{
+section.main hgroup{
 	background: #889;
 	border: 1px solid #778;
 	padding: 0;
