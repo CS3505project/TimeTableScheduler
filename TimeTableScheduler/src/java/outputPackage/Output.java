@@ -62,6 +62,14 @@ public class Output {
     }
     
     /**
+     * 
+     */
+    String createLogin(){
+        String finalHTML = "";
+        finalHTML += fileToString("login.html");
+        return finalHTML;
+    }
+    /**
      * Creates the form for adding a meeting,
      * with appropriate dropdowns of groups etc. with whom to have the meeting with
      * @return A string with all the HTML for the form.
