@@ -90,29 +90,22 @@ public class TimeTable {
                                          userPracticalEvents.getDate("startDate"),
                                          userPracticalEvents.getDate("endDate")));
             }
-            /*
+            
             // retrieve list of meetings that a particular user id is involved with
-            ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid
-                                                      FROM Meeting 
-                                                      WHERE meetingid = 
-                                                      (
-                                                            SELECT mid
-                                                            FROM HasMeeting
-                                                            WHERE uid = 
-                                                      (
-                                                            SELECT uid
-                                                            FROM Student JOIN User
-                                                            ON uid = userid
-                                                            WHERE studentid = 112414248
-                                                      ));");
-            while (userPersonalEvents.next()) {
-                events.add(new Meeting(userPersonalEvents.getString(""),
-                                       userPersonalEvents.getDate(""),
-                                       userPersonalEvents.getTime(""),
-                                       userPersonalEvents.getString(""),
-                                       userPersonalEvents.getString(""),
-                                       userPersonalEvents.getInt(""),
-                                       (User) userPersonalEvents.getObject("")));
+            ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
+                                                     "FROM Meeting " +
+                                                     "WHERE meetingid = " +
+                                                        "(SELECT mid " +
+                                                        "FROM HasMeeting " +
+                                                        "WHERE uid = " + userID + ");");
+           /* while (userPersonalEvents.next()) {
+                events.add(new Meeting(userPersonalEvents.getString("meetingid"),
+                                       userPersonalEvents.getDate("date"),
+                                       userPersonalEvents.getTime("time"),
+                                       userPersonalEvents.getString("room"),
+                                       userPersonalEvents.getString("description"),
+                                       userPersonalEvents.getInt("priority"),
+                                       (User) userPersonalEvents.getObject("organiser_uid")));
             }*/
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
