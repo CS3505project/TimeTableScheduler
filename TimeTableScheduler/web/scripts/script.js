@@ -5,4 +5,7 @@ function createHelp(){
 
 function displayHelp(context){
 	// add the elements into the dom tree with the help for a given page
+        var helpBox = document.createElement("div");
+        helpBox.setAttribute("class","popup");
+        helpBox.innerHTML = "";//add ajax stuff to get the context help from JSON files
 }
