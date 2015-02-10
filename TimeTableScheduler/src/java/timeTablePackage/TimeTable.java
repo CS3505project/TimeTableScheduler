@@ -42,31 +42,69 @@ public class TimeTable {
         
         try {
             // retrieve list of lectures for a particular user id
-            ResultSet userLectureEvents = db.select("");
+            ResultSet userLectureEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate\n" +
+                                                    "FROM Lecture" +
+                                                    "WHERE moduleCode IN" +
+                                                    "(SELECT moduleCode" +
+                                                    "FROM ModuleInCourse" +
+                                                    "WHERE courseid =" +
+                                                        "(SELECT courseid" +
+                                                        "FROM GroupTakesCourse" +
+                                                        "WHERE gid IN" +
+                                                                "(SELECT gid" +
+                                                                "FROM InGroup" +
+                                                                "WHERE uid = " + userID + ")));");
+                                                                        /*"(SELECT uid" +
+                                                                        "FROM Student JOIN User" +
+                                                                        "ON uid = userid" +
+                                                                        "WHERE studentid = ))));");*/
             while (userLectureEvents.next()) {
-                events.add(new Lecture(userLectureEvents.getString(""),
-                                       userLectureEvents.getString(""),
-                                       userLectureEvents.getInt(""),
-                                       userLectureEvents.getTime(""),
-                                       userLectureEvents.getString(""),
-                                       userLectureEvents.getDate(""),
-                                       userLectureEvents.getDate("")));
+                events.add(new Lecture(userLectureEvents.getString("moduleCode"),
+                                       userLectureEvents.getString("semester"),
+                                       userLectureEvents.getInt("weekday"),
+                                       userLectureEvents.getTime("time"),
+                                       userLectureEvents.getString("room"),
+                                       userLectureEvents.getDate("startDate"),
+                                       userLectureEvents.getDate("endDate")));
             }
             
             // retrieve list of practicals for a particular user id
-            ResultSet userPracticalEvents = db.select("");
+            ResultSet userPracticalEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate" +
+                                                      "FROM Lecture" +
+                                                      "WHERE moduleCode IN" +
+                                                           "(SELECT moduleCode" +
+                                                           "FROM ModuleInCourse" +
+                                                           "WHERE courseid =" +
+                                                               "(SELECT courseid" +
+                                                               "FROM GroupTakesCourse" +
+                                                               "WHERE gid IN" +
+                                                                   "(SELECT gid" +
+                                                                   "FROM InGroup" +
+                                                                   "WHERE uid = " + userID + ")));");
             while (userPracticalEvents.next()) {
-                events.add(new Practical(userPracticalEvents.getString(""),
-                                         userPracticalEvents.getString(""),
-                                         userPracticalEvents.getInt(""),
-                                         userPracticalEvents.getTime(""),
-                                         userPracticalEvents.getString(""),
-                                         userPracticalEvents.getDate(""),
-                                         userPracticalEvents.getDate("")));
+                events.add(new Practical(userPracticalEvents.getString("moduleCode"),
+                                         userPracticalEvents.getString("semester"),
+                                         userPracticalEvents.getInt("weekday"),
+                                         userPracticalEvents.getTime("time"),
+                                         userPracticalEvents.getString("room"),
+                                         userPracticalEvents.getDate("startDate"),
+                                         userPracticalEvents.getDate("endDate")));
             }
-            
+            /*
             // retrieve list of meetings that a particular user id is involved with
-            ResultSet userPersonalEvents = db.select("");
+            ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid
+                                                      FROM Meeting 
+                                                      WHERE meetingid = 
+                                                      (
+                                                            SELECT mid
+                                                            FROM HasMeeting
+                                                            WHERE uid = 
+                                                      (
+                                                            SELECT uid
+                                                            FROM Student JOIN User
+                                                            ON uid = userid
+                                                            WHERE studentid = 112414248
+                                                      ));");
             while (userPersonalEvents.next()) {
                 events.add(new Meeting(userPersonalEvents.getString(""),
                                        userPersonalEvents.getDate(""),
@@ -75,7 +113,7 @@ public class TimeTable {
                                        userPersonalEvents.getString(""),
                                        userPersonalEvents.getInt(""),
                                        (User) userPersonalEvents.getObject("")));
-            }
+            }*/
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
             db.writeLogSQL("Error retrieving users events");
