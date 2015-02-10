@@ -86,7 +86,16 @@ public class Output {
      * @return A string with all the HTML for the form.
      */
     public String createCreateGroupForm(){
-        String finalHTML = "";
+        String finalHTML = "<hgroup>\n" +
+        "	<h1>Create Group</h1>\n" +
+        "	<h2>Step 1 of 2</h2>\n" +
+        "</hgroup>\n" +
+        "<form>\n" +
+        "	<label for=\"gname\">Group Name:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"gnametext\" required=\"required\"><br>\n" +
+        "	<label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "</form>";
         //add actual code etc
         return finalHTML;
     }
@@ -97,6 +106,17 @@ public class Output {
      * @return A string with all the HTML for the form.
      */
     public String createJoinGroupForm(){
+        String finalHTML = "";
+        //add actual code
+        return finalHTML;
+    }
+    
+    /**
+    * Creates the form for joining a module,
+    * with appropriate dropdowns for the public groups etc.
+    * @return A string with all the HTML for the form.
+    */
+    public String createModuleForm(){
         String finalHTML = "";
         //add actual code
         return finalHTML;
