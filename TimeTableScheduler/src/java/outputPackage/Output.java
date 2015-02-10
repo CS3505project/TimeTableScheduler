@@ -64,7 +64,7 @@ public class Output {
     /**
      * 
      */
-    String createLogin(){
+    public String createLogin(){
         String finalHTML = "";
         finalHTML += fileToString("login.html");
         return finalHTML;
