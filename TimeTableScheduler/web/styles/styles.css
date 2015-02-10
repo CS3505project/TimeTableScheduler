@@ -262,6 +262,7 @@ hgroup{
 	padding: 0;
 	height: 30px;
 	margin-bottom: 8px;
+        margin-top: 8px;
 }
 section.main hgroup h1{
 	position: relative;
