@@ -21,11 +21,6 @@ body{
 	overflow: hidden;
 }
 
-small{
-    font-size: 12px;
-    text-align: center;
-    width: 100%;
-}
 /*****************/
 /* COLUMN LAYOUT */
 /*****************/
@@ -193,7 +188,12 @@ body>nav a#about:hover,body>nav a#help:hover{
 	background-color: #000;
 	color: #446;;
 }
-
+nav small{
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
 /********/
 /* MAIN */
 /********/
@@ -268,8 +268,8 @@ section.main hgroup{
 	border: 1px solid #778;
 	padding: 0;
 	height: 30px;
-	margin-bottom: 8px;
-        margin-top: 8px;
+	margin-bottom: 6px;
+        margin-top: 6px;
 }
 section.main hgroup h1{
 	position: relative;
@@ -354,7 +354,8 @@ label{
 div.login{
         background: #223;
         border-radius: 6px;
-        padding: 22px;
+        padding: 8px;
+        padding-top: 16px;
         width: 400px;
         height: 160px;
         box-shadow: inset 0 0 8px #000;
@@ -362,14 +363,12 @@ div.login{
         margin-top: 8%;
         border-bottom: 1px solid #fff;
 }
-
 div.login input, div.login input:hover{
         background: #112;
         border: none;
         border-bottom: 1px solid #334;
         box-shadow: inset 0 0 10px #000;
 }
-
 div.login input[type="submit"]{
         display: block;
         width: 320px;
@@ -385,13 +384,27 @@ div.login input[type="submit"]{
 	font-weight: bold;
 	color: #dde;
 }
-
+div.login label{
+        font-size: 16px;
+        color: #779;
+        background: transparent;
+        background-image: url('pass.png');
+	background-position: 2px 2px;
+	height: 22px;
+	padding: 2px;
+	padding-left: 30px;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+	background-position: 7px 2px;
+}
+div.login label#email{
+        background-image: url('msg.png');
+}
 div.login footer{
         text-align: center;
         font-size: 12px;
         padding: 8px;
 }
-
 footer.loginFooter{
         width: 100%;
         position: fixed;
