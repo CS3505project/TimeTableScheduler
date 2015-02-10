@@ -22,6 +22,16 @@ public class Database {
     private String username;
     private String password;
     private boolean setup = false;
+
+    public Database() {
+        this.statementObject = null;
+        this.connectionObject = null;
+        this.dbserver = "";
+        this.DSN = "";
+        this.username = "";
+        this.password = "";
+    }
+    
    
     /**
      * Setup the connection to the database.
@@ -227,9 +237,9 @@ public class Database {
             if (statementObject.execute(SQLselect)) {
                 result = statementObject.getResultSet();
             }
-            writeLogSQL(SQLselect + " Executed OK");
+             System.err.println("here");
         } catch (SQLException exceptionObject) {
-            System.out.println(SQLselect + " - Problem is : " + exceptionObject.getMessage());
+            System.err.println(SQLselect + " - Problem is : " + exceptionObject.getMessage());
             writeLogSQL(SQLselect + " caused error " + exceptionObject.getMessage());
         }
         return result;

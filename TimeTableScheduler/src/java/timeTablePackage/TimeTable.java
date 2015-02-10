@@ -38,21 +38,21 @@ public class TimeTable {
      */
     public void addUserEvents(String userID) {
         Database db = new Database();
-        db.setupFromPropertiesFile("database.properties");
+        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         try {
             // retrieve list of lectures for a particular user id
-            ResultSet userLectureEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate\n" +
-                                                    "FROM Lecture" +
-                                                    "WHERE moduleCode IN" +
-                                                    "(SELECT moduleCode" +
-                                                    "FROM ModuleInCourse" +
-                                                    "WHERE courseid =" +
-                                                        "(SELECT courseid" +
-                                                        "FROM GroupTakesCourse" +
-                                                        "WHERE gid IN" +
-                                                                "(SELECT gid" +
-                                                                "FROM InGroup" +
+            ResultSet userLectureEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate " +
+                                                    "FROM Lecture " +
+                                                    "WHERE moduleCode IN " +
+                                                    "(SELECT moduleCode " +
+                                                    "FROM ModuleInCourse " +
+                                                    "WHERE courseid = " +
+                                                        "(SELECT courseid " +
+                                                        "FROM GroupTakesCourse " +
+                                                        "WHERE gid IN " +
+                                                                "(SELECT gid " +
+                                                                "FROM InGroup " +
                                                                 "WHERE uid = " + userID + ")));");
                                                                         /*"(SELECT uid" +
                                                                         "FROM Student JOIN User" +
@@ -69,17 +69,17 @@ public class TimeTable {
             }
             
             // retrieve list of practicals for a particular user id
-            ResultSet userPracticalEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate" +
-                                                      "FROM Lecture" +
-                                                      "WHERE moduleCode IN" +
-                                                           "(SELECT moduleCode" +
-                                                           "FROM ModuleInCourse" +
-                                                           "WHERE courseid =" +
-                                                               "(SELECT courseid" +
-                                                               "FROM GroupTakesCourse" +
-                                                               "WHERE gid IN" +
-                                                                   "(SELECT gid" +
-                                                                   "FROM InGroup" +
+            ResultSet userPracticalEvents = db.select("SELECT moduleCode, semester, weekday, time, room, startDate, endDate " +
+                                                      "FROM Lecture " +
+                                                      "WHERE moduleCode IN " +
+                                                           "(SELECT moduleCode " +
+                                                           "FROM ModuleInCourse " +
+                                                           "WHERE courseid = " +
+                                                               "(SELECT courseid " +
+                                                               "FROM GroupTakesCourse " +
+                                                               "WHERE gid IN " +
+                                                                   "(SELECT gid " +
+                                                                   "FROM InGroup " +
                                                                    "WHERE uid = " + userID + ")));");
             while (userPracticalEvents.next()) {
                 events.add(new Practical(userPracticalEvents.getString("moduleCode"),
