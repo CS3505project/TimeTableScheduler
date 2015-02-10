@@ -37,8 +37,10 @@ public class Output {
         //Switch statement with appropriate controls based on what type of user is loged in
         switch (this.userType){
             case "admin":
+                finalHTML += fileToString("adminMenu.html");
             break;
             case "lecturer":
+                finalHTML += fileToString("lecturerMenu.html");
             break;
             default:
                 finalHTML += fileToString("studentMenu.html");
