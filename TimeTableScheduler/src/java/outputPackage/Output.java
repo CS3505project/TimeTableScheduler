@@ -103,6 +103,17 @@ public class Output {
     }
     
     /**
+    * Creates the form for joining a module,
+    * with appropriate dropdowns for the public groups etc.
+    * @return A string with all the HTML for the form.
+    */
+    public String createModuleForm(){
+        String finalHTML = "";
+        //add actual code
+        return finalHTML;
+    }
+    
+    /**
      * Creates a dummy table with hardcoded values,
      * just for demonstration.
      * @return A string with all the HTML for the table.
