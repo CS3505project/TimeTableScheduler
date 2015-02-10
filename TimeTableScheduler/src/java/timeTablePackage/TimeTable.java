@@ -169,7 +169,7 @@ public class TimeTable {
      * @param hours The list of times to be displayed
      * @return The HTML for the timetable header
      */
-    private String createTimeTableHeader(List<EventTime> hours) 
+    private String createTimeTableHeader(List<EventTime> hours) {
         String header = "<tr><th></th>";
         
         for (EventTime time : hours) {
