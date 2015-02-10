@@ -20,6 +20,12 @@ body{
 	font-size: 18px;
 	overflow: hidden;
 }
+
+small{
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+}
 /*****************/
 /* COLUMN LAYOUT */
 /*****************/
@@ -60,6 +66,7 @@ body>nav span.break{
 	height: 8px;
 	border-bottom: 1px solid #335;
 	border-top: 1px solid #224;
+        box-shadow: inset 0 0 2px #000;
 }
 
 body>nav h1{
@@ -158,7 +165,7 @@ body>nav footer{
 	border-top: 1px solid #335;
 	width: 132px;
 	background: #112;
-	box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
+	box-shadow: inset 0 0 10px #000;
 }
 body>nav footer a{
 	display: inline-block;
@@ -347,8 +354,13 @@ label{
 div.login{
         background: #223;
         border-radius: 6px;
-        border-top: 1px solid #334;
         padding: 22px;
+        width: 400px;
+        height: 160px;
+        box-shadow: inset 0 0 8px #000;
+        margin: auto;
+        margin-top: 8%;
+        border-bottom: 1px solid #fff;
 }
 
 div.login input, div.login input:hover{
@@ -356,6 +368,39 @@ div.login input, div.login input:hover{
         border: none;
         border-bottom: 1px solid #334;
         box-shadow: inset 0 0 10px #000;
+}
+
+div.login input[type="submit"]{
+        display: block;
+        width: 320px;
+        background: #26c;
+	background: -webkit-gradient(radial, center center, 0, center center, 100, from(#48e), to(#26c));
+	box-shadow: 0 2px 4px #000;
+        border: 1px solid #48e;
+	border-top: 1px solid #6af;
+        margin: auto;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	text-shadow: 1px 1px 2px #000;
+	font-weight: bold;
+	color: #dde;
+}
+
+div.login footer{
+        text-align: center;
+        font-size: 12px;
+        padding: 8px;
+}
+
+footer.loginFooter{
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background: #223;
+        box-shadow: inset 0 0 8px #000;
+        border-top: 1px solid #fff;
+        height: 120px;
 }
 /*********/
 /* POPUP */
