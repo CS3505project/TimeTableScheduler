@@ -174,9 +174,9 @@ body>nav a#help{
 body>nav a#about,body>nav a#help{
 	border-bottom: 1px solid #224;
 	background-position: 4px center;
-	width: 50%;
+	width: 49%;
 	background-size: 16px, 16px;
-    padding-left: 22px;
+        padding-left: 22px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin-bottom: 4px;
@@ -357,6 +357,9 @@ div.login input{
 /* POPUP */
 /*********/
 div.popup{
+        position: fixed;
+        left: 8px;
+        bottom: 16px;
 	background: #fff;
 	border-radius: 6px;
 	z-index: 20;
