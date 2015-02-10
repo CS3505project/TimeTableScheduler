@@ -180,7 +180,7 @@ public class Database {
                 connectionObject.close();
             }
         } catch (SQLException exceptionObject) {
-            System.out.println("Problem with closing up ");
+            System.err.println("Problem with closing up ");
             writeLogSQL("closing caused error " + exceptionObject.getMessage());
         }
     }
@@ -203,7 +203,7 @@ public class Database {
             writeLogSQL(SQLinsert + " Executed OK");
             return true;
         } catch (SQLException exceptionObject) {
-            System.out.println(SQLinsert + " - Problem is : " + exceptionObject.getMessage());
+            System.err.println(SQLinsert + " - Problem is : " + exceptionObject.getMessage());
             writeLogSQL(SQLinsert + " caused error " + exceptionObject.getMessage());
         }
         return false;

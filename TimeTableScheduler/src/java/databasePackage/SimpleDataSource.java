@@ -25,7 +25,9 @@ public class SimpleDataSource {
         props.load(in);
 
         String driver = props.getProperty("jdbc.driver");
-        url = props.getProperty("jdbc.url");
+        String dbserver = props.getProperty("jdbc.dbserver");
+        String DSN = props.getProperty("jdbc.DSN");
+        url = "jdbc:mysql://" + dbserver + "/" + DSN;
         username = props.getProperty("jdbc.username");
         if (username == null) {
             username = "";
