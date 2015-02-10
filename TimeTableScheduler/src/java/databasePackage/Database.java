@@ -38,6 +38,7 @@ public class Database{
             connectionObject = DriverManager.getConnection(URL, username, password);
             setup=true;
         } catch (SQLException exceptionObject) {
+            //writes log error 
             writeLogSQL(URL + " caused error " + exceptionObject.getMessage()+" Error dbclass.setup.2");
             return("Problem with setting up " + URL+" Error dbclass.setup.2 PLEASE report this error");
         }
@@ -77,7 +78,7 @@ public class Database{
             }
         catch (SQLException exceptionObject) {
             System.out.println(SQLinsert+" - Problem is : " + exceptionObject.getMessage());
-            writeLogSQL(SQLinsert + " caused error " + exceptionObject.getMessage());
+            writeLogSQL(SQLinsert + " caused error while trying to insert " + exceptionObject.getMessage());
             }
         } // End Insert
  
@@ -155,7 +156,7 @@ public class Database{
             }
         writeLogSQL(SQLquery + "worked ");
         return Result;
-    } // End Select
+    } // End Select Column
  
 public void writeLogSQL(String message) {
         PrintStream output;

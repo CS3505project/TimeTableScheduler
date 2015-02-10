@@ -214,7 +214,7 @@ public class Database {
             return true;
         } catch (SQLException exceptionObject) {
             System.err.println(SQLinsert + " - Problem is : " + exceptionObject.getMessage());
-            writeLogSQL(SQLinsert + " caused error " + exceptionObject.getMessage());
+            writeLogSQL(SQLinsert + " eorror caused while trying to insert " + exceptionObject.getMessage());
         }
         return false;
     } // End Insert
@@ -240,7 +240,7 @@ public class Database {
              System.err.println("here");
         } catch (SQLException exceptionObject) {
             System.err.println(SQLselect + " - Problem is : " + exceptionObject.getMessage());
-            writeLogSQL(SQLselect + " caused error " + exceptionObject.getMessage());
+            writeLogSQL(SQLselect + "error while trying to select" + exceptionObject.getMessage());
         }
         return result;
     } // End select

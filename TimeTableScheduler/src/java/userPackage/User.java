@@ -83,9 +83,13 @@ public abstract class User {
      * @return True if query was successful
      */
     public boolean executeDbQuery(String insertSQL) {
+        //create db
         Database db = new Database();
+        //get access info from properties
         db.setupFromPropertiesFile("database.properties");
+        
         if (db.insert(insertSQL)) {
+            //close db
             db.close();
             return true;
         }
