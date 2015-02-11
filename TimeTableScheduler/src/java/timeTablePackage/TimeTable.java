@@ -38,6 +38,8 @@ public class TimeTable {
      */
     public void addUserEvents(String userID) {
         Database db = new Database();
+        // for local use only outside college network with putty
+        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         try {
