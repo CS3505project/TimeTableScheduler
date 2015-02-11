@@ -3,6 +3,7 @@ function createHelp(){
 	var contextNode = document.getElementById("context");
         var context = "placeholder";//get this attribute from the context node
         var helpNode = document.getElementByID("help");
+        alert("just a test");
         
         //set the onclick method for the help link to displayHelp for the appropriate context
         var onclickMethod = "displayHelp('" + context + "')";
