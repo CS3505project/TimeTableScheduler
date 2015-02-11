@@ -42,7 +42,7 @@ public class TimeTable {
         db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
        
         //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        //db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         try {
             // retrieve list of lectures for a particular user id

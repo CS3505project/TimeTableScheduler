@@ -20,7 +20,9 @@ function displayHelp(context){
         var closeButton = document.createElement("button");
         closeButton.onclick = function(){
             var helpBox = document.getElementById("helpPopup");
+            //removes help box when got it is presed 
             helpBox.parentNode.removeChild(helpBox);
+            //allow help button to be used more than once (after popup is destroyed)
             document.getElementById("help").onclick = function(){
                 displayHelp(context);
             };
