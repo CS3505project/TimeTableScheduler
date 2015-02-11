@@ -420,7 +420,7 @@ footer.loginFooter{
 /*********/
 div.popup{
         position: fixed;
-        left: 8px;
+        left: 100px;
         bottom: 16px;
 	background: #fff;
 	border-radius: 6px;
