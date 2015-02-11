@@ -2,6 +2,7 @@
 <%
     outputPackage.Output output = new outputPackage.Output(request);
     out.println(output.createHeader());
+    out.println(output.createDummyTable());
     out.println(output.createModuleForm());
     out.println(output.createFooter());
 %>
