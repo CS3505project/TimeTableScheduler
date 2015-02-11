@@ -11,22 +11,30 @@ function createHelp(){
 }
 
 function displayHelp(context){
-	// add the elements into the dom tree with the help for a given page
+	//Create the popup box node
         var helpBox = document.createElement("div");
         helpBox.setAttribute("class","popup");
+        helpBox.setAttribute("id","helpPopup");
         
-        //switch on the context name, if the context is meeting, get info from the meetong JSON file
+        //Create the button for removing the help dialog
+        var closeButton = document.createElement("button");
+        closeButton.setAttribute("onlick","removeHelp()");
+        closeButton.innerHTML = "Got it!";
+        
+        //Switch on the context name, if the context is meeting, get info from the meetong JSON file
         switch(context){
         case "placeholder":
-            helpBox.innerHTML = "placeholder";//add ajax stuff to get the context help from JSON files
+            helpBox.innerHTML = "blah blah blah";//add ajax stuff to get the context help from JSON files
             break;
         default:
-            helpBox.innerHTML = "";//add ajax stuff to get the context help from JSON files
+            helpBox.innerHTML = "Error";//add ajax stuff to get the context help from JSON files
         }
+        //add the close button to the box
+        helpBox.appendChild(closeButton);
         //adds popup to page
-        document.body.appendChild(helpBox);
-        
+        document.body.appendChild(helpBox);     
 }
 function removeHelp(){
-        //remove the popup box from the dom tree
+        var helpBox = document.getElementById("helpPopup");
+        helpBox.parentNode.removeChild(helpBox);
 }
