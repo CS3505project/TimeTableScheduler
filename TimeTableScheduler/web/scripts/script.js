@@ -1,15 +1,16 @@
 function createHelp(){
 	//find context node to find out what page we need to display help about
-	var contextNode = document.getElementById("context");
+	/*var contextNode = document.getElementById("context");
         var context = "placeholder";//get this attribute from the context node
         var helpNode = document.getElementByID("help");
         alert("just a test");
         
         //set the onclick method for the help link to displayHelp for the appropriate context
-        helpNode.onclick = displayHelp(context );
+        helpNode.onclick = displayHelp(context );*/
 }
 
 function displayHelp(context){
+        
 	//Create the popup box node
         var helpBox = document.createElement("div");
         helpBox.setAttribute("class","popup");
@@ -17,8 +18,23 @@ function displayHelp(context){
         
         //Create the button for removing the help dialog
         var closeButton = document.createElement("button");
-        closeButton.onlick = removeHelp();
+        closeButton.onclick = function(){
+            var helpBox = document.getElementById("helpPopup");
+            helpBox.parentNode.removeChild(helpBox);
+            document.getElementById("help").onclick = function(){
+                displayHelp(context);
+            };
+        };
         closeButton.innerHTML = "Got it!";
+        
+        //set the help button to close the popup
+        document.getElementById("help").onclick = function(){
+            var helpBox = document.getElementById("helpPopup");
+            helpBox.parentNode.removeChild(helpBox);
+            document.getElementById("help").onclick = function(){
+                displayHelp(context);
+            };
+        };
         
         //Switch on the context name, if the context is meeting, get info from the meetong JSON file
         switch(context){
@@ -32,8 +48,4 @@ function displayHelp(context){
         helpBox.appendChild(closeButton);
         //adds popup to page
         document.body.appendChild(helpBox);     
-}
-function removeHelp(){
-        var helpBox = document.getElementById("helpPopup");
-        helpBox.parentNode.removeChild(helpBox);
 }
