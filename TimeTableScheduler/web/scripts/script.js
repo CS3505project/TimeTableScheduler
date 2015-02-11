@@ -6,8 +6,7 @@ function createHelp(){
         alert("just a test");
         
         //set the onclick method for the help link to displayHelp for the appropriate context
-        var onclickMethod = "displayHelp('" + context + "')";
-        helpNode.setAttribute("onclick",onclickMethod);
+        helpNode.onclick = displayHelp(context );
 }
 
 function displayHelp(context){
@@ -18,7 +17,7 @@ function displayHelp(context){
         
         //Create the button for removing the help dialog
         var closeButton = document.createElement("button");
-        closeButton.setAttribute("onlick","removeHelp()");
+        closeButton.onlick = removeHelp();
         closeButton.innerHTML = "Got it!";
         
         //Switch on the context name, if the context is meeting, get info from the meetong JSON file
