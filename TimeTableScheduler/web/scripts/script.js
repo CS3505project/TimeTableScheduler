@@ -22,6 +22,9 @@ function displayHelp(context){
         default:
             helpBox.innerHTML = "";//add ajax stuff to get the context help from JSON files
         }
+        //adds popup to page
+        document.body.appendChild(helpBox);
+        
 }
 function removeHelp(){
         //remove the popup box from the dom tree
