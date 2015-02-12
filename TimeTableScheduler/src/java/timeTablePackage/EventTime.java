@@ -39,9 +39,10 @@ public enum EventTime {
     TWENTYTHREE("23:00", Time.valueOf("23:00:00")),
     TWENTYFOUR("24:00", Time.valueOf("24:00:00"));
     
-    
     private String printTime;
     private Time time;
+    
+    public static final int numHours = 24;
     
     EventTime(String printTime, Time time) {
         this.printTime = printTime;

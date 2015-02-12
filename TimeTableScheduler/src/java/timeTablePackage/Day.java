@@ -27,6 +27,8 @@ public enum Day {
     private String day;
     private int index;
     
+    public static final int numDays = 7;
+    
     Day(String day, int index) {
         this.day = day;
         this.index = index;

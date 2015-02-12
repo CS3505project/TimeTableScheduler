@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import toolsPackage.Database;
 import userPackage.User;
 
@@ -117,6 +119,29 @@ public class TimeTable {
         } 
         
         db.close();
+    }
+    
+    public void findTimeSlot() {
+        int[][] freeSlots = new int[Day.numDays][EventTime.numHours];
+        
+        Database db = new Database();
+        // for local use only outside college network with putty
+        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
+       
+        //for use in college network
+        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        
+        ResultSet scheduledEvents = db.select("");
+        try {
+            while (scheduledEvents.next()) {
+                freeSlots[scheduledEvents.getDate("")][scheduledEvents.getTime("")] += scheduledEvents.getInt("");;
+               
+                
+                
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error scheduling events");
+        }
     }
 
     /**
