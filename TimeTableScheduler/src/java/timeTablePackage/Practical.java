@@ -35,10 +35,20 @@ public class Practical extends Event {
         return "Practical " + this.getTime().toString();
     }
 
+    /**
+     * Returns the semester the practical is held
+     * 
+     * @return The semester 
+     */
     public String getSemester() {
         return semester;
     }
-
+    
+    /**
+     * Sets the practical to a new semester
+     * 
+     * @param semester The new semester
+     */
     public void setSemester(String semester) {
         this.semester = semester;
     }
@@ -94,10 +104,20 @@ public class Practical extends Event {
         this.weekDay = Day.convertToDay(index);
     }
 
+    /**
+     * Returns the end date for the practical
+     * 
+     * @return End date for the practical
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date for this practical to a new date
+     * 
+     * @param endDate New end date
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }

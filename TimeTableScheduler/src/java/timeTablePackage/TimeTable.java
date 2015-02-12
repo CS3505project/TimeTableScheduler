@@ -30,6 +30,7 @@ import userPackage.User;
 public class TimeTable {
     private List<Event> events;
     private Map<String, LinkedList<Event>> sortedEvents;
+    private String[][] scheduledEvents;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
@@ -41,6 +42,7 @@ public class TimeTable {
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
         this.events = new ArrayList<Event>();
         this.sortedEvents = new HashMap<String, LinkedList<Event>>();
+        this.scheduledEvents = new String[Day.numDays][EventTime.numHours];
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDay = startDay;
@@ -111,16 +113,23 @@ public class TimeTable {
                                                                             "(SELECT gid " +
                                                                             "FROM InGroup " +
                                                                             "WHERE uid = " + userID + ")));");
-            while (userLectureEvents.next()) {
-                events.add(new Lecture(userLectureEvents.getString("moduleCode"),
-                                       userLectureEvents.getString("semester"),
-                                       userLectureEvents.getInt("weekday"),
-                                       userLectureEvents.getTime("time"),
-                                       userLectureEvents.getString("room"),
-                                       userLectureEvents.getDate("startDate"),
-                                       userLectureEvents.getDate("endDate")));
-            }
             
+            Calendar cal = Calendar.getInstance();
+            
+            while (userLectureEvents.next()) {
+                Lecture lecture = new Lecture(userLectureEvents.getString("moduleCode"),
+                                            userLectureEvents.getString("semester"),
+                                            userLectureEvents.getInt("weekday"),
+                                            userLectureEvents.getTime("time"),
+                                            userLectureEvents.getString("room"),
+                                            userLectureEvents.getDate("startDate"),
+                                            userLectureEvents.getDate("endDate"));
+                cal.setTime(lecture.getDate());
+                cal.add(Calendar.WEEK_OF_YEAR, cal.);
+                
+                events.add(lecture);
+            }
+
             // retrieve list of practicals for a particular user id
             ResultSet userPracticalEvents = db.select("SELECT Practical.moduleCode, semester, weekday, Practical.time, room, startDate, endDate " +
                                                     "FROM Practical JOIN Cancellation " +
@@ -175,8 +184,8 @@ public class TimeTable {
         
         db.close();
     }
-    
-    public void findTimeSlot() {
+
+    public void showAvailbleTimes(List<User> usersToMeet) {
         int[][] freeSlots = new int[Day.numDays][EventTime.numHours];
         
         Database db = new Database();

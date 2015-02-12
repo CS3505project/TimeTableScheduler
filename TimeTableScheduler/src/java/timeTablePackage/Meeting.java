@@ -41,26 +41,56 @@ public class Meeting extends Event {
         return "class =\"meeting\"";
     }
 
+    /**
+     * Returns the description for this meeting
+     * 
+     * @return The meeting description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description for this meeting
+     * 
+     * @param description Description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Returns the priority of this event
+     * 
+     * @return Meeting priority
+     */
     public int getPriority() {
         return priority;
     }
 
+    /**
+     * Sets the priority of the meeting
+     * 
+     * @param priority Priority of the meeting
+     */
     public void setPriority(int priority) {
         this.priority = priority;
     }
 
+    /**
+     * Returns the user ID of the organiser for this event
+     * 
+     * @return Organiser user ID
+     */
     public String getOrganiser() {
         return organiser;
     }
 
+    /**
+     * Sets the user ID for this meetings organiser
+     * 
+     * @param organiser Organiser user ID
+     */
     public void setOrganiser(String organiser) {
         this.organiser = organiser;
     }

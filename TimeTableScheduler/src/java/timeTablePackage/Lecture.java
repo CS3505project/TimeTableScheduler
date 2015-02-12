@@ -35,10 +35,20 @@ public class Lecture extends Event {
         return "Lecture " + this.getTime().toString();
     }
 
+    /**
+     * Returns the semester the lecture is held
+     * 
+     * @return The semester 
+     */
     public String getSemester() {
         return semester;
     }
 
+    /**
+     * Sets the lecture to a new semester
+     * 
+     * @param semester The new semester
+     */
     public void setSemester(String semester) {
         this.semester = semester;
     }
@@ -94,10 +104,20 @@ public class Lecture extends Event {
         this.weekDay = Day.convertToDay(index);
     }
 
+    /**
+     * Returns the end date for the lecture
+     * 
+     * @return End date for the lecture
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date for this lecture to a new date
+     * 
+     * @param endDate New end date
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }

@@ -52,34 +52,74 @@ public abstract class Event {
         return dateFormat.format(this.getDate());
     }
 
+    /**
+     * Returns the ID for this event
+     * 
+     * @return Event ID
+     */
     public String getEventID() {
         return eventID;
     }
 
+    /**
+     * Sets the ID to a new value
+     * 
+     * @param eventID New ID value
+     */
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
 
+    /**
+     * Returns the date for this event
+     * 
+     * @return The event date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date to a new date
+     * 
+     * @param date New date for the event
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * Returns the time the event is on
+     * 
+     * @return Time for the event
+     */
     public Time getTime() {
         return time;
     }
 
+    /**
+     * Sets a new time for the event
+     * 
+     * @param time New time for the event
+     */
     public void setTime(Time time) {
         this.time = time;
     }
 
+    /**
+     * Returns the location of the event
+     * 
+     * @return Location of the event
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Sets the a new location for the event
+     * 
+     * @param location New location for the event
+     */
     public void setLocation(String location) {
         this.location = location;
     }
