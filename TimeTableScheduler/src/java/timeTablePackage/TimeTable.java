@@ -8,13 +8,16 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static timeTablePackage.Event.DAY_FORMAT;
 import toolsPackage.Database;
 import userPackage.User;
 
@@ -99,11 +102,13 @@ public class TimeTable {
             
             // retrieve list of meetings that a particular user id is involved with
             ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
-                                                     "FROM Meeting " +
-                                                     "WHERE meetingid = " +
-                                                        "(SELECT mid " +
-                                                        "FROM HasMeeting " +
-                                                        "WHERE uid = " + userID + ");");
+                                                    "FROM Meeting " +
+                                                    "WHERE WEEK(date) = WEEK(CURDATE()) " +
+                                                    "AND meetingid = " +
+                                                    "(SELECT mid " +
+                                                            "FROM HasMeeting " +
+                                                            "WHERE uid = " + userID + ");");
+                                                                    
             while (userPersonalEvents.next()) {
                 events.add(new Meeting(userPersonalEvents.getString("meetingid"),
                                        userPersonalEvents.getDate("date"),
@@ -134,9 +139,11 @@ public class TimeTable {
         ResultSet scheduledEvents = db.select("");
         try {
             while (scheduledEvents.next()) {
-                freeSlots[scheduledEvents.getDate("")][scheduledEvents.getTime("")] += scheduledEvents.getInt("");;
-               
-                
+                SimpleDateFormat dateTime = new SimpleDateFormat("");
+                int day = Integer.parseInt(dateTime.format(scheduledEvents.getDate("")));
+                dateTime.applyPattern("");
+                int time = Integer.parseInt(dateTime.format(scheduledEvents.getTime("")));
+                freeSlots[day][time] += scheduledEvents.getInt("");
                 
             }
         } catch (SQLException ex) {

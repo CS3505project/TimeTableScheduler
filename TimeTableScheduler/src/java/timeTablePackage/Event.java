@@ -6,6 +6,7 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -19,6 +20,8 @@ public abstract class Event {
     private Date date;
     private Time time;
     private String location;
+    
+    public static final String DAY_FORMAT = "EEEE";
 
     public Event(String eventID, Date date, Time time, String location) {
         this.eventID = eventID;
@@ -45,9 +48,8 @@ public abstract class Event {
      * @return Day of the week as a string
      */
     public String getDayOfWeek() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.getDate());
-        return cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DAY_FORMAT);
+        return dateFormat.format(this.getDate());
     }
 
     public String getEventID() {
