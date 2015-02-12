@@ -16,10 +16,10 @@ import userPackage.User;
 public class Meeting extends Event {
     private String description;
     private int priority;
-    private User organiser;
+    private String organiser;
 
     public Meeting(String meetingID, Date date, Time time, String room, 
-                   String description, int priority, User organiser) {
+                   String description, int priority, String organiser) {
         super(meetingID, date, time, room);
         this.description = description;
         this.priority = priority;
@@ -57,11 +57,11 @@ public class Meeting extends Event {
         this.priority = priority;
     }
 
-    public User getOrganiser() {
+    public String getOrganiser() {
         return organiser;
     }
 
-    public void setOrganiser(User organiser) {
+    public void setOrganiser(String organiser) {
         this.organiser = organiser;
     }
 }

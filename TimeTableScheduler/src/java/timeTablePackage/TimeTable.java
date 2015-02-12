@@ -102,15 +102,15 @@ public class TimeTable {
                                                         "(SELECT mid " +
                                                         "FROM HasMeeting " +
                                                         "WHERE uid = " + userID + ");");
-           /* while (userPersonalEvents.next()) {
+            while (userPersonalEvents.next()) {
                 events.add(new Meeting(userPersonalEvents.getString("meetingid"),
                                        userPersonalEvents.getDate("date"),
                                        userPersonalEvents.getTime("time"),
                                        userPersonalEvents.getString("room"),
                                        userPersonalEvents.getString("description"),
                                        userPersonalEvents.getInt("priority"),
-                                       (User) userPersonalEvents.getObject("organiser_uid")));
-            }*/
+                                       userPersonalEvents.getString("organiser_uid")));
+            }
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
             db.writeLogSQL("Error retrieving users events");
