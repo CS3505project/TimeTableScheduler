@@ -205,10 +205,10 @@ public class Output {
         String finalHTML = "";
         
         // Test method to generate timetable HTML from actual event objects
-        TimeTable timetable = new TimeTable();
+        TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.addUserEvents("1");
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += timetable.createTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        finalHTML += timetable.createTimeTable();
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
        
         /*finalHTML = "<h1>Timetable for this week</h1>\n" +

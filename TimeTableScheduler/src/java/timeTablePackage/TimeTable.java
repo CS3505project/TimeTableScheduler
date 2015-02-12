@@ -30,10 +30,53 @@ import userPackage.User;
 public class TimeTable {
     private List<Event> events;
     private Map<String, LinkedList<Event>> sortedEvents;
+    private EventTime startTime;
+    private EventTime endTime;
+    private Day startDay;
+    private Day endDay;
+    
+    public static final String DAY_INDEX = "u";
+    public static final String HOUR_INDEX = "k";
 
-    public TimeTable() {
-        events = new ArrayList<Event>();
-        sortedEvents = new HashMap<String, LinkedList<Event>>();
+    public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
+        this.events = new ArrayList<Event>();
+        this.sortedEvents = new HashMap<String, LinkedList<Event>>();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.startDay = startDay;
+        this.endDay = endDay;
+    }
+
+    public EventTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(EventTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public EventTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(EventTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Day getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(Day startDay) {
+        this.startDay = startDay;
+    }
+
+    public Day getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(Day endDay) {
+        this.endDay = endDay;
     }
     
     /**
@@ -146,16 +189,17 @@ public class TimeTable {
         ResultSet scheduledEvents = db.select("");
         try {
             while (scheduledEvents.next()) {
-                SimpleDateFormat dateTime = new SimpleDateFormat("");
+                SimpleDateFormat dateTime = new SimpleDateFormat(DAY_INDEX);
                 int day = Integer.parseInt(dateTime.format(scheduledEvents.getDate("")));
-                dateTime.applyPattern("");
+                dateTime.applyPattern(HOUR_INDEX);
                 int time = Integer.parseInt(dateTime.format(scheduledEvents.getTime("")));
                 freeSlots[day][time] += scheduledEvents.getInt("");
-                
             }
         } catch (SQLException ex) {
             System.err.println("Error scheduling events");
         }
+        
+        
     }
 
     /**
@@ -167,9 +211,9 @@ public class TimeTable {
      * @param startTime The starting time for events to be considered for sorting
      * @param endTime The finishing time for events to be considered for sorting
      */
-    private void sortEvents(List<Day> days, EventTime startTime, EventTime endTime) {
+    private void sortEvents() {
         // initialise the map
-        for (Day day : days) {
+        for (Day day : Day.getDays(startDay, endDay)) {
             sortedEvents.put(day.getDay(), new LinkedList<Event>());
         }
         
@@ -200,12 +244,11 @@ public class TimeTable {
      * @param endDay The day to stop displaying at in the table (inclusive)
      * @return Timetable as HTML code 
      */
-    public String createTimeTable(EventTime startTime, EventTime endTime, 
-                                  Day startDay, Day endDay) {
+    public String createTimeTable() {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
-        sortEvents(days, startTime, endTime);
+        sortEvents();
         //create table
         String timetable = "<table>";
         //create header for timetable
