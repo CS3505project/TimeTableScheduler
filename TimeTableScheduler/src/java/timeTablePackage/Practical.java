@@ -25,10 +25,6 @@ public class Practical extends Event {
         this.endDate = endDate;
     }
     
-    public Practical(String moduleCode, Date date, Time time, String room) {
-        super(moduleCode, date, time, room);
-    }
-    
     @Override
     public String toString() {
         // To-Do
@@ -55,11 +51,7 @@ public class Practical extends Event {
     
     @Override
     public String getDayOfWeek() {
-        String day = super.getDayOfWeek();
-        if (weekDay != null) {
-            day = weekDay.getDay();
-        }
-        return day;
+        return weekDay.getDay();
     }
     
     @Override

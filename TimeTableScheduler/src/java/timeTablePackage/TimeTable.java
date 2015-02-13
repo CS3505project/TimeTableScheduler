@@ -15,9 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static timeTablePackage.Event.DAY_FORMAT;
 import toolsPackage.Database;
 import userPackage.User;
 
@@ -28,9 +25,8 @@ import userPackage.User;
  * @author John O Riordan
  */
 public class TimeTable {
-    private List<Event> events;
     private Map<String, LinkedList<Event>> sortedEvents;
-    private String[][] scheduledEvents;
+    //private String[][] scheduledEvents;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
@@ -40,43 +36,46 @@ public class TimeTable {
     public static final String HOUR_INDEX = "k";
 
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
-        this.events = new ArrayList<Event>();
         this.sortedEvents = new HashMap<String, LinkedList<Event>>();
-        this.scheduledEvents = new String[Day.numDays][EventTime.numHours];
+        //this.scheduledEvents = new String[Day.numDays][EventTime.numHours];
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDay = startDay;
         this.endDay = endDay;
     }
 
-    public EventTime getStartTime() {
-        return startTime;
-    }
-
+    /**
+     * Set the time to start displaying from in the timetable
+     * 
+     * @param startTime The start time
+     */
     public void setStartTime(EventTime startTime) {
         this.startTime = startTime;
     }
-
-    public EventTime getEndTime() {
-        return endTime;
-    }
-
+    
+    /**
+     * Set the time to stop displaying at in the timetable
+     * 
+     * @param startTime The end time
+     */
     public void setEndTime(EventTime endTime) {
         this.endTime = endTime;
     }
 
-    public Day getStartDay() {
-        return startDay;
-    }
-
+    /**
+     * Set the day to start displaying from in the timetable
+     * 
+     * @param startTime The start day
+     */
     public void setStartDay(Day startDay) {
         this.startDay = startDay;
     }
 
-    public Day getEndDay() {
-        return endDay;
-    }
-
+    /**
+     * Set the day to stop displaying at in the timetable
+     * 
+     * @param startTime The end day
+     */
     public void setEndDay(Day endDay) {
         this.endDay = endDay;
     }
@@ -87,6 +86,8 @@ public class TimeTable {
      * @param userID The ID of the user
      */
     public void addUserEvents(String userID) {
+        initialiseEventLists();
+        
         Database db = new Database();
         // for local use only outside college network with putty
         db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
@@ -114,8 +115,6 @@ public class TimeTable {
                                                                             "FROM InGroup " +
                                                                             "WHERE uid = " + userID + ")));");
             
-            Calendar cal = Calendar.getInstance();
-            
             while (userLectureEvents.next()) {
                 Lecture lecture = new Lecture(userLectureEvents.getString("moduleCode"),
                                             userLectureEvents.getString("semester"),
@@ -124,10 +123,7 @@ public class TimeTable {
                                             userLectureEvents.getString("room"),
                                             userLectureEvents.getDate("startDate"),
                                             userLectureEvents.getDate("endDate"));
-                cal.setTime(lecture.getDate());
-                cal.add(Calendar.WEEK_OF_YEAR, cal.);
-                
-                events.add(lecture);
+                addEventToSortedList(lecture);
             }
 
             // retrieve list of practicals for a particular user id
@@ -150,13 +146,14 @@ public class TimeTable {
                                                                             "WHERE uid = " + userID + ")));");
                     
             while (userPracticalEvents.next()) {
-                events.add(new Practical(userPracticalEvents.getString("moduleCode"),
-                                         userPracticalEvents.getString("semester"),
-                                         userPracticalEvents.getInt("weekday"),
-                                         userPracticalEvents.getTime("time"),
-                                         userPracticalEvents.getString("room"),
-                                         userPracticalEvents.getDate("startDate"),
-                                         userPracticalEvents.getDate("endDate")));
+                Practical practical = new Practical(userPracticalEvents.getString("moduleCode"),
+                                                    userPracticalEvents.getString("semester"),
+                                                    userPracticalEvents.getInt("weekday"),
+                                                    userPracticalEvents.getTime("time"),
+                                                    userPracticalEvents.getString("room"),
+                                                    userPracticalEvents.getDate("startDate"),
+                                                    userPracticalEvents.getDate("endDate"));
+                addEventToSortedList(practical);
             }
             
             // retrieve list of meetings that a particular user id is involved with
@@ -169,13 +166,14 @@ public class TimeTable {
                                                             "WHERE uid = " + userID + ");");
                                                                     
             while (userPersonalEvents.next()) {
-                events.add(new Meeting(userPersonalEvents.getString("meetingid"),
-                                       userPersonalEvents.getDate("date"),
-                                       userPersonalEvents.getTime("time"),
-                                       userPersonalEvents.getString("room"),
-                                       userPersonalEvents.getString("description"),
-                                       userPersonalEvents.getInt("priority"),
-                                       userPersonalEvents.getString("organiser_uid")));
+                Meeting meeting = new Meeting(userPersonalEvents.getString("meetingid"),
+                                            userPersonalEvents.getDate("date"),
+                                            userPersonalEvents.getTime("time"),
+                                            userPersonalEvents.getString("room"),
+                                            userPersonalEvents.getString("description"),
+                                            userPersonalEvents.getInt("priority"),
+                                            userPersonalEvents.getString("organiser_uid"));
+                addEventToSortedList(meeting);
             }
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
@@ -183,6 +181,32 @@ public class TimeTable {
         } 
         
         db.close();
+    }
+    
+    /**
+     * Inserts the event into the list of already sorted events.
+     * 
+     * @param event Event to be added
+     */
+    private void addEventToSortedList(Event event) {
+        LinkedList<Event> eventList = sortedEvents.get(event.getDayOfWeek());
+        int i = 0;
+        while (i < eventList.size()
+                && event.getTime().after(eventList.get(i).getTime())
+                && event.getTime().after(startTime.getTime())
+                && event.getTime().before(endTime.getTime())) {
+            i++;
+        }
+        eventList.add(i, event);
+    }
+    
+    /**
+     * Initialises the map of lists of events for each day of the week
+     */
+    private void initialiseEventLists() {
+        for (Day day : Day.getDays(startDay, endDay)) {
+            sortedEvents.put(day.getDay(), new LinkedList<Event>());
+        }
     }
 
     public void showAvailbleTimes(List<User> usersToMeet) {
@@ -220,7 +244,7 @@ public class TimeTable {
      * @param startTime The starting time for events to be considered for sorting
      * @param endTime The finishing time for events to be considered for sorting
      */
-    private void sortEvents() {
+    /*private void sortEvents() {
         // initialise the map
         for (Day day : Day.getDays(startDay, endDay)) {
             sortedEvents.put(day.getDay(), new LinkedList<Event>());
@@ -242,6 +266,7 @@ public class TimeTable {
             }
         }
     }
+    */
 
     /**
      * Generates a timetable from HTML with all the events listed
@@ -257,7 +282,7 @@ public class TimeTable {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
-        sortEvents();
+        //     sortEvents();
         //create table
         String timetable = "<table>";
         //create header for timetable
@@ -307,35 +332,13 @@ public class TimeTable {
     }
 
     /**
-     * Used to test the sorting method by creating fake entries
-     * in the timetable
-     */
-    public void addDummyEvents() {
-        events.add(new Meeting("M", Date.valueOf("2015-03-12"), Time.valueOf("12:00:00"), "WGB 1.11"));
-        events.add(new Lecture("L", Date.valueOf("2015-03-13"), Time.valueOf("14:00:00"), "WGB G27"));
-        events.add(new Practical("P", Date.valueOf("2015-03-11"), Time.valueOf("15:00:00"), "WGB G20"));
-        
-        events.add(new Meeting("M2", Date.valueOf("2015-03-12"), Time.valueOf("13:00:00"), "WGB 1.07"));
-        events.add(new Lecture("L2", Date.valueOf("2015-03-13"), Time.valueOf("16:00:00"), "WGB G21"));
-        events.add(new Practical("P2", Date.valueOf("2015-03-11"), Time.valueOf("13:00:00"), "WGB G15"));
-        
-        events.add(new Meeting("M3", Date.valueOf("2015-03-12"), Time.valueOf("11:00:00"), "WGB 1.15"));
-        events.add(new Lecture("L3", Date.valueOf("2015-03-13"), Time.valueOf("10:00:00"), "WGB G22"));
-        events.add(new Practical("P3", Date.valueOf("2015-03-11"), Time.valueOf("16:00:00"), "WGB 2.01"));
-        
-        events.add(new Meeting("M4", Date.valueOf("2015-03-12"), Time.valueOf("09:00:00"), "WGB 1.20"));
-        events.add(new Lecture("L4", Date.valueOf("2015-03-13"), Time.valueOf("17:00:00"), "WGB 2.11"));
-        events.add(new Practical("P4", Date.valueOf("2015-03-11"), Time.valueOf("14:00:00"), "WGB G25"));
-    }
-
-    /**
      * Return a list of events in the timetable
      * 
      * @return List of events
      */
-    public List<Event> getEvents() {
+    /*public List<Event> getEvents() {
         return events;
-    }
+    }*/
 
     /**
      * Returns the sorted list of events
@@ -343,7 +346,7 @@ public class TimeTable {
      * 
      * @return Map of the events sorted by day and time 
      */
-    private Map<String, LinkedList<Event>> getSortedEvents() {
+    public Map<String, LinkedList<Event>> getSortedEvents() {
         return sortedEvents;
     }
 

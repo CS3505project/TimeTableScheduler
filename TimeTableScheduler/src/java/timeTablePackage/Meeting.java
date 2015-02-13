@@ -6,7 +6,6 @@ package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
-import userPackage.User;
 
 /**
  * Represent a meeting in the timetable
@@ -25,11 +24,7 @@ public class Meeting extends Event {
         this.priority = priority;
         this.organiser = organiser;
     }
-    
-    public Meeting(String meetingID, Date date, Time time, String room) {
-        super(meetingID, date, time, room);
-    }
-    
+
     @Override
     public String toString() {
         // To-Do
