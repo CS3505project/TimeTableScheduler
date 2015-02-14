@@ -77,23 +77,24 @@ public class ScheduledTimeTable {
         
         clearPreSuggestedTimeSlot();
         
+        int numHours = 0;
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
-                !found && day < endDay.getIndex(); day++) {
+                numHours != hoursForMeeting && day < endDay.getIndex(); day++) {
+            suggestedDay = day;
             for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
-                    !found && time < endTime.getTimeIndex(); time++) {
-                for (int i = 0; i < hoursForMeeting; i++) {
-                    if (timeSlots[day][time + i].getTotalPriority() <= maxPriority) {
-                        found = true;
-                        suggestedTime = time + i;
-                        suggestedDay = day;
-                    } else {
-                        found = false;
-                    }
+                    numHours != hoursForMeeting && time < endTime.getTimeIndex(); time++) {
+                if (timeSlots[day][time].getTotalPriority() <= maxPriority) {
+                    suggestedTime = time;
+                    numHours++;
+                } else {
+                    numHours = 0;
                 }
             }
         }
         
-        timeSlots[suggestedDay][suggestedTime - hoursForMeeting + 1].setSuggested(true);
+        for (int time = 0; time < hoursForMeeting; time++) {
+            timeSlots[suggestedDay][suggestedTime - time].setSuggested(true);
+        }
         
         return found;
     }
