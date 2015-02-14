@@ -72,9 +72,10 @@ public class ScheduledTimeTable {
 
     }
 
-    public void nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {        
+    public boolean nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {        
         clearPreSuggestedTimeSlot();
         
+        boolean found = false;
         int numHours = 0;
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
                 numHours != hoursForMeeting && day < endDay.getIndex(); day++) {
@@ -84,15 +85,21 @@ public class ScheduledTimeTable {
                 if (timeSlots[day][time].getTotalPriority() <= maxPriority) {
                     suggestedTime = time;
                     numHours++;
+                    found = true;
                 } else {
                     numHours = 0;
+                    found = false;
                 }
             }
         }
         
-        for (int time = 0; time < hoursForMeeting; time++) {
-            timeSlots[suggestedDay][suggestedTime - time].setSuggested(true);
+        if (found) {
+            for (int time = 0; time < hoursForMeeting; time++) {
+                timeSlots[suggestedDay][suggestedTime - time].setSuggested(true);
+            }
         }
+        
+        return found;
     }
     
     private void clearPreSuggestedTimeSlot() {
