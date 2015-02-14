@@ -4,13 +4,9 @@
  */
 package timeTablePackage;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +22,6 @@ import userPackage.User;
  */
 public class TimeTable {
     private Map<String, LinkedList<Event>> sortedEvents;
-    //private String[][] scheduledEvents;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
@@ -37,7 +32,6 @@ public class TimeTable {
 
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
         this.sortedEvents = new HashMap<String, LinkedList<Event>>();
-        //this.scheduledEvents = new String[Day.numDays][EventTime.numHours];
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDay = startDay;
@@ -209,31 +203,7 @@ public class TimeTable {
         }
     }
 
-    public void showAvailbleTimes(List<User> usersToMeet) {
-        int[][] freeSlots = new int[Day.numDays][EventTime.numHours];
-        
-        Database db = new Database();
-        // for local use only outside college network with putty
-        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
-       
-        //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
-        
-        ResultSet scheduledEvents = db.select("");
-        try {
-            while (scheduledEvents.next()) {
-                SimpleDateFormat dateTime = new SimpleDateFormat(DAY_INDEX);
-                int day = Integer.parseInt(dateTime.format(scheduledEvents.getDate("")));
-                dateTime.applyPattern(HOUR_INDEX);
-                int time = Integer.parseInt(dateTime.format(scheduledEvents.getTime("")));
-                freeSlots[day][time] += scheduledEvents.getInt("");
-            }
-        } catch (SQLException ex) {
-            System.err.println("Error scheduling events");
-        }
-        
-        
-    }
+
 
     /**
      * Sort the events by day and time.
@@ -255,14 +225,14 @@ public class TimeTable {
             String day = event.getDayOfWeek();
             if (sortedEvents.containsKey(day)) {
                 LinkedList<Event> eventList = sortedEvents.get(day);
-                int i = 0;
-                while (i < eventList.size()
-                        && event.getTime().after(eventList.get(i).getTime())
+                int day = 0;
+                while (day < eventList.size()
+                        && event.getTime().after(eventList.get(day).getTime())
                         && event.getTime().after(startTime.getTime())
                         && event.getTime().before(endTime.getTime())) {
-                    i++;
+                    day++;
                 }
-                eventList.add(i, event);
+                eventList.add(day, event);
             }
         }
     }

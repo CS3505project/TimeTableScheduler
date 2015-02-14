@@ -14,39 +14,50 @@ import java.util.List;
  * @author John O Riordan
  */
 public enum EventTime {
-    ONE("1:00", Time.valueOf("01:00:00")),
-    TWO("2:00", Time.valueOf("02:00:00")),
-    THREE("3:00", Time.valueOf("03:00:00")),
-    FOUR("4:00", Time.valueOf("04:00:00")),
-    FIVE("5:00", Time.valueOf("05:00:00")),
-    SIX("6:00", Time.valueOf("06:00:00")),
-    SEVEN("7:00", Time.valueOf("07:00:00")),
-    EIGHT("8:00", Time.valueOf("08:00:00")),
-    NINE("9:00", Time.valueOf("09:00:00")),
-    TEN("10:00", Time.valueOf("10:00:00")),
-    ELEVEN("11:00", Time.valueOf("11:00:00")),
-    TWELVE("12:00", Time.valueOf("12:00:00")),
-    THIRTEEN("13:00", Time.valueOf("13:00:00")),
-    FOURTEEN("14:00", Time.valueOf("14:00:00")),
-    FIFTHTEEN("15:00", Time.valueOf("15:00:00")),
-    SIXTEEN("16:00", Time.valueOf("16:00:00")),
-    SEVENTEEN("17:00", Time.valueOf("17:00:00")),
-    EIGHTEEN("18:00", Time.valueOf("18:00:00")),
-    NINETEEN("19:00", Time.valueOf("19:00:00")),
-    TWENTY("20:00", Time.valueOf("20:00:00")),
-    TWENTYONE("21:00", Time.valueOf("21:00:00")),
-    TWENTYTWO("22:00", Time.valueOf("22:00:00")),
-    TWENTYTHREE("23:00", Time.valueOf("23:00:00")),
-    TWENTYFOUR("24:00", Time.valueOf("24:00:00"));
+    ONE("1:00", Time.valueOf("01:00:00"), 1),
+    TWO("2:00", Time.valueOf("02:00:00"), 2),
+    THREE("3:00", Time.valueOf("03:00:00"), 3),
+    FOUR("4:00", Time.valueOf("04:00:00") ,4),
+    FIVE("5:00", Time.valueOf("05:00:00"), 5),
+    SIX("6:00", Time.valueOf("06:00:00"), 6),
+    SEVEN("7:00", Time.valueOf("07:00:00"), 7),
+    EIGHT("8:00", Time.valueOf("08:00:00"), 8),
+    NINE("9:00", Time.valueOf("09:00:00"), 9),
+    TEN("10:00", Time.valueOf("10:00:00"), 10),
+    ELEVEN("11:00", Time.valueOf("11:00:00"), 11),
+    TWELVE("12:00", Time.valueOf("12:00:00"), 12),
+    THIRTEEN("13:00", Time.valueOf("13:00:00"), 13),
+    FOURTEEN("14:00", Time.valueOf("14:00:00"), 14),
+    FIFTHTEEN("15:00", Time.valueOf("15:00:00"), 15),
+    SIXTEEN("16:00", Time.valueOf("16:00:00"), 16),
+    SEVENTEEN("17:00", Time.valueOf("17:00:00"), 17),
+    EIGHTEEN("18:00", Time.valueOf("18:00:00"), 18),
+    NINETEEN("19:00", Time.valueOf("19:00:00"), 19),
+    TWENTY("20:00", Time.valueOf("20:00:00"), 20),
+    TWENTYONE("21:00", Time.valueOf("21:00:00"), 21),
+    TWENTYTWO("22:00", Time.valueOf("22:00:00"), 22),
+    TWENTYTHREE("23:00", Time.valueOf("23:00:00"), 23),
+    TWENTYFOUR("24:00", Time.valueOf("24:00:00"), 24);
     
     private String printTime;
     private Time time;
+    private int timeIndex;
     
     public static final int numHours = 24;
     
-    EventTime(String printTime, Time time) {
+    EventTime(String printTime, Time time, int timeIndex) {
         this.printTime = printTime;
         this.time = time;
+        this.timeIndex = timeIndex;
+    }
+    
+    /**
+     * Returns the index representing this time
+     * 
+     * @return Index for this time in the enum 
+     */
+    public int getTimeIndex() {
+        return timeIndex;
     }
     
     @Override
