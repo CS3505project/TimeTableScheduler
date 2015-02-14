@@ -16,8 +16,10 @@ import toolsPackage.Database;
 import userPackage.User;
 
 /**
- *
- * @author Pc
+ * Timetable that represents the combined timetables of all users involved
+ * in the scheduled meeting
+ * 
+ * @author John O Riordan
  */
 public class ScheduledTimeTable {
     private TimeSlot[][] timeSlots;
@@ -37,6 +39,12 @@ public class ScheduledTimeTable {
         this.endDay = endDay;
     }
     
+    /**
+     * Setups up the timetable by entering all events already scheduled by
+     * the list of users
+     * 
+     * @param usersToMeet User in the meeting
+     */
     public void initialiseTimeTable(List<User> usersToMeet) {
         Database db = new Database();
         // for local use only outside college network with putty
@@ -45,6 +53,7 @@ public class ScheduledTimeTable {
         //for use in college network
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
+        // get all events for each user
         ResultSet usersEvents = db.select("");
         try {
             while (usersEvents.next()) {
@@ -58,6 +67,7 @@ public class ScheduledTimeTable {
                 
                 int priority = usersEvents.getInt("");
                 
+                // create a timeslot object for every event or update existing one
                 if (timeSlots[dayIndex][timeIndex] == null) {
                     TimeSlot timeSlot = new TimeSlot(time, date);
                     timeSlot.addPriority(priority);
@@ -72,11 +82,19 @@ public class ScheduledTimeTable {
 
     }
 
+    /**
+     * Highlight the next suggested timeslot(s) for the meeting being organised
+     * 
+     * @param hoursForMeeting Duration of the meeting
+     * @param maxPriority Max priority that can be scheduled over
+     * @return 
+     */
     public boolean nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {        
         clearPreSuggestedTimeSlot();
         
         boolean found = false;
         int numHours = 0;
+        // loop through each timeslot in the timetable
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
                 numHours != hoursForMeeting && day < endDay.getIndex(); day++) {
             suggestedDay = day;

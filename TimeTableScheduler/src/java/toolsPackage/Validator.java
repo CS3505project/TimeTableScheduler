@@ -1,7 +1,6 @@
 package toolsPackage;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 
 /**
  * Performs validation operations
@@ -26,7 +25,7 @@ public class Validator {
      * 
      * @param email The user email address
      * @param password The user password
-     * @return 
+     * @return True if login successful
      */
     public static boolean isValidLogin(String email, String password)
     {

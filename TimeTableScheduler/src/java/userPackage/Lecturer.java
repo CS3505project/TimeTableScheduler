@@ -13,9 +13,29 @@ import java.sql.Time;
  * @author John O Riordan
  */
 public final class Lecturer extends User {
+    private String lecturerID;
+    private String title;
 
-    public Lecturer(String email, String firstName, String surName, String userID) {
+    public Lecturer(String lecturerID, String email, String title, String firstName, String surName, String userID) {
         super(email, firstName, surName, userID);
+        this.lecturerID = lecturerID;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLecturerID() {
+        return lecturerID;
+    }
+
+    public void setLecturerID(String lecturerID) {
+        this.lecturerID = lecturerID;
     }
     
     /**

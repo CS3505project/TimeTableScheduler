@@ -10,9 +10,19 @@ package userPackage;
  * @author John O Riordan
  */
 public final class Admin extends User {
-
-    public Admin(String email, String firstName, String surName, String userID) {
+    private String adminID;
+    
+    public Admin(String adminID, String email, String firstName, String surName, String userID) {
         super(email, firstName, surName, userID);
+        this.adminID = adminID;
+    }
+
+    public String getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
     }
     
     /**
