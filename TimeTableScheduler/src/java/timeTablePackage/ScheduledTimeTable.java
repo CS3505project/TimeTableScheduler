@@ -72,9 +72,7 @@ public class ScheduledTimeTable {
 
     }
 
-    public boolean nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {
-        boolean found = false;
-        
+    public void nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {        
         clearPreSuggestedTimeSlot();
         
         int numHours = 0;
@@ -95,8 +93,6 @@ public class ScheduledTimeTable {
         for (int time = 0; time < hoursForMeeting; time++) {
             timeSlots[suggestedDay][suggestedTime - time].setSuggested(true);
         }
-        
-        return found;
     }
     
     private void clearPreSuggestedTimeSlot() {
