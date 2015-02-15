@@ -40,7 +40,7 @@ public class ScheduledTimeTable {
     }
     
     /**
-     * Setups up the timetable by entering all events already scheduled by
+     * Setups up the timetable by entering all events already scheduled for
      * the list of users
      * 
      * @param usersToMeet User in the meeting
@@ -87,10 +87,14 @@ public class ScheduledTimeTable {
      * 
      * @param hoursForMeeting Duration of the meeting
      * @param maxPriority Max priority that can be scheduled over
-     * @return 
+     * @param clearPrevious Remove the most recently suggested timeslot
+     * @return True if another timeslot exists
      */
-    public boolean nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority) {        
-        clearPreSuggestedTimeSlot();
+    public boolean nextSuggestedTimeSlot(int hoursForMeeting, int maxPriority, boolean clearPrevious) {        
+        
+        if (clearPrevious) {
+            clearPreSuggestedTimeSlot();
+        }
         
         boolean found = false;
         int numHours = 0;
@@ -120,19 +124,37 @@ public class ScheduledTimeTable {
         return found;
     }
     
+    /**
+     * Clears the most recently suggested time slots in the timetable
+     */
     private void clearPreSuggestedTimeSlot() {
-        boolean found = false;
         if (suggestedDay != -1) {
-            for (int time = startTime.getTimeIndex(); !found && time < endTime.getTimeIndex(); time++) {
+            for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
                 if (timeSlots[suggestedDay][time].isSuggested()) {
                     timeSlots[suggestedDay][time].setSuggested(false);
-                    found = true;
                 }
             }
-            found = false;
         }
     }
     
+    /**
+     * Clears all suggested time slots in the timetable
+     */
+    public void clearAllSuggestedTimeSlot() {
+        for (int day = startDay.getIndex(); day < endDay.getIndex(); day ++) {
+            for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
+                if (timeSlots[day][time].isSuggested()) {
+                    timeSlots[day][time].setSuggested(false);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Creates the HTML needed to display the timetable with any suggested slots
+     * 
+     * @return HTML to display timetable
+     */
     public String displayTimeTable() {
         String table = "<table>";
         table += createTimeTableHeader(EventTime.getTimes(startTime, endTime));

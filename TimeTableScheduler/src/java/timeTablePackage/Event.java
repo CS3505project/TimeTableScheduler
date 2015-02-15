@@ -21,6 +21,9 @@ public abstract class Event {
     private Time time;
     private String location;
     
+    /**
+     * Format that prints the full name for a day
+     */
     public static final String DAY_FORMAT = "EEEE";
 
     public Event(String eventID, Date date, Time time, String location) {

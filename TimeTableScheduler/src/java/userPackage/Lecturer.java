@@ -21,19 +21,44 @@ public final class Lecturer extends User {
         this.lecturerID = lecturerID;
         this.title = title;
     }
+    
+    @Override
+    public UserType getUserType() {
+        return UserType.LECTURER;
+    }
 
+    /**
+     * Returns the title of the lecturer
+     * 
+     * @return lecturer title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the title of the lecturer
+     * 
+     * @param title lecturer title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the lecturer ID
+     * 
+     * @return lecturer ID
+     */
     public String getLecturerID() {
         return lecturerID;
     }
 
+    /**
+     * Sets the lecturer ID
+     * 
+     * @param lecturerID lecturer ID
+     */
     public void setLecturerID(String lecturerID) {
         this.lecturerID = lecturerID;
     }

@@ -17,10 +17,25 @@ public final class Admin extends User {
         this.adminID = adminID;
     }
 
+    @Override
+    public UserType getUserType() {
+        return UserType.ADMIN;
+    }
+    
+    /**
+     * Returns the admin ID
+     * 
+     * @return Admin ID 
+     */
     public String getAdminID() {
         return adminID;
     }
 
+    /**
+     * Sets the admin ID
+     * 
+     * @param adminID admin ID
+     */
     public void setAdminID(String adminID) {
         this.adminID = adminID;
     }

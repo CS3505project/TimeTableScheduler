@@ -43,6 +43,9 @@ public enum EventTime {
     private Time time;
     private int timeIndex;
     
+    /**
+     * Number of hours in the class
+     */
     public static final int numHours = 24;
     
     EventTime(String printTime, Time time, int timeIndex) {

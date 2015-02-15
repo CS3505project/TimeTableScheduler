@@ -27,6 +27,13 @@ public abstract class User {
     }
     
     /**
+     * Returns the UserType object for this user
+     * 
+     * @return Type of user
+     */
+    public abstract UserType getUserType();
+    
+    /**
      * Create a group for users or modules and add to the database
      * 
      * @param groupName Name of the group
