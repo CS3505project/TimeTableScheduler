@@ -13,8 +13,9 @@ import userPackage.Student;
 import userPackage.User;
 
 /**
- *
- * @author Pc
+ * Handles input from the UI to the system
+ * 
+ * @author John O Riordan
  */
 public class Input {
     
@@ -22,6 +23,13 @@ public class Input {
         
     }
     
+    /**
+     * Checks the login details provided by the user
+     * 
+     * @param email user email
+     * @param password user password
+     * @return True if login details correct
+     */
     public boolean login(String email, String password) {
         boolean result = false;
         
@@ -33,6 +41,12 @@ public class Input {
         return result;
     }
     
+    /**
+     * Returns the User object that corresponds to the email address
+     * 
+     * @param email user email
+     * @return User object
+     */
     public static User getUserDetails(String email) {
         Database db = new Database();
         // for local use only outside college network with putty
