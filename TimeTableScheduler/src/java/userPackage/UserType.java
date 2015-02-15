@@ -5,8 +5,9 @@
 package userPackage;
 
 /**
- *
- * @author Pc
+ * Represents the different types of users in the system
+ * 
+ * @author John O Riordan
  */
 public enum UserType {
     LECTURER(),
