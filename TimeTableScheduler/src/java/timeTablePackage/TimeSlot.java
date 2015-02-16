@@ -124,7 +124,7 @@ public class TimeSlot {
      */
     public String printTableCell() {
         if (totalPriority > 0) {
-            return "<td class=\"" + highestPriorityEvent() + "\"" 
+            return "<td class=\"priority-" + totalPriority + "\"" 
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
                    + "Lecture: " + numLectures() + "\n"
                    + "Practical: " + numPracticals() + "\n"

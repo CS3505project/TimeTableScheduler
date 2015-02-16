@@ -218,8 +218,8 @@ public class Output {
         // Test method to suggest time slot of a meeting that is being organised
         ScheduledTimeTable organiseMeeting = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         organiseMeeting.initialiseTimeTable(new String[]{"1", "2"});
-        organiseMeeting.nextSuggestedTimeSlot(2, 0, false);
-        organiseMeeting.nextSuggestedTimeSlot(2, 0, false);
+        organiseMeeting.nextSuggestedTimeSlot(2, 0, true);
+        organiseMeeting.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Suggested TimeSlots for Meeting</h1>";
         finalHTML += organiseMeeting.displayTimeTable();
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
