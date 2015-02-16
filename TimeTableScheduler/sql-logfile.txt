@@ -143,3 +143,4 @@ Sun Feb 15 18:19:04 GMT 2015 worked
 Sun Feb 15 18:19:05 GMT 2015  caused error null
 Sun Feb 15 18:19:05 GMT 2015 worked 
 Sun Feb 15 18:19:05 GMT 2015 
+Mon Feb 16 15:59:03 GMT 2015 SELECT passwordHash FROM User WHERE emial = "112372501@umail.ucc.ie";error while trying to selectUnknown column 'emial' in 'where clause'
