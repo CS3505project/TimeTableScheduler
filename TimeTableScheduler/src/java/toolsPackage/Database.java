@@ -188,6 +188,7 @@ public class Database {
         try {
             if (connectionObject != null) {
                 connectionObject.close();
+                setup = false;
             }
         } catch (SQLException exceptionObject) {
             System.err.println("Problem with closing up ");
@@ -237,7 +238,6 @@ public class Database {
             if (statementObject.execute(SQLselect)) {
                 result = statementObject.getResultSet();
             }
-             System.err.println("here");
         } catch (SQLException exceptionObject) {
             System.err.println(SQLselect + " - Problem is : " + exceptionObject.getMessage());
             writeLogSQL(SQLselect + "error while trying to select" + exceptionObject.getMessage());

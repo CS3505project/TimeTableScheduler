@@ -2,6 +2,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import toolsPackage.Database;
 
 /**
     Tests a database installation by creating and querying
@@ -10,18 +11,20 @@ import java.sql.Statement;
 */
 public class TestDB {
     public static void main(String[] args) throws Exception {
-        SimpleDataSource.init("database.properties");
+        Database db = new Database();
+        // for local use only outside college network with putty
+        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
+       
+        //for use in college network
+        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
 
-        Connection conn = SimpleDataSource.getConnection();
         try {
-            Statement stat = conn.createStatement();
 
-            ResultSet result = stat.executeQuery("SELECT * FROM User");
+            ResultSet result = db.select("SELECT passwordHash FROM User WHERE User.email = \"112372501@umail.ucc.ie\";");
             while (result.next()) {
                 System.out.println(result.getString("email"));
             }
         } finally {
-            conn.close();
         }
     }
 }

@@ -31,20 +31,24 @@ public class Validator {
     {
         boolean success = false;
         Database db = new Database();
-        // connect to the database using the properties file
-        db.setupFromPropertiesFile("database.properties");
+         // for local use only outside college network with putty
+        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
+       
+        //for use in college network
+        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         // use the emial validator to check the email
         EmailValidator emailValidator =  EmailValidator.getInstance();
-        if (emailValidator.isValid(password)) { 
+        if (emailValidator.isValid(email)) { 
             // hash the password provided by the user to check against 
             // entry in the database
-            String passwordHash = Hash.sha1(password);
+            
+            String passwordHash = password;//Hash.sha1(password);
             try {
                 // retrieve the hashed password from the database
-                ResultSet result = db.select("SELECT passwordHash FROM user WHERE email = " + email + ";");
+                ResultSet result = db.select("SELECT passwordHash FROM User WHERE email = \"" + email + "\";");
                 // compare the two hashed passwords
-                if (db.getNumRows(result) > 0 && result.getString("passwordHash").equals(passwordHash)) {
+                if (db.getNumRows(result) > 0 && result.getString("passwordHash").equals(password)) {
                     // successful login
                     success = true; 
                 }
