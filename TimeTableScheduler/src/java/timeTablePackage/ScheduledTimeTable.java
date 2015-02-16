@@ -53,7 +53,7 @@ public class ScheduledTimeTable {
         //for use in college network
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
-        // get all events for each user
+        // get all events for each user in meeting
         ResultSet usersEvents = db.select("");
         try {
             while (usersEvents.next()) {
