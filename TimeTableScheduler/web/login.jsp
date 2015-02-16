@@ -3,15 +3,15 @@
     outputPackage.Output output = new outputPackage.Output(request);
     out.println(output.createLogin());
     
-    if (((User)session.getAttribute("user")) == null) {
+    if (((userPackage.User)session.getAttribute("user")) == null) {
         inputPackage.Input input = new inputPackage.Input();
-        boolean validLogin = input.login((request.getParameter("email"), request.getParameter("password"));
+        boolean validLogin = input.login(request.getParameter("email"), request.getParameter("password"));
 
         if (validLogin) {
             out.println("<p>Login Successful</p>");
-            User user = input.getUserDetails(request.getParameter("email");
-            session.setAttribute("user", user));
-            session.setAttribute("userType", user.getUserType())
+            userPackage.User user = input.getUserDetails(request.getParameter("email"));
+            session.setAttribute("user", user);
+            session.setAttribute("userType", user.getUserType());
             // redirect to home page
         } else {
             out.println("<p>Try Again. Login Unsuccessful</p>");
