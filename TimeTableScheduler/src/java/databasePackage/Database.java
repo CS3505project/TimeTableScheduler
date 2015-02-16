@@ -57,7 +57,7 @@ public class Database{
     try {
             // Establish connection to database
             connectionObject.close();
-            
+            setup=false;
         }
         catch (SQLException exceptionObject)
         {
