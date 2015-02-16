@@ -46,9 +46,9 @@ public class DatabaseTest {
         System.out.println("setup");
          //connect to the database
         String dbserver = "127.0.0.1:3310";
-        String DSN = "2016_kmon1";
-        String username = "kmon1";
-        String password = "augeheid";
+        String DSN = "2016_dol8";
+        String username = "dol8";
+        String password = "zahriexo";
         Database instance = new Database();
         
         //if the result returns "" test sucessful otherwise its failed
@@ -73,9 +73,9 @@ public class DatabaseTest {
         //connect to the database
         System.out.println("setup");
         String dbserver = "127.0.0.1:3310";
-        String DSN = "2016_kmon1";
-        String username = "kmon1";
-        String password = "augeheid";
+        String DSN = "2016_dol8";
+        String username = "dol8";
+        String password = "zahriexo";
         String expResult = "";
         String result = instance.setup(dbserver, DSN, username, password);
         // return true if connection attempt is sucessful 
@@ -94,9 +94,9 @@ public class DatabaseTest {
         System.out.println("Close");
         //connect to the database
         String dbserver = "127.0.0.1:3310";
-        String DSN = "2016_kmon1";
-        String username = "kmon1";
-        String password = "augeheid";
+        String DSN = "2016_dol8";
+        String username = "dol8";
+        String password = "zahriexo";
         Database instance = new Database();
         String result = instance.setup(dbserver, DSN, username, password);
        // return true if connection attempt is sucessful 
@@ -124,12 +124,14 @@ public class DatabaseTest {
         String SQLinsert = "";
         
         String dbserver = "127.0.0.1:3310";
-        String DSN = "2016_kmon1";
-        String username = "kmon1";
-        String password = "augeheid";
+        String DSN = "2016_dol8";
+        String username = "dol8";
+        String password = "zahriexo";
         Database instance = new Database();
+        
         String result = instance.setup(dbserver, DSN, username, password);
         // check if database is set up 
+        
         boolean expResult1 = true;
         boolean result1 = instance.issetup();
         assertEquals(expResult1, result1);
@@ -154,9 +156,9 @@ public class DatabaseTest {
         
         String SQLquery = "";
         String dbserver = "127.0.0.1:3310";
-        String DSN = "2016_kmon1";
-        String username = "kmon1";
-        String password = "augeheid";
+        String DSN = "2016_dol8";
+        String username = "dol8";
+        String password = "zahriexo";
         
         Database instance = new Database();
         
@@ -191,8 +193,8 @@ public class DatabaseTest {
         String message = "";
         Database instance = new Database();
         instance.writeLogSQL(message);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }
