@@ -45,7 +45,7 @@ public class ScheduledTimeTable {
      * 
      * @param usersToMeet User in the meeting
      */
-    public void initialiseTimeTable(List<User> usersToMeet) {
+    public void initialiseTimeTable(String[] usersToMeet) {
         Database db = new Database();
         // for local use only outside college network with putty
         //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");

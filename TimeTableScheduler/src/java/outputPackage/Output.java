@@ -7,11 +7,14 @@ package outputPackage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.EventTime;
+import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
+import userPackage.User;
 
 /**
  *
@@ -209,6 +212,13 @@ public class Output {
         timetable.addUserEvents("1");
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += timetable.createTimeTable();
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        // Test method to suggest time slot of a meeting that is being organised
+        ScheduledTimeTable organiseMeeting = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        organiseMeeting.initialiseTimeTable(new String[]{"1", "2"});
+        organiseMeeting.nextSuggestedTimeSlot(2, 0, true);
+        finalHTML += "<h1>Suggested TimeSlots for Meeting</h1>";
+        finalHTML += organiseMeeting.displayTimeTable();
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
        
         /*finalHTML = "<h1>Timetable for this week</h1>\n" +
