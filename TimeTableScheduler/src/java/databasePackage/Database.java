@@ -30,6 +30,7 @@ public class Database{
         try {// Initialiase drivers
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception exceptionObject) {
+            //write error message
             writeLogSQL(URL + " caused error " + exceptionObject.getMessage()+" Error dbclass.setup.1. ");
             return("Failed to load JDBC/ODBC driver. Error dbclass.setup.1 PLEASE report this error");
         }
@@ -56,6 +57,7 @@ public class Database{
     try {
             // Establish connection to database
             connectionObject.close();
+            
         }
         catch (SQLException exceptionObject)
         {

@@ -4,6 +4,8 @@
  */
 package groupPackage;
 
+import toolsPackage.Database;
+
 /**
  *
  * @author jjor1 & donncha o leary
@@ -66,4 +68,25 @@ public class Group {
     public void setGroupType(String groupType){
         this.groupType = groupType;
     }
+    
+    
+    /**
+     * Executes the querys to the database that don't return results
+     * 
+     * @param insertSQL The sql query to execute
+     * @return True if query was successful
+     */
+    public boolean executeDbQuery(String insertSQL) {
+        //create db
+        Database db = new Database();
+        //get access info from properties
+        db.setupFromPropertiesFile("database.properties");
+        
+        String[] users = db.selectColumn(insertSQL);
+        
+        
+        db.close();
+        return false;
+    }
+    
 }

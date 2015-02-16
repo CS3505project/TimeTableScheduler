@@ -30,7 +30,10 @@ public class UserGroup extends Group{
     
     // retrive list of users from database . 
     // create user objects from each result returned from database and add them to list 
-    
+   public boolean retriveUserFromDB(){
+       this.executeDbQuery("");
+       return false;
+   } 
    
     
     
