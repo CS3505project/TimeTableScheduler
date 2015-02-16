@@ -22,7 +22,14 @@ public class TimeSlot {
     public TimeSlot(Time time, Date date) {
         this.time = time;
         this.date = date;
-        this.events = new int[EventPriority.numPriority];
+        this.events = new int[EventPriority.highestPriority + 1];
+        this.totalPriority = 0;
+    }
+    
+    public TimeSlot() {
+        this.time = null;
+        this.date = null;
+        this.events = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
     }
 
@@ -78,6 +85,7 @@ public class TimeSlot {
     public void addPriority(int priority) {
         if (priority >= 0 && priority < events.length) {
             events[priority] += 1;
+            totalPriority += priority;
         }
     }
     
@@ -116,13 +124,13 @@ public class TimeSlot {
      */
     public String printTableCell() {
         if (totalPriority > 0) {
-            return "<td class=\"" + highestPriorityEvent() + "\"" 
+            return "<td class=\"priority-" + totalPriority + "\"" 
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
                    + "Lecture: " + numLectures() + "\n"
                    + "Practical: " + numPracticals() + "\n"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
-            return "<td></td>";
+            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\">" : " >") + "</td>";
         }
     }
     

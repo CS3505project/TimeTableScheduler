@@ -54,19 +54,79 @@ public class ScheduledTimeTable {
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         // get all events for each user in meeting
-        ResultSet usersEvents = db.select("");
+        ResultSet usersEvents = db.select("(SELECT weekday, Practical.time, 4 'priority'\n" +
+"FROM Practical JOIN Cancellation\n" +
+"ON Practical.moduleCode = Cancellation.moduleCode\n" +
+"WHERE CURDATE() BETWEEN startDate AND endDate\n" +
+"AND WEEK(Cancellation.date) != WEEK(CURDATE()) \n" +
+"OR weekday != WEEKDAY(Cancellation.date + 1)\n" +
+"OR Cancellation.time != Practical.time\n" +
+"AND Practical.moduleCode IN\n" +
+"	(SELECT Practical.moduleCode \n" +
+"	FROM ModuleInCourse\n" +
+"	WHERE courseid =\n" +
+"		(SELECT courseid\n" +
+"		FROM GroupTakesCourse\n" +
+"		WHERE gid IN\n" +
+"			(SELECT gid\n" +
+"			FROM InGroup\n" +
+"			WHERE uid = \n" +
+"				(SELECT uid\n" +
+"				FROM Student JOIN User\n" +
+"				ON uid = userid\n" +
+"				WHERE studentid = 112414248)))))\n" +
+"\n" +
+"UNION\n" +
+"\n" +
+"(SELECT weekday, Lecture.time, 5 'priority'\n" +
+"FROM Lecture JOIN Cancellation\n" +
+"ON Lecture.moduleCode = Cancellation.moduleCode\n" +
+"WHERE CURDATE() BETWEEN startDate AND endDate\n" +
+"AND WEEK(Cancellation.date) != WEEK(CURDATE()) \n" +
+"OR weekday != WEEKDAY(Cancellation.date + 1)\n" +
+"OR Cancellation.time != Lecture.time\n" +
+"AND Lecture.moduleCode IN\n" +
+"	(SELECT Lecture.moduleCode\n" +
+"	FROM ModuleInCourse\n" +
+"	WHERE courseid =\n" +
+"		(SELECT courseid\n" +
+"		FROM GroupTakesCourse\n" +
+"		WHERE gid IN\n" +
+"			(SELECT gid\n" +
+"			FROM InGroup\n" +
+"			WHERE uid = \n" +
+"				(SELECT uid\n" +
+"				FROM Student JOIN User\n" +
+"				ON uid = userid\n" +
+"				WHERE studentid = 112414248)))))\n" +
+"\n" +
+"\n" +
+"UNION\n" +
+"\n" +
+"(SELECT WEEKDAY(date + 1) as 'weekday', time, priority\n" +
+"FROM Meeting \n" +
+"WHERE meetingid = \n" +
+"(SELECT mid\n" +
+"	FROM HasMeeting\n" +
+"	WHERE uid = \n" +
+"		(SELECT uid\n" +
+"		FROM Student JOIN User\n" +
+"		ON uid = userid\n" +
+"		WHERE studentid = 112414248)));");
         try {
+            System.out.println(db.getNumRows(usersEvents));
+            
             while (usersEvents.next()) {
-                SimpleDateFormat dateTime = new SimpleDateFormat(DAY_INDEX);
-                Date date = usersEvents.getDate("");
-                int dayIndex = Integer.parseInt(dateTime.format(date));
+                // Need to fix this TO-DO
+                Date date = null;//usersEvents.getDate("");
+                int dayIndex = usersEvents.getInt("weekday");
                 
-                dateTime.applyPattern(HOUR_INDEX);
-                Time time = usersEvents.getTime("");
+                SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
+                Time time = usersEvents.getTime("time");
                 int timeIndex = Integer.parseInt(dateTime.format(time));
                 
-                int priority = usersEvents.getInt("");
-                
+                int priority = usersEvents.getInt("priority");
+                                
                 // create a timeslot object for every event or update existing one
                 if (timeSlots[dayIndex][timeIndex] == null) {
                     TimeSlot timeSlot = new TimeSlot(time, date);
@@ -79,7 +139,16 @@ public class ScheduledTimeTable {
         } catch (SQLException ex) {
             System.err.println("Error scheduling events");
         }
-
+        
+        // fill in the rest of the timeslots with blanks
+        for (int dayIndex = 0; dayIndex < Day.numDays; dayIndex++) {
+            for (int timeIndex = 0; timeIndex < EventTime.numHours; timeIndex++) {
+                if (timeSlots[dayIndex][timeIndex] == null) {
+                    timeSlots[dayIndex][timeIndex] = new TimeSlot();
+                }
+            }
+        }
+ 
     }
 
     /**
@@ -158,14 +227,13 @@ public class ScheduledTimeTable {
     public String displayTimeTable() {
         String table = "<table>";
         table += createTimeTableHeader(EventTime.getTimes(startTime, endTime));
-        for (int day = startDay.getIndex(); day < endDay.getIndex(); day++) {
-            table += "</tr>";
-            table += "<th>" + Day.convertToDay(day) + "</th>";
+        for (int day = startDay.getIndex(); day <= endDay.getIndex(); day++) {
+            table += "<tr> \n";
+            table += "<th>" + Day.convertToDay(day) + "</th> \n";
             for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
-                // may need to include if statement to catch null pointer
-                table += timeSlots[day][time].printTableCell();
+                    table += timeSlots[day][time].printTableCell();
             }
-            table += "</tr>";
+            table += "</tr> \n";
         }
         table += "</table>";
         

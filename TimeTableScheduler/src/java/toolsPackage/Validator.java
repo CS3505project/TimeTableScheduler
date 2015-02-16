@@ -43,14 +43,19 @@ public class Validator {
             // hash the password provided by the user to check against 
             // entry in the database
             
-            String passwordHash = password;//Hash.sha1(password);
+            String passwordHash = Hash.sha1(password);
             try {
                 // retrieve the hashed password from the database
                 ResultSet result = db.select("SELECT passwordHash FROM User WHERE email = \"" + email + "\";");
-                // compare the two hashed passwords
-                if (db.getNumRows(result) > 0 && result.getString("passwordHash").equals(password)) {
-                    // successful login
-                    success = true; 
+                
+                if (db.getNumRows(result) == 1) {                
+                    while(result.next()) {
+                        // compare the two hashed passwords
+                        if (result.getString("passwordHash").equals(passwordHash)) {
+                            // successful login
+                            success = true; 
+                        }
+                    }
                 }
             } catch (Exception e) {
 

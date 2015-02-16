@@ -84,11 +84,11 @@ public class TimeTable {
         
         Database db = new Database();
         // for local use only outside college network with putty
-        db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
+        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
         //db.setup("127.0.0.1:3310", "2016_dol8", "dol8", "zahriexo");
        
         //for use in college network
-        //db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         try {
             // retrieve list of lectures for a particular user id
@@ -187,12 +187,14 @@ public class TimeTable {
         LinkedList<Event> eventList = sortedEvents.get(event.getDayOfWeek());
         int i = 0;
         while (i < eventList.size()
-                && event.getTime().after(eventList.get(i).getTime())
-                && event.getTime().after(startTime.getTime())
-                && event.getTime().before(endTime.getTime())) {
+                && event.getTime().before(eventList.get(i).getTime())) {
             i++;
         }
-        eventList.add(i, event);
+        
+        if (event.getTime().after(startTime.getTime())
+                && event.getTime().before(endTime.getTime())) {
+            eventList.add(i, event);
+        }
     }
     
     /**
@@ -265,13 +267,14 @@ public class TimeTable {
             int index = 0;
             // store events of the day
             List<Event> eventsThisDay = sortedEvents.get(day.getDay());
-            for (EventTime time : hours) {
+            for (EventTime time : hours) {  
                 if (index < eventsThisDay.size() && 
                         time.getTime().equals(eventsThisDay.get(index).getTime())) {
-                            //puts event into correct time slot 
+                    //puts event into correct time slot 
                     timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 
                                  + eventsThisDay.get(index).toString() + "</td>";
                     index++;
+                   
                 } else {
                     timetable += "<td></td>";
                 }
@@ -301,15 +304,6 @@ public class TimeTable {
         header += "</tr>";
         return header;
     }
-
-    /**
-     * Return a list of events in the timetable
-     * 
-     * @return List of events
-     */
-    /*public List<Event> getEvents() {
-        return events;
-    }*/
 
     /**
      * Returns the sorted list of events

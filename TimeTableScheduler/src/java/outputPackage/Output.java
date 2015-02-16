@@ -222,8 +222,6 @@ public class Output {
         organiseMeeting.initialiseTimeTable(new String[]{"1", "2"});
         //this line is breaking website plz fix
         organiseMeeting.nextSuggestedTimeSlot(2, 0, true);
-        
-        
         finalHTML += "<h1>Suggested TimeSlots for Meeting</h1>";
         
         //this line is breaking website plz fix

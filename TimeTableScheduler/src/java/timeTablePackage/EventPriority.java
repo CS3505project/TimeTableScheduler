@@ -10,9 +10,9 @@ package timeTablePackage;
  * @author John O Riordan
  */
 public enum EventPriority {
-    LECTURE(2, "lecture"),
-    PRACTICAL(1, "practical"),
-    MEETING(0, "meeting");
+    LECTURE(5, "lecture"),
+    PRACTICAL(4, "practical"),
+    MEETING(3, "meeting");
     
     private int priority;
     private String eventOfPriority;
@@ -20,7 +20,7 @@ public enum EventPriority {
     /**
      * Number of different priorities
      */
-    public static final int numPriority = 3;
+    public static final int highestPriority = 5;
     
     EventPriority(int priority, String eventOfPriority) {
         this.priority = priority;

@@ -20,9 +20,9 @@ public class TestDB {
 
         try {
 
-            ResultSet result = db.select("SELECT passwordHash FROM User WHERE User.email = \"112372501@umail.ucc.ie\";");
+            ResultSet result = db.select("SELECT passwordHash FROM User WHERE email = \"112372501@umail.ucc.ie\";");
             while (result.next()) {
-                System.out.println(result.getString("email"));
+                System.out.println(result.getString("passwordHash"));
             }
         } finally {
         }
