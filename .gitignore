@@ -1,1 +1,4 @@
 TimeTableScheduler/database.properties
+/TimeTableScheduler/nbproject/private/
+/TimeTableScheduler/build/
+TimeTableScheduler/sql-logfile.txt
