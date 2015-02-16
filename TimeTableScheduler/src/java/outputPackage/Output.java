@@ -213,6 +213,8 @@ public class Output {
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += timetable.createTimeTable();
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        
+        
         // Test method to suggest time slot of a meeting that is being organised
         ScheduledTimeTable organiseMeeting = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         organiseMeeting.initialiseTimeTable(new String[]{"1", "2"});
