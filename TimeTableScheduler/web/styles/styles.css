@@ -3,8 +3,8 @@
 /***********/
 @import url('reset.css');
 @font-face{
-        font-family:"sintony";
-        src: url(sintony.otf);
+        font-family:"CLB";
+        src: url(fonts/CLB.ttf);
 }
 /*box width fix*/
 *{
@@ -14,13 +14,12 @@
 }
 
 body{
-        background-color: #eef;
-	font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
+    background-color: #eef;
+	font-family: Helvetica, sans-serif;
 	color: #778;
 	font-size: 18px;
 	overflow: hidden;
 }
-
 /*****************/
 /* COLUMN LAYOUT */
 /*****************/
@@ -61,7 +60,6 @@ body>nav span.break{
 	height: 8px;
 	border-bottom: 1px solid #335;
 	border-top: 1px solid #224;
-        box-shadow: inset 0 0 2px #000;
 }
 
 body>nav h1{
@@ -92,7 +90,7 @@ body>nav a{
 	text-shadow: 1px 1px 2px #000;
 	text-align: left;
 	padding-left: 8px;
-	font-size: 15px;
+	font-size: 16px;
 	outline: none;
 	transition: all 0.4s ease;
 }
@@ -147,7 +145,7 @@ body>nav span#userName{
 	border-top: 1px solid #335;
 	color: #88a;
 	text-shadow: 1px 1px 2px #000;
-	font-size: 15px;
+	font-size: 16px;
 }
 body>nav footer{
 	position: fixed;
@@ -160,7 +158,7 @@ body>nav footer{
 	border-top: 1px solid #335;
 	width: 132px;
 	background: #112;
-	box-shadow: inset 0 0 10px #000;
+	box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
 }
 body>nav footer a{
 	display: inline-block;
@@ -176,9 +174,9 @@ body>nav a#help{
 body>nav a#about,body>nav a#help{
 	border-bottom: 1px solid #224;
 	background-position: 4px center;
-	width: 49%;
+	width: 50%;
 	background-size: 16px, 16px;
-        padding-left: 22px;
+    padding-left: 22px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin-bottom: 4px;
@@ -188,12 +186,7 @@ body>nav a#about:hover,body>nav a#help:hover{
 	background-color: #000;
 	color: #446;;
 }
-nav small{
-    font-size: 12px;
-    text-align: center;
-    display: inline-block;
-    width: 100%;
-}
+
 /********/
 /* MAIN */
 /********/
@@ -263,13 +256,12 @@ td:nth-child(even){
 /************/
 /* HEADINGS */
 /************/
-section.main hgroup{
+hgroup{
 	background: #889;
 	border: 1px solid #778;
 	padding: 0;
 	height: 30px;
-	margin-bottom: 6px;
-        margin-top: 6px;
+	margin-bottom: 8px;
 }
 section.main hgroup h1{
 	position: relative;
@@ -347,114 +339,12 @@ label{
 	width: 7em;
 	text-align: right;
 }
-
-/*********/
-/* LOGIN */
-/*********/
-div.login{
-        background: #223;
-        border-radius: 6px;
-        padding: 8px;
-        padding-top: 16px;
-        width: 400px;
-        height: 160px;
-        box-shadow: inset 0 0 8px #000;
-        margin: auto;
-        margin-top: 8%;
-        border-bottom: 1px solid #fff;
-}
-div.login input, div.login input:hover{
-        background: #112;
-        border: none;
-        border-bottom: 1px solid #334;
-        box-shadow: inset 0 0 10px #000;
-}
-div.login input[type="submit"]{
-        display: block;
-        width: 320px;
-        background: #26c;
-	background: -webkit-gradient(radial, center center, 0, center center, 100, from(#48e), to(#26c));
-	box-shadow: 0 2px 4px #000;
-        border: 1px solid #48e;
-	border-top: 1px solid #6af;
-        margin: auto;
-	margin-top: 6px;
-	margin-bottom: 6px;
-	text-shadow: 1px 1px 2px #000;
-	font-weight: bold;
-	color: #dde;
-}
-div.login label{
-        font-size: 16px;
-        color: #779;
-        background: transparent;
-        background-image: url('pass.png');
-	background-position: 2px 2px;
-	height: 22px;
-	padding: 2px;
-	padding-left: 30px;
-	background-size: 18px 18px;
-	background-repeat: no-repeat;
-	background-position: 7px 2px;
-}
-div.login label#email{
-        background-image: url('msg.png');
-}
-div.login footer{
-        text-align: center;
-        font-size: 12px;
-        padding: 8px;
-}
-footer.loginFooter{
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        background: #223;
-        box-shadow: inset 0 0 8px #000;
-        border-top: 1px solid #fff;
-        height: 120px;
-}
 /*********/
 /* POPUP */
 /*********/
 div.popup{
-        position: fixed;
-        min-width: 200px;
-        min-height: 200px;
-        left: 8px;
-        bottom: 60px;
-        padding: 8px;
-        font-size: 14px;
 	background: #fff;
 	border-radius: 6px;
-        color: #000;
 	z-index: 20;
-	box-shadow: 1px 1px rgba(0,0,0,0.3), 0 2px 6px -1px rgba(0,0,0,0.8);
-}
-div.popup:after{
-        content:"";
-        display: block;
-	position: absolute;
-	left: 60px;
-	bottom: -8px;
-	width: 0;
-	height: 0;
-	border-style: solid;
-	border-width: 14px 10px 0 10px;
-	border-color: #fff transparent transparent transparent;
-}
-div.popup button{
-        display: block;
-        position: relative;
-        width: 60px;
-        margin-left: auto;
-        margin-right: auto;
-        bottom: 0px;
-        background: #48e;
-	border: 1px solid #06c;
-	text-shadow: 1px 1px 2px #000;
-	font-weight: bold;
-	color: #eef;
-	cursor: pointer;
+	box-shadow: 0 2px 6px -1px rgba(0,0,0,0.6);
 }
