@@ -60,39 +60,48 @@ public class Input {
         try {
             // check if the user ID belongs to a student
             if (user == null) {
-                ResultSet result = db.select("");
+                ResultSet result = db.select("SELECT * " +
+                                            "FROM Student JOIN User " +
+                                            "ON uid = userid " +
+                                            "WHERE email = \"" + email + "\";");
 
                 while (result.next()) {
-                    user = new Student(result.getString(""),
-                                       result.getString(""),
-                                       result.getString(""),
-                                       result.getString(""),
-                                       result.getString(""));
+                    user = new Student(result.getString("studentid"),
+                                       result.getString("email"),
+                                       result.getString("firstname"),
+                                       result.getString("surname"),
+                                       result.getString("uid"));
                 }
                 
                 // if not then it could be a lecturer's user ID
                 if (user == null) {
-                    result = db.select("");
+                    result = db.select("SELECT * " +
+                                        "FROM Lecturer JOIN User " +
+                                        "ON uid = userid " +
+                                        "WHERE email = \"" + email + "\";");
 
                     while (result.next()) {
-                        user = new Lecturer(result.getString(""),
-                                           result.getString(""),
-                                           result.getString(""),
-                                           result.getString(""),
-                                           result.getString(""),
-                                           result.getString(""));
+                        user = new Lecturer(result.getString("lecturerid"),
+                                           result.getString("email"),
+                                           result.getString("title"),
+                                           result.getString("firstname"),
+                                           result.getString("surname"),
+                                           result.getString("uid"));
                     }
                     
                     // then must be an admin user or an invalid user ID
                     if (user == null) {
-                        result = db.select("");
+                        result = db.select("SELECT * " + 
+                                            "FROM Admin JOIN User " +
+                                            "ON uid = userid " +
+                                            "WHERE email = \"" + email + "\";");
 
                         while (result.next()) {
-                            user = new Admin(result.getString(""),
-                                             result.getString(""),
-                                             result.getString(""),
-                                             result.getString(""),
-                                             result.getString(""));
+                            user = new Admin(result.getString("adminid"),
+                                             result.getString("email"),
+                                             result.getString("firstname"),
+                                             result.getString("surname"),
+                                             result.getString("uid"));
                         }
                     }
                 }
