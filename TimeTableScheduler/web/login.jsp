@@ -11,11 +11,14 @@
 
         out.println(request.getParameter("email") + " " + request.getParameter("password"));
         if (validLogin) {
-            out.println("<p>Login Successful</p>");
+            
             userPackage.User user = input.getUserDetails(request.getParameter("email"));
-            session.setAttribute("user", user);
-            session.setAttribute("userType", user.getUserType());
-            // redirect to home page
+            if (user != null) {
+                out.println("<p>Login Successful</p>");
+                session.setAttribute("user", user);
+                session.setAttribute("userType", user.getUserType());
+                // redirect to home page
+            }
         } else {
             out.println("<p>Try Again. Login Unsuccessful</p>");
         }

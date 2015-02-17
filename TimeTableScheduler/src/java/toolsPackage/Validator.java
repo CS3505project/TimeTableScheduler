@@ -51,7 +51,7 @@ public class Validator {
                 if (db.getNumRows(result) == 1) {                
                     while(result.next()) {
                         // compare the two hashed passwords
-                        if (result.getString("passwordHash").equals(passwordHash)) {
+                        if (result.getString("passwordHash").equals(password)) {
                             // successful login
                             success = true; 
                         }
