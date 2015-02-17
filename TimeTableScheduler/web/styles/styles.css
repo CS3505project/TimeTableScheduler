@@ -270,35 +270,42 @@ td.priority-8,td.priority-9,td.priority-10,td.priority-11,td.priority-12,
 td.priority-13,td.priority-14,td.priority-15,td.priority-16,td.priority-17{
     background-color: #a56;
     border: 1px solid #723;
+    text-shadow: 1px 1px 2px #723;
     color: #fff;
 }
 td.priority-5,td.priority-6,td.priority-7{
     background-color: #b75;
     border: 1px solid #831;
+    text-shadow: 1px 1px 2px #831;
     color: #fff;
 }
 td.priority-4{
     background-color: #c95;
     border: 1px solid #a51;
+    text-shadow: 1px 1px 2px #a51;
     color: #fff;
 }
 td.priority-3{
     background-color: #db6;
     border: 1px solid #c82;
+    text-shadow: 1px 1px 2px #c82;
     color: #fff;
 }
 td.priority-2{
     background-color: #cd6;
     border: 1px solid #8a1;
+    text-shadow: 1px 1px 2px #8a1;
     color: #fff;
 }
 td.priority-1{
     background-color: #9d7;
     border: 1px solid #4a2;
+    text-shadow: 1px 1px 2px #4a2;
     color: #fff;
 }
 td.priority-0{
     background-color: #6af;
+    text-shadow: 1px 1px 2px #6af;
     color: #fff;
 }
 /************/
