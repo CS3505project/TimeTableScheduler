@@ -5,4 +5,8 @@
     out.println(output.createDummyTable());
     out.println(output.createMeetingForm());
     out.println(output.createFooter());
+    
+    if (session.getAttribute("user") != null) {
+        
+    }
 %>

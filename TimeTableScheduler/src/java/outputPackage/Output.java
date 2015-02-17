@@ -13,6 +13,7 @@ import timeTablePackage.Day;
 import timeTablePackage.EventTime;
 import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
+import userPackage.UserType;
 
 /**
  *
@@ -21,10 +22,11 @@ import timeTablePackage.TimeTable;
 public class Output {
     
     HttpServletRequest request;
-    String userType = "";//placeholder
+    UserType userType;
     
-    public Output(HttpServletRequest request){
+    public Output(HttpServletRequest request, UserType userType){
         this.request = request;
+        this.userType = userType;
     }
     
     /**
@@ -37,10 +39,10 @@ public class Output {
         finalHTML += fileToString("commonHeader.html");
         //Switch statement with appropriate controls based on what type of user is loged in
         switch (this.userType){
-            case "admin":
+            case ADMIN:
                 finalHTML += fileToString("adminMenu.html");
             break;
-            case "lecturer":
+            case LECTURER:
                 finalHTML += fileToString("lecturerMenu.html");
             break;
             default:
@@ -85,12 +87,12 @@ public class Output {
         "	<input type=\"date\" name=\"bday\" id=\"bday\"  required=\"required\"><br>\n" +
         "	<label for=\"select\">Group:</label>\n" +
         "	<select id=\"select\">\n" +
-                //stuff from database
+                // stuff from database
         "	</select><br>\n" +
         "	<label for=\"formText\">Meeting Name:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"meeting-name\" id=\"formtext\" required=\"required\"><br>\n" +
         "	<label for=\"venueText\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"venue\" id=\"venuetext\" required=\"required\"><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
         "</form>";
