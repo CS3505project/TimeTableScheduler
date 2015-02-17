@@ -237,6 +237,7 @@ th{
 	min-width: 4em;
 }
 td{
+	text-align: center;
 	padding: 4px;	
 	border-bottom: 1px solid #889;
 	font-size: 13px;
