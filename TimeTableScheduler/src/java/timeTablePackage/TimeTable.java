@@ -6,13 +6,11 @@ package timeTablePackage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import toolsPackage.Database;
-import userPackage.User;
 
 /**
  * Represents the users timetable and carries out any actions that may be 
@@ -206,41 +204,6 @@ public class TimeTable {
             sortedEvents.put(day.getDay(), new LinkedList<Event>());
         }
     }
-
-
-
-    /**
-     * Sort the events by day and time.
-     * Resulting sorted events are placed in the map as lists
-     * corresponding to the day they are scheduled on.
-     * 
-     * @param days List of days to that need to be sorted
-     * @param startTime The starting time for events to be considered for sorting
-     * @param endTime The finishing time for events to be considered for sorting
-     */
-    /*private void sortEvents() {
-        // initialise the map
-        for (Day day : Day.getDays(startDay, endDay)) {
-            sortedEvents.put(day.getDay(), new LinkedList<Event>());
-        }
-        
-        // place events into correct lists while sorting them by time
-        for (Event event : events) {
-            String day = event.getDayOfWeek();
-            if (sortedEvents.containsKey(day)) {
-                LinkedList<Event> eventList = sortedEvents.get(day);
-                int day = 0;
-                while (day < eventList.size()
-                        && event.getTime().after(eventList.get(day).getTime())
-                        && event.getTime().after(startTime.getTime())
-                        && event.getTime().before(endTime.getTime())) {
-                    day++;
-                }
-                eventList.add(day, event);
-            }
-        }
-    }
-    */
 
     /**
      * Generates a timetable from HTML with all the events listed

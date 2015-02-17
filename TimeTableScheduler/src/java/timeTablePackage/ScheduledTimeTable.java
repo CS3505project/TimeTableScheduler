@@ -46,6 +46,7 @@ public class ScheduledTimeTable {
      * @param usersToMeet User in the meeting
      */
     public void initialiseTimeTable(String[] usersToMeet) {
+        String sqlUserList = convertToSqlUserList(usersToMeet);
         Database db = new Database();
         // for local use only outside college network with putty
         //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
@@ -54,71 +55,52 @@ public class ScheduledTimeTable {
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         
         // get all events for each user in meeting
-        ResultSet usersEvents = db.select("(SELECT weekday, Practical.time, 4 'priority'\n" +
-"FROM Practical JOIN Cancellation\n" +
-"ON Practical.moduleCode = Cancellation.moduleCode\n" +
-"WHERE CURDATE() BETWEEN startDate AND endDate\n" +
-"AND WEEK(Cancellation.date) != WEEK(CURDATE()) \n" +
-"OR weekday != WEEKDAY(Cancellation.date + 1)\n" +
-"OR Cancellation.time != Practical.time\n" +
-"AND Practical.moduleCode IN\n" +
-"	(SELECT Practical.moduleCode \n" +
-"	FROM ModuleInCourse\n" +
-"	WHERE courseid =\n" +
-"		(SELECT courseid\n" +
-"		FROM GroupTakesCourse\n" +
-"		WHERE gid IN\n" +
-"			(SELECT gid\n" +
-"			FROM InGroup\n" +
-"			WHERE uid = \n" +
-"				(SELECT uid\n" +
-"				FROM Student JOIN User\n" +
-"				ON uid = userid\n" +
-"				WHERE studentid = 112414248)))))\n" +
-"\n" +
-"UNION\n" +
-"\n" +
-"(SELECT weekday, Lecture.time, 5 'priority'\n" +
-"FROM Lecture JOIN Cancellation\n" +
-"ON Lecture.moduleCode = Cancellation.moduleCode\n" +
-"WHERE CURDATE() BETWEEN startDate AND endDate\n" +
-"AND WEEK(Cancellation.date) != WEEK(CURDATE()) \n" +
-"OR weekday != WEEKDAY(Cancellation.date + 1)\n" +
-"OR Cancellation.time != Lecture.time\n" +
-"AND Lecture.moduleCode IN\n" +
-"	(SELECT Lecture.moduleCode\n" +
-"	FROM ModuleInCourse\n" +
-"	WHERE courseid =\n" +
-"		(SELECT courseid\n" +
-"		FROM GroupTakesCourse\n" +
-"		WHERE gid IN\n" +
-"			(SELECT gid\n" +
-"			FROM InGroup\n" +
-"			WHERE uid = \n" +
-"				(SELECT uid\n" +
-"				FROM Student JOIN User\n" +
-"				ON uid = userid\n" +
-"				WHERE studentid = 112414248)))))\n" +
-"\n" +
-"\n" +
-"UNION\n" +
-"\n" +
-"(SELECT WEEKDAY(date + 1) as 'weekday', time, priority\n" +
-"FROM Meeting \n" +
-"WHERE meetingid = \n" +
-"(SELECT mid\n" +
-"	FROM HasMeeting\n" +
-"	WHERE uid = \n" +
-"		(SELECT uid\n" +
-"		FROM Student JOIN User\n" +
-"		ON uid = userid\n" +
-"		WHERE studentid = 112414248)));");
+        ResultSet usersEvents = db.select("(SELECT weekday, Practical.time, 4 'priority' " +
+                                            "FROM Practical JOIN Cancellation " +
+                                            "ON Practical.moduleCode = Cancellation.moduleCode " +
+                                            "WHERE CURDATE() BETWEEN startDate AND endDate " +
+                                            "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
+                                            "OR weekday != WEEKDAY(Cancellation.date + 1) " +
+                                            "OR Cancellation.time != Practical.time " +
+                                            "AND Practical.moduleCode IN " +
+                                            "	(SELECT Practical.moduleCode " +
+                                            "	FROM ModuleInCourse " +
+                                            "	WHERE courseid = " +
+                                            "		(SELECT courseid " +
+                                            "		FROM GroupTakesCourse " +
+                                            "		WHERE gid IN " +
+                                            "			(SELECT gid " +
+                                            "			FROM InGroup " +
+                                            "			WHERE uid IN " + sqlUserList + " )))) " +
+                                            "UNION " +
+                                            "(SELECT weekday, Lecture.time, 5 'priority' " +
+                                            "FROM Lecture JOIN Cancellation " +
+                                            "ON Lecture.moduleCode = Cancellation.moduleCode " +
+                                            "WHERE CURDATE() BETWEEN startDate AND endDate " +
+                                            "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
+                                            "OR weekday != WEEKDAY(Cancellation.date + 1) " +
+                                            "OR Cancellation.time != Lecture.time " +
+                                            "AND Lecture.moduleCode IN " +
+                                            "	(SELECT Lecture.moduleCode " +
+                                            "	FROM ModuleInCourse " +
+                                            "	WHERE courseid = " +
+                                            "		(SELECT courseid " +
+                                            "		FROM GroupTakesCourse " +
+                                            "		WHERE gid IN " +
+                                            "			(SELECT gid " +
+                                            "			FROM InGroup " +
+                                            "			WHERE uid IN " + sqlUserList + ")))) " +
+                                            "UNION " +
+                                            "(SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
+                                            "FROM Meeting " +
+                                            "WHERE meetingid = " +
+                                            "(SELECT mid " +
+                                            "	FROM HasMeeting" +
+                                            "	WHERE uid IN " + sqlUserList + "));");
         try {
             System.out.println(db.getNumRows(usersEvents));
             
             while (usersEvents.next()) {
-                // Need to fix this TO-DO
-                Date date = null;//usersEvents.getDate("");
                 int dayIndex = usersEvents.getInt("weekday");
                 
                 SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
@@ -129,7 +111,7 @@ public class ScheduledTimeTable {
                                 
                 // create a timeslot object for every event or update existing one
                 if (timeSlots[dayIndex][timeIndex] == null) {
-                    TimeSlot timeSlot = new TimeSlot(time, date);
+                    TimeSlot timeSlot = new TimeSlot(time, dayIndex);
                     timeSlot.addPriority(priority);
                     timeSlots[dayIndex][timeIndex] = timeSlot;
                 } else {
@@ -148,7 +130,21 @@ public class ScheduledTimeTable {
                 }
             }
         }
- 
+    }
+    
+    /**
+     * Creates a list of user IDs to be used in SQL queries
+     * 
+     * @param userIDs list of user IDs
+     * @return SQL styled list of user IDs
+     */
+    private static String convertToSqlUserList(String[] userIDs) {
+        String sql = "(";
+        for (int i = 0; i < userIDs.length; i++) {
+            sql += "\"" + userIDs[i] + "\"" + (i < userIDs.length - 1 ? ", " : "");
+        }
+        sql += ")";
+        return sql;
     }
 
     /**

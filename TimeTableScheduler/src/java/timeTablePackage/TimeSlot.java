@@ -14,21 +14,21 @@ import java.sql.Time;
  */
 public class TimeSlot {
     private Time time;
-    private Date date;
+    private int dayOfWeek;
     private int[] events;
     private int totalPriority;
     private boolean suggested;
     
-    public TimeSlot(Time time, Date date) {
+    public TimeSlot(Time time, int dayOfWeek) {
         this.time = time;
-        this.date = date;
+        this.dayOfWeek = dayOfWeek;
         this.events = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
     }
     
     public TimeSlot() {
         this.time = null;
-        this.date = null;
+        this.dayOfWeek = -1;
         this.events = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
     }
@@ -43,11 +43,13 @@ public class TimeSlot {
     }
 
     /**
-     * Returns the date for this timeslot
-     * @return 
+     * Returns the day of the week for this timeslot
+     * For example Monday timeslot will return 1
+     * 
+     * @return index for the day of the week
      */
-    public Date getDate() {
-        return date;
+    public int getDayOfWeek() {
+        return dayOfWeek;
     }
     
     /**

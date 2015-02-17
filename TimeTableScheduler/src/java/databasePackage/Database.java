@@ -1,11 +1,11 @@
 package databasePackage;
  
 /**
- *
+ * Handles database connections and executing queries
+ * 
  * @author Shiny
  */
 import java.sql.*;
-import java.text.*;
 import java.io.*;
  
 public class Database{
