@@ -118,6 +118,8 @@ public class ScheduledTimeTable {
             System.err.println("Error scheduling events");
         }
         
+        db.close();
+        
         // fill in the rest of the timeslots with blanks
         for (int dayIndex = 0; dayIndex < Day.numDays; dayIndex++) {
             for (int timeIndex = 0; timeIndex < EventTime.numHours; timeIndex++) {
@@ -220,7 +222,7 @@ public class ScheduledTimeTable {
         String table = "<table>";
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         table += createTimeTableHeader(hours);
-        for (int day = startDay.getIndex(); day < endDay.getIndex(); day++) {
+        for (int day = startDay.getIndex(); day <= endDay.getIndex(); day++) {
             table += "<tr>";
             table += "<th>" + Day.convertToDay(day) + "</th>";
             for (EventTime time : hours) {

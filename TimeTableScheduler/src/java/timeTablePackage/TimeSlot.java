@@ -128,8 +128,8 @@ public class TimeSlot {
         if (totalPriority > 0) {
             return "<td class=\"priority-" + totalPriority + "\"" 
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
-                   + "Lecture: " + numLectures() + " "
-                   + "Practical: " + numPracticals() + " "
+                   + "Lecture: " + numLectures() + "<br />"
+                   + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
             return "<td" + (isSuggested() ? " class=\"suggested-timeslot\">" : " >") + "</td>";
