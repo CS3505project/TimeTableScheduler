@@ -198,6 +198,26 @@ public class Output {
     }
     
     /**
+     * Creates a page section with the users profile image, name and details
+     * @return the html representing the users profile info
+     */
+    public String createProfileBox(){
+        String finalHTML = "";
+        //later edit this so that it actually gives user info
+        finalHTML += "<div class='profile'>"
+                + "    <div class='img'></div>"
+                + "        <h1>Actual McName</h1>"
+                + "        <h2>email123@mail.com.ie</h2>"
+                + "        <p>Hello,m I am a profile blbsjbjbv</p>"
+                + "        <p>Hsdfsdf am a zzproxfile blbsjbjbv</p>"
+                + "        <div>"
+                + "             <h1>Some Stats Maybe</h1>"
+                + "             <p>blah blah blah</p>"
+                + "</div>"
+                + "</div>";
+        return finalHTML;
+    }
+    /**
      * Creates a dummy table with hardcoded values,
      * just for demonstration.
      * @return A string with all the HTML for the table.
