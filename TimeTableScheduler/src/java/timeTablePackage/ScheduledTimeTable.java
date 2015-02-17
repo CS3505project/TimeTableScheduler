@@ -4,16 +4,13 @@
  */
 package timeTablePackage;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import static timeTablePackage.TimeTable.DAY_INDEX;
 import static timeTablePackage.TimeTable.HOUR_INDEX;
 import toolsPackage.Database;
-import userPackage.User;
 
 /**
  * Timetable that represents the combined timetables of all users involved
@@ -109,7 +106,8 @@ public class ScheduledTimeTable {
                 
                 int priority = usersEvents.getInt("priority");
                                 
-                // create a timeslot object for every event or update existing one
+                // create a timeslot object for every event or it updates 
+                // an existing an existing timeslot
                 if (timeSlots[dayIndex][timeIndex] == null) {
                     TimeSlot timeSlot = new TimeSlot(time, dayIndex);
                     timeSlot.addPriority(priority);
@@ -227,7 +225,7 @@ public class ScheduledTimeTable {
             table += "<tr> \n";
             table += "<th>" + Day.convertToDay(day) + "</th> \n";
             for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
-                    table += timeSlots[day][time].printTableCell();
+                table += timeSlots[day][time].printTableCell();
             }
             table += "</tr> \n";
         }
