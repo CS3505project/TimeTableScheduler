@@ -2,6 +2,6 @@
 <%
     outputPackage.Output output = new outputPackage.Output(request);
     out.println(output.createHeader());
-    //profile info
+    out.println(output.createProfileBox());
     out.println(output.createFooter());
 %>
