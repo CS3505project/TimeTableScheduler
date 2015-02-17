@@ -184,15 +184,16 @@ public class TimeTable {
      * @param event Event to be added
      */
     private void addEventToSortedList(Event event) {
-        LinkedList<Event> eventList = sortedEvents.get(event.getDayOfWeek());
-        int i = 0;
-        while (i < eventList.size()
-                && event.getTime().before(eventList.get(i).getTime())) {
-            i++;
-        }
-        
         if (event.getTime().after(startTime.getTime())
                 && event.getTime().before(endTime.getTime())) {
+            
+            LinkedList<Event> eventList = sortedEvents.get(event.getDayOfWeek());
+            
+            int i = 0;
+            while (i < eventList.size()
+                    && event.getTime().before(eventList.get(i).getTime())) {
+                i++;
+            }
             eventList.add(i, event);
         }
     }
