@@ -94,16 +94,14 @@ public class ScheduledTimeTable {
                                             "(SELECT mid " +
                                             "	FROM HasMeeting" +
                                             "	WHERE uid IN " + sqlUserList + "));");
-        try {
-            System.out.println(db.getNumRows(usersEvents));
-            
+        try {            
             while (usersEvents.next()) {
                 int dayIndex = usersEvents.getInt("weekday");
                 
                 SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
                 Time time = usersEvents.getTime("time");
                 int timeIndex = Integer.parseInt(dateTime.format(time));
-                
+                                
                 int priority = usersEvents.getInt("priority");
                                 
                 // create a timeslot object for every event or it updates 
@@ -220,14 +218,15 @@ public class ScheduledTimeTable {
      */
     public String displayTimeTable() {
         String table = "<table>";
-        table += createTimeTableHeader(EventTime.getTimes(startTime, endTime));
-        for (int day = startDay.getIndex(); day <= endDay.getIndex(); day++) {
-            table += "<tr> \n";
-            table += "<th>" + Day.convertToDay(day) + "</th> \n";
-            for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
-                table += timeSlots[day][time].printTableCell();
+        List<EventTime> hours = EventTime.getTimes(startTime, endTime);
+        table += createTimeTableHeader(hours);
+        for (int day = startDay.getIndex(); day < endDay.getIndex(); day++) {
+            table += "<tr>";
+            table += "<th>" + Day.convertToDay(day) + "</th>";
+            for (EventTime time : hours) {
+                table += timeSlots[day][time.getTimeIndex()].printTableCell();
             }
-            table += "</tr> \n";
+            table += "</tr>";
         }
         table += "</table>";
         

@@ -217,6 +217,7 @@ public class TimeTable {
      */
     public String createTimeTable() {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
+        
         List<Day> days = Day.getDays(startDay, endDay);
         
         //     sortEvents();
