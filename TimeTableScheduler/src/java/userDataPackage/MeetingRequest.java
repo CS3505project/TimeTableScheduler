@@ -40,4 +40,8 @@ public final class MeetingRequest extends userRequest{
             this.validDate = false;
         }
     }
+    
+    public void setMeetingName(String meetingName){
+        this.meetingName = meetingName;
+    }
 }
