@@ -4,17 +4,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 
 /**
  * A javaBean for handling requests to add a meeting
  */
 public final class MeetingRequest extends userRequest{
-    private Date date;
-    private String meetingName;
+    private Date date = new Date();//initialise to todays date
+    private String meetingName = "";
+    private String venue = "";
     
-    private boolean validDate;
-    
-    private String[] errors;
+    private ArrayList<String> errors = new ArrayList<>();;
     
     /**
      * Default constructor
@@ -31,13 +31,10 @@ public final class MeetingRequest extends userRequest{
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             this.date = sdf.parse(date);
-            this.validDate = true;
-            this.errors[0]="";
         }
         catch (ParseException e) {
             System.err.println("Invalid Date: " + date);
-            this.errors[0]="Invalid Date: " + date;
-            this.validDate = false;
+            this.errors.add("Invalid Date: " + date);
         }
     }
     /**
@@ -48,11 +45,33 @@ public final class MeetingRequest extends userRequest{
         this.meetingName = meetingName;
     }
     /**
+     * sets the venue in which the meeting is to take place.
+     * @param venue the venue from the form
+     */
+    public void setVenue(String venue){
+        this.venue = venue;
+    }
+    /**
      * gets the date
      * @return the date in dd/mm/yyyy format as a string
      */
     public String getDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.date);
+    }
+    public String getMeetingName(){
+        return this.meetingName;
+    }
+    public String getVenue(){
+        return this.venue;
+    }
+    
+    /**
+     * Checks if there are any errors recorded in the errors ArrayList
+     * @return whether or not the data filled out so far is valid 
+     */
+    public boolean isValid(){
+        boolean valid = (this.errors.size() == 0) ? true : false;
+        return valid;
     }
 }
