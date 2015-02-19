@@ -436,7 +436,7 @@ div.login input[type="submit"]{
 }
 div.login label{
         font-size: 16px;
-        width: 6em;
+        width: 7em;
         color: #779;
         background: transparent;
         background-image: url('pass.png');
