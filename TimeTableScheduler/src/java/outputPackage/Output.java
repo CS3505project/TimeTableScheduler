@@ -96,6 +96,15 @@ public class Output {
         return finalHTML;
     }
     /**
+     * Creates the html for a logout page.
+     * @return the html as a string.
+     */
+    public String createLogout(){
+        String finalHTML = "";
+        finalHTML += fileToString("logout.html");
+        return finalHTML;
+    }
+    /**
      * Creates the form for adding a meeting,
      * with appropriate dropdowns of groups etc. with whom to have the meeting with
      * @return A string with all the HTML for the form.
