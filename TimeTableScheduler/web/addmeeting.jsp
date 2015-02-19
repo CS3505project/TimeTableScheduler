@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    outputPackage.Output output = new outputPackage.Output(request);
+    outputPackage.Output output = new outputPackage.Output(request, userPackage.UserType.STUDENT);
     out.println(output.createHeader());
     out.println(output.createDummyTable());
     out.println(output.createMeetingForm());
