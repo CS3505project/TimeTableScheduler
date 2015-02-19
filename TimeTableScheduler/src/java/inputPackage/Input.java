@@ -25,15 +25,6 @@ public class Input {
         
     }
     
-    public String checkSignUpDetails(HttpServletRequest request, UserType userType) {
-        String error = "";
-        if (request.getAttribute("studentid") == null) {
-            error = "Please enter your Student ID.";
-        }
-
-        return error;
-    }
-    
     /**
      * Checks the login details provided by the user
      * 
