@@ -249,26 +249,8 @@ public class Output {
      */
     public String createDummyTable(){
         String finalHTML = "";
-        
-        // Test method to generate timetable HTML from actual event objects
-        TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        timetable.addUserEvents("1");
-        finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += timetable.createTimeTable();
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
-        
-        
-        // Test method to suggest time slot of a meeting that is being organised
-        ScheduledTimeTable organiseMeeting = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        
-        organiseMeeting.initialiseTimeTable(new String[]{"1", "2"});
-        organiseMeeting.nextSuggestedTimeSlot(2, 0, true);
-        finalHTML += "<h1>Suggested TimeSlots for Meeting</h1>";
-        
-        finalHTML += organiseMeeting.displayTimeTable();
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
        
-        /*finalHTML = "<h1>Timetable for this week</h1>\n" +
+        finalHTML = "<h1>Timetable for this week</h1>\n" +
     "			<table>\n" +
     "				<tr><th></th><th>9:00</th><th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th><th>14:00</th><th>15:00</th><th>16:00</th><th>17:00</th></tr>\n" +
     "				<tr><th>Mon</th><td class=\"meeting\">meet with blah</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
@@ -277,7 +259,7 @@ public class Output {
     "				<tr><th>Thu</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
-    "			</table>";*/
+    "			</table>";
         
         return finalHTML;
     }
@@ -285,11 +267,23 @@ public class Output {
     public String createUserTimeTable(String userID){
         String finalHTML = "";
         
-        // Test method to generate timetable HTML from actual event objects
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.addUserEvents(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += timetable.createTimeTable();
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        
+        return finalHTML;
+    }
+    
+    public String createSuggestedTimeTable(String[] users, int meetingLength, int overridePriority, boolean clearPreviousSuggestion){
+        String finalHTML = "";
+        
+        ScheduledTimeTable suggestion = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        suggestion.initialiseTimeTable(users);
+        suggestion.nextSuggestedTimeSlot(meetingLength, overridePriority, clearPreviousSuggestion);
+        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += suggestion.displayTimeTable();
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
