@@ -14,6 +14,8 @@ import timeTablePackage.EventTime;
 import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
 import userPackage.UserType;
+import static userPackage.UserType.ADMIN;
+import static userPackage.UserType.LECTURER;
 
 /**
  *
@@ -26,7 +28,7 @@ public class Output {
     
     public Output(HttpServletRequest request, UserType userType){
         this.request = request;
-        this.userType = userType;
+        this.userType = (userType == null ? userType.STUDENT : userType);
     }
     
     /**
@@ -51,6 +53,27 @@ public class Output {
         }
 
         finalHTML += fileToString("commonHeaderEnd.html");
+        return finalHTML;
+    }
+    
+    public String createSignUp() throws FileNotFoundException, IOException{
+        String finalHTML = "";
+        
+        finalHTML += fileToString("commonSignUpHeader.html");
+        //Switch statement with appropriate controls based on what type of user is loged in
+        switch (this.userType){
+            case ADMIN:
+                finalHTML += fileToString("adminSignUp.html");
+            break;
+            case LECTURER:
+                finalHTML += fileToString("lecturerSignUp.html");
+            break;
+            default:
+                finalHTML += fileToString("studentSignUp.html");
+            break;
+        }
+
+        finalHTML += fileToString("commonSignUpFooter.html");
         return finalHTML;
     }
     
@@ -255,6 +278,19 @@ public class Output {
     "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
     "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
     "			</table>";*/
+        
+        return finalHTML;
+    }
+    
+    public String createUserTimeTable(String userID){
+        String finalHTML = "";
+        
+        // Test method to generate timetable HTML from actual event objects
+        TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        timetable.addUserEvents(userID);
+        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += timetable.createTimeTable();
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
     }

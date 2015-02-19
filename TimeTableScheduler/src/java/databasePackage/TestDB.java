@@ -1,5 +1,6 @@
 import java.sql.ResultSet;
 import toolsPackage.Database;
+import toolsPackage.Hash;
 
 /**
     Tests a database installation by creating and querying
@@ -23,5 +24,7 @@ public class TestDB {
             }
         } finally {
         }
+        
+        System.out.println(Hash.sha1("123"));
     }
 }
