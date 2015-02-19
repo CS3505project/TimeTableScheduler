@@ -282,6 +282,19 @@ public class Output {
         return finalHTML;
     }
     
+    public String createUserTimeTable(String userID){
+        String finalHTML = "";
+        
+        // Test method to generate timetable HTML from actual event objects
+        TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        timetable.addUserEvents(userID);
+        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += timetable.createTimeTable();
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        
+        return finalHTML;
+    }
+    
     /**
      * A helper method for including the contents of a file.
      * @param fileName The name of the file to retrieve the contents of.

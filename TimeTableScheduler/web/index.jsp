@@ -1,7 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
-    out.println(output.createHeader());
-    out.println(output.createDummyTable());
-    out.println(output.createFooter());
+    userPackage.User user = (userPackage.User)session.getAttribute("user");
+    if (user != null) {
+        outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
+        out.println(output.createHeader());
+        out.println(output.createUserTimeTable(user.getUserID()));
+        out.println(output.createFooter());
+    } else {
+        
+    %>
+    <jsp:forward page="/login.jsp" />
+    <%
+        
+    }
 %>
