@@ -14,6 +14,8 @@ import timeTablePackage.EventTime;
 import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
 import userPackage.UserType;
+import static userPackage.UserType.ADMIN;
+import static userPackage.UserType.LECTURER;
 
 /**
  *
@@ -26,7 +28,7 @@ public class Output {
     
     public Output(HttpServletRequest request, UserType userType){
         this.request = request;
-        this.userType = userType;
+        this.userType = (userType == null ? userType.STUDENT : userType);
     }
     
     /**
@@ -51,6 +53,27 @@ public class Output {
         }
 
         finalHTML += fileToString("commonHeaderEnd.html");
+        return finalHTML;
+    }
+    
+    public String createSignUp() throws FileNotFoundException, IOException{
+        String finalHTML = "";
+        
+        finalHTML += fileToString("commonSignUpHeader.html");
+        //Switch statement with appropriate controls based on what type of user is loged in
+        switch (this.userType){
+            case ADMIN:
+                finalHTML += fileToString("adminSignUp.html");
+            break;
+            case LECTURER:
+                finalHTML += fileToString("lecturerSignUp.html");
+            break;
+            default:
+                finalHTML += fileToString("studentSignUp.html");
+            break;
+        }
+
+        finalHTML += fileToString("commonSignUpFooter.html");
         return finalHTML;
     }
     
