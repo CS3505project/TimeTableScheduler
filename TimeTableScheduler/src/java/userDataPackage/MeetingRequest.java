@@ -40,8 +40,19 @@ public final class MeetingRequest extends userRequest{
             this.validDate = false;
         }
     }
-    
+    /**
+     * Sets the Meeting name from the form data
+     * @param meetingName the name of the meeting
+     */
     public void setMeetingName(String meetingName){
         this.meetingName = meetingName;
+    }
+    /**
+     * gets the date
+     * @return the date in dd/mm/yyyy format as a string
+     */
+    public String getDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(this.date);
     }
 }
