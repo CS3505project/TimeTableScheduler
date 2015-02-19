@@ -90,7 +90,7 @@ public class ScheduledTimeTable {
                                             "UNION " +
                                             "(SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
                                             "FROM Meeting " +
-                                            "WHERE meetingid = " +
+                                            "WHERE meetingid IN " +
                                             "(SELECT mid " +
                                             "	FROM HasMeeting" +
                                             "	WHERE uid IN " + sqlUserList + "));");

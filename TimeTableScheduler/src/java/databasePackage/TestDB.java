@@ -1,4 +1,5 @@
 import java.sql.ResultSet;
+import timeTablePackage.ScheduledTimeTable;
 import toolsPackage.Database;
 import toolsPackage.Hash;
 
@@ -26,5 +27,6 @@ public class TestDB {
         }
         
         System.out.println(Hash.sha1("123"));
+        
     }
 }

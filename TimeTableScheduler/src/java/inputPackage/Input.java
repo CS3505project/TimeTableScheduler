@@ -5,12 +5,14 @@
 package inputPackage;
 
 import java.sql.ResultSet;
+import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
 import toolsPackage.Validator;
 import userPackage.Admin;
 import userPackage.Lecturer;
 import userPackage.Student;
 import userPackage.User;
+import userPackage.UserType;
 
 /**
  * Handles input from the UI to the system
@@ -21,6 +23,15 @@ public class Input {
     
     public Input(){
         
+    }
+    
+    public String checkSignUpDetails(HttpServletRequest request, UserType userType) {
+        String error = "";
+        if (request.getAttribute("studentid") == null) {
+            error = "Please enter your Student ID.";
+        }
+
+        return error;
     }
     
     /**
