@@ -115,16 +115,16 @@ public class Output {
         "	<h2>Step 1 of 2</h2>\n" +
         "</hgroup>\n" +
         "<form>\n" +
-        "	<label for=\"bday\">Date:</label>\n" +
-        "	<input type=\"date\" name=\"bday\" id=\"bday\"  required=\"required\"><br>\n" +
+        "	<label for=\"date\">Date:</label>\n" +
+        "	<input type=\"date\" name=\"date\" id=\"date\"  required=\"required\"><br>\n" +
         "	<label for=\"select\">Group:</label>\n" +
         "	<select id=\"select\">\n" +
                 // stuff from database
         "	</select><br>\n" +
-        "	<label for=\"formText\">Meeting Name:</label>\n" +
-        "	<input type=\"text\" name=\"meeting-name\" id=\"formtext\" required=\"required\"><br>\n" +
-        "	<label for=\"venueText\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"venue\" id=\"venuetext\" required=\"required\"><br>\n" +
+        "	<label for=\"meetingName\">Meeting Name:</label>\n" +
+        "	<input type=\"text\" name=\"meetingName\" id=\"meetingName\" required=\"required\"><br>\n" +
+        "	<label for=\"venue\">Venue:</label>\n" +
+        "	<input type=\"text\" name=\"venue\" id=\"venue\" required=\"required\"><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
         "</form>";
