@@ -62,7 +62,7 @@ public class ScheduledTimeTable {
                                             "AND Practical.moduleCode IN " +
                                             "	(SELECT Practical.moduleCode " +
                                             "	FROM ModuleInCourse " +
-                                            "	WHERE courseid = " +
+                                            "	WHERE courseid IN " +
                                             "		(SELECT courseid " +
                                             "		FROM GroupTakesCourse " +
                                             "		WHERE gid IN " +
@@ -80,7 +80,7 @@ public class ScheduledTimeTable {
                                             "AND Lecture.moduleCode IN " +
                                             "	(SELECT Lecture.moduleCode " +
                                             "	FROM ModuleInCourse " +
-                                            "	WHERE courseid = " +
+                                            "	WHERE courseid IN " +
                                             "		(SELECT courseid " +
                                             "		FROM GroupTakesCourse " +
                                             "		WHERE gid IN " +
