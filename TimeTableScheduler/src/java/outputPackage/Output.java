@@ -258,17 +258,13 @@ public class Output {
      */
     public String createDummyTable(){
         String finalHTML = "";
-       
-        finalHTML = "<h1>Timetable for this week</h1>\n" +
-    "			<table>\n" +
-    "				<tr><th></th><th>9:00</th><th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th><th>14:00</th><th>15:00</th><th>16:00</th><th>17:00</th></tr>\n" +
-    "				<tr><th>Mon</th><td class=\"meeting\">meet with blah</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
-    "				<tr><th>Tue</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
-    "				<tr><th>Wed</th><td class =\"lecture\">CS1234, G04</td><td></td><td class=\"practical\">CS1234 Lab</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
-    "				<tr><th>Thu</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
-    "				<tr><th>Fri</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n" +
-    "				 <caption>Week 4, 23/23/1234 to 12/12/1234</caption>\n" +
-    "			</table>";
+        
+        ScheduledTimeTable suggestion = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        suggestion.initialiseTimeTable(new String[]{"22"});
+        suggestion.nextSuggestedTimeSlot(2, 0, true);
+        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += suggestion.displayTimeTable();
+        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
     }
@@ -279,9 +275,7 @@ public class Output {
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.addUserEvents(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += timetable.createTimeTable();
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
-        
+        finalHTML += timetable.createTimeTable();        
         return finalHTML;
     }
     

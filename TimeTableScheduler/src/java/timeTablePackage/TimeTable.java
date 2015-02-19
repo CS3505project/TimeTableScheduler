@@ -247,6 +247,7 @@ public class TimeTable {
             //end tags 
             timetable += "</tr>";
         }
+        timetable += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         timetable += "</table>";
         
         return timetable;

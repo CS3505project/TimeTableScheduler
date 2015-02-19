@@ -56,13 +56,13 @@ public class ScheduledTimeTable {
                                             "FROM Practical JOIN Cancellation " +
                                             "ON Practical.moduleCode = Cancellation.moduleCode " +
                                             "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                            "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
+                                            "AND (WEEK(Cancellation.date) != WEEK(CURDATE()) " +
                                             "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                            "OR Cancellation.time != Practical.time " +
+                                            "OR Cancellation.time != Practical.time) " +
                                             "AND Practical.moduleCode IN " +
                                             "	(SELECT Practical.moduleCode " +
                                             "	FROM ModuleInCourse " +
-                                            "	WHERE courseid = " +
+                                            "	WHERE courseid IN " +
                                             "		(SELECT courseid " +
                                             "		FROM GroupTakesCourse " +
                                             "		WHERE gid IN " +
@@ -74,13 +74,13 @@ public class ScheduledTimeTable {
                                             "FROM Lecture JOIN Cancellation " +
                                             "ON Lecture.moduleCode = Cancellation.moduleCode " +
                                             "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                            "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
+                                            "AND (WEEK(Cancellation.date) != WEEK(CURDATE()) " +
                                             "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                            "OR Cancellation.time != Lecture.time " +
+                                            "OR Cancellation.time != Lecture.time) " +
                                             "AND Lecture.moduleCode IN " +
                                             "	(SELECT Lecture.moduleCode " +
                                             "	FROM ModuleInCourse " +
-                                            "	WHERE courseid = " +
+                                            "	WHERE courseid IN " +
                                             "		(SELECT courseid " +
                                             "		FROM GroupTakesCourse " +
                                             "		WHERE gid IN " +
@@ -90,7 +90,7 @@ public class ScheduledTimeTable {
                                             "UNION " +
                                             "(SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
                                             "FROM Meeting " +
-                                            "WHERE meetingid = " +
+                                            "WHERE meetingid IN " +
                                             "(SELECT mid " +
                                             "	FROM HasMeeting" +
                                             "	WHERE uid IN " + sqlUserList + "));");
