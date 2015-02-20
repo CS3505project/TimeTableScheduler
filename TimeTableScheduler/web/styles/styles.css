@@ -406,8 +406,13 @@ body.login{
         background-size: cover;
 }
 body.login p{
-    width: 100%;
-    text-align: center;
+        position: relative;
+        top: -22px;
+        font-size: 14px;
+        color: #a56;
+        text-shadow: 1px 1px 2px #000;
+        width: 100%;
+        text-align: center;
 }
 div.login{
         text-shadow: 1px 1px 2px #000;
@@ -466,6 +471,7 @@ div.login footer{
         padding: 8px;
 }
 footer.loginFooter{
+        text-shadow: 1px 1px 2px #000;
         background: rgba(0,0,0,0.5);
         padding: 8px;
         width: 100%;
