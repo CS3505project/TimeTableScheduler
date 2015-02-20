@@ -6,6 +6,17 @@
         out.println(output.createHeader());
         out.println(output.createCreateGroupForm());
         out.println(output.createFooter());
+
+        inputPackage.Input input = new inputPackage.input();
+        if (input.createGroup(request.getAttribute("groupname"))) {
+            // take to next of create group process
+            out.println("<p>Group created</p>");
+        } else {
+            // error occurred
+            out.println("<p>Error, group not created.</p>");
+        }
+
+
     } else {
         
     %>

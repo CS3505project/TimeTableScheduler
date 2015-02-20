@@ -4,8 +4,9 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        out.println(output.createProfileBox());
+        out.println(output.createProfileBox(user));
         out.println(output.createFooter());
+
     } else {
         
     %>

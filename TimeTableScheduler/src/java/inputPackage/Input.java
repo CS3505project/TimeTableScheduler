@@ -7,6 +7,7 @@ package inputPackage;
 import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
+import toolsPackage.Hash;
 import toolsPackage.Validator;
 import userPackage.Admin;
 import userPackage.Lecturer;
@@ -23,6 +24,130 @@ public class Input {
     
     public Input(){
         
+    }
+    
+    public boolean addLab(HttpServletRequest request) {
+        boolean result = false;
+        
+        
+        
+        return result;
+    }
+    
+    /**
+     * Create a new group in the database
+     * 
+     * @param groupName The groups name
+     * @return True if the group was successfully added
+     */
+    public boolean createGroup(String groupName) {
+        boolean result = false;
+        
+        if (!errorInString(groupName)) {
+            Database db = Database.getSetupDatabase();
+            
+            // insert the group
+            db.insert("");
+            
+            db.close();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Add a list of users to the specified group
+     * 
+     * @param groupName The group to add the users
+     * @param users List of user ids to add
+     * @return True if users added successfully
+     */
+    public boolean joinGroup(String groupName, String[] users) {
+        boolean result = false;
+        
+        if (!errorInString(groupName)) {
+            Database db = Database.getSetupDatabase();
+            
+            // add the users to the group
+            db.insert("");
+            
+            db.close();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Inserts the new user into the database
+     * Used when user signs up to the system
+     * 
+     * @param request The user details
+     * @return True if insert can be executed
+     */
+    private boolean signUpUser(HttpServletRequest request) {
+        Database db = Database.getSetupDatabase();
+        
+        String passwordHash = Hash.sha1(request.getAttribute("password"));
+        
+        boolean result = db.insert("");
+        
+        db.close();
+        
+        return result;
+    }
+    
+    /**
+     * Verifies the details the user entered when signing up to the website.
+     * Returns a string containing an error message
+     * 
+     * @param request The request with all the users details
+     * @param userType The type of user entering the details
+     * @return Error message
+     */
+    public String checkSignUpDetails(HttpServletRequest request, UserType userType) {
+        String error = null;
+        
+        if (errorInString(request.getAttribute("firstname"))) {
+            error = "Please enter your first name.";
+        } else if (errorInString(request.getAttribute("surname"))) {
+            error = "Please enter your surname.";
+        } else if (errorInString(request.getAttribute("email"))) {
+            error = "Please enter your email address correctly.";
+        } else if (errorInString(request.getAttribute("password"))) {
+            error = "Please enter your password.";
+            if (errorInString(request.getAttribute("reenter-password"))
+                    && request.getAttribute("password").equals(request.getAttribute("reenter-password"))) {
+                error = "Your passwords are different.";
+            }
+        } 
+        switch (userType) {
+            case ADMIN:
+                if (errorInString(request.getAttribute("adminid"))) {
+                    error = "Please enter your administrator ID.";
+                }
+                break;
+            case LECTURER:
+                if (errorInString(request.getAttribute("lecturerid"))) {
+                    error = "Please enter your lecturer ID.";
+                }
+                break;
+            default:
+                if (errorInString(request.getAttribute("studentid"))) {
+                    error = "Please enter your student ID.";
+                }
+                break;
+        }
+        
+        return error;
+    }
+    /**
+     * Checks if a string is null or empty.
+     * 
+     * @param string The string to check
+     * @return True if null or empty
+     */
+    public boolean errorInString(String string) {
+        return (string == null || string.equals(""));
     }
     
     /**
@@ -50,12 +175,7 @@ public class Input {
      * @return User object
      */
     public static User getUserDetails(String email) {
-        Database db = new Database();
-        // for local use only outside college network with putty
-        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
-       
-        //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        Database db = Database.getSetupDatabase();
         
         User user = null;
         

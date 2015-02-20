@@ -7,8 +7,6 @@ package timeTablePackage;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Generic event that can be a lecture, practical or meeting.

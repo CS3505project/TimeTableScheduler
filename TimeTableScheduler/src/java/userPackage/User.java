@@ -91,9 +91,7 @@ public abstract class User {
      */
     public boolean executeDbQuery(String insertSQL) {
         //create db
-        Database db = new Database();
-        //get access info from properties
-        db.setupFromPropertiesFile("database.properties");
+        Database db = Database.getSetupDatabase();
         
         if (db.insert(insertSQL)) {
             //close db

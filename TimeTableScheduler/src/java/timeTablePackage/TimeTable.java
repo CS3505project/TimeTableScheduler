@@ -80,13 +80,7 @@ public class TimeTable {
     public void addUserEvents(String userID) {
         initialiseEventLists();
         
-        Database db = new Database();
-        // for local use only outside college network with putty
-        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
-        //db.setup("127.0.0.1:3310", "2016_dol8", "dol8", "zahriexo");
-       
-        //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        Database db = Database.getSetupDatabase();
         
         try {
             // retrieve list of lectures for a particular user id
@@ -100,7 +94,7 @@ public class TimeTable {
                                                     "AND Lecture.moduleCode IN " +
                                                             "(SELECT Lecture.moduleCode " +
                                                             "FROM ModuleInCourse " +
-                                                            "WHERE courseid = " +
+                                                            "WHERE courseid IN " +
                                                                     "(SELECT courseid " +
                                                                     "FROM GroupTakesCourse " +
                                                                     "WHERE gid IN " +
@@ -130,7 +124,7 @@ public class TimeTable {
                                                     "AND Practical.moduleCode IN " +
                                                             "(SELECT Practical.moduleCode " +
                                                             "FROM ModuleInCourse " +
-                                                            "WHERE courseid = " +
+                                                            "WHERE courseid IN " +
                                                                     "(SELECT courseid " +
                                                                     "FROM GroupTakesCourse " +
                                                                     "WHERE gid IN " +
@@ -153,7 +147,7 @@ public class TimeTable {
             ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
                                                     "FROM Meeting " +
                                                     "WHERE WEEK(date) = WEEK(CURDATE()) " +
-                                                    "AND meetingid = " +
+                                                    "AND meetingid IN " +
                                                     "(SELECT mid " +
                                                             "FROM HasMeeting " +
                                                             "WHERE uid = " + userID + ");");

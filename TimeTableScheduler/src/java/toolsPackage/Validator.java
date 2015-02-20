@@ -30,12 +30,7 @@ public class Validator {
     public static boolean isValidLogin(String email, String password)
     {
         boolean success = false;
-        Database db = new Database();
-         // for local use only outside college network with putty
-        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
-       
-        //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        Database db = Database.getSetupDatabase();
         
         // use the emial validator to check the email
         EmailValidator emailValidator =  EmailValidator.getInstance();

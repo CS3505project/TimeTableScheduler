@@ -43,13 +43,8 @@ public class ScheduledTimeTable {
      * @param usersToMeet User in the meeting
      */
     public void initialiseTimeTable(String[] usersToMeet) {
-        String sqlUserList = convertToSqlUserList(usersToMeet);
-        Database db = new Database();
-        // for local use only outside college network with putty
-        //db.setup("127.0.0.1:3310", "2016_kmon1", "kmon1", "augeheid");
-       
-        //for use in college network
-        db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
+        String sqlUserList = convertToSqlList(usersToMeet);
+        Database db = Database.getSetupDatabase();
         
         // get all events for each user in meeting
         ResultSet usersEvents = db.select("(SELECT weekday, Practical.time, 4 'priority' " +
@@ -136,10 +131,10 @@ public class ScheduledTimeTable {
      * @param userIDs list of user IDs
      * @return SQL styled list of user IDs
      */
-    private static String convertToSqlUserList(String[] userIDs) {
+    private static String convertToSqlList(String[]items) {
         String sql = "(";
-        for (int i = 0; i < userIDs.length; i++) {
-            sql += "\"" + userIDs[i] + "\"" + (i < userIDs.length - 1 ? ", " : "");
+        for (int i = 0; i < items.length; i++) {
+            sql += "\"" + items[i] + "\"" + (i < items.length - 1 ? ", " : "");
         }
         sql += ")";
         return sql;
@@ -230,6 +225,7 @@ public class ScheduledTimeTable {
             }
             table += "</tr>";
         }
+        table += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         table += "</table>";
         
         return table;

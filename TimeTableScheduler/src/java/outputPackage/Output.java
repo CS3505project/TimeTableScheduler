@@ -7,12 +7,18 @@ package outputPackage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.EventTime;
 import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
+import toolsPackage.Database;
+import userPackage.User;
 import userPackage.UserType;
 import static userPackage.UserType.ADMIN;
 import static userPackage.UserType.LECTURER;
@@ -56,12 +62,19 @@ public class Output {
         return finalHTML;
     }
     
-    public String createSignUp() throws FileNotFoundException, IOException{
+    /**
+     * Creates the sign up page for the different types of users
+     * 
+     * @return HTML to create the web page
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public String createSignUp(UserType type) throws FileNotFoundException, IOException{
         String finalHTML = "";
         
         finalHTML += fileToString("commonSignUpHeader.html");
         //Switch statement with appropriate controls based on what type of user is loged in
-        switch (this.userType){
+        switch (type){
             case ADMIN:
                 finalHTML += fileToString("adminSignUp.html");
             break;
@@ -163,6 +176,30 @@ public class Output {
     }
     
     /**
+     * Return an unordered HTML list of the groups in the database
+     * 
+     * @return HTML list of groups
+     */
+    public String createGroupList() {
+        String groups = "<ul>";
+        
+        Database db = Database.getSetupDatabase();
+        
+        // get list of all groups
+        ResultSet result = db.select("");
+        try {
+            while (result.next()) {
+                groups += "<li>" + result.getString("groupName") + "</li>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while getting group list.");
+        }
+        
+        groups += "</ul>";
+        return groups;
+    }
+    
+    /**
      * Creates the form for creating a group,
      * @return A string with all the HTML for the form.
      */
@@ -173,7 +210,7 @@ public class Output {
         "</hgroup>\n" +
         "<form>\n" +
         "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"gnametext\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" required=\"required\"><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
         "</form>";
@@ -235,13 +272,13 @@ public class Output {
      * Creates a page section with the users profile image, name and details
      * @return the html representing the users profile info
      */
-    public String createProfileBox(){
+    public String createProfileBox(User user){        
         String finalHTML = "";
         //later edit this so that it actually gives user info
         finalHTML += "<div class='profile'>"
                 + "    <div class='img'></div>"
-                + "        <h1>Actual McName</h1>"
-                + "        <h2>email123@mail.com.ie</h2>"
+                + "        <h1>" + user.getFirstName() + " " + user.getSurName() + "</h1>"
+                + "        <h2>" + user.getEmail() + "</h2>"
                 + "        <p>Hello,m I am a profile blbsjbjbv</p>"
                 + "        <p>Hsdfsdf am a zzproxfile blbsjbjbv</p>"
                 + "        <div>"
@@ -251,6 +288,7 @@ public class Output {
                 + "</div>";
         return finalHTML;
     }
+    
     /**
      * Creates a dummy table with hardcoded values,
      * just for demonstration.
@@ -269,6 +307,12 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Create the main timetable for the users home page
+     * 
+     * @param userID The users ID
+     * @return HTML to display the timetable
+     */
     public String createUserTimeTable(String userID){
         String finalHTML = "";
         
@@ -279,6 +323,16 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Create a timetable that suggests the free times for a meeting with 
+     * a group of users
+     * 
+     * @param users The users to meet
+     * @param meetingLength The duration of the meeting
+     * @param overridePriority Highest priority of events that can be scheduled over
+     * @param clearPreviousSuggestion Clear the most recently suggested time slot
+     * @return HTML to create the timetable
+     */
     public String createSuggestedTimeTable(String[] users, int meetingLength, int overridePriority, boolean clearPreviousSuggestion){
         String finalHTML = "";
         
@@ -287,7 +341,6 @@ public class Output {
         suggestion.nextSuggestedTimeSlot(meetingLength, overridePriority, clearPreviousSuggestion);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.displayTimeTable();
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
     }

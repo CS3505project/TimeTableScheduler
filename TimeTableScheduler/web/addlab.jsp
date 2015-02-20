@@ -7,6 +7,13 @@
         out.println(output.createDummyTable());
         out.println(output.createAddLabForm());
         out.println(output.createFooter());
+        
+        if (checkLabDetails(request)) {
+            addLab(request);
+        } else {
+            
+        }
+
     } else {
         
     %>
