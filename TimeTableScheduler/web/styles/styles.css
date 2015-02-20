@@ -405,6 +405,10 @@ body.login{
         background: url('http://i.imgur.com/X4Pz4dp.jpg') no-repeat center center fixed;
         background-size: cover;
 }
+body.login p{
+    width: 100%;
+    text-align: center;
+}
 div.login{
         text-shadow: 1px 1px 2px #000;
         background: rgba(0,0,0,0.5);
