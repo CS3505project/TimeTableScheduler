@@ -102,7 +102,7 @@ public class ScheduledTimeTable {
                 // create a timeslot object for every event or it updates 
                 // an existing an existing timeslot
                 if (timeSlots[dayIndex][timeIndex] == null) {
-                    TimeSlot timeSlot = new TimeSlot(time, dayIndex);
+                    TimeSlot timeSlot = new TimeSlot(dayIndex, timeIndex);
                     timeSlot.addPriority(priority);
                     timeSlots[dayIndex][timeIndex] = timeSlot;
                 } else {
@@ -206,6 +206,27 @@ public class ScheduledTimeTable {
                 }
             }
         }
+    }
+    
+    /**
+     * Checks if the event specified by the day and time indexes are conflicting
+     * with existing events those priority greater than the max priority
+     * 
+     * @param dayIndex The index of the day the event is occurring
+     * @param timeIndexes Array of time indexes for the duration of the event
+     * @param maxPriority Max priority that can be scheduled over
+     * @return True if the event doesn't conflict with existing events.
+     */
+    public boolean conflictWithEvents(int dayIndex, int[] timeIndexes, int maxPriority) {
+        boolean result = false;
+        
+        for (int time = 0; time < timeIndexes.length; time++) {
+            if (timeSlots[dayIndex][time].getTotalPriority() > maxPriority) {
+                result = true;
+            }
+        }
+        
+        return result;
     }
     
     /**

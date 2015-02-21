@@ -30,6 +30,11 @@ public class Practical extends Event {
         // To-Do
         return "Practical " + this.getTime().toString();
     }
+    
+    @Override
+    public EventType getEventType() {
+        return EventType.PRACTICAL;
+    }
 
     /**
      * Returns the semester the practical is held

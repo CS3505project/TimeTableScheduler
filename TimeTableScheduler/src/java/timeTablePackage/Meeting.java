@@ -32,6 +32,11 @@ public class Meeting extends Event {
     }
     
     @Override
+    public EventType getEventType() {
+        return EventType.MEETING;
+    }
+    
+    @Override
     public String displayTableHTML() {
         return "class =\"meeting\"";
     }

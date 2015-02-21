@@ -35,6 +35,13 @@ public abstract class Event {
     public abstract String toString();
     
     /**
+     * Returns the type of event
+     * 
+     * @return The event type
+     */
+    public abstract EventType getEventType();
+    
+    /**
      * Outputs HTML needed to display the type of event in the timetable 
      * on the webpage
      * 

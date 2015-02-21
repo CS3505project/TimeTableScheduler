@@ -35,6 +35,28 @@ public class TimeTable {
         this.startDay = startDay;
         this.endDay = endDay;
     }
+    
+    /**
+     * Checks if the event specified by the day and time indexes are conflicting
+     * with existing events
+     * 
+     * @param day Day the event is occurring
+     * @param times Times for the event
+     * @return True if the event doesn't conflict with existing events.
+     */
+    public boolean conflictWithEvents(Day day, EventTime[] times) {
+        boolean conflict = false;
+        
+        for (int i = 0; i < times.length && !conflict; i++) {
+            for (Event event : sortedEvents.get(day.getDay())) {
+                if (event.getTime().equals(times[i].getTime())) {
+                    conflict = true;
+                }
+            }
+        }
+        
+        return conflict;
+    }
 
     /**
      * Set the time to start displaying from in the timetable
@@ -209,7 +231,7 @@ public class TimeTable {
      * @param endDay The day to stop displaying at in the table (inclusive)
      * @return Timetable as HTML code 
      */
-    public String createTimeTable() {
+    public String createTimeTable(EventType filterEvent) {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         
         List<Day> days = Day.getDays(startDay, endDay);
@@ -227,8 +249,9 @@ public class TimeTable {
             // store events of the day
             List<Event> eventsThisDay = sortedEvents.get(day.getDay());
             for (EventTime time : hours) {  
-                if (index < eventsThisDay.size() && 
-                        time.getTime().equals(eventsThisDay.get(index).getTime())) {
+                if (index < eventsThisDay.size() 
+                        && !eventsThisDay.get(index).getEventType().equals(filterEvent)
+                        && time.getTime().equals(eventsThisDay.get(index).getTime())) {
                     //puts event into correct time slot 
                     timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 
                                  + eventsThisDay.get(index).toString() + "</td>";

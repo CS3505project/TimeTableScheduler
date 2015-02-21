@@ -22,14 +22,21 @@ import userPackage.UserType;
  */
 public class Input {
     
-    public Input(){
-        
-    }
+    public Input(){ }
     
-    public boolean addLab(HttpServletRequest request) {
-        boolean result = false;
+    /**
+     * Inserts the new practical details into the database
+     * 
+     * @param request Contains the lab details
+     * @return True if successfully added
+     */
+    public boolean addLab(HttpServletRequest request) {        
+        Database db = Database.getSetupDatabase();
         
+        // insert the lab into the database
+        boolean result = db.insert("");
         
+        db.close();
         
         return result;
     }

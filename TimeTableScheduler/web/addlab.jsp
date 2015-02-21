@@ -11,7 +11,7 @@
         if (checkLabDetails(request)) {
             addLab(request);
         } else {
-            
+            // error adding practical
         }
 
     } else {

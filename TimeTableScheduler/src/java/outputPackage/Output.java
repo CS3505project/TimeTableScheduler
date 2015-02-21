@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.EventTime;
+import timeTablePackage.EventType;
 import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
@@ -313,13 +314,13 @@ public class Output {
      * @param userID The users ID
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(String userID){
+    public String createUserTimeTable(String userID, EventType filterEventType){
         String finalHTML = "";
         
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.addUserEvents(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += timetable.createTimeTable();        
+        finalHTML += timetable.createTimeTable(filterEventType);        
         return finalHTML;
     }
     

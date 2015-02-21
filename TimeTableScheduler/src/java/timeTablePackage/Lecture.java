@@ -30,6 +30,11 @@ public class Lecture extends Event {
         // To-Do
         return "Lecture " + this.getTime().toString();
     }
+    
+    @Override
+    public EventType getEventType() {
+        return EventType.LECTURE;
+    }
 
     /**
      * Returns the semester the lecture is held

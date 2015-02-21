@@ -4,43 +4,33 @@
  */
 package timeTablePackage;
 
-import java.sql.Date;
-import java.sql.Time;
-
 /**
  * Represents a specific time slot in timetable
  *
  * @author John O Riordan
  */
 public class TimeSlot {
-    private Time time;
     private int dayOfWeek;
+    private int timeIndex;
     private int[] events;
     private int totalPriority;
     private boolean suggested;
     
-    public TimeSlot(Time time, int dayOfWeek) {
-        this.time = time;
+    public TimeSlot(int dayOfWeek, int timeIndex) {
         this.dayOfWeek = dayOfWeek;
+        this.timeIndex = timeIndex;
         this.events = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
     }
     
     public TimeSlot() {
-        this.time = null;
         this.dayOfWeek = -1;
+        this.timeIndex = -1;
         this.events = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
     }
 
-    /**
-     * Returns the time for this timeslot
-     * 
-     * @return Time
-     */
-    public Time getTime() {
-        return time;
-    }
+ 
 
     /**
      * Returns the day of the week for this timeslot
@@ -50,6 +40,15 @@ public class TimeSlot {
      */
     public int getDayOfWeek() {
         return dayOfWeek;
+    }
+    
+    /**
+     * Returns the index representing the time of this timeslot
+     * 
+     * @return Time index as an int
+     */
+    public int getTimeIndex() {
+        return timeIndex;
     }
     
     /**
