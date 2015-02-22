@@ -128,20 +128,32 @@ public class Output {
         "	<h1>Add Meeting</h1>\n" +
         "	<h2>Step 1 of 2</h2>\n" +
         "</hgroup>\n" +
+        "<jsp:setProperty name=\"MeetingRequest\" property=\"*\"/>" +
         "<form>\n" +
         "	<label for=\"date\">Date:</label>\n" +
-        "	<input type=\"date\" name=\"date\" id=\"date\"  required=\"required\"><br>\n" +
+        "	<input type=\"date\" name=\"date\" id=\"date\" value=\"<%= MeetingRequest.getDate() %>\" required=\"required\"><br>\n" +
         "	<label for=\"select\">Group:</label>\n" +
         "	<select id=\"select\">\n" +
                 // stuff from database
         "	</select><br>\n" +
         "	<label for=\"meetingName\">Meeting Name:</label>\n" +
-        "	<input type=\"text\" name=\"meetingName\" id=\"meetingName\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"meetingName\" id=\"meetingName\" value=\"<%= MeetingRequest.getMeetingName() %>\" required=\"required\"><br>\n" +
+        "       <label for=\"description\">Description:</label>\n" +
+        "	<input type=\"textarea\" name=\"description\" id=\"description\" value=\"<%= MeetingRequest.getDescription() %>\" required=\"required\"><br>\n" +
+        "       <label for=\"priority\">Priority:</label>\n" +
+        "	<input type=\"text\" name=\"priority\" id=\"priority\" value=\"<%= MeetingRequest.getPriority() %>\" required=\"required\"><br>\n" +
+        "       <label for=\"time\">Time:</label>\n" +
+        "	<input type=\"text\" name=\"time\" id=\"time\" value=\"<%= MeetingRequest.getTime() %>\" required=\"required\"><br>\n" +
         "	<label for=\"venue\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"venue\" id=\"venue\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"venue\" id=\"venue\" value=\"<%= MeetingRequest.getVenue() %>\" required=\"required\"><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>";
+        "</form>" +
+        "<p>" +
+            "<%-- print errors and comit valid values to database --%>" +
+            "<%= MeetingRequest.getErrors()%>" +
+            "<%= MeetingRequest.createMeeting() %>" +
+        "</p>";
         //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
         return finalHTML;
     }
@@ -187,7 +199,7 @@ public class Output {
         Database db = Database.getSetupDatabase();
         
         // get list of all groups
-        ResultSet result = db.select("");
+        ResultSet result = db.select("SELECT groupName FROM Group;");
         try {
             while (result.next()) {
                 groups += "<li>" + result.getString("groupName") + "</li>";
@@ -209,12 +221,18 @@ public class Output {
         "	<h1>Create Group</h1>\n" +
         "	<h2>Step 1 of 2</h2>\n" +
         "</hgroup>\n" +
+        "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
         "<form>\n" +
         "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" required=\"required\"><br>\n" +
+        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" value=\"<%= GroupRequest.getGroupName() %>\" required=\"required\"><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>";
+        "</form>" +
+        "<p>" +
+            "<%-- print errors and comit valid values to database --%>" +
+            "<%= GroupRequest.getErrors()%>" +
+            "<%= GroupRequest.createGroup() %>" +
+        "</p>";
         //add actual code etc
         return finalHTML;
     }
@@ -224,18 +242,23 @@ public class Output {
      * with appropriate dropdowns for the public groups etc.
      * @return A string with all the HTML for the form.
      */
-    public String createJoinGroupForm(){
+    public String createJoinGroupForm(String userid){
         String finalHTML = "<hgroup>\n" +
         "	<h1>Join Group</h1>\n" +
         "</hgroup>\n" +
+        "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
         "<form>\n" +
         "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<select id=\"gname\">\n" +
+        "	<select id=\"gname\" value=\"<%= GroupRequest.getGroupName() %>\">\n" +
                 //stuff from database
         "	</select><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>";
+        "</form>" +
+        "<p>" +
+            "<%-- print errors and comit valid values to database --%>" +
+            "<%= GroupRequest.joinGroup(" + userid + ") %>" +
+        "</p>";
         //add actual code
         return finalHTML;
     }
@@ -314,13 +337,20 @@ public class Output {
      * @param userID The users ID
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(String userID, EventType filterEventType){
+    public String createUserTimeTable(String userID, String filter){
         String finalHTML = "";
         
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.addUserEvents(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += timetable.createTimeTable(filterEventType);        
+        // filter menu for the timetable
+        finalHTML += "<ul>" +
+                         "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +
+                         "<li><a href=\"index.jsp?filter=lecture\">Lecture<a/></li>" +
+                         "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
+                         "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
+                     "</ul>"; 
+        finalHTML += timetable.createTimeTable(EventType.getEventType(filter));        
         return finalHTML;
     }
     

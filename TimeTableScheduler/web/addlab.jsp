@@ -4,16 +4,9 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        out.println(output.createDummyTable());
+        out.println(output.createUserTimeTable(user.getUserID(), request.getAttribute("filter")));
         out.println(output.createAddLabForm());
         out.println(output.createFooter());
-        
-        if (checkLabDetails(request)) {
-            addLab(request);
-        } else {
-            // error adding practical
-        }
-
     } else {
         
     %>

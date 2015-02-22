@@ -10,7 +10,23 @@ package userPackage;
  * @author John O Riordan
  */
 public enum UserType {
-    LECTURER(),
-    ADMIN(),
-    STUDENT();
+    LECTURER("lecturer"),
+    ADMIN("admin"),
+    STUDENT("student");
+    
+    private String name;
+    
+    UserType(String name) {
+        this.name = name;
+    }
+    
+    public static UserType getUserType(String user) {
+        UserType eventType = null;
+        for (UserType type : UserType.values()) {
+            if (type.name.equals(user)) {
+                eventType = type;
+            }
+        }
+        return eventType;
+    }
 }
