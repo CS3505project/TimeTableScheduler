@@ -10,6 +10,16 @@ import java.sql.ResultSet;
 public class Validator {
     
     /**
+     * Returns an escaped version of the string entered.
+     * 
+     * @param input The string to escape
+     * @return The escaped string
+     */
+    public String escapeString(String input){
+        return StringEscapeUtils.escapeJava(input);
+    }
+    
+    /**
      * Checks if the email address is a valid email
      * 
      * @param email The email address
