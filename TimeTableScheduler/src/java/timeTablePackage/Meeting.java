@@ -38,7 +38,8 @@ public class Meeting extends Event {
     
     @Override
     public String displayTableHTML() {
-        return "class =\"meeting\"";
+        return "<td class=\"meeting\">" 
+               + toString() + "</td>";
     }
 
     /**

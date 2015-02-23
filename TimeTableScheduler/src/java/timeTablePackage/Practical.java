@@ -61,7 +61,8 @@ public class Practical extends Event {
     
     @Override
     public String displayTableHTML() {
-        return "class =\"practical\"";
+        return "<td class=\"practical\">" 
+               + toString() + "</td>";
     }
 
     /**

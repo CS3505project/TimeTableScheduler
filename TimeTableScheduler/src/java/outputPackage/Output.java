@@ -311,7 +311,10 @@ public class Output {
                          "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
                          "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
                      "</ul>"; 
-        finalHTML += timetable.createTimeTable(EventType.getEventType(filter));        
+        
+        EventType filterType = EventType.getEventType(filter);
+        finalHTML += timetable.createTimeTable(filterType == null ? EventType.ALL_EVENTS : filterType); 
+        
         return finalHTML;
     }
     

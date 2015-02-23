@@ -20,13 +20,21 @@ public enum EventType {
         this.name = name;
     }
     
+    public String getName() {
+        return name;
+    }
+    
     public static EventType getEventType(String event) {
         EventType eventType = null;
         for (EventType type : EventType.values()) {
-            if (type.name.equals(event)) {
+            if (type.getName().equals(event)) {
                 eventType = type;
             }
         }
         return eventType;
+    }
+    
+    public boolean equals(EventType type) {
+        return this.name.equals(type.getName());
     }
 }

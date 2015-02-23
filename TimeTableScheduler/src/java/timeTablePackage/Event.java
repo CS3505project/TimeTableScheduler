@@ -7,6 +7,7 @@ package timeTablePackage;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Generic event that can be a lecture, practical or meeting.
@@ -58,6 +59,12 @@ public abstract class Event {
     public String getDayOfWeek() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DAY_FORMAT);
         return dateFormat.format(this.getDate());
+    }
+    
+    public int getHourIndex() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(time);
+        return cal.get(Calendar.HOUR_OF_DAY);
     }
 
     /**

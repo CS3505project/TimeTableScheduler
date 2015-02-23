@@ -61,7 +61,8 @@ public class Lecture extends Event {
     
     @Override
     public String displayTableHTML() {
-        return "class =\"lecture\"";
+        return "<td class=\"lecture\">" 
+               + toString() + "</td>";
     }
     
     /**

@@ -19,7 +19,7 @@ import toolsPackage.Database;
  * @author John O Riordan
  */
 public class TimeTable {
-    private Map<String, LinkedList<Event>> sortedEvents;
+    private Map<String, LinkedList<Event>> events;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
@@ -29,7 +29,7 @@ public class TimeTable {
     public static final String HOUR_INDEX = "k";
 
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
-        this.sortedEvents = new HashMap<String, LinkedList<Event>>();
+        this.events = new HashMap<String, LinkedList<Event>>();
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDay = startDay;
@@ -48,7 +48,7 @@ public class TimeTable {
         boolean conflict = false;
         
         for (int i = 0; i < times.length && !conflict; i++) {
-            for (Event event : sortedEvents.get(day.getDay())) {
+            for (Event event : events.get(day.getDay())) {
                 if (event.getTime().equals(times[i].getTime())) {
                     conflict = true;
                 }
@@ -135,7 +135,7 @@ public class TimeTable {
                                             userLectureEvents.getString("room"),
                                             userLectureEvents.getDate("startDate"),
                                             userLectureEvents.getDate("endDate"));
-                addEventToSortedList(lecture);
+                addEventToList(lecture);
             }
 
             // retrieve list of practicals for a particular user id
@@ -168,7 +168,7 @@ public class TimeTable {
                                                     userPracticalEvents.getString("room"),
                                                     userPracticalEvents.getDate("startDate"),
                                                     userPracticalEvents.getDate("endDate"));
-                addEventToSortedList(practical);
+                addEventToList(practical);
             }
             
             // retrieve list of meetings that a particular user id is involved with
@@ -187,7 +187,7 @@ public class TimeTable {
                                             userPersonalEvents.getString("description"),
                                             userPersonalEvents.getInt("priority"),
                                             userPersonalEvents.getString("organiser_uid"));
-                addEventToSortedList(meeting);
+                addEventToList(meeting);
             }
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
@@ -202,19 +202,8 @@ public class TimeTable {
      * 
      * @param event Event to be added
      */
-    private void addEventToSortedList(Event event) {
-        if (event.getTime().after(startTime.getTime())
-                && event.getTime().before(endTime.getTime())) {
-            
-            LinkedList<Event> eventList = sortedEvents.get(event.getDayOfWeek());
-            
-            int i = 0;
-            while (i < eventList.size()
-                    && event.getTime().after(eventList.get(i).getTime())) {
-                i++;
-            }
-            eventList.add(i, event);
-        }
+    private void addEventToList(Event event) {
+        events.get(event.getDayOfWeek()).set(event.getHourIndex(), event);
     }
     
     /**
@@ -222,7 +211,11 @@ public class TimeTable {
      */
     private void initialiseEventLists() {
         for (Day day : Day.getDays(startDay, endDay)) {
-            sortedEvents.put(day.getDay(), new LinkedList<Event>());
+            LinkedList<Event> events = new LinkedList<Event>();
+            for (int timeIndex = 0; timeIndex <= EventTime.numHours; timeIndex++) {
+                events.add(null);
+            }
+            this.events.put(day.getDay(), events);
         }
     }
 
@@ -250,17 +243,16 @@ public class TimeTable {
         for (Day day : days) {
             //generate days of time table
             timetable += "<tr><th>" + day.getDay() + "</th>";
-            int index = 0;
             // store events of the day
-            List<Event> eventsThisDay = sortedEvents.get(day.getDay());
-            for (EventTime time : hours) {  
-                if (index < eventsThisDay.size() 
-                        && time.getTime().equals(eventsThisDay.get(index).getTime())) {
+            List<Event> scheduledEvents = events.get(day.getDay());
+            for (EventTime time : hours) { 
+                Event curEvent = scheduledEvents.get(time.getTimeIndex());
+                if (curEvent != null 
+                        && filterEvent(curEvent.getEventType(), filterEvent)
+                        && time.getTime().equals(curEvent.getTime())) {
                     //puts event into correct time slot 
-                    timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 
-                                 + eventsThisDay.get(index).toString() + "</td>";
-                    index++;
-                   
+                    timetable += curEvent.displayTableHTML();
+
                 } else {
                     timetable += "<td></td>";
                 }
@@ -272,6 +264,10 @@ public class TimeTable {
         timetable += "</table>";
         
         return timetable;
+    }
+    
+    private boolean filterEvent(EventType eventType, EventType filterType) {
+        return (eventType.equals(filterType) || filterType.equals(EventType.ALL_EVENTS));
     }
 
     /**
@@ -299,7 +295,7 @@ public class TimeTable {
      * @return Map of the events sorted by day and time 
      */
     public Map<String, LinkedList<Event>> getSortedEvents() {
-        return sortedEvents;
+        return events;
     }
 
     /**
