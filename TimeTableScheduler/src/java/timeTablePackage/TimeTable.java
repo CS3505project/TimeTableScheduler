@@ -107,22 +107,25 @@ public class TimeTable {
         try {
             // retrieve list of lectures for a particular user id
             ResultSet userLectureEvents = db.select("SELECT Lecture.moduleCode, semester, weekday, Lecture.time, room, startDate, endDate " +
-                                                    "FROM Lecture JOIN Cancellation " +
-                                                    "ON Lecture.moduleCode = Cancellation.moduleCode " +
-                                                    "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                                    "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
-                                                    "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                                    "OR Cancellation.time != Lecture.time " +
+                                                    "FROM Lecture " +
+                                                    "WHERE moduleCode NOT IN " +
+                                                    "(" +
+                                                    "	SELECT moduleCode " +
+                                                    "	FROM Cancellation " +
+                                                    "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                                    "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                                    "	AND Cancellation.time = Lecture.time " +
+                                                    ")" +
                                                     "AND Lecture.moduleCode IN " +
-                                                            "(SELECT Lecture.moduleCode " +
-                                                            "FROM ModuleInCourse " +
-                                                            "WHERE courseid IN " +
-                                                                    "(SELECT courseid " +
-                                                                    "FROM GroupTakesCourse " +
-                                                                    "WHERE gid IN " +
-                                                                            "(SELECT gid " +
-                                                                            "FROM InGroup " +
-                                                                            "WHERE uid = " + userID + ")));");
+                                                    "	(SELECT Lecture.moduleCode " +
+                                                    "	FROM ModuleInCourse " +
+                                                    "	WHERE courseid = " +
+                                                    "		(SELECT courseid " +
+                                                    "		FROM GroupTakesCourse " +
+                                                    "		WHERE gid IN " +
+                                                    "			(SELECT gid " +
+                                                    "			FROM InGroup " +
+                                                    "			WHERE uid = " + userID + ")));");
             
             while (userLectureEvents.next()) {
                 Lecture lecture = new Lecture(userLectureEvents.getString("moduleCode"),
@@ -137,22 +140,25 @@ public class TimeTable {
 
             // retrieve list of practicals for a particular user id
             ResultSet userPracticalEvents = db.select("SELECT Practical.moduleCode, semester, weekday, Practical.time, room, startDate, endDate " +
-                                                    "FROM Practical JOIN Cancellation " +
-                                                    "ON Practical.moduleCode = Cancellation.moduleCode " +
-                                                    "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                                    "AND WEEK(Cancellation.date) != WEEK(CURDATE()) " +
-                                                    "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                                    "OR Cancellation.time != Practical.time " +
-                                                    "AND Practical.moduleCode IN " +
-                                                            "(SELECT Practical.moduleCode " +
-                                                            "FROM ModuleInCourse " +
-                                                            "WHERE courseid IN " +
-                                                                    "(SELECT courseid " +
-                                                                    "FROM GroupTakesCourse " +
-                                                                    "WHERE gid IN " +
-                                                                            "(SELECT gid " +
-                                                                            "FROM InGroup " +
-                                                                            "WHERE uid = " + userID + ")));");
+                                                        "FROM Practical " +
+                                                        "WHERE moduleCode NOT IN " +
+                                                        "(" +
+                                                        "	SELECT moduleCode " +
+                                                        "	FROM Cancellation " +
+                                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                                        "	AND Cancellation.time = Practical.time " +
+                                                        ")" +
+                                                        "AND Practical.moduleCode IN " +
+                                                        "	(SELECT Practical.moduleCode " +
+                                                        "	FROM ModuleInCourse " +
+                                                        "	WHERE courseid = " +
+                                                        "		(SELECT courseid " +
+                                                        "		FROM GroupTakesCourse " +
+                                                        "		WHERE gid IN " +
+                                                        "			(SELECT gid " +
+                                                        "			FROM InGroup " +
+                                                        "			WHERE uid = " + userID + ")));");
                     
             while (userPracticalEvents.next()) {
                 Practical practical = new Practical(userPracticalEvents.getString("moduleCode"),
@@ -168,11 +174,10 @@ public class TimeTable {
             // retrieve list of meetings that a particular user id is involved with
             ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
                                                     "FROM Meeting " +
-                                                    "WHERE WEEK(date) = WEEK(CURDATE()) " +
-                                                    "AND meetingid IN " +
-                                                    "(SELECT mid " +
-                                                            "FROM HasMeeting " +
-                                                            "WHERE uid = " + userID + ");");
+                                                    "WHERE meetingid = " +
+                                                    "(	SELECT mid " +
+                                                    "	FROM HasMeeting " +
+                                                    "	WHERE uid = " + userID + ");");
                                                                     
             while (userPersonalEvents.next()) {
                 Meeting meeting = new Meeting(userPersonalEvents.getString("meetingid"),
@@ -205,7 +210,7 @@ public class TimeTable {
             
             int i = 0;
             while (i < eventList.size()
-                    && event.getTime().before(eventList.get(i).getTime())) {
+                    && event.getTime().after(eventList.get(i).getTime())) {
                 i++;
             }
             eventList.add(i, event);
@@ -250,7 +255,6 @@ public class TimeTable {
             List<Event> eventsThisDay = sortedEvents.get(day.getDay());
             for (EventTime time : hours) {  
                 if (index < eventsThisDay.size() 
-                        && !eventsThisDay.get(index).getEventType().equals(filterEvent)
                         && time.getTime().equals(eventsThisDay.get(index).getTime())) {
                     //puts event into correct time slot 
                     timetable += "<td " + eventsThisDay.get(index).displayTableHTML() + " >" 

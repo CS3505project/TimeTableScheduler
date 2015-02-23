@@ -118,45 +118,6 @@ public class Output {
         finalHTML += fileToString("logout.html");
         return finalHTML;
     }
-    /**
-     * Creates the form for adding a meeting,
-     * with appropriate dropdowns of groups etc. with whom to have the meeting with
-     * @return A string with all the HTML for the form.
-     */
-    public String createMeetingForm(){
-        String finalHTML = "<hgroup>\n" +
-        "	<h1>Add Meeting</h1>\n" +
-        "	<h2>Step 1 of 2</h2>\n" +
-        "</hgroup>\n" +
-        "<jsp:setProperty name=\"MeetingRequest\" property=\"*\"/>" +
-        "<form>\n" +
-        "	<label for=\"date\">Date:</label>\n" +
-        "	<input type=\"date\" name=\"date\" id=\"date\" value=\"<%= MeetingRequest.getDate() %>\" required=\"required\"><br>\n" +
-        "	<label for=\"select\">Group:</label>\n" +
-        "	<select id=\"select\">\n" +
-                // stuff from database
-        "	</select><br>\n" +
-        "	<label for=\"meetingName\">Meeting Name:</label>\n" +
-        "	<input type=\"text\" name=\"meetingName\" id=\"meetingName\" value=\"<%= MeetingRequest.getMeetingName() %>\" required=\"required\"><br>\n" +
-        "       <label for=\"description\">Description:</label>\n" +
-        "	<input type=\"textarea\" name=\"description\" id=\"description\" value=\"<%= MeetingRequest.getDescription() %>\" required=\"required\"><br>\n" +
-        "       <label for=\"priority\">Priority:</label>\n" +
-        "	<input type=\"text\" name=\"priority\" id=\"priority\" value=\"<%= MeetingRequest.getPriority() %>\" required=\"required\"><br>\n" +
-        "       <label for=\"time\">Time:</label>\n" +
-        "	<input type=\"text\" name=\"time\" id=\"time\" value=\"<%= MeetingRequest.getTime() %>\" required=\"required\"><br>\n" +
-        "	<label for=\"venue\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"venue\" id=\"venue\" value=\"<%= MeetingRequest.getVenue() %>\" required=\"required\"><br>\n" +
-        "	<label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>" +
-        "<p>" +
-            "<%-- print errors and comit valid values to database --%>" +
-            "<%= MeetingRequest.getErrors()%>" +
-            "<%= MeetingRequest.createMeeting() %>" +
-        "</p>";
-        //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
-        return finalHTML;
-    }
     
     /**
      * Creates the form for adding a lab,
@@ -322,7 +283,7 @@ public class Output {
         String finalHTML = "";
         
         ScheduledTimeTable suggestion = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        suggestion.initialiseTimeTable(new String[]{"22"});
+        suggestion.initialiseTimeTable(new String[]{"1", "9"});
         suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.displayTimeTable();
@@ -344,7 +305,7 @@ public class Output {
         timetable.addUserEvents(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
         // filter menu for the timetable
-        finalHTML += "<ul>" +
+        finalHTML += "<ul class=\"filters\">" +
                          "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +
                          "<li><a href=\"index.jsp?filter=lecture\">Lecture<a/></li>" +
                          "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +

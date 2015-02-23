@@ -47,48 +47,54 @@ public class ScheduledTimeTable {
         Database db = Database.getSetupDatabase();
         
         // get all events for each user in meeting
-        ResultSet usersEvents = db.select("(SELECT weekday, Practical.time, 4 'priority' " +
-                                            "FROM Practical JOIN Cancellation " +
-                                            "ON Practical.moduleCode = Cancellation.moduleCode " +
-                                            "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                            "AND (WEEK(Cancellation.date) != WEEK(CURDATE()) " +
-                                            "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                            "OR Cancellation.time != Practical.time) " +
-                                            "AND Practical.moduleCode IN " +
-                                            "	(SELECT Practical.moduleCode " +
-                                            "	FROM ModuleInCourse " +
-                                            "	WHERE courseid IN " +
-                                            "		(SELECT courseid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE gid IN " +
-                                            "			(SELECT gid " +
-                                            "			FROM InGroup " +
-                                            "			WHERE uid IN " + sqlUserList + " )))) " +
-                                            "UNION " +
-                                            "(SELECT weekday, Lecture.time, 5 'priority' " +
-                                            "FROM Lecture JOIN Cancellation " +
-                                            "ON Lecture.moduleCode = Cancellation.moduleCode " +
-                                            "WHERE CURDATE() BETWEEN startDate AND endDate " +
-                                            "AND (WEEK(Cancellation.date) != WEEK(CURDATE()) " +
-                                            "OR weekday != WEEKDAY(Cancellation.date + 1) " +
-                                            "OR Cancellation.time != Lecture.time) " +
-                                            "AND Lecture.moduleCode IN " +
-                                            "	(SELECT Lecture.moduleCode " +
-                                            "	FROM ModuleInCourse " +
-                                            "	WHERE courseid IN " +
-                                            "		(SELECT courseid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE gid IN " +
-                                            "			(SELECT gid " +
-                                            "			FROM InGroup " +
-                                            "			WHERE uid IN " + sqlUserList + ")))) " +
-                                            "UNION " +
-                                            "(SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
-                                            "FROM Meeting " +
-                                            "WHERE meetingid IN " +
-                                            "(SELECT mid " +
-                                            "	FROM HasMeeting" +
-                                            "	WHERE uid IN " + sqlUserList + "));");
+        ResultSet usersEvents = db.select("SELECT weekday, Practical.time, 4 'priority' " +
+                                        "FROM Practical " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND Cancellation.time = Practical.time " +
+                                        ") " +
+                                        "AND Practical.moduleCode IN " +
+                                        "	(SELECT Practical.moduleCode " +
+                                        "	FROM ModuleInCourse " +
+                                        "	WHERE courseid IN " +
+                                        "		(SELECT courseid " +
+                                        "		FROM GroupTakesCourse " +
+                                        "		WHERE gid IN " +
+                                        "			(SELECT gid " +
+                                        "			FROM InGroup " +
+                                        "			WHERE uid IN " + sqlUserList + "))) " +
+                                        "UNION " +
+                                        "SELECT weekday, Lecture.time, 5 'priority' " +
+                                        "FROM Lecture " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND Cancellation.time = Lecture.time " +
+                                        ") " +
+                                        "AND Lecture.moduleCode IN " +
+                                        "	(SELECT Lecture.moduleCode " +
+                                        "	FROM ModuleInCourse " +
+                                        "	WHERE courseid IN " +
+                                        "		(SELECT courseid " +
+                                        "		FROM GroupTakesCourse " +
+                                        "		WHERE gid IN " +
+                                        "			(SELECT gid " +
+                                        "			FROM InGroup " +
+                                        "			WHERE uid IN " + sqlUserList + "))) " +
+                                        "UNION " +
+                                        "SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
+                                        "FROM Meeting " +
+                                        "WHERE meetingid IN " +
+                                        "(	SELECT mid " +
+                                        "	FROM HasMeeting " +
+                                        "	WHERE uid IN " + sqlUserList + ");");
         try {            
             while (usersEvents.next()) {
                 int dayIndex = usersEvents.getInt("weekday");
