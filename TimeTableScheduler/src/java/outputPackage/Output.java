@@ -260,7 +260,8 @@ public class Output {
     public String createProfileBox(User user){        
         String finalHTML = "";
         //later edit this so that it actually gives user info
-        finalHTML += "<div class='profile'>"
+        finalHTML +="<h1>Profile</h1>" 
+                + "<div class='profile'>"
                 + "    <div class='img'></div>"
                 + "        <h1>" + user.getFirstName() + " " + user.getSurName() + "</h1>"
                 + "        <h2>" + user.getEmail() + "</h2>"
@@ -273,7 +274,15 @@ public class Output {
                 + "</div>";
         return finalHTML;
     }
-    
+    /**
+     * Creates a page section with the users messages
+     * @return the html representing the messages
+     */
+    public String createMessages(User user){        
+        String finalHTML = "";
+        finalHTML += "<h1>Messages</h1>";
+        return finalHTML;
+    }
     /**
      * Creates a dummy table with hardcoded values,
      * just for demonstration.

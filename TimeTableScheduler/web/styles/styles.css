@@ -14,7 +14,9 @@
 }
 
 body{
-        background-color: #eef;
+        background-color: #124;
+        background: url('http://i.imgur.com/X4Pz4dp.jpg') no-repeat center center fixed;
+        background-size: cover;
 	font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
 	color: #778;
 	font-size: 18px;
@@ -34,11 +36,12 @@ body>nav{
 }
 section.main{
 	position: fixed;
-        width: 80%;
+        width: 100%;
         min-width: 400px;
 	left: 0px;
 	top: 0px;
 	margin-left: 132px;
+        padding-right: 140px;
 	padding-bottom: 9000px;
 	margin-bottom: -9000px;
 }
@@ -46,7 +49,7 @@ section.main{
 /* NAV SIDEBAR */
 /***************/
 body>nav{
-	background-color: #223;
+	background: rgba(0,0,0,0.5);
 	color: #dde;
 	box-shadow: inset 0 0 10px #000;
 }
@@ -59,10 +62,10 @@ body>nav div.logo{
 }
 body>nav span.break{
 	display: block;
-	background-color: #112;
+	background: rgba(0,0,0,0.1);
 	height: 8px;
-	border-bottom: 1px solid #335;
-	border-top: 1px solid #224;
+	border-bottom: 1px solid rgba(140,140,255,0.2);
+	border-top: 1px solid rgba(140,140,255,0.1);
         box-shadow: inset 0 0 2px #000;
 }
 
@@ -86,8 +89,8 @@ body>nav>ul>li{
 }
 body>nav a{
 	display: block;
-	padding-top: 1px;
-	padding-bottom: 1px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	margin-top: 2px;
 	margin-bottom: 2px;
 	color: #779;
@@ -125,11 +128,11 @@ body>nav a.navicon{
 }
 body>nav a.navicon:hover{
 	color: #88a;
-	background-color: #112;
+	background-color: rgba(0,0,0,0.3);
 }
 body>nav a.navicon:focus{
 	color: #88a;
-	background-color: #112;
+	background-color: rgba(0,0,0,0.3);
 }
 body>nav a#profile, body>nav a#profile:hover{
 	background-image: url('profile.png');
@@ -161,7 +164,7 @@ body>nav footer{
 	padding-bottom: 4px;
 	border-top: 1px solid #335;
 	width: 132px;
-	background: #112;
+	background: rgba(0,0,0,0.1);
 	box-shadow: inset 0 0 10px #000;
 }
 body>nav footer a{
@@ -188,32 +191,52 @@ body>nav a#about,body>nav a#help{
 }
 body>nav a#about:hover,body>nav a#help:hover{
 	background-color: #000;
-	color: #446;;
+	color: #446;
 }
 nav small{
-    font-size: 12px;
-    text-align: center;
-    display: inline-block;
-    width: 100%;
+        font-size: 12px;
+        text-align: center;
+        display: inline-block;
+        width: 100%;
 }
 /********/
 /* MAIN */
 /********/
 section.main{
 	background: #eef;
-	padding-left: 4px;
+	padding-left: 8px;
 	border-left: 1px solid #fff;
 	box-shadow: -3px 0 rgba(0,0,0,0.2), -2px 0 rgba(0,0,0,0.2),-1px 0 rgba(0,0,0,0.3);
 	z-index: 10;
 }
-section.main h1{
+section.main>h1{
+        display: block;
+        position: relative;
+        top: 0;
+        left: -9px;
+        background-color: #48e;
+        background: linear-gradient(to bottom, #48e 70%,#06c 100%);
+        border-left: 1px solid #6af;
+        text-shadow: 1px 1px 2px #06c;
+        color: #fff;
 	display: inline-block;
-	width: 100%;
-	border-bottom: 1px dashed #889;
+	width: 150%;
 	font-size: 24px;
-	font-family:"CLB", Helvetica, sans-serif;
-	margin-bottom: 4px;
+        font-weight: bold;
+        padding-left: 12px;
+        padding-top: 12px;
 	padding-bottom: 4px;
+}
+section.main>h1:after{
+        position: relative;
+        top: 5px;
+        left: -9px;
+        content:"";
+        display: block;
+        width: 150%;
+        height: 1px;
+        background: #fff;
+        border-top: #06c;
 }
 /**************/
 /* FILTER BAR */
@@ -296,7 +319,7 @@ tr td.meeting{
 }
 tr td.practical{
 	background: #48e;
-	border: 1px solid #06c;
+        border: 1px solid #06c;
 	text-shadow: 1px 1px 2px #06c;
 	color: #eef;
 }
@@ -306,8 +329,12 @@ tr td.lecture{
 	text-shadow: 1px 1px 2px #889;
 	color: #eef;
 }
+tr th:first-child{
+        width: 102px;
+        background: #778;
+}
 td:nth-child(even){
-   background-color: #e0eafd;
+        background-color: #e0eafd;
 }
 /****************/
 /* priority bgs */
@@ -364,6 +391,7 @@ section.main hgroup{
 	border: 1px solid #778;
 	padding: 0;
 	height: 30px;
+        line-height: 28px;
 	margin-bottom: 6px;
         margin-top: 6px;
 }
@@ -376,18 +404,18 @@ section.main hgroup h1{
 	padding: 0px;
 	padding-left: 6px;
 	border-bottom: none;
-	width: 8em;
+	width: 200px;
 }
 section.main hgroup h1:after{
 	display: block;
 	position: absolute;
-	right: -0.8em;
-	top: 0;
+	right: -18px;
+	top: -1;
 	content: "";
 	width: 0;
 	height: 0;
 	border-style: solid;
-	border-width: 0.6em 0 0.6em 0.8em;
+	border-width: 15px 0 15px 18px;
 	border-color: transparent transparent transparent #778;
 }
 section.main hgroup h2{
@@ -450,6 +478,14 @@ label{
 body.login{
         background: url('http://i.imgur.com/X4Pz4dp.jpg') no-repeat center center fixed;
         background-size: cover;
+        color: #dde;
+}
+body.login h1{
+        text-align: center;
+}
+body.login a{
+        text-decoration: none;
+        color: #6e6e92;
 }
 body.login p{
         position: relative;
@@ -577,7 +613,7 @@ div.popup button{
 div.profile{
     min-width: 400px;
     background: #fff;
-    margin-top: 6px;
+    margin-top: 8px;
     padding-top: 6px;
     padding-bottom: 6px;
     box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
@@ -602,10 +638,10 @@ section.main div.profile>h1{
     border: none;
 }
 section.main div.profile>h2{
-    font-size: 16px;
+    font-size: 14px;
     position: relative;
     left: 112px;
-    top: -114px;
+    top: -110px;
 }
 div.profile>p{
     font-size: 14px;
@@ -614,7 +650,7 @@ div.profile>p{
     top: -108px;
 }
 div.profile>div{
-    margin-top: -70px;
+    margin-top: -58px;
     background-color: #889;
     border-bottom: 1px solid #778;
     margin-bottom: 6px;

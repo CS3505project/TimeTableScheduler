@@ -4,7 +4,7 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        //messages
+        out.println(output.createMessages(user));
         out.println(output.createFooter());
     } else {
         
