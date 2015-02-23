@@ -5,7 +5,7 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        out.println(output.createUserTimeTable(user.getUserID(), request.getAttribute("filter")));
+        out.println(output.createUserTimeTable(user.getUserID(),(String)request.getAttribute("filter")));
         out.println(output.createMeetingForm());
         out.println(output.createFooter());
     } else {

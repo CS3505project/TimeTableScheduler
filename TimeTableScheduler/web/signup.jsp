@@ -2,6 +2,6 @@
 <%
     outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
     // insert error message from java bean as parameter
-    out.println(output.createSignUp(userPackage.UserType.Student));
+    out.println(output.createSignUp(userPackage.UserType.STUDENT));
 
 %>
