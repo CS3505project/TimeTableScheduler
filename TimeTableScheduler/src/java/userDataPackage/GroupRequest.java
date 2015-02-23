@@ -20,9 +20,7 @@ public final class GroupRequest extends userRequest{
     /**
      *
      */
-    public GroupRequest(HttpServletRequest request, userPackage.User user, Group group){
-        super(request, user);
-        this.group = group;
+    public GroupRequest(){
     }
     
     /**

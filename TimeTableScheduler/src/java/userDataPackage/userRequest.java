@@ -18,10 +18,13 @@ public abstract class userRequest {
     private userPackage.User user;
     private List<String> errors;
     
-    public userRequest(HttpServletRequest request, userPackage.User user){
+    public userRequest(){
+        this.errors = new ArrayList<String>();
+    }
+    
+    public void setValues(HttpServletRequest request, userPackage.User user) {
         this.request = request;
         this.user = user;
-        this.errors = new ArrayList<String>();
     }
     
     public User getUser() {

@@ -15,8 +15,8 @@ import toolsPackage.Database;
  */
 public class PracticalRequest extends userRequest{
     
-    public PracticalRequest(HttpServletRequest request, userPackage.User user){
-        super(request, user);
+    public PracticalRequest(){
+
     }
     
     /**

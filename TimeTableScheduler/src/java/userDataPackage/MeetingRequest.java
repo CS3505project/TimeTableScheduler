@@ -23,9 +23,7 @@ public final class MeetingRequest extends userRequest{
     /**
      * Default constructor
      */
-    public MeetingRequest(HttpServletRequest request, userPackage.User user){
-        super(request, user);
-    }
+    public MeetingRequest(){ }
     
     /**
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.

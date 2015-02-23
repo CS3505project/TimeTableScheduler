@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ModuleRequest extends userRequest{
     
-    public ModuleRequest(HttpServletRequest request, userPackage.User user){
-        super(request, user);
+    public ModuleRequest(){
+
     }
     
 }

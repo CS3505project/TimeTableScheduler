@@ -6,6 +6,7 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         out.println(output.createUserTimeTable(user.getUserID(),(String)request.getAttribute("filter")));
+        MeetingRequest.setValues(request, user);
 %>
         <hgroup>
         	<h1>Add Meeting</h1>
@@ -24,7 +25,6 @@
                 <label for="description">Description:</label>
         	<input type="textarea" name="description" id="description" value="<%= MeetingRequest.getDescription() %>" required="required"><br>
                 <label for="priority">Priority:</label>
-        	<input type="text" name="priority" id="priority" value="<%= MeetingRequest.getPriority() %>" required="required"><br>
                 <label for="time">Time:</label>
         	<input type="text" name="time" id="time" value="<%= MeetingRequest.getTime() %>" required="required"><br>
         	<label for="venue">Venue:</label>

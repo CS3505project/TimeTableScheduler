@@ -22,8 +22,7 @@ public class SignUpRequest extends userRequest {
     private String surname;
     private String email;
     
-    public SignUpRequest(HttpServletRequest request, userPackage.User user){
-        super(request, user);
+    public SignUpRequest(){
     }
     
     public void setID(String id) {
