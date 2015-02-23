@@ -80,10 +80,10 @@ public class SignUpRequest extends userRequest {
     
     private boolean validPassword() {
         boolean valid = true;
-        if (errorInString(getRequest().getAttribute("password"))) {
+        if (errorInString((String)getRequest().getAttribute("password"))) {
             valid = false;
             addError("Please enter your password.");
-            if (errorInString(getRequest().getAttribute("reenter-password"))
+            if (errorInString((String)getRequest().getAttribute("reenter-password"))
                     && !getRequest().getAttribute("password").equals(getRequest().getAttribute("reenter-password"))) {
                 valid = false;
                 addError("Your passwords are different.");
@@ -106,7 +106,7 @@ public class SignUpRequest extends userRequest {
         if (validPassword()) {
             Database db = Database.getSetupDatabase();
 
-            String passwordHash = Hash.sha1(getRequest().getAttribute("password"));
+            String passwordHash = Hash.sha1((String)getRequest().getAttribute("password"));
 
             result = db.insert("");
 
@@ -122,17 +122,17 @@ public class SignUpRequest extends userRequest {
     private void getUserID(String userType) {
         switch (UserType.getUserType(userType)) {
             case ADMIN:
-                if (errorInString(id = getRequest().getAttribute("adminid"))) {
+                if (errorInString(id = (String)getRequest().getAttribute("adminid"))) {
                     addError("Please enter your administrator ID.");
                 }
                 break;
             case LECTURER:
-                if (errorInString(id = getRequest().getAttribute("lecturerid"))) {
+                if (errorInString(id = (String)getRequest().getAttribute("lecturerid"))) {
                     addError("Please enter your lecturer ID.");
                 }
                 break;
             default:
-                if (errorInString(id = getRequest().getAttribute("studentid"))) {
+                if (errorInString(id = (String)getRequest().getAttribute("studentid"))) {
                     addError("Please enter your student ID.");
                 }
                 break;
