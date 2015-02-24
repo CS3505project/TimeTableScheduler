@@ -17,7 +17,7 @@
     <jsp:setProperty name="MeetingRequest" property="*"/>
 
 <%
-    switch (userPackage.UserType.getUserType(request.getParameter("type"))){
+    switch (userPackage.UserType.getUserType((String)request.getParameter("type"))){
         case ADMIN:
             if (((userPackage.User)session.getAttribute("user")) != null 
                 && ((userPackage.UserType)session.getAttribute("userType")).equals(userPackage.UserType.ADMIN)
@@ -25,9 +25,9 @@
                     SignUpRequest.setUserType(userPackage.UserType.ADMIN);
 %>
             <div class="signup">
-                <form action="signup.jsp">
+                <form action="signUp.jsp">
                     <label for="id">Admin ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getUserID() %>" required="required"><br>
+                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="firstName">First Name:</label> 
                     <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
                     <label for="surname">Surname:</label> 
@@ -35,9 +35,9 @@
                     <label for="email">eMail:</label>
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
+                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
                     <label for="rePassword">Re-enter Password:</label> 
-                    <input type="password" id="rePassword"name="rePassword" required="required"><br>
+                    <input type="password" id="rePassword"name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
                 <p>
@@ -61,9 +61,9 @@
             SignUpRequest.setUserType(userPackage.UserType.LECTURER);
 %>
             <div class="signup">
-                <form action="signup.jsp">
+                <form action="signUp.jsp">
                     <label for="id">Lecturer ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getUserID() %>" required="required"><br>
+                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="title">Title:</label> 
                     <input type="text" id="title" name="title" value="<%= SignUpRequest.getTitle() %>" required="required"><br>
                     <label for="firstName">First Name:</label> 
@@ -73,9 +73,9 @@
                     <label for="email">eMail:</label> 
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
+                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
                     <label for="rePassword">Re-enter Password:</label> 
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
+                    <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Sign Up">
                 </form>
                 <p>
@@ -90,9 +90,9 @@
             SignUpRequest.setUserType(userPackage.UserType.STUDENT);
 %>
             <div class="signup">
-                <form action="signup.jsp">
+                <form action="signUp.jsp">
                     <label for="id">Student ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getUserID() %>" required="required"><br>
+                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="firstName">First Name:</label> 
                     <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
                     <label for="surname">Surname:</label> 
@@ -100,9 +100,9 @@
                     <label for="email">eMail:</label> 
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
+                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
                     <label for="rePassword">Re-enter Password:</label>
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
+                    <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
                 <p>
@@ -114,8 +114,8 @@
 <%
         break;
     }
-    session.setAttribute("user", SignUpRequest.getUserObject());
-    session.setAttribute("userType", SignUpRequest.getUserType());
+    //session.setAttribute("user", SignUpRequest.getUserObject());
+    //session.setAttribute("userType", SignUpRequest.getUserType());
 %>
         <footer>
                 <div><small>&copy; Team 11 2015</small></div>

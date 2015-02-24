@@ -6,10 +6,8 @@ package userDataPackage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
 import toolsPackage.Hash;
-import toolsPackage.StringEscapeUtils;
 import toolsPackage.Validator;
 import userPackage.Admin;
 import userPackage.Lecturer;
@@ -24,12 +22,14 @@ import static userPackage.UserType.LECTURER;
  * @author cdol1
  */
 public class SignUpRequest extends UserRequest {
-    private String id;
-    private String title;
-    private String firstName;
-    private String surname;
-    private String email;
-    private UserType userType;
+    private String id = "";
+    private String title = "";
+    private String firstName = "";
+    private String surname = "";
+    private String email = "";
+    private UserType userType = UserType.STUDENT;
+    private String password = "";
+    private String rePassword = "";
     private boolean signedUp;
     
     public SignUpRequest() { }
@@ -43,15 +43,20 @@ public class SignUpRequest extends UserRequest {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (errorInString(title)) {
+            addError("Incorrect title entered.");
+            System.err.println("Error with title.");
+        } else {
+            this.title = Validator.escapeJava(title);
+        }
     }
     
     public void setFirstName(String firstName) {
-        if (!errorInString(firstName)) {
-            this.firstName = Validator.escapeJava(firstName);
-        } else {
+        if (errorInString(firstName)) {
             addError("Incorrect first name entered.");
             System.err.println("Error with first name.");
+        } else {
+            this.firstName = Validator.escapeJava(firstName);
         }
     }
     
@@ -73,7 +78,7 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    private void setUserID(String id) {
+    private void setId(String id) {
         switch (userType) {
             case ADMIN:
                 if (errorInString(id)) {
@@ -99,6 +104,22 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    public void setPassword(String password) {
+        if (errorInString(password)) {
+            addError("Please check your password.");
+        } else {
+            this.password = Validator.escapeJava(password);
+        }
+    }
+    
+    public void setRePassword(String rePassword) {
+        if (errorInString(rePassword)) {
+            addError("Please check your password.");
+        } else {
+            this.rePassword = Validator.escapeJava(rePassword);
+        }
+    }
+    
     public String getTitle() {
         return Validator.unescapeJava(title);
     }
@@ -115,22 +136,25 @@ public class SignUpRequest extends UserRequest {
         return Validator.unescapeJava(email);
     }
     
-    public String getUserID() {
+    public String getId() {
         return Validator.unescapeJava(id);
     }
     
-    private boolean validPassword() {
-        boolean valid = true;
-        if (errorInString((String)getRequest().getAttribute("password"))) {
-            valid = false;
-            addError("Please enter your password.");
-            if (errorInString((String)getRequest().getAttribute("rePassword"))
-                    && !((String)getRequest().getAttribute("password")).equals(((String)getRequest().getAttribute("rePassword")))) {
-                valid = false;
-                addError("Your passwords are different.");
-            }
-        } 
-        return valid;
+    public String getPassword() {
+        return "";
+    }
+    
+    public String getRePassword() {
+        return "";
+    }
+    
+    private boolean validPasswords() {
+        boolean result = false;
+        System.out.println(password + " = " + rePassword);
+        if (password.equals(rePassword)) {
+            result = true;
+        }
+        return result;
     }
     
     /**
@@ -142,13 +166,10 @@ public class SignUpRequest extends UserRequest {
      */
     public boolean signUp(String userType) {        
         boolean result = false;
-        if (validPassword() && this.isValid()) {
+        if (this.isValid() && validPasswords()) {
             Database db = Database.getSetupDatabase();
-
-            String passwordHash = Hash.sha1((String)getRequest().getAttribute("password"));
-
-            result = db.insert("");
-
+            String passwordHash = Hash.sha1(password);
+            //result = db.insert("");
             db.close();
         } else {
             addError("Problem creating user.");
