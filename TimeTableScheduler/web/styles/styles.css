@@ -15,7 +15,7 @@
 
 body{
         background-color: #124;
-        background: url('http://i.imgur.com/X4Pz4dp.jpg') no-repeat center center fixed;
+        background: url('http://i.imgur.com/qmEO6sh.jpg') no-repeat center center fixed;
         background-size: cover;
 	font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
 	color: #778;
@@ -50,7 +50,7 @@ section.main{
 /***************/
 body>nav{
 	background: rgba(0,0,0,0.5);
-	color: #dde;
+	color: #9494b7;
 	box-shadow: inset 0 0 10px #000;
 }
 body>nav div.logo{
@@ -143,26 +143,15 @@ body>nav a#msg, body>nav a#msg:hover{
 body>nav a#logout, body>nav a#logout:hover{
 	background-image: url('logout.png');
 }
-body>nav span#userName{
-	display: block;
-	width: 100%;
-	box-shadow: 0 -6px #112;
-	padding-top: 4px;
-	margin-top: 14px;
-	border-top: 1px solid #335;
-	color: #88a;
-	text-shadow: 1px 1px 2px #000;
-	font-size: 15px;
-}
 body>nav footer{
 	position: fixed;
 	color: #446;
-	height: 50px;
+	height: 48px;
 	bottom: 0px;
 	left: 0px;
 	display: block;
 	padding-bottom: 4px;
-	border-top: 1px solid #335;
+	border-top: 1px solid rgba(140,140,255,0.1);
 	width: 132px;
 	background: rgba(0,0,0,0.1);
 	box-shadow: inset 0 0 10px #000;
@@ -179,13 +168,13 @@ body>nav a#help{
 	background: transparent url(help.png) no-repeat;
 }
 body>nav a#about,body>nav a#help{
-	border-bottom: 1px solid #224;
+	border-bottom: 1px solid rgba(140,140,255,0.1);
 	background-position: 4px center;
-	width: 49%;
+	width: 66px;
 	background-size: 16px, 16px;
-        padding-left: 22px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+        padding-left: 21px;
+        height: 26px;
+	line-height: 22px;
 	margin-bottom: 4px;
 	text-align: left;
 }
@@ -195,6 +184,7 @@ body>nav a#about:hover,body>nav a#help:hover{
 }
 nav small{
         font-size: 12px;
+        height: 14px;
         text-align: center;
         display: inline-block;
         width: 100%;
@@ -261,7 +251,7 @@ ul.filters:after{
         left: -470px;
         width: 110px;
         height: 28px;
-        content: "Filters";
+        content: "Filter:";
         background: #778;
 }
 ul.filters li{
@@ -272,7 +262,7 @@ ul.filters li{
         border-right: 1px solid #778;
 }
 ul.filters li:first-child{
-        border-left: 1px solid #778;
+        border-left: 1px solid #889;
 }
 ul.filters li:hover{
         color: #eef;
@@ -330,7 +320,7 @@ tr td.lecture{
 	color: #eef;
 }
 tr th:first-child{
-        width: 102px;
+        width: 101px;
         background: #778;
 }
 td:nth-child(even){
