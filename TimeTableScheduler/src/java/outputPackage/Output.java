@@ -275,8 +275,9 @@ public class Output {
      */
     public String createMeetingFormGroupDropdown(User user){
         String finalHTML = "";
-        finalHTML += "<div><span>Group</span><input type='radio' id='groupRadio' name='groupOrIndividual' value='group' checked>\n" +
-        "<span>Individual</span><input type='radio' id='individualRadio' name='groupOrindividual' value='individual'></div>" +
+        finalHTML += "<div><span>Group</span><input type='radio' id='groupRadio' name='withType' value='group' checked>\n" +
+        "<span>Individual</span><input type='radio' id='individualRadio' name='withType' value='individual'>" +
+        "<span>Individual</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>" +
         "<label for='groupSelect'>With Group:</label><select id='groupSelect'>";
         //for loop for creating options for legit groups
         
