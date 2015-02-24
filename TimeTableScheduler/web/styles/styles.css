@@ -93,7 +93,7 @@ body>nav a{
 	padding-bottom: 2px;
 	margin-top: 2px;
 	margin-bottom: 2px;
-	color: #779;
+	color: #9494b7;
 	text-shadow: 1px 1px 2px #000;
 	text-align: left;
 	padding-left: 8px;
@@ -102,11 +102,10 @@ body>nav a{
 	transition: all 0.4s ease;
 }
 body>nav a:hover{
-	color: #88a;
-	background: #112;
+	background: rgba(0,0,0,0.3);
 }
 body>nav a:focus{
-	color: #88a;
+	background: rgba(0,0,0,0.3);
 	font-style: italic;
 	text-decoration: underline;
 }
@@ -419,19 +418,35 @@ section.main hgroup h2{
 /*********/
 /* FORMS */
 /*********/
+form{
+    width: 430px;
+}
 input, select{
 	display: inline-block;
 	margin: 0;
 	margin-top: 2px;
 	margin-bottom: 2px;
 	padding: 2px;
-	width: 20em;
+	width: 280px;
 	color: #eef;
 	font-weight: bold;
 	height: 24px;
 	background: #889;
 	border: 1px solid #778;
 	outline: none;
+}
+select{
+        margin-left: 4px;
+}
+select:focus{/*incredibly hacky*/
+        position: relative;
+        top: -1px;
+        left: 0px;
+        margin: 0;
+        margin-left: 4px;
+        margin-bottom: 1px;
+        padding: 0px;
+        outline: none;
 }
 input[type="submit"]{
 	background: #48e;
@@ -456,10 +471,57 @@ input:focus, select:focus{
 	text-decoration: underline;
 	box-shadow: inset 0 0 10px #667;
 }
-label{
+form div{
+        background: #889;
+        border: 1px solid #778;
+        width: 395px;
+        height: 24px;
+        margin: 2px 0;
+}
+form div span{
+        position: relative;
+        top: -7px;
+        color: #fff;
+        display: inline-block;
+        line-height: 22px;
+        font-size: 18px;
+        padding-right: 4px;
 	display: inline-block;
-	width: 7.5em;
+	width: 110px;
 	text-align: right;
+}
+input[type="radio"]{
+        position: relative;
+        top: -1px;
+        display: inline-block;
+	margin  : 0;
+        padding : 0;
+	width: 24px;
+	height: 24px;
+	background: #778;
+	outline: none;
+}
+label{
+        line-height: 22px;
+        font-size: 18px;
+        padding-right: 4px;
+        height: 24px;
+	display: inline-block;
+	width: 110px;
+	text-align: right;
+        background: #778;
+        color: #fff;
+}
+div.login label{
+        line-height: 22px;
+        font-size: 18px;
+        padding-right: 4px;
+        height: 24px;
+	display: inline-block;
+	width: 80px;
+	text-align: right;
+        background: #778;
+        color: #fff;
 }
 
 /*********/
