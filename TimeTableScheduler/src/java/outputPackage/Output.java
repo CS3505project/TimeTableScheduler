@@ -269,7 +269,24 @@ public class Output {
         
         return finalHTML;
     }
-    
+    /**
+     * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
+     * @return the html for the dropdown and radio selector 
+     */
+    public String createMeetingFormGroupDropdown(User user){
+        String finalHTML = "";
+        finalHTML += "<input type='radio' name='groupOrIndividual' value='group' checked>Group\n" +
+        "<input type='radio' name='groupOrindividual' value='individual'>Individual" +
+        "<label for='groupSelect'>Individual:</label><select id='groupSelect'>";
+        //for loop for creating options for legit groups
+        
+        finalHTML += "</select>\n" +
+        "<label for='individualSelect'>Individual:</label><select id='individualSelect' disabled>";
+        //for loop for creating options for legit groups
+        
+        finalHTML += "</select>";
+        return finalHTML;
+    }
     /**
      * Create the main timetable for the users home page
      * 
