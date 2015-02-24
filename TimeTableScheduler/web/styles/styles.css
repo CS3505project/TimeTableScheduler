@@ -487,8 +487,11 @@ form div span{
         font-size: 18px;
         padding-right: 4px;
 	display: inline-block;
-	width: 110px;
+	width: 100px;
 	text-align: right;
+}
+form div span:first-child{  
+	width: 110px;
 }
 input[type="radio"]{
         position: relative;
@@ -527,11 +530,6 @@ div.login label{
 /*********/
 /* LOGIN */
 /*********/
-body.login{
-        background: url('http://i.imgur.com/X4Pz4dp.jpg') no-repeat center center fixed;
-        background-size: cover;
-        color: #dde;
-}
 body.login h1{
         text-align: center;
 }
@@ -548,7 +546,7 @@ body.login p{
         width: 100%;
         text-align: center;
 }
-div.login{
+div.login, div.signup{
         text-shadow: 1px 1px 2px #000;
         background: rgba(0,0,0,0.5);
         border-radius: 6px;
@@ -561,7 +559,7 @@ div.login{
         margin-top: 8%;
         border-bottom: 1px solid rgba(240,240,255,0.5);
 }
-div.login input, div.login input:hover{
+div.login input, div.login input:hover,  div.signup input,  div.signup input:hover{
         background: #112;
         border: none;
         border-bottom: 1px solid #334;
