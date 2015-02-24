@@ -202,7 +202,7 @@ public final class MeetingRequest extends UserRequest{
     public boolean joinMeeting(int meetingID) {
         boolean result = false;
         if (this.isValid()) {
-            result = insertDbQuery("INSERT INTO InGroup (uid, mid) "
+            result = insertDbQuery("INSERT INTO HasMeeting (uid, mid) "
                         + "VALUES (" + getUser().getUserID() + "\", " + meetingID + ");");
         }
         return result;
