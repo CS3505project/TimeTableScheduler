@@ -1,13 +1,12 @@
 package userDataPackage;
 
 import java.sql.Time;
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import timeTablePackage.EventPriority;
-import toolsPackage.StringEscapeUtils;
+import toolsPackage.Validator;
 
 /**
  * A javaBean for handling requests to add a meeting
@@ -45,7 +44,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setMeetingName(String meetingName){
         if (this.errorInString(meetingName)) {
-            this.meetingName = StringEscapeUtils.escapeJava(meetingName);
+            this.meetingName = Validator.escapeJava(meetingName);
         } else {
             this.addError("Meeting name is inccrrect.");
         }
@@ -56,7 +55,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setVenue(String venue){
         if (this.errorInString(venue)) {
-            this.venue = StringEscapeUtils.escapeJava(venue);
+            this.venue = Validator.escapeJava(venue);
         } else {
             this.addError("Venue is incorrect.");
         }
@@ -99,7 +98,7 @@ public final class MeetingRequest extends UserRequest{
         if (description == null) {
             addError("Your description is incorrect.");
         } else {
-            this.description = StringEscapeUtils.escapeJava(description);
+            this.description = Validator.escapeJava(description);
         }
     }
     
@@ -117,7 +116,7 @@ public final class MeetingRequest extends UserRequest{
      * @return Meeting name
      */
     public String getMeetingName(){
-        return StringEscapeUtils.unEscapeJava(this.meetingName);
+        return Validator.unescapeJava(this.meetingName);
     }
     
     /**
@@ -125,7 +124,7 @@ public final class MeetingRequest extends UserRequest{
      * @return venue
      */
     public String getVenue(){
-        return StringEscapeUtils.unEscapeJava(this.venue);
+        return Validator.unescapeJava(this.venue);
     }
     
     /**
@@ -149,7 +148,7 @@ public final class MeetingRequest extends UserRequest{
      * @return description
      */
     public String getDescription() {
-        return StringEscapeUtils.unEscapeJava(description);
+        return Validator.unescapeJava(description);
     }
     
     /**

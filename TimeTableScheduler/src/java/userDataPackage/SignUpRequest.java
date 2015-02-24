@@ -48,7 +48,7 @@ public class SignUpRequest extends UserRequest {
     
     public void setFirstName(String firstName) {
         if (!errorInString(firstName)) {
-            this.firstName = StringEscapeUtils.escapeJava(firstName);
+            this.firstName = Validator.escapeJava(firstName);
         } else {
             addError("Incorrect first name entered.");
             System.err.println("Error with first name.");
@@ -57,7 +57,7 @@ public class SignUpRequest extends UserRequest {
     
     public void setSurname(String surname) {
         if (!errorInString(surname)) {
-            this.surname = StringEscapeUtils.escapeJava(surname);
+            this.surname = Validator.escapeJava(surname);
         } else {
             addError("Incorrect surname entered.");
             System.err.println("Error with surname.");
@@ -66,7 +66,7 @@ public class SignUpRequest extends UserRequest {
     
     public void setEmail(String email) {
         if (Validator.isValidEmail(email)) {
-            this.email = StringEscapeUtils.escapeJava(email);
+            this.email = Validator.escapeJava(email);
         } else {
             addError("Incorrect email entered.");
             System.err.println("Error with email.");
@@ -79,44 +79,44 @@ public class SignUpRequest extends UserRequest {
                 if (errorInString(id)) {
                     addError("Please enter your administrator ID.");
                 } else {
-                    this.id = StringEscapeUtils.escapeJava(id);
+                    this.id = Validator.escapeJava(id);
                 }
                 break;
             case LECTURER:
                 if (errorInString(id)) {
                     addError("Please enter your lecturer ID.");
                 } else {
-                    this.id = StringEscapeUtils.escapeJava(id);
+                    this.id = Validator.escapeJava(id);
                 }
                 break;
             default:
                 if (errorInString(id)) {
                     addError("Please enter your student ID.");
                 } else {
-                    this.id = StringEscapeUtils.escapeJava(id);
+                    this.id = Validator.escapeJava(id);
                 }
                 break;
         }
     }
     
     public String getTitle() {
-        return StringEscapeUtils.unEscapeJava(title);
+        return Validator.unescapeJava(title);
     }
     
     public String getFirstName() {
-        return StringEscapeUtils.unEscapeJava(firstName);
+        return Validator.unescapeJava(firstName);
     }
     
     public String getSurname() {
-        return StringEscapeUtils.unEscapeJava(surname);
+        return Validator.unescapeJava(surname);
     }
     
     public String getEmail() {
-        return StringEscapeUtils.unEscapeJava(email);
+        return Validator.unescapeJava(email);
     }
     
     public String getUserID() {
-        return StringEscapeUtils.unEscapeJava(id);
+        return Validator.unescapeJava(id);
     }
     
     private boolean validPassword() {

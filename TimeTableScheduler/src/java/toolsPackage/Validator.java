@@ -15,8 +15,18 @@ public class Validator {
      * @param input The string to escape
      * @return The escaped string
      */
-    public String escapeString(String input){
+    public static String escapeJava(String input){
         return StringEscapeUtils.escapeJava(input);
+    }
+    
+    /**
+     * Returns an unescaped version of the string entered.
+     * 
+     * @param input The string to unescape
+     * @return The unescaped string
+     */
+    public static String unescapeJava(String input){
+        return StringEscapeUtils.unescapeJava(input);
     }
     
     /**
