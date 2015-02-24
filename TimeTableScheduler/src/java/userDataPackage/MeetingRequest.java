@@ -22,7 +22,7 @@ public final class MeetingRequest extends UserRequest{
     private String venue = "";
     private Time time;
     private String description = "";
-    private EventPriority priority;
+    private EventPriority priority = EventPriority.MEETING;
         
     /**
      * Default constructor
@@ -48,18 +48,7 @@ public final class MeetingRequest extends UserRequest{
         }
         this.setDataEntered(true);
     }
-    /**
-     * Sets the Meeting name from the form data
-     * @param meetingName the name of the meeting
-     */
-    public void setMeetingName(String meetingName){
-        if (this.errorInString(meetingName)) {
-            this.addError("Meeting name is inccrrect.");
-        } else {
-            this.meetingName = Validator.escapeJava(meetingName);
-        }
-        this.setDataEntered(true);
-    }
+
     /**
      * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
@@ -96,7 +85,7 @@ public final class MeetingRequest extends UserRequest{
      * @param priorityLevel priority level
      */
     public void setPriority(String priorityLevel) {
-        priority = EventPriority.convertToEventPriority(Integer.parseInt(priorityLevel));
+        priority = EventPriority.convertToEventPriority(priorityLevel);
         if (priority == null) {
             System.err.println("Invalid priority: " + priorityLevel);
             this.addError("Not a vaild priority");
@@ -127,14 +116,6 @@ public final class MeetingRequest extends UserRequest{
     }
     
     /**
-     * Gets the name for the meeting
-     * @return Meeting name
-     */
-    public String getMeetingName(){
-        return Validator.unescapeJava(this.meetingName);
-    }
-    
-    /**
      * Gets the venue for the meeting
      * @return venue
      */
@@ -155,7 +136,7 @@ public final class MeetingRequest extends UserRequest{
      * @return Event priority
      */
     public String getPriority() {
-        return (priority == null ? "" : priority.getPriorityName());
+        return priority.getPriorityName();
     }
     
     /**
@@ -187,6 +168,15 @@ public final class MeetingRequest extends UserRequest{
             if (result) {
                 result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES (" + getUser().getUserID() + ", " + meetingID + ");");
             }
+            
+            date = new Date();//initialise to todays date
+            meetingName = "";
+            venue = "";
+            time = null;
+            description = "";
+            priority = EventPriority.MEETING;
+            this.setDataEntered(false);
+            this.clearErrors();
             
             db.close();
         }

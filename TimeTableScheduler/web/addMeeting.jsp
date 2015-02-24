@@ -16,12 +16,7 @@
         <form>
         	<label for="date">Date:</label>
         	<input type="date" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
-        	<label for="select">Group:</label>
-        	<select id="select">
-                // stuff from database
-        	</select><br>
-        	<label for="meetingName">Meeting Name:</label>
-        	<input type="text" name="meetingName" id="meetingName" value="<%= MeetingRequest.getMeetingName() %>" required="required"><br>
+                <% out.println(output.createMeetingFormGroupDropdown(user)); %>
                 <label for="description">Description:</label>
         	<input type="textarea" name="description" id="description" value="<%= MeetingRequest.getDescription() %>" required="required"><br>
                 <label for="priority">Priority:</label>

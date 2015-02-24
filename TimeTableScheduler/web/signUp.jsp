@@ -17,11 +17,11 @@
     <jsp:setProperty name="MeetingRequest" property="*"/>
 
 <%
-    switch (type){
+    switch (userPackage.UserType.getUserType(request.getParameter("type"))){
         case ADMIN:
-            if (((User)session.getAttribute("user")) != null 
-                && ((UserType)session.getAttribute("userType")).equals(userPackage.UserType.ADMIN)
-                && ((User)session.getAttribute("user")).getUserType().equals(userPackage.UserType.ADMIN)) {
+            if (((userPackage.User)session.getAttribute("user")) != null 
+                && ((userPackage.UserType)session.getAttribute("userType")).equals(userPackage.UserType.ADMIN)
+                && ((userPackage.User)session.getAttribute("user")).getUserType().equals(userPackage.UserType.ADMIN)) {
                     SignUpRequest.setUserType(userPackage.UserType.ADMIN);
 %>
             <div class="signup">
@@ -96,7 +96,7 @@
                     <label for="firstName">First Name:</label> 
                     <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
                     <label for="surname">Surname:</label> 
-                    <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname()) %>" required="required"><br>
+                    <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
                     <label for="email">eMail:</label> 
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 

@@ -8,7 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import toolsPackage.Database;
 
 /**
@@ -373,7 +375,21 @@ public class TimeTable {
             //end tags 
             timetable += "</tr>";
         }
-        timetable += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
+        
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+
+        // Set the calendar to monday of the current week
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String startDate = "", endDate = "";
+
+        startDate = df.format(cal.getTime());
+        cal.add(Calendar.DATE, 6);
+        endDate = df.format(cal.getTime());
+
+        timetable += "<caption>" + startDate + " to " + endDate + "</caption>";
         timetable += "</table>";
         
         return timetable;

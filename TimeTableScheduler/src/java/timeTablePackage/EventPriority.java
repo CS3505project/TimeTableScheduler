@@ -61,4 +61,21 @@ public enum EventPriority {
         }
         return eventPriority;
     }
+    
+    /**
+     * Converts the priority to an EventPriority object
+     * May return null if the priority is incorrect
+     * 
+     * @param priority The priority of the event
+     * @return The event priority object for this priority
+     */
+    public static EventPriority convertToEventPriority(String priority) {
+        EventPriority eventPriority = null;
+        for (EventPriority curPriority : EventPriority.values()) {
+            if (curPriority.getPriorityName().equals(priority)) {
+                eventPriority = curPriority;
+            }
+        }
+        return eventPriority;
+    }
 }

@@ -56,11 +56,11 @@ public class SignUpRequest extends UserRequest {
     }
     
     public void setSurname(String surname) {
-        if (!errorInString(surname)) {
-            this.surname = Validator.escapeJava(surname);
-        } else {
+        if (errorInString(surname)) {
             addError("Incorrect surname entered.");
             System.err.println("Error with surname.");
+        } else {
+            this.surname = Validator.escapeJava(surname);
         }
     }
     

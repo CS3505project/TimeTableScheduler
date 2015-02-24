@@ -47,6 +47,10 @@ public abstract class UserRequest {
         this.dataEntered = dataEntered;
     }
     
+    public void clearErrors() {
+        errors.clear();
+    }
+    
     /**
      * Returns the actual request object
      * 
