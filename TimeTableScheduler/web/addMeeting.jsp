@@ -14,7 +14,7 @@
         	<h2>Step 1 of 2</h2>
         </hgroup>
         <jsp:setProperty name="MeetingRequest" property="*"/>
-        <form>
+        <form id="createMeetingForm">
         	<label for="date">Date:</label>
         	<input type="date" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
                 <% out.println(output.createMeetingFormGroupDropdown(user)); %>

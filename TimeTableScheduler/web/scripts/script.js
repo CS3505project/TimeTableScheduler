@@ -1,13 +1,35 @@
-function createHelp(){
-	//find context node to find out what page we need to display help about
-	/*var contextNode = document.getElementById("context");
-        var context = "placeholder";//get this attribute from the context node
-        var helpNode = document.getElementByID("help");
-        alert("just a test");
-        
-        //set the onclick method for the help link to displayHelp for the appropriate context
-        helpNode.onclick = displayHelp(context );*/
-}
+$(document).ready(function(){
+    //fix form for meeting
+    $("#individualSelectDiv").hide();
+    
+    $('#createMeetingForm input').on('change', function() {
+        var checked = $('input[name="withType"]:checked', '#createMeetingForm').val();
+        switch (checked){
+            case 'personal':
+                $("#individualSelect").prop('disabled', true);
+                $("#groupSelect").prop('disabled', true);
+
+                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                break;
+            case 'group':
+                $("#individualSelect").prop('disabled', true);
+                $("#groupSelect").prop('disabled', false);
+
+                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                $("#groupSelectDiv").show("drop", {direction: "vertical"}, 600);
+                break;
+            case 'individual':
+                $("#individualSelect").prop('disabled', false);
+                $("#groupSelect").prop('disabled', true);
+
+                $("#individualSelectDiv").show("drop", {direction: "vertical"}, 600);
+                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                break;
+        }
+    });
+    
+}); 
 
 function displayHelp(context){
         
