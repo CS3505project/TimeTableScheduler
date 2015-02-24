@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    //put context in the help button
+    var context = $("div[name='context']").attr("value");
+    $("#help").click(displayHelp(context));
     //fix form for meeting
     $("#individualSelectDiv").hide();
     
@@ -9,22 +12,22 @@ $(document).ready(function(){
                 $("#individualSelect").prop('disabled', true);
                 $("#groupSelect").prop('disabled', true);
 
-                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 600);
-                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 300);
+                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 300);
                 break;
             case 'group':
                 $("#individualSelect").prop('disabled', true);
                 $("#groupSelect").prop('disabled', false);
 
-                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 600);
-                $("#groupSelectDiv").show("drop", {direction: "vertical"}, 600);
+                $("#individualSelectDiv").hide("drop", {direction: "vertical"}, 300);
+                $("#groupSelectDiv").show("drop", {direction: "vertical"}, 300);
                 break;
             case 'individual':
                 $("#individualSelect").prop('disabled', false);
                 $("#groupSelect").prop('disabled', true);
 
-                $("#individualSelectDiv").show("drop", {direction: "vertical"}, 600);
-                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 600);
+                $("#individualSelectDiv").show("drop", {direction: "vertical"}, 300);
+                $("#groupSelectDiv").hide("drop", {direction: "vertical"}, 300);
                 break;
         }
     });
@@ -41,9 +44,8 @@ function displayHelp(context){
         //Create the button for removing the help dialog
         var closeButton = document.createElement("button");
         closeButton.onclick = function(){
-            var helpBox = document.getElementById("helpPopup");
-            //removes help box when got it is presed 
-            helpBox.parentNode.removeChild(helpBox);
+            $("#helpPopup").hide("drop", {direction: "right"}, 300);
+            $("#helpPopup").remove();
             //allow help button to be used more than once (after popup is destroyed)
             document.getElementById("help").onclick = function(){
                 displayHelp(context);
@@ -53,8 +55,8 @@ function displayHelp(context){
         
         //set the help button to close the popup
         document.getElementById("help").onclick = function(){
-            var helpBox = document.getElementById("helpPopup");
-            helpBox.parentNode.removeChild(helpBox);
+            $("#helpPopup").hide("drop", {direction: "right"}, 300);
+            $("#helpPopup").remove();
             document.getElementById("help").onclick = function(){
                 displayHelp(context);
             };
@@ -63,7 +65,10 @@ function displayHelp(context){
         //Switch on the context name, if the context is meeting, get info from the meetong JSON file
         switch(context){
         case "placeholder":
-            helpBox.innerHTML = "blah blah blah";//add ajax stuff to get the context help from JSON files
+            helpBox.innerHTML = "this is placeholder text";//add ajax stuff to get the context help from JSON files
+            break;
+        case "addMeeting":
+            helpBox.innerHTML = "this is pMEETINGtext";//add ajax stuff to get the context help from JSON files
             break;
         default:
             helpBox.innerHTML = "Error";//add ajax stuff to get the context help from JSON files
@@ -71,5 +76,7 @@ function displayHelp(context){
         //add the close button to the box
         helpBox.appendChild(closeButton);
         //adds popup to page
-        document.body.appendChild(helpBox);     
+        $("body").append(helpBox); 
+        $("#helpPopup").hide();
+        $("#helpPopup").show("drop", {direction: "left"}, 300);
 }

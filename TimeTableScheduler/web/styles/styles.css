@@ -22,7 +22,9 @@ body{
 	font-size: 18px;
 	overflow: hidden;
 }
-
+.hidden{
+    display:none;
+}
 /*****************/
 /* COLUMN LAYOUT */
 /*****************/

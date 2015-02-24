@@ -9,6 +9,7 @@
         MeetingRequest.setValues(request, user);
         MeetingRequest.setActionCompleted(false);
 %>
+        <div class="hidden" name="context" value="addMeeting"></div>
         <hgroup>
         	<h1>Add Meeting</h1>
         	<h2>Step 1 of 2</h2>
