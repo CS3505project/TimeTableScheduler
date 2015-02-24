@@ -1,11 +1,16 @@
 package userDataPackage;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import timeTablePackage.EventPriority;
+import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
@@ -16,19 +21,23 @@ public final class MeetingRequest extends UserRequest{
     private String meetingName = "";
     private String venue = "";
     private Time time;
-    private String description;
+    private String description = "";
     private EventPriority priority;
         
     /**
      * Default constructor
      */
-    public MeetingRequest(){ }
+    public MeetingRequest(){ 
+    }
     
     /**
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.
      * @param date the date string in HTML's format dd/MM/yyyy, inputted by the user
      */
     public void setDate(String date) {
+        if (this.errorInString(date)) {
+            this.addError("Error in date");
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             this.date = sdf.parse(date);
@@ -37,6 +46,7 @@ public final class MeetingRequest extends UserRequest{
             System.err.println("Invalid Date: " + date);
             this.addError("Invalid Date: " + date);
         }
+        this.setDataEntered(true);
     }
     /**
      * Sets the Meeting name from the form data
@@ -44,10 +54,11 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setMeetingName(String meetingName){
         if (this.errorInString(meetingName)) {
-            this.meetingName = Validator.escapeJava(meetingName);
-        } else {
             this.addError("Meeting name is inccrrect.");
+        } else {
+            this.meetingName = Validator.escapeJava(meetingName);
         }
+        this.setDataEntered(true);
     }
     /**
      * sets the venue in which the meeting is to take place.
@@ -55,10 +66,11 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setVenue(String venue){
         if (this.errorInString(venue)) {
-            this.venue = Validator.escapeJava(venue);
-        } else {
             this.addError("Venue is incorrect.");
+        } else {
+            this.venue = Validator.escapeJava(venue);
         }
+        this.setDataEntered(true);
     }
     
     /**
@@ -76,18 +88,20 @@ public final class MeetingRequest extends UserRequest{
             System.err.println("Invalid Time: " + time);
             this.addError("Invalid Time: " + time);
         }
+        this.setDataEntered(true);
     }
     
     /**
      * Sets the priority of the event
      * @param priorityLevel priority level
      */
-    public void setPriority(int priorityLevel) {
-        priority = EventPriority.convertToEventPriority(priorityLevel);
+    public void setPriority(String priorityLevel) {
+        priority = EventPriority.convertToEventPriority(Integer.parseInt(priorityLevel));
         if (priority == null) {
             System.err.println("Invalid priority: " + priorityLevel);
             this.addError("Not a vaild priority");
         }
+        this.setDataEntered(true);
     }
     
     /**
@@ -95,11 +109,12 @@ public final class MeetingRequest extends UserRequest{
      * @param description description
      */
     public void setDescription(String description) {
-        if (description == null) {
+        if (this.errorInString(description)) {
             addError("Your description is incorrect.");
         } else {
             this.description = Validator.escapeJava(description);
         }
+        this.setDataEntered(true);
     }
     
     /**
@@ -132,7 +147,7 @@ public final class MeetingRequest extends UserRequest{
      * @return In format hh:mm:ss
      */
     public String getTime() {
-        return time.toString();
+        return (time == null ? "" : time.toString());
     }
     
     /**
@@ -140,7 +155,7 @@ public final class MeetingRequest extends UserRequest{
      * @return Event priority
      */
     public String getPriority() {
-        return priority.getPriorityName();
+        return (priority == null ? "" : priority.getPriorityName());
     }
     
     /**
@@ -159,9 +174,21 @@ public final class MeetingRequest extends UserRequest{
     public boolean createMeeting() {
         boolean result = false;
         if (this.isValid()) {
-            result = executeDbQuery("INSERT INTO Meeting (date, time, room, description, priority, organiser) "
-                            + "VALUES ("+ date.toString() + "\", \""+ time.toString() + "\", \"" + venue + "\", \"" 
-                            + description + "\", " + priority + ", \"" + getUser().getUserID() + "\");");
+            System.out.println("here");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String meetingDate = format.format(date);
+            Database db = Database.getSetupDatabase();
+
+            result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
+                            + "VALUES (\""+ meetingDate + "\", \""+ time.toString() + "\", \"" + venue + "\", \"" 
+                            + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
+            
+            int meetingID = db.getPreviousAutoIncrementID("Meeting");
+            if (result) {
+                result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES (" + getUser().getUserID() + ", " + meetingID + ");");
+            }
+            
+            db.close();
         }
         return result;
     }
@@ -175,7 +202,7 @@ public final class MeetingRequest extends UserRequest{
     public boolean joinMeeting(int meetingID) {
         boolean result = false;
         if (this.isValid()) {
-            result = executeDbQuery("INSERT INTO InGroup (uid, mid) "
+            result = insertDbQuery("INSERT INTO InGroup (uid, mid) "
                         + "VALUES (" + getUser().getUserID() + "\", " + meetingID + ");");
         }
         return result;

@@ -1,5 +1,6 @@
 package userDataPackage;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,11 @@ public abstract class UserRequest {
     private HttpServletRequest request;
     private userPackage.User user;
     private List<String> errors;
+    private boolean dataEntered;
     
     public UserRequest(){
         this.errors = new ArrayList<String>();
+        dataEntered = false;
     }
     
     public void setValues(HttpServletRequest request, userPackage.User user) {
@@ -34,6 +37,14 @@ public abstract class UserRequest {
      */
     public User getUser() {
         return user;
+    }
+    
+    public boolean isDataEntered() {
+        return dataEntered;
+    }
+    
+    public void setDataEntered(boolean dataEntered) {
+        this.dataEntered = dataEntered;
     }
     
     /**
@@ -52,7 +63,7 @@ public abstract class UserRequest {
      * @return True if null or empty
      */
     public boolean errorInString(String string) {
-        return (string == null || string.equals(""));
+        return (string == null) || (string.equals(""));
     }
     
     /**
@@ -71,8 +82,10 @@ public abstract class UserRequest {
      */
     public String getErrors(){
         String result = "";
-        for(String error : errors){
-            result += (error + "<br>");
+        if (dataEntered) {
+            for(String error : errors){
+                result += (error + "<br>");
+            }
         }
         return result;
     }
@@ -83,7 +96,7 @@ public abstract class UserRequest {
      * @return True if errors present
      */
     public boolean isValid() {
-        return errors.isEmpty();
+        return errors.isEmpty() && dataEntered;
     }
     
     /**
@@ -92,7 +105,7 @@ public abstract class UserRequest {
      * @param insertSQL The sql query to execute
      * @return True if query was successful
      */
-    public boolean executeDbQuery(String insertSQL) {
+    public boolean insertDbQuery(String insertSQL) {
         //create db
         Database db = Database.getSetupDatabase();
         
@@ -103,6 +116,22 @@ public abstract class UserRequest {
         }
         db.close();
         return false;
+    }
+    
+    /**
+     * Executes the querys to the database that return results
+     * 
+     * @param selectSQL The sql query to execute
+     * @return Result of the query
+     */
+    public ResultSet selectDbQuery(String selectSQL) {
+        //create db
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select(selectSQL);
+        
+        db.close();
+        return result;
     }
     
 }

@@ -231,7 +231,7 @@ public class TimeTable {
                                                     "AND Lecture.moduleCode IN " +
                                                     "	(SELECT Lecture.moduleCode " +
                                                     "	FROM ModuleInCourse " +
-                                                    "	WHERE courseid = " +
+                                                    "	WHERE courseid IN " +
                                                     "		(SELECT courseid " +
                                                     "		FROM GroupTakesCourse " +
                                                     "		WHERE gid IN " +
@@ -264,7 +264,7 @@ public class TimeTable {
                                                         "AND Practical.moduleCode IN " +
                                                         "	(SELECT Practical.moduleCode " +
                                                         "	FROM ModuleInCourse " +
-                                                        "	WHERE courseid = " +
+                                                        "	WHERE courseid IN " +
                                                         "		(SELECT courseid " +
                                                         "		FROM GroupTakesCourse " +
                                                         "		WHERE gid IN " +
@@ -286,7 +286,7 @@ public class TimeTable {
             // retrieve list of meetings that a particular user id is involved with
             ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
                                                     "FROM Meeting " +
-                                                    "WHERE meetingid = " +
+                                                    "WHERE meetingid IN " +
                                                     "(	SELECT mid " +
                                                     "	FROM HasMeeting " +
                                                     "	WHERE uid = " + userID + ");");

@@ -8,6 +8,8 @@ package toolsPackage;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class to handle interactions with the database.
@@ -42,6 +44,23 @@ public class Database {
         //for use in college network
         db.setup("cs1.ucc.ie:3306", "2016_kmon1", "kmon1", "augeheid");
         return db;
+    }
+    
+    public int getPreviousAutoIncrementID(String table) {
+        int id = -1;
+        try {
+            if (statementObject.execute("SELECT `AUTO_INCREMENT` " +
+                                        "FROM  INFORMATION_SCHEMA.TABLES " +
+                                        "WHERE TABLE_SCHEMA = '" + DSN + "' " +
+                                        "AND TABLE_NAME = '" + table + "';")) {
+                ResultSet result = statementObject.getResultSet();
+                while (result.next()) {
+                    id = result.getInt("AUTO_INCREMENT") - 1;
+                }
+            }
+        } catch (SQLException ex) {
+        }
+        return id;
     }
     
    

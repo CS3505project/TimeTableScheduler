@@ -53,7 +53,7 @@ public enum EventPriority {
      * @return The event priority object for this priority
      */
     public static EventPriority convertToEventPriority(int priority) {
-        EventPriority eventPriority = EventPriority.MEETING;
+        EventPriority eventPriority = null;
         for (EventPriority curPriority : EventPriority.values()) {
             if (curPriority.getPriority() == priority) {
                 eventPriority = curPriority;

@@ -55,7 +55,7 @@ public final class GroupRequest extends UserRequest{
         String result = "Group not created.";
         
         if (!isValid()
-                && executeDbQuery("INSERT INTO Groups (groupName, groupType) " 
+                && insertDbQuery("INSERT INTO Groups (groupName, groupType) " 
                                   + "VALUES ("+ groupName + "\", \"group\");")) {
             result = "Group created.";
         }

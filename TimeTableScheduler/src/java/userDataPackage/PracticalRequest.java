@@ -49,7 +49,7 @@ public class PracticalRequest extends UserRequest{
      * @return True if practical was successfully added to the database
      */
     public boolean addPractical(String moduleCode, String semester, int weekDay, Time time, String room, Date startDate, Date endDate) {
-        return this.executeDbQuery("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
+        return this.insertDbQuery("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
                 + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
                 + time.toString() + "\", " + room + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
     }
@@ -65,7 +65,7 @@ public class PracticalRequest extends UserRequest{
      * @return True if cancellation successfully added
      */
     public boolean cancelPracticalOrLecture(String moduleCode, Date date, Time time, String description) {
-        return this.executeDbQuery("INSERT INTO Cancellation (modulecode, semester, weekday, time, room, startdate, enddate) "
+        return this.insertDbQuery("INSERT INTO Cancellation (modulecode, semester, weekday, time, room, startdate, enddate) "
                 + "VALUES ("+ moduleCode + "\", \""+ date.toString() + "\", " + time.toString() + ", \"" + description + "\");");
     }
 }
