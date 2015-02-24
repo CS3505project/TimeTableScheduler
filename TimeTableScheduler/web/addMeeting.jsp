@@ -30,8 +30,10 @@
         </form>
         <p>
             <%-- print errors and comit valid values to database --%>
-            <%= MeetingRequest.getErrors()%>
-            <% MeetingRequest.createMeeting(); %>
+            <%
+                out.println(MeetingRequest.getErrors());
+                MeetingRequest.createMeeting();
+            %>
         </p>
     <%
         out.println(output.createFooter());
