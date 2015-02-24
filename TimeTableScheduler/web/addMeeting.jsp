@@ -7,6 +7,7 @@
         out.println(output.createHeader());
         out.println(output.createUserTimeTable(user.getUserID(),(String)request.getAttribute("filter")));
         MeetingRequest.setValues(request, user);
+        MeetingRequest.setActionCompleted(false);
 %>
         <hgroup>
         	<h1>Add Meeting</h1>
@@ -33,6 +34,11 @@
             <%
                 out.println(MeetingRequest.getErrors());
                 MeetingRequest.createMeeting();
+                if (MeetingRequest.isActionCompleted()) {
+                    %>
+                    <jsp:forward page="/index.jsp" />
+                    <%
+                }
             %>
         </p>
     <%
