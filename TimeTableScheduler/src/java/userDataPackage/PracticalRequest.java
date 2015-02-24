@@ -13,7 +13,7 @@ import toolsPackage.Database;
  *
  * @author cdol1
  */
-public class PracticalRequest extends userRequest{
+public class PracticalRequest extends UserRequest{
     
     public PracticalRequest(){
 

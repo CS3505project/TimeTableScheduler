@@ -20,10 +20,8 @@ public abstract class Event {
     private Time time;
     private String location;
     
-    /**
-     * Format that prints the full name for a day
-     */
-    public static final String DAY_FORMAT = "EEEE";
+    public static final String DAY_INDEX = "u";
+    public static final String HOUR_INDEX = "k";
 
     public Event(String eventID, Date date, Time time, String location) {
         this.eventID = eventID;
@@ -43,28 +41,24 @@ public abstract class Event {
     public abstract EventType getEventType();
     
     /**
-     * Outputs HTML needed to display the type of event in the timetable 
-     * on the webpage
-     * 
-     * @return HTML to display the type of event 
-     */
-    public abstract String displayTableHTML();
-    
-    /**
      * Gets the day of the week as a string for this event
-     * For example "Monday"
+     * For example Monday is 1
      * 
-     * @return Day of the week as a string
+     * @return Index for the day
      */
-    public String getDayOfWeek() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DAY_FORMAT);
-        return dateFormat.format(this.getDate());
+    public int getDayOfWeek() {
+        SimpleDateFormat dateTime = new SimpleDateFormat(DAY_INDEX);
+        return Integer.parseInt(dateTime.format(date));
     }
     
+    /**
+     * Returns the index for the hour the event is scheduled
+     * For example 10pm returns 22
+     * @return 
+     */
     public int getHourIndex() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(time);
-        return cal.get(Calendar.HOUR_OF_DAY);
+        SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
+        return Integer.parseInt(dateTime.format(time));
     }
 
     /**

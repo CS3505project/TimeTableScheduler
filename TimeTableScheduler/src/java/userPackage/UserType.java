@@ -20,8 +20,14 @@ public enum UserType {
         this.name = name;
     }
     
+    /**
+     * Returns the enum that represents the string
+     * 
+     * @param user User string
+     * @return Enum for the user
+     */
     public static UserType getUserType(String user) {
-        UserType eventType = null;
+        UserType eventType = UserType.STUDENT;
         for (UserType type : UserType.values()) {
             if (type.name.equals(user)) {
                 eventType = type;

@@ -55,14 +55,8 @@ public class Practical extends Event {
     }
     
     @Override
-    public String getDayOfWeek() {
-        return weekDay.getDay();
-    }
-    
-    @Override
-    public String displayTableHTML() {
-        return "<td class=\"practical\">" 
-               + toString() + "</td>";
+    public int getDayOfWeek() {
+        return weekDay.getIndex();
     }
 
     /**

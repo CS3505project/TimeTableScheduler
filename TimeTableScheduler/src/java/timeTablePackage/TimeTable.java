@@ -6,34 +6,36 @@ package timeTablePackage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 import toolsPackage.Database;
 
 /**
- * Represents the users timetable and carries out any actions that may be 
+ * Represents a timetable and carries out any actions that may be 
  * performed on the timetable
  * 
  * @author John O Riordan
  */
 public class TimeTable {
-    private Map<String, LinkedList<Event>> events;
+    private TimeSlot[][] events;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
     private Day endDay;
     
-    public static final String DAY_INDEX = "u";
+    private int suggestedDay = -1;
+    private int suggestedTime = -1;
+    
     public static final String HOUR_INDEX = "k";
 
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
-        this.events = new HashMap<String, LinkedList<Event>>();
+        this.events = new TimeSlot[Day.numDays][EventTime.numHours];
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDay = startDay;
         this.endDay = endDay;
+        setupTimeSlots();
     }
     
     /**
@@ -48,10 +50,29 @@ public class TimeTable {
         boolean conflict = false;
         
         for (int i = 0; i < times.length && !conflict; i++) {
-            for (Event event : events.get(day.getDay())) {
-                if (event.getTime().equals(times[i].getTime())) {
-                    conflict = true;
-                }
+            if (events[day.getIndex()][times[i].getTimeIndex()].hasEvents()) {
+                conflict = true;
+            }
+        }
+        
+        return conflict;
+    }
+    
+    /**
+     * Checks if the event specified by the day and time indexes are conflicting
+     * with existing events whose priority is greater than the max priority
+     * 
+     * @param dayIndex The index of the day the event is occurring
+     * @param timeIndexes Array of time indexes for the duration of the event
+     * @param maxPriority Max priority that can be scheduled over
+     * @return True if the event doesn't conflict with existing events.
+     */
+    public boolean conflictWithEvents(Day day, EventTime[] times, int maxPriority) {
+        boolean conflict = false;
+        
+        for (int i = 0; i < times.length; i++) {
+            if (events[day.getIndex()][times[i].getTimeIndex()].getTotalPriority() > maxPriority) {
+                conflict = true;
             }
         }
         
@@ -95,13 +116,104 @@ public class TimeTable {
     }
     
     /**
+     * Setups up the timetable by entering all events already scheduled for
+     * the list of users
+     * 
+     * @param usersToMeet User in the meeting
+     */
+    public void initialiseTimeTable(String[] usersToMeet) {
+        String sqlUserList = convertToSqlList(usersToMeet);
+        Database db = Database.getSetupDatabase();
+        
+        // get all events for each user in meeting
+        ResultSet usersEvents = db.select("SELECT weekday, Practical.time, 4 'priority' " +
+                                        "FROM Practical " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND Cancellation.time = Practical.time " +
+                                        ") " +
+                                        "AND Practical.moduleCode IN " +
+                                        "	(SELECT Practical.moduleCode " +
+                                        "	FROM ModuleInCourse " +
+                                        "	WHERE courseid IN " +
+                                        "		(SELECT courseid " +
+                                        "		FROM GroupTakesCourse " +
+                                        "		WHERE gid IN " +
+                                        "			(SELECT gid " +
+                                        "			FROM InGroup " +
+                                        "			WHERE uid IN " + sqlUserList + "))) " +
+                                        "UNION " +
+                                        "SELECT weekday, Lecture.time, 5 'priority' " +
+                                        "FROM Lecture " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND Cancellation.time = Lecture.time " +
+                                        ") " +
+                                        "AND Lecture.moduleCode IN " +
+                                        "	(SELECT Lecture.moduleCode " +
+                                        "	FROM ModuleInCourse " +
+                                        "	WHERE courseid IN " +
+                                        "		(SELECT courseid " +
+                                        "		FROM GroupTakesCourse " +
+                                        "		WHERE gid IN " +
+                                        "			(SELECT gid " +
+                                        "			FROM InGroup " +
+                                        "			WHERE uid IN " + sqlUserList + "))) " +
+                                        "UNION " +
+                                        "SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
+                                        "FROM Meeting " +
+                                        "WHERE meetingid IN " +
+                                        "(	SELECT mid " +
+                                        "	FROM HasMeeting " +
+                                        "	WHERE uid IN " + sqlUserList + ");");
+        try {            
+            while (usersEvents.next()) {
+                int dayIndex = usersEvents.getInt("weekday");
+                
+                SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
+                Time time = usersEvents.getTime("time");
+                int timeIndex = Integer.parseInt(dateTime.format(time));
+                                
+                int priority = usersEvents.getInt("priority");
+                                
+                addEvent(priority, dayIndex, timeIndex);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error scheduling events");
+        }
+        
+        db.close();
+    }
+    
+    /**
+     * Creates a list of user IDs to be used in SQL queries
+     * 
+     * @param userIDs list of user IDs
+     * @return SQL styled list of user IDs
+     */
+    private static String convertToSqlList(String[] items) {
+        String sql = "(";
+        for (int i = 0; i < items.length; i++) {
+            sql += "\"" + items[i] + "\"" + (i < items.length - 1 ? ", " : "");
+        }
+        sql += ")";
+        return sql;
+    }
+    
+    /**
      * Enters the events that a specific user has into the list of events
      * 
      * @param userID The ID of the user
      */
-    public void addUserEvents(String userID) {
-        initialiseEventLists();
-        
+    public void initialiseTimeTable(String userID) {        
         Database db = Database.getSetupDatabase();
         
         try {
@@ -135,7 +247,7 @@ public class TimeTable {
                                             userLectureEvents.getString("room"),
                                             userLectureEvents.getDate("startDate"),
                                             userLectureEvents.getDate("endDate"));
-                addEventToList(lecture);
+                addEvent(lecture);
             }
 
             // retrieve list of practicals for a particular user id
@@ -168,7 +280,7 @@ public class TimeTable {
                                                     userPracticalEvents.getString("room"),
                                                     userPracticalEvents.getDate("startDate"),
                                                     userPracticalEvents.getDate("endDate"));
-                addEventToList(practical);
+                addEvent(practical);
             }
             
             // retrieve list of meetings that a particular user id is involved with
@@ -187,7 +299,7 @@ public class TimeTable {
                                             userPersonalEvents.getString("description"),
                                             userPersonalEvents.getInt("priority"),
                                             userPersonalEvents.getString("organiser_uid"));
-                addEventToList(meeting);
+                addEvent(meeting);
             }
         } catch (SQLException ex) {
             System.err.println("Error retrieving user events" + ex.getMessage());
@@ -198,43 +310,50 @@ public class TimeTable {
     }
     
     /**
+     * Set ups the timeslot matrix to hold empty TimeSlot objects
+     */
+    private void setupTimeSlots() {
+        for (int day = startDay.getIndex(); day <= endDay.getIndex(); day++) {
+            for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
+                events[day][time] = new TimeSlot();
+            }
+        }
+    }
+    
+    /**
      * Inserts the event into the list of already sorted events.
      * 
      * @param event Event to be added
      */
-    private void addEventToList(Event event) {
-        events.get(event.getDayOfWeek()).set(event.getHourIndex(), event);
+    private void addEvent(Event event) {
+        events[event.getDayOfWeek()][event.getHourIndex()].addEvent(event);
     }
     
     /**
-     * Initialises the map of lists of events for each day of the week
+     * Inserts a priority into the timeslots.
+     * 
+     * @param priority Priority to be added
+     * @param dayIndex Index of the day for the timeslot
+     * @param timeIndex Index of the time for the timeslot
      */
-    private void initialiseEventLists() {
-        for (Day day : Day.getDays(startDay, endDay)) {
-            LinkedList<Event> events = new LinkedList<Event>();
-            for (int timeIndex = 0; timeIndex <= EventTime.numHours; timeIndex++) {
-                events.add(null);
-            }
-            this.events.put(day.getDay(), events);
-        }
+    private void addEvent(int priority, int dayIndex, int timeIndex) {
+        events[dayIndex][timeIndex].addPriority(priority);
     }
 
     /**
      * Generates a timetable from HTML with all the events listed
      * in order of day and time
+     * N.B. Set the hideDetail parameter to true when scheduling an event with
+     * other users to display the timetable correctly.
      * 
-     * @param startTime The time to start displaying from in the table (exclusive)
-     * @param endTime The time to stop displaying at in the table (exclusive)
-     * @param startDay The day to start displaying from in the table (inclusive)
-     * @param endDay The day to stop displaying at in the table (inclusive)
+     * @param filterEvent The events to be displayed
+     * @param hideDetail Hide the detail when displaying the timeslot
      * @return Timetable as HTML code 
      */
-    public String createTimeTable(EventType filterEvent) {
+    public String createTimeTable(EventType filterEvent, boolean hideDetail) {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
-        
         List<Day> days = Day.getDays(startDay, endDay);
         
-        //     sortEvents();
         //create table
         String timetable = "<table>";
         //create header for timetable
@@ -243,18 +362,12 @@ public class TimeTable {
         for (Day day : days) {
             //generate days of time table
             timetable += "<tr><th>" + day.getDay() + "</th>";
-            // store events of the day
-            List<Event> scheduledEvents = events.get(day.getDay());
             for (EventTime time : hours) { 
-                Event curEvent = scheduledEvents.get(time.getTimeIndex());
-                if (curEvent != null 
-                        && filterEvent(curEvent.getEventType(), filterEvent)
-                        && time.getTime().equals(curEvent.getTime())) {
-                    //puts event into correct time slot 
-                    timetable += curEvent.displayTableHTML();
-
-                } else {
-                    timetable += "<td></td>";
+                if (hideDetail) {
+                    timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
+                }
+                else {
+                    timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent);
                 }
             }
             //end tags 
@@ -264,10 +377,6 @@ public class TimeTable {
         timetable += "</table>";
         
         return timetable;
-    }
-    
-    private boolean filterEvent(EventType eventType, EventType filterType) {
-        return (eventType.equals(filterType) || filterType.equals(EventType.ALL_EVENTS));
     }
 
     /**
@@ -289,20 +398,69 @@ public class TimeTable {
     }
 
     /**
-     * Returns the sorted list of events
-     * May return null if sortEvents not called first
+     * Highlight the next suggested timeslot(s) for the meeting being organised
      * 
-     * @return Map of the events sorted by day and time 
+     * @param hoursForMeeting Duration of the meeting
+     * @param maxPriority Max priority that can be scheduled over
+     * @param clearPrevious Remove the most recently suggested timeslot
+     * @return True if another timeslot exists
      */
-    public Map<String, LinkedList<Event>> getSortedEvents() {
-        return events;
+    public boolean nextSuggestedTimeSlot(int meetingDuration, int maxPriority, boolean clearPrevious) {        
+        
+        if (clearPrevious) {
+            clearSuggestedTimeSlots();
+        }
+        
+        boolean found = false;
+        // loop through each timeslot in the timetable
+        for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
+                !found && day < endDay.getIndex(); day++) {
+            suggestedDay = day;
+            for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
+                    !found && time < endTime.getTimeIndex(); time++) {
+                suggestedTime = time;
+                for (int i = 0; i < meetingDuration && (time + meetingDuration) < endTime.getTimeIndex(); i++) {
+                    if (events[day][time + i].getTotalPriority() <= maxPriority) {
+                        found = true;
+                    } else {
+                        found = false;
+                    }
+                }
+            }
+        }
+        
+        if (found) {
+            highlightSuggestions(meetingDuration);
+        }
+        
+        return found;
     }
-
+    
     /**
-     * Filter the results in the timetable
+     * Clears all suggested time slots in the timetable
      */
-    public void applyFilter() {
-        // filter the events in the table
+    public void clearSuggestedTimeSlots() {
+        for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
+                day < endDay.getIndex(); day++) {
+            for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
+                    time < endTime.getTimeIndex(); time++) {
+                if (events[day][time].isSuggested()) {
+                    events[day][time].setSuggested(false);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Cycles backwards through the timeslots starting at the suggested time for
+     * the length of the meeting
+     * 
+     * @param meetingDuration The duration of the meeting
+     */
+    private void highlightSuggestions(int meetingDuration) {
+        for (int time = 0; time < meetingDuration; time++) {
+            events[suggestedDay][suggestedTime + time].setSuggested(true);
+        }
     }
 
 }

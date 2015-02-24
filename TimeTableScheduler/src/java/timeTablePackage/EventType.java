@@ -25,7 +25,7 @@ public enum EventType {
     }
     
     public static EventType getEventType(String event) {
-        EventType eventType = null;
+        EventType eventType = EventType.ALL_EVENTS;
         for (EventType type : EventType.values()) {
             if (type.getName().equals(event)) {
                 eventType = type;

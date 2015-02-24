@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author cdol1
  */
-public class ModuleRequest extends userRequest{
+public class ModuleRequest extends UserRequest{
     
     public ModuleRequest(){
 

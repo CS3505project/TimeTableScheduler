@@ -13,7 +13,7 @@ import toolsPackage.Database;
  *
  * @author cdol1
  */
-public final class GroupRequest extends userRequest{
+public final class GroupRequest extends UserRequest{
     Group group;
     String groupName;
     

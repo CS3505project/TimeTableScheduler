@@ -35,12 +35,6 @@ public class Meeting extends Event {
     public EventType getEventType() {
         return EventType.MEETING;
     }
-    
-    @Override
-    public String displayTableHTML() {
-        return "<td class=\"meeting\">" 
-               + toString() + "</td>";
-    }
 
     /**
      * Returns the description for this meeting

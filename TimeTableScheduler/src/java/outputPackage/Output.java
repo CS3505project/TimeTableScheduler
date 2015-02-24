@@ -10,13 +10,10 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.EventTime;
 import timeTablePackage.EventType;
-import timeTablePackage.ScheduledTimeTable;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import userPackage.User;
@@ -60,34 +57,6 @@ public class Output {
         }
 
         finalHTML += fileToString("commonHeaderEnd.html");
-        return finalHTML;
-    }
-    
-    /**
-     * Creates the sign up page for the different types of users
-     * 
-     * @return HTML to create the web page
-     * @throws FileNotFoundException
-     * @throws IOException 
-     */
-    public String createSignUp(UserType type) throws FileNotFoundException, IOException{
-        String finalHTML = "";
-        
-        finalHTML += fileToString("commonSignUpHeader.html");
-        //Switch statement with appropriate controls based on what type of user is loged in
-        switch (type){
-            case ADMIN:
-                finalHTML += fileToString("adminSignUp.html");
-            break;
-            case LECTURER:
-                finalHTML += fileToString("lecturerSignUp.html");
-            break;
-            default:
-                finalHTML += fileToString("studentSignUp.html");
-            break;
-        }
-
-        finalHTML += fileToString("commonSignUpFooter.html");
         return finalHTML;
     }
     
@@ -291,11 +260,11 @@ public class Output {
     public String createDummyTable(){
         String finalHTML = "";
         
-        ScheduledTimeTable suggestion = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(new String[]{"1", "9"});
         suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += suggestion.displayTimeTable();
+        finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
@@ -305,13 +274,14 @@ public class Output {
      * Create the main timetable for the users home page
      * 
      * @param userID The users ID
+     * @param filter Filter events to display
      * @return HTML to display the timetable
      */
     public String createUserTimeTable(String userID, String filter){
         String finalHTML = "";
         
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        timetable.addUserEvents(userID);
+        timetable.initialiseTimeTable(userID);
         finalHTML += "<h1>Timetable for this week</h1>";
         // filter menu for the timetable
         finalHTML += "<ul class=\"filters\">" +
@@ -320,9 +290,7 @@ public class Output {
                          "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
                          "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
                      "</ul>"; 
-        
-        EventType filterType = EventType.getEventType(filter);
-        finalHTML += timetable.createTimeTable(filterType == null ? EventType.ALL_EVENTS : filterType); 
+        finalHTML += timetable.createTimeTable(EventType.getEventType(filter), false); 
         
         return finalHTML;
     }
@@ -340,11 +308,11 @@ public class Output {
     public String createSuggestedTimeTable(String[] users, int meetingLength, int overridePriority, boolean clearPreviousSuggestion){
         String finalHTML = "";
         
-        ScheduledTimeTable suggestion = new ScheduledTimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(users);
         suggestion.nextSuggestedTimeSlot(meetingLength, overridePriority, clearPreviousSuggestion);
         finalHTML += "<h1>Timetable for this week</h1>";
-        finalHTML += suggestion.displayTimeTable();
+        finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
         return finalHTML;
     }

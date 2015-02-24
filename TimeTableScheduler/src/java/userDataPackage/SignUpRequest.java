@@ -4,10 +4,17 @@
  */
 package userDataPackage;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
 import toolsPackage.Hash;
+import toolsPackage.StringEscapeUtils;
 import toolsPackage.Validator;
+import userPackage.Admin;
+import userPackage.Lecturer;
+import userPackage.Student;
+import userPackage.User;
 import userPackage.UserType;
 import static userPackage.UserType.ADMIN;
 import static userPackage.UserType.LECTURER;
@@ -16,27 +23,32 @@ import static userPackage.UserType.LECTURER;
  *
  * @author cdol1
  */
-public class SignUpRequest extends userRequest {
+public class SignUpRequest extends UserRequest {
     private String id;
+    private String title;
     private String firstName;
     private String surname;
     private String email;
+    private UserType userType;
+    private boolean signedUp;
     
-    public SignUpRequest(){
+    public SignUpRequest() { }
+    
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
     
-    public void setID(String id) {
-        if (!errorInString(id)) {
-            this.id = id;
-        } else {
-            addError("Incorrect id entered.");
-            System.err.println("Error with id.");
-        }
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
     
     public void setFirstName(String firstName) {
         if (!errorInString(firstName)) {
-            this.firstName = firstName;
+            this.firstName = StringEscapeUtils.escapeJava(firstName);
         } else {
             addError("Incorrect first name entered.");
             System.err.println("Error with first name.");
@@ -45,7 +57,7 @@ public class SignUpRequest extends userRequest {
     
     public void setSurname(String surname) {
         if (!errorInString(surname)) {
-            this.surname = surname;
+            this.surname = StringEscapeUtils.escapeJava(surname);
         } else {
             addError("Incorrect surname entered.");
             System.err.println("Error with surname.");
@@ -54,27 +66,57 @@ public class SignUpRequest extends userRequest {
     
     public void setEmail(String email) {
         if (Validator.isValidEmail(email)) {
-            this.email = email;
+            this.email = StringEscapeUtils.escapeJava(email);
         } else {
             addError("Incorrect email entered.");
             System.err.println("Error with email.");
         }
     }
     
-    public String getID() {
-        return id;
+    private void setUserID(String id) {
+        switch (userType) {
+            case ADMIN:
+                if (errorInString(id)) {
+                    addError("Please enter your administrator ID.");
+                } else {
+                    this.id = StringEscapeUtils.escapeJava(id);
+                }
+                break;
+            case LECTURER:
+                if (errorInString(id)) {
+                    addError("Please enter your lecturer ID.");
+                } else {
+                    this.id = StringEscapeUtils.escapeJava(id);
+                }
+                break;
+            default:
+                if (errorInString(id)) {
+                    addError("Please enter your student ID.");
+                } else {
+                    this.id = StringEscapeUtils.escapeJava(id);
+                }
+                break;
+        }
+    }
+    
+    public String getTitle() {
+        return StringEscapeUtils.unEscapeJava(title);
     }
     
     public String getFirstName() {
-        return firstName;
+        return StringEscapeUtils.unEscapeJava(firstName);
     }
     
     public String getSurname() {
-        return surname;
+        return StringEscapeUtils.unEscapeJava(surname);
     }
     
     public String getEmail() {
-        return email;
+        return StringEscapeUtils.unEscapeJava(email);
+    }
+    
+    public String getUserID() {
+        return StringEscapeUtils.unEscapeJava(id);
     }
     
     private boolean validPassword() {
@@ -82,8 +124,8 @@ public class SignUpRequest extends userRequest {
         if (errorInString((String)getRequest().getAttribute("password"))) {
             valid = false;
             addError("Please enter your password.");
-            if (errorInString((String)getRequest().getAttribute("reenter-password"))
-                    && !getRequest().getAttribute("password").equals(getRequest().getAttribute("reenter-password"))) {
+            if (errorInString((String)getRequest().getAttribute("rePassword"))
+                    && !((String)getRequest().getAttribute("password")).equals(((String)getRequest().getAttribute("rePassword")))) {
                 valid = false;
                 addError("Your passwords are different.");
             }
@@ -98,11 +140,9 @@ public class SignUpRequest extends userRequest {
      * @param request The user details
      * @return True if insert can be executed
      */
-    private boolean signUp(String userType) {
-        getUserID(userType);
-        
+    public boolean signUp(String userType) {        
         boolean result = false;
-        if (validPassword()) {
+        if (validPassword() && this.isValid()) {
             Database db = Database.getSetupDatabase();
 
             String passwordHash = Hash.sha1((String)getRequest().getAttribute("password"));
@@ -115,27 +155,38 @@ public class SignUpRequest extends userRequest {
             System.err.println("Problem creating user in database.");
         }
         
+        signedUp = result;
+        
         return result;
     }
-    
-    private void getUserID(String userType) {
-        switch (UserType.getUserType(userType)) {
-            case ADMIN:
-                if (errorInString(id = (String)getRequest().getAttribute("adminid"))) {
-                    addError("Please enter your administrator ID.");
+
+    public User getUserObject() {
+        User user = null;
+        if (signedUp) {
+            Database db = Database.getSetupDatabase();
+            ResultSet result = db.select("");
+            String uid = "";
+            try {
+                while (result.next()) {
+                    uid = result.getString("uid");
                 }
-                break;
-            case LECTURER:
-                if (errorInString(id = (String)getRequest().getAttribute("lecturerid"))) {
-                    addError("Please enter your lecturer ID.");
-                }
-                break;
-            default:
-                if (errorInString(id = (String)getRequest().getAttribute("studentid"))) {
-                    addError("Please enter your student ID.");
-                }
-                break;
+            } catch (SQLException ex) {
+                System.err.println("Error get user id from database.");
+            }
+
+            
+            switch (userType) {
+                case ADMIN:
+                    user = new Admin(id, email, firstName, surname, uid);
+                    break;
+                case LECTURER:
+                    user = new Lecturer(id, email, title, firstName, surname, uid);
+                    break;
+                default:
+                    user = new Student(id, email, firstName, surname, uid);
+                    break;
+            }
         }
+        return user;
     }
-    
 }

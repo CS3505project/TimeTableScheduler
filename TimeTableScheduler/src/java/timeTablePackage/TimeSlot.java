@@ -4,51 +4,40 @@
  */
 package timeTablePackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a specific time slot in timetable
  *
  * @author John O Riordan
  */
 public class TimeSlot {
-    private int dayOfWeek;
-    private int timeIndex;
-    private int[] events;
+    private int[] eventPrioritys;
     private int totalPriority;
     private boolean suggested;
-    
-    public TimeSlot(int dayOfWeek, int timeIndex) {
-        this.dayOfWeek = dayOfWeek;
-        this.timeIndex = timeIndex;
-        this.events = new int[EventPriority.highestPriority + 1];
-        this.totalPriority = 0;
-    }
+    private List<Event> events;
     
     public TimeSlot() {
-        this.dayOfWeek = -1;
-        this.timeIndex = -1;
-        this.events = new int[EventPriority.highestPriority + 1];
+        this.eventPrioritys = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
+        events = new ArrayList<Event>();
     }
 
- 
-
     /**
-     * Returns the day of the week for this timeslot
-     * For example Monday timeslot will return 1
-     * 
-     * @return index for the day of the week
+     * Checks if there are events in this timeslot
+     * @return True if an event exists
      */
-    public int getDayOfWeek() {
-        return dayOfWeek;
+    public boolean hasEvents() {
+        return events.isEmpty();
     }
     
     /**
-     * Returns the index representing the time of this timeslot
-     * 
-     * @return Time index as an int
+     * Adds an event to this timeslot
+     * @param event The event
      */
-    public int getTimeIndex() {
-        return timeIndex;
+    public void addEvent(Event event) {
+        events.add(event);
     }
     
     /**
@@ -70,7 +59,7 @@ public class TimeSlot {
     }
     
     /**
-     * Total priority for all events scheduled during this timeslot
+     * Total priority for all eventPrioritys scheduled during this timeslot
      * 
      * @return total priority
      */
@@ -79,13 +68,13 @@ public class TimeSlot {
     }
     
     /**
-     * Increments the number of events with this priority value
+     * Increments the number of eventPrioritys with this priority value
      * 
      * @param priority Priority of the event scheduled
      */
     public void addPriority(int priority) {
-        if (priority >= 0 && priority < events.length) {
-            events[priority] += 1;
+        if (priority >= 0 && priority < eventPrioritys.length) {
+            eventPrioritys[priority] += 1;
             totalPriority += priority;
         }
     }
@@ -96,7 +85,7 @@ public class TimeSlot {
      * @return Number of lectures
      */
     public int numLectures() {
-        return events[EventPriority.LECTURE.getPriority()];
+        return eventPrioritys[EventPriority.LECTURE.getPriority()];
     }
     
     /**
@@ -105,7 +94,7 @@ public class TimeSlot {
      * @return Number of practicals
      */
     public int numPracticals() {
-        return events[EventPriority.PRACTICAL.getPriority()];
+        return eventPrioritys[EventPriority.PRACTICAL.getPriority()];
     }
     
     /**
@@ -114,7 +103,7 @@ public class TimeSlot {
      * @return Number of meeting
      */
     public int numMeetings() {
-        return events[EventPriority.MEETING.getPriority()];
+        return eventPrioritys[EventPriority.MEETING.getPriority()];
     }
     
     /**
@@ -136,6 +125,34 @@ public class TimeSlot {
     }
     
     /**
+     * Prints a detailed version of the events details
+     * @param filter Filter the events displayed
+     * @return HTML to print into a table cell
+     */
+    public String printDetailedTableCell(EventType filter) {
+        String html = "<td>";
+        
+        for (Event event : events) {
+            if (filterEvent(event.getEventType(), filter)) {
+                html += event.toString();
+            }
+        }
+        html += "</td>";
+        return html;
+    }
+    
+    /**
+     * Filters the events to be displayed from the timeslot
+     * 
+     * @param eventType The type of the event
+     * @param filterType The filter type 
+     * @return True if the event should be displayed
+     */
+    private boolean filterEvent(EventType eventType, EventType filterType) {
+        return (eventType.equals(filterType) || filterType.equals(EventType.ALL_EVENTS));
+    }
+    
+    /**
      * Returns a string that represents the event scheduled in this timeslot with
      * the highest priority.
      * This is used when displaying the event in the HTML table
@@ -143,9 +160,9 @@ public class TimeSlot {
      * @return String to represent the highest priority event
      */
     private String highestPriorityEvent() {
-        return ((numLectures() > 0) ? EventPriority.LECTURE.getEventOfPriority() : 
-               ((numPracticals() > 0) ? EventPriority.PRACTICAL.getEventOfPriority() : 
-               ((numMeetings() > 0) ? EventPriority.MEETING.getEventOfPriority() : "")));
+        return ((numLectures() > 0) ? EventPriority.LECTURE.getPriorityName() : 
+               ((numPracticals() > 0) ? EventPriority.PRACTICAL.getPriorityName() : 
+               ((numMeetings() > 0) ? EventPriority.MEETING.getPriorityName() : "")));
     }
      
     @Override

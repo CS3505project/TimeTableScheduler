@@ -15,7 +15,7 @@ public enum EventPriority {
     MEETING(3, "meeting");
     
     private int priority;
-    private String eventOfPriority;
+    private String priorityName;
     
     /**
      * Number of different priorities
@@ -24,7 +24,7 @@ public enum EventPriority {
     
     EventPriority(int priority, String eventOfPriority) {
         this.priority = priority;
-        this.eventOfPriority = eventOfPriority;
+        this.priorityName = eventOfPriority;
     }
     
     /**
@@ -41,8 +41,8 @@ public enum EventPriority {
      * For example "lecture" for EventPriority.LECTURE
      * @return 
      */
-    public String getEventOfPriority() {
-        return eventOfPriority;
+    public String getPriorityName() {
+        return priorityName;
     }
     
     /**
@@ -53,7 +53,7 @@ public enum EventPriority {
      * @return The event priority object for this priority
      */
     public static EventPriority convertToEventPriority(int priority) {
-        EventPriority eventPriority = null;
+        EventPriority eventPriority = EventPriority.MEETING;
         for (EventPriority curPriority : EventPriority.values()) {
             if (curPriority.getPriority() == priority) {
                 eventPriority = curPriority;

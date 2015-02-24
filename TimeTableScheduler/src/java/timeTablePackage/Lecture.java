@@ -55,14 +55,8 @@ public class Lecture extends Event {
     }
 
     @Override
-    public String getDayOfWeek() {
-        return weekDay.getDay();
-    }
-    
-    @Override
-    public String displayTableHTML() {
-        return "<td class=\"lecture\">" 
-               + toString() + "</td>";
+    public int getDayOfWeek() {
+        return weekDay.getIndex();
     }
     
     /**

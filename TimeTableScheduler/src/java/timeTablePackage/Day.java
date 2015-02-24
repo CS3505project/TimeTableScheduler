@@ -62,6 +62,23 @@ public enum Day {
     }
     
     /**
+     * Convert the name of the day to its corresponding day
+     * Returns null if not a valid day name
+     * 
+     * @param dayName the name of the day
+     * @return The day object
+     */
+    public static Day convertToDay(String dayName) {
+        // iterate through the days until the indexes match
+        for (Day day : Day.values()) {
+            if (day.getDay().equals(dayName)) {
+                return day;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Convert the index provided to its corresponding day
      * Returns null if not a valid index
      * 
