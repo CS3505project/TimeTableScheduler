@@ -1,14 +1,11 @@
 package userDataPackage;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import timeTablePackage.EventPriority;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -28,6 +25,17 @@ public final class MeetingRequest extends UserRequest{
      * Default constructor
      */
     public MeetingRequest(){ 
+    }
+     
+    private void resetFields() {
+        date = new Date();
+        meetingName = "";
+        venue = "";
+        time = null;
+        description = "";
+        priority = EventPriority.MEETING;
+        this.setDataEntered(false);
+        this.clearErrors();
     }
     
     /**
@@ -169,14 +177,8 @@ public final class MeetingRequest extends UserRequest{
                 result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES (" + getUser().getUserID() + ", " + meetingID + ");");
             }
             
-            date = new Date();//initialise to todays date
-            meetingName = "";
-            venue = "";
-            time = null;
-            description = "";
-            priority = EventPriority.MEETING;
-            this.setDataEntered(false);
-            this.clearErrors();
+            this.setActionCompleted(result);
+            resetFields();
             
             db.close();
         }

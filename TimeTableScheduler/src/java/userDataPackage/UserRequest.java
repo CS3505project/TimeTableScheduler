@@ -19,6 +19,7 @@ public abstract class UserRequest {
     private userPackage.User user;
     private List<String> errors;
     private boolean dataEntered;
+    private boolean actionCompleted;
     
     public UserRequest(){
         this.errors = new ArrayList<String>();
@@ -37,6 +38,14 @@ public abstract class UserRequest {
      */
     public User getUser() {
         return user;
+    }
+    
+    public boolean isActionCompleted() {
+        return actionCompleted;
+    }
+    
+    public void setActionCompleted(boolean actionCompleted) {
+        this.actionCompleted = actionCompleted;
     }
     
     public boolean isDataEntered() {
