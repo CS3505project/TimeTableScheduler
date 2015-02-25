@@ -623,6 +623,7 @@ div.popup{
         position: fixed;
         min-width: 200px;
         min-height: 200px;
+        max-width: 300px;
         left: 8px;
         bottom: 60px;
         padding: 8px;
@@ -647,11 +648,11 @@ div.popup:after{
 }
 div.popup button{
         display: block;
-        position: relative;
-        width: 60px;
-        margin-left: auto;
-        margin-right: auto;
-        bottom: 0px;
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        margin-top: 16px;
+        bottom: 8px;
         background: #48e;
 	border: 1px solid #06c;
 	text-shadow: 1px 1px 2px #000;

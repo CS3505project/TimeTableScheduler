@@ -10,7 +10,7 @@
         MeetingRequest.setActionCompleted(false);
 %>
         <div class="hidden" name="context" value="addMeeting"></div>
-        <hgroup>
+        <hgroup class="animate">
         	<h1>Add Meeting</h1>
         	<h2>Step 1 of 2</h2>
         </hgroup>
@@ -28,7 +28,7 @@
         	<label for="venue">Venue:</label>
         	<input type="text" name="venue" id="venue" value="<%= MeetingRequest.getVenue() %>" required="required"><br>
         	<label for="submit">Submit:</label>
-        	<input type="submit" id="submit" value="Next">
+        	<input type="submit" id="submit" value="Next" class="animate">
         </form>
         <p>
             <%-- print errors and comit valid values to database --%>

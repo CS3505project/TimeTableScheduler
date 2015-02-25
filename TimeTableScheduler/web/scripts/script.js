@@ -1,7 +1,4 @@
 $(document).ready(function(){
-    //put context in the help button
-    var context = $("div[name='context']").attr("value");
-    $("#help").click(displayHelp(context));
     //fix form for meeting
     $("#individualSelectDiv").hide();
     
@@ -31,52 +28,61 @@ $(document).ready(function(){
                 break;
         }
     });
+    //////////////////////////////
+    //Create the popup box node //
+    var helpBox = document.createElement("div");
+    helpBox.setAttribute("class","popup");
+    helpBox.setAttribute("id","helpPopup");
+    var closeButton = document.createElement("button");
+    closeButton.setAttribute("class","animate");
+    closeButton.onclick = function(){
+        $("#helpPopup").hide("drop", {direction: "left"}, 250);
+        //reset help button to show rather than hide popup
+        document.getElementById("help").onclick = function(){
+            displayHelp(context);
+            };
+        };
+    $(closeButton).html("Close");
+    $(helpBox).append("<div><p></p></div>");
+    $(helpBox).append(closeButton);
+    $("body").append(helpBox); 
+    $("#helpPopup").hide();
+    //put context in the help button
+    var context = $("div[name='context']").attr("value");
+    $("#help").click(displayHelp(context));
     
+    //set flashing animation for clicked animated class nodes
+    $(".animate").click(function() {
+        $(this).effect("highlight", {color:"#eeeeff"}, 250 );
+    });
+    //get info from selectable nodes in timetable
+    $(".selectable").click(function() {
+        var infoNode = $("div.hidden", this);
+        var date = infoNode.attr("data-date");
+        var time = infoNode.attr("data-time");
+        //fill out the date and time in the form:
+    });
 }); 
 
 function displayHelp(context){
-        
-	//Create the popup box node
-        var helpBox = document.createElement("div");
-        helpBox.setAttribute("class","popup");
-        helpBox.setAttribute("id","helpPopup");
-        
-        //Create the button for removing the help dialog
-        var closeButton = document.createElement("button");
-        closeButton.onclick = function(){
-            $("#helpPopup").hide("drop", {direction: "right"}, 300);
-            $("#helpPopup").remove();
-            //allow help button to be used more than once (after popup is destroyed)
-            document.getElementById("help").onclick = function(){
-                displayHelp(context);
-            };
-        };
-        closeButton.innerHTML = "Got it!";
-        
-        //set the help button to close the popup
+    //show the popup, it already exists in the DOM but is hidden
+    $("#helpPopup").show("drop", {direction: "left"}, 250);
+    //set the help button to close the popup
+    document.getElementById("help").onclick = function(){
+        $("#helpPopup").hide("drop", {direction: "left"}, 250);
         document.getElementById("help").onclick = function(){
-            $("#helpPopup").hide("drop", {direction: "right"}, 300);
-            $("#helpPopup").remove();
-            document.getElementById("help").onclick = function(){
-                displayHelp(context);
-            };
+            displayHelp(context);
         };
-        
-        //Switch on the context name, if the context is meeting, get info from the meetong JSON file
-        switch(context){
-        case "placeholder":
-            helpBox.innerHTML = "this is placeholder text";//add ajax stuff to get the context help from JSON files
-            break;
-        case "addMeeting":
-            helpBox.innerHTML = "this is pMEETINGtext";//add ajax stuff to get the context help from JSON files
-            break;
-        default:
-            helpBox.innerHTML = "Error";//add ajax stuff to get the context help from JSON files
-        }
-        //add the close button to the box
-        helpBox.appendChild(closeButton);
-        //adds popup to page
-        $("body").append(helpBox); 
-        $("#helpPopup").hide();
-        $("#helpPopup").show("drop", {direction: "left"}, 300);
+    };
+    //Switch on the context name, if the context is meeting, get info from the meetong JSON file
+    switch(context){
+    case "placeholder":
+         $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
+        break;
+    case "addMeeting":
+        $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
+        break;
+    default:
+        $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
+    }
 }
