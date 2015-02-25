@@ -22,6 +22,8 @@ public class TimeSlot {
     private String time;
     
     public TimeSlot(String date, String time) {
+        this.date = date;
+        this.time = time;
         this.eventPrioritys = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
         events = new ArrayList<Event>();
@@ -124,7 +126,7 @@ public class TimeSlot {
     public String printTableCell() {
         if (totalPriority > 0) {
             return "<td class=\"animate selectable priority-" + totalPriority + "\"" 
-                   + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
+                   + (isSuggested() ? " class=\"suggested-timeslot\">" : ">")
                     
                    + "<div class=\"hidden\""
                    + "data-date=\"" + date + "\""
@@ -134,7 +136,11 @@ public class TimeSlot {
                    + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
-            return "<td" + (isSuggested() ? " class=\"animate selectable suggested-timeslot\">" : " >") + "</td>";
+            return "<td" + (isSuggested() ? " class=\"animate selectable suggested-timeslot\">" : ">") 
+                   + "<div class=\"hidden\""
+                   + "data-date=\"" + date + "\""
+                   + "data-time=\"" + time + "\"></div>"
+                   + "</td>";
         }
     }
     
