@@ -35,6 +35,11 @@ public class Meeting extends Event {
     public EventType getEventType() {
         return EventType.MEETING;
     }
+    
+    @Override
+    public EventPriority getEventPriority() {
+        return EventPriority.MEETING;
+    }
 
     /**
      * Returns the description for this meeting

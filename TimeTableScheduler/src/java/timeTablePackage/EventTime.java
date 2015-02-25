@@ -5,8 +5,11 @@
 package timeTablePackage;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents the times the system can display in the timetable
@@ -61,6 +64,14 @@ public enum EventTime {
      */
     public int getTimeIndex() {
         return timeIndex;
+    }
+    
+    public String printSQLTimeFormat() {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTime(time);
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss", Locale.getDefault());
+
+        return format.format(cal.getTime());
     }
     
     @Override

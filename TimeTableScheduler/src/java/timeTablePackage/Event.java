@@ -33,6 +33,9 @@ public abstract class Event {
     @Override
     public abstract String toString();
     
+    
+    public abstract EventPriority getEventPriority();
+    
     /**
      * Returns the type of event
      * 

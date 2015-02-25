@@ -5,6 +5,7 @@
 package timeTablePackage;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -22,8 +23,7 @@ public enum Day {
     FRIDAY("Friday", 5),
     SATURDAY("Saturday", 6),
     SUNDAY("Sunday", 7);
-    
-    
+
     private String day;
     private int index;
     

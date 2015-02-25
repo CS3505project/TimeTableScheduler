@@ -35,6 +35,11 @@ public class Lecture extends Event {
     public EventType getEventType() {
         return EventType.LECTURE;
     }
+    
+    @Override
+    public EventPriority getEventPriority() {
+        return EventPriority.LECTURE;
+    }
 
     /**
      * Returns the semester the lecture is held

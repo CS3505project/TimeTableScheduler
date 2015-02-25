@@ -35,6 +35,11 @@ public class Practical extends Event {
     public EventType getEventType() {
         return EventType.PRACTICAL;
     }
+    
+    @Override
+    public EventPriority getEventPriority() {
+        return EventPriority.PRACTICAL;
+    }
 
     /**
      * Returns the semester the practical is held

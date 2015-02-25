@@ -9,10 +9,10 @@ package timeTablePackage;
  * @author Pc
  */
 public enum EventType {
-    LECTURE("lecture"),
-    MEETING("meeting"),
-    PRACTICAL("practical"),
-    ALL_EVENTS("all");
+    LECTURE ("lecture"),
+    MEETING ("meeting"),
+    PRACTICAL ("practical"),
+    ALL_EVENTS ("all");
     
     private String name;
     

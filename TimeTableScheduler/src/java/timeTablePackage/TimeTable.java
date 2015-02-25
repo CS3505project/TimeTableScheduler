@@ -90,29 +90,14 @@ public class TimeTable {
         this.startTime = startTime;
     }
     
-    /**
-     * Set the time to stop displaying at in the timetable
-     * 
-     * @param startTime The end time
-     */
     public void setEndTime(EventTime endTime) {
         this.endTime = endTime;
     }
 
-    /**
-     * Set the day to start displaying from in the timetable
-     * 
-     * @param startTime The start day
-     */
     public void setStartDay(Day startDay) {
         this.startDay = startDay;
     }
 
-    /**
-     * Set the day to stop displaying at in the timetable
-     * 
-     * @param startTime The end day
-     */
     public void setEndDay(Day endDay) {
         this.endDay = endDay;
     }
@@ -315,9 +300,23 @@ public class TimeTable {
      * Set ups the timeslot matrix to hold empty TimeSlot objects
      */
     private void setupTimeSlots() {
-        for (int day = startDay.getIndex(); day <= endDay.getIndex(); day++) {
-            for (int time = startTime.getTimeIndex(); time < endTime.getTimeIndex(); time++) {
-                events[day][time] = new TimeSlot();
+        List<EventTime> hours = EventTime.getTimes(startTime, endTime);
+        List<Day> days = Day.getDays(startDay, endDay);
+        
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+
+        // Set the calendar to monday of the current week
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        
+        for (int i = 0; i < days.size(); i++) {
+            cal.add(Calendar.DATE, i);
+            for (EventTime time : hours) {
+                events[days.get(i).getIndex()][time.getTimeIndex()] 
+                        = new TimeSlot(format.format(cal.getTime()), time.toString());
             }
         }
     }

@@ -17,8 +17,11 @@ public class TimeSlot {
     private int totalPriority;
     private boolean suggested;
     private List<Event> events;
+    private EventPriority largestPriority;
+    private String date;
+    private String time;
     
-    public TimeSlot() {
+    public TimeSlot(String date, String time) {
         this.eventPrioritys = new int[EventPriority.highestPriority + 1];
         this.totalPriority = 0;
         events = new ArrayList<Event>();
@@ -37,6 +40,12 @@ public class TimeSlot {
      * @param event The event
      */
     public void addEvent(Event event) {
+        // keep track of the largest priority for this timeslot
+        if (largestPriority == null 
+                || event.getEventPriority().getPriority() < largestPriority.getPriority()) {
+            largestPriority = event.getEventPriority();
+        }
+        
         events.add(event);
     }
     
@@ -116,6 +125,11 @@ public class TimeSlot {
         if (totalPriority > 0) {
             return "<td class=\"animate selectable priority-" + totalPriority + "\"" 
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
+                    
+                   + "<div class=\"hidden\""
+                   + "data-date=\"" + date + "\""
+                   + "data-time=\"" + time + "\"></div>"
+                    
                    + "Lecture: " + numLectures() + "<br />"
                    + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
@@ -130,13 +144,16 @@ public class TimeSlot {
      * @return HTML to print into a table cell
      */
     public String printDetailedTableCell(EventType filter) {
-        String html = "<td>";
-        
+        String html = "<td" +
+                    (largestPriority == null ? ">" : " class=\"" + largestPriority.getPriorityName())
+                    + "\">";
+
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
                 html += event.toString();
             }
         }
+        
         html += "</td>";
         return html;
     }
