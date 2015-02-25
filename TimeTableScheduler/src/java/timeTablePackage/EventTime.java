@@ -67,11 +67,7 @@ public enum EventTime {
     }
     
     public String printSQLTimeFormat() {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTime(time);
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss", Locale.getDefault());
-
-        return format.format(cal.getTime());
+        return time.toString();
     }
     
     @Override

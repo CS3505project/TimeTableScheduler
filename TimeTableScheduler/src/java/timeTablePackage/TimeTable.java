@@ -299,10 +299,7 @@ public class TimeTable {
     /**
      * Set ups the timeslot matrix to hold empty TimeSlot objects
      */
-    private void setupTimeSlots() {
-        List<EventTime> hours = EventTime.getTimes(startTime, endTime);
-        List<Day> days = Day.getDays(startDay, endDay);
-        
+    private void setupTimeSlots() {        
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setFirstDayOfWeek(Calendar.MONDAY);
 
@@ -312,11 +309,11 @@ public class TimeTable {
         // Print dates of the current week starting on Monday
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         
-        for (int i = 0; i < days.size(); i++) {
-            cal.add(Calendar.DATE, i);
-            for (EventTime time : hours) {
-                events[days.get(i).getIndex()][time.getTimeIndex()] 
-                        = new TimeSlot(format.format(cal.getTime()), time.toString());
+        for (Day day : Day.values()) {
+            cal.add(Calendar.DATE, 1);
+            for (EventTime time : EventTime.values()) {
+                events[day.getIndex() - 1][time.getTimeIndex() - 1] 
+                        = new TimeSlot(format.format(cal.getTime()), time.printSQLTimeFormat());
             }
         }
     }
