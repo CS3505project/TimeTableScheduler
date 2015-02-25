@@ -1,0 +1,17 @@
+{
+    "title": "Add a Meeting",
+    "instructions": "Adding a meeting is broken into two steps. The first step is to fill out \n\
+the form with the appropriate data for whom you want a meeting with,\n\
+there are three options for meeting type: Group, Individual, and Personal.\n\\n\
+\n\
+A Group Meeting is between you and a predetermined group, for example, a study group of which you are a member.\n\
+clicking this option will give you a list of the groups of which you are a member.\n\
+An Individual Meeting is between you and one other individual in the system, for example,\n\
+ a lecturer of one of your modules, or a student from one of your groups\n\
+Finally, a Personal Meeting is any event outside of the scope of the system, for example a doctor's appointment or a driving test.\n\
+\n\
+fill in the description and venue, and click next. If your data is valid, you will be shown the next part of the form, \n\
+which contains a timetable showing timeslots and how convenient they are for everyone assosciated with the meeting.\n\
+Click a timeslot to schedule the meeting during that timeslot. If you are happy with your choices, click submit, \n\
+and a notification will be sent to each user involved in the meeting, which they may either accept or decline",
+}
