@@ -4,6 +4,7 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
+        out.println(output.createDummyTable());
         out.println(output.createUserTimeTable(user.getUserID(), (String)request.getParameter("filter")));
         out.println(output.createFooter());
     } else {
