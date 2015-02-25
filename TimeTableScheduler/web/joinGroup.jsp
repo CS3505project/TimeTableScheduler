@@ -6,6 +6,13 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         out.println(output.createJoinGroupForm(user.getUserID()));
+%>
+        <p>
+            <%-- print errors and comit valid values to database --%>
+            <%= GroupRequest.getErrors() %>
+            <%= GroupRequest.joinGroup(user.getUserID()) %>
+        </p>
+<%
         out.println(output.createFooter());
     } else {
         

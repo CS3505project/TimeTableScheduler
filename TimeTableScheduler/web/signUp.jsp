@@ -14,7 +14,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
     <body>
-    <jsp:setProperty name="MeetingRequest" property="*"/>
+    <jsp:setProperty name="SignUpRequest" property="*"/>
 
 <%
     switch (userPackage.UserType.getUserType((String)request.getParameter("type"))){
@@ -24,8 +24,8 @@
                 && ((userPackage.User)session.getAttribute("user")).getUserType().equals(userPackage.UserType.ADMIN)) {
                     SignUpRequest.setUserType(userPackage.UserType.ADMIN);
 %>
-            <div class="signup">
-                <form action="signUp.jsp">
+            <div>
+                <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Admin ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="firstName">First Name:</label> 
@@ -35,15 +35,14 @@
                     <label for="email">eMail:</label>
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
-                    <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword"name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
+                    <input type="password" id="password" name="password" required="required"><br>
+                    <label for="rePassword">Re-enter Password:</label> 
+                    <input type="password" id="rePassword"name="rePassword" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
                 <p>
                     <%-- print errors and comit valid values to database --%>
                     <%= SignUpRequest.getErrors()%>
-                    <%= SignUpRequest.signUp("admin") %>
                 </p>
             </div>
 <%
@@ -60,8 +59,8 @@
         case LECTURER:
             SignUpRequest.setUserType(userPackage.UserType.LECTURER);
 %>
-            <div class="signup">
-                <form action="signUp.jsp">
+            <div>
+                <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Lecturer ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="title">Title:</label> 
@@ -73,24 +72,27 @@
                     <label for="email">eMail:</label> 
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
+                    <input type="password" id="password" name="password" required="required"><br>
                     <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
+                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
                     <input type="submit" value="Sign Up">
                 </form>
                 <p>
                     <%-- print errors and comit valid values to database --%>
                     <%= SignUpRequest.getErrors()%>
-                    <%= SignUpRequest.signUp("lecturer") %>
                 </p>
             </div>
+            <ul id="signUpMenu">
+                <li><a href="/signUp.jsp?type=student">Student</a></li>
+                <li><a href="/signUp.jsp?type=lecturer">Lecturer</a></li>
+            </ul>
 <%
         break;
         default:
             SignUpRequest.setUserType(userPackage.UserType.STUDENT);
 %>
-            <div class="signup">
-                <form action="signUp.jsp">
+            <div>
+                <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Student ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
                     <label for="firstName">First Name:</label> 
@@ -100,22 +102,28 @@
                     <label for="email">eMail:</label> 
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
-                    <label for="rePassword">Re-enter:</label>
-                    <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
+                    <input type="password" id="password" name="password" required="required"><br>
+                    <label for="rePassword">Re-enter:</label> 
+                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
                 <p>
                     <%-- print errors and comit valid values to database --%>
                     <%= SignUpRequest.getErrors()%>
-                    <%= SignUpRequest.signUp("student") %>
                 </p>
             </div>
+            <ul id="signUpMenu">
+                <li><a href="/signUp.jsp?type=student">Student</a></li>
+                <li><a href="/signUp.jsp?type=lecturer">Lecturer</a></li>
+            </ul>
 <%
         break;
-    }
-    //session.setAttribute("user", SignUpRequest.getUserObject());
-    //session.setAttribute("userType", SignUpRequest.getUserType());
+    } 
+    
+    SignUpRequest.signUp();
+    session.setAttribute("user", SignUpRequest.getUserObject());
+    session.setAttribute("userType", SignUpRequest.getUserType());
+   
 %>
         <footer class="loginFooter">
                 <small>&copy; Team 11 2015</small>

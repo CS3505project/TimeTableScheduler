@@ -1,11 +1,18 @@
 package userDataPackage;
 
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import timeTablePackage.EventPriority;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -15,26 +22,22 @@ import toolsPackage.Validator;
  */
 public final class MeetingRequest extends UserRequest{
     private Date date = new Date();//initialise to todays date
-    private String meetingName = "";
     private String venue = "";
     private Time time;
     private String description = "";
-    private EventPriority priority = EventPriority.MEETING;
-        
+            
     /**
      * Default constructor
      */
     public MeetingRequest(){ 
+        initialiseValidData(4);
     }
      
-    private void resetFields() {
+    private void resetForm() {
         date = new Date();
-        meetingName = "";
         venue = "";
         time = null;
         description = "";
-        priority = EventPriority.MEETING;
-        this.setDataEntered(false);
         this.clearErrors();
     }
     
@@ -44,17 +47,18 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setDate(String date) {
         if (this.errorInString(date)) {
-            this.addError("Error in date");
+            this.addError("Invalid date entered.");
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                this.date = sdf.parse(date);
+                setValidData(0, true);
+            }
+            catch (ParseException e) {
+                System.err.println("Invalid Date: " + date);
+                this.addError("Invalid Date: " + date);
+            }
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            this.date = sdf.parse(date);
-        }
-        catch (ParseException e) {
-            System.err.println("Invalid Date: " + date);
-            this.addError("Invalid Date: " + date);
-        }
-        this.setDataEntered(true);
     }
 
     /**
@@ -66,8 +70,8 @@ public final class MeetingRequest extends UserRequest{
             this.addError("Venue is incorrect.");
         } else {
             this.venue = Validator.escapeJava(venue);
+            setValidData(1, true);
         }
-        this.setDataEntered(true);
     }
     
     /**
@@ -80,25 +84,12 @@ public final class MeetingRequest extends UserRequest{
             Calendar cal = Calendar.getInstance();
             cal.setLenient(false);
             cal.setTime(this.time);
+            setValidData(2, true);
         }
         catch (Exception e) {
             System.err.println("Invalid Time: " + time);
             this.addError("Invalid Time: " + time);
         }
-        this.setDataEntered(true);
-    }
-    
-    /**
-     * Sets the priority of the event
-     * @param priorityLevel priority level
-     */
-    public void setPriority(String priorityLevel) {
-        priority = EventPriority.convertToEventPriority(priorityLevel);
-        if (priority == null) {
-            System.err.println("Invalid priority: " + priorityLevel);
-            this.addError("Not a vaild priority");
-        }
-        this.setDataEntered(true);
     }
     
     /**
@@ -110,8 +101,8 @@ public final class MeetingRequest extends UserRequest{
             addError("Your description is incorrect.");
         } else {
             this.description = Validator.escapeJava(description);
+            setValidData(3, true);
         }
-        this.setDataEntered(true);
     }
     
     /**
@@ -140,14 +131,6 @@ public final class MeetingRequest extends UserRequest{
     }
     
     /**
-     * Gets the priority for the event
-     * @return Event priority
-     */
-    public String getPriority() {
-        return priority.getPriorityName();
-    }
-    
-    /**
      * Gets the description of the event
      * @return description
      */
@@ -162,27 +145,68 @@ public final class MeetingRequest extends UserRequest{
      */
     public boolean createMeeting() {
         boolean result = false;
+        
         if (this.isValid()) {
             System.out.println("here");
+            
+            EventPriority priority = getPriority((String)getRequest().getParameter("priority"));
+            
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(date);
             Database db = Database.getSetupDatabase();
-
             result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                             + "VALUES (\""+ meetingDate + "\", \""+ time.toString() + "\", \"" + venue + "\", \"" 
                             + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
             
-            int meetingID = db.getPreviousAutoIncrementID("Meeting");
-            if (result) {
-                result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES (" + getUser().getUserID() + ", " + meetingID + ");");
-            }
+            List<Integer> usersInMeeting = getUsersToMeet(db, (String)getRequest().getParameter("withType"));
+            addUsersToMeeting(db, db.getPreviousAutoIncrementID("Meeting"), usersInMeeting);
             
             this.setActionCompleted(result);
-            resetFields();
-            
+            resetForm();
             db.close();
         }
         return result;
+    }
+    
+    private EventPriority getPriority(String priorityLevel) {
+        return EventPriority.convertToEventPriority(priorityLevel);
+    }
+    
+    private List<Integer> getUsersToMeet(Database db, String meetingType) {
+        List<Integer> usersInMeeting = new ArrayList<Integer>();
+        try {
+            switch (meetingType) {
+                case "group":
+                    getRequest().getParameter("groupID");
+                    ResultSet groupResult = db.select("");
+                    while (groupResult.next()) {
+                        usersInMeeting.add(groupResult.getInt("uid"));
+                    }
+                    break;
+                case "individual":
+                    getRequest().getParameter("individualID");
+                    ResultSet individualResult = db.select("");
+                    while (individualResult.next()) {
+                        usersInMeeting.add(individualResult.getInt("uid"));
+                    }
+                    break;
+                default:
+                    usersInMeeting.add(Integer.parseInt(getUser().getUserID()));
+                    break;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Problem getting users in meeting.");
+        }
+        return usersInMeeting;
+    }
+    
+    private void addUsersToMeeting(Database db, int meetingID, List<Integer> usersInMeeting) {
+        String values = "";
+        Iterator<Integer> userIds = usersInMeeting.iterator();
+        while (userIds.hasNext()) {
+            values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
+        }
+        db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
     }
     
     /**

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
+import timeTablePackage.EventPriority;
 import timeTablePackage.EventTime;
 import timeTablePackage.EventType;
 import timeTablePackage.TimeTable;
@@ -177,21 +178,24 @@ public class Output {
         "	<h1>Join Group</h1>\n" +
         "</hgroup>\n" +
         "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
-        "<form>\n" +
+        "<form action=\"joinGroup.jsp\" method=\"GET\">\n" +
         "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<select id=\"gname\" value=\"<%= GroupRequest.getGroupName() %>\">\n";
+        "	<select name=\"gname\" id=\"gname\">\n";
         
         finalHTML += createGroupDropDown(userid);
         
         finalHTML += "</select><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>" +
-        "<p>" +
-            "<%-- print errors and comit valid values to database --%>" +
-            "<%= GroupRequest.joinGroup(" + userid + ") %>" +
-        "</p>";
-        //add actual code
+        "</form>";
+        return finalHTML;
+    }
+    
+     public String createPriorityDropDown() {
+        String finalHTML = "";
+        for (EventPriority priority : EventPriority.values()) {
+            finalHTML += "<option value=\"" + priority.getPriorityName() + "\">" + priority.getPriorityName() + "</option>";
+        }
         return finalHTML;
     }
     
@@ -209,7 +213,7 @@ public class Output {
         ResultSet result = db.select("");
         try {
             while (result.next()) {
-                finalHTML += "<value>" + result.getString("groupName") + "</value>";
+                finalHTML += "<option value=\"" + result.getString("gid") + "\">" + result.getString("groupName") + "</option>";
             }
         } catch (SQLException ex) {
             System.err.println("Error retrieving group list");
@@ -282,11 +286,11 @@ public class Output {
         finalHTML += "<div class='radioBox'><span>Group</span><input type='radio' id='groupRadio' name='withType' value='group' checked>\n" +
         "<span>Individual</span><input type='radio' id='individualRadio' name='withType' value='individual'>\n" +
         "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
-        "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select id='groupSelect'>\n";
+        "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
         //for loop for creating options for legit groups
         
         finalHTML += "</select></div>\n" +
-        "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select id='individualSelect' disabled></div>\n";
+        "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
         //for loop for creating options for legit groups
         
         finalHTML += "</select></div>";
