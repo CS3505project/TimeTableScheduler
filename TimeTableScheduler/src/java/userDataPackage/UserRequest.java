@@ -18,17 +18,28 @@ public abstract class UserRequest {
     private HttpServletRequest request;
     private userPackage.User user;
     private List<String> errors;
-    private boolean dataEntered;
+    private boolean[] validDataValues;
     private boolean actionCompleted;
     
     public UserRequest(){
         this.errors = new ArrayList<String>();
-        dataEntered = false;
     }
     
     public void setValues(HttpServletRequest request, userPackage.User user) {
         this.request = request;
         this.user = user;
+    }
+    
+    public void initialiseValidData(int length) {
+        validDataValues = new boolean[length];
+    }
+    
+    public void clearValidData() {
+        validDataValues = new boolean[validDataValues.length];
+    }
+    
+    public void setValidData(int index, boolean value) {
+        validDataValues[index] = value;
     }
     
     /**
@@ -46,14 +57,6 @@ public abstract class UserRequest {
     
     public void setActionCompleted(boolean actionCompleted) {
         this.actionCompleted = actionCompleted;
-    }
-    
-    public boolean isDataEntered() {
-        return dataEntered;
-    }
-    
-    public void setDataEntered(boolean dataEntered) {
-        this.dataEntered = dataEntered;
     }
     
     public void clearErrors() {
@@ -95,10 +98,8 @@ public abstract class UserRequest {
      */
     public String getErrors(){
         String result = "";
-        if (dataEntered) {
-            for(String error : errors){
-                result += (error + "<br>");
-            }
+        for(String error : errors){
+            result += (error + "<br>");
         }
         return result;
     }
@@ -109,7 +110,13 @@ public abstract class UserRequest {
      * @return True if errors present
      */
     public boolean isValid() {
-        return errors.isEmpty() && dataEntered;
+        boolean valid = true;
+        for (int i = 0; i < validDataValues.length; i++) {
+            System.out.println(validDataValues[i]);
+            valid = valid && validDataValues[i];
+        }
+        valid = valid && errors.isEmpty();
+        return valid;
     }
     
     /**

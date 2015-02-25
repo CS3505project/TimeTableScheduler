@@ -10,9 +10,9 @@ package timeTablePackage;
  * @author John O Riordan
  */
 public enum EventPriority {
-    LECTURE(5, "lecture"),
-    PRACTICAL(4, "practical"),
-    MEETING(3, "meeting");
+    LECTURE(5, "Lecture"),
+    PRACTICAL(4, "Practical"),
+    MEETING(3, "Meeting");
     
     private int priority;
     private String priorityName;
@@ -53,7 +53,7 @@ public enum EventPriority {
      * @return The event priority object for this priority
      */
     public static EventPriority convertToEventPriority(int priority) {
-        EventPriority eventPriority = null;
+        EventPriority eventPriority = EventPriority.MEETING;
         for (EventPriority curPriority : EventPriority.values()) {
             if (curPriority.getPriority() == priority) {
                 eventPriority = curPriority;
