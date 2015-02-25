@@ -60,6 +60,8 @@ $(document).ready(function(){
         var infoNode = $("div.hidden", this);
         var date = infoNode.attr("data-date");
         var time = infoNode.attr("data-time");
+        alert(date);
+        alert(time);
         //fill out the date and time in the form:
     });
 }); 

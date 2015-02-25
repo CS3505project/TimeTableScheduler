@@ -114,13 +114,13 @@ public class TimeSlot {
      */
     public String printTableCell() {
         if (totalPriority > 0) {
-            return "<td class=\"priority-" + totalPriority + "\"" 
+            return "<td class=\"animate selectable priority-" + totalPriority + "\"" 
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : " >")
                    + "Lecture: " + numLectures() + "<br />"
                    + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
-            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\">" : " >") + "</td>";
+            return "<td" + (isSuggested() ? " class=\"animate selectable suggested-timeslot\">" : " >") + "</td>";
         }
     }
     
