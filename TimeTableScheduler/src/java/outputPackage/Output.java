@@ -270,7 +270,7 @@ public class Output {
         
         TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(new String[]{"1", "9"});
-        suggestion.nextSuggestedTimeSlot(2, 0, true);
+        //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
