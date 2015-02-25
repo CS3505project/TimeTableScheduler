@@ -145,8 +145,8 @@ public class TimeSlot {
      */
     public String printDetailedTableCell(EventType filter) {
         String html = "<td" +
-                    (largestPriority == null ? ">" : " class=\"" + largestPriority.getPriorityName())
-                    + "\">";
+                    (largestPriority == null ? "" : " class=\"" + largestPriority.getPriorityName() + "\"")
+                     + ">";
 
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
