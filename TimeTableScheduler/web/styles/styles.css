@@ -104,6 +104,7 @@ body>nav span.break{
 }
 
 body>nav h1{
+        font-size: 15px;
 	text-align: center;
 	background: #26c;
 	background: -webkit-gradient(radial, center center, 0, center center, 100, from(#48e), to(#26c));
@@ -146,7 +147,6 @@ body>nav a:focus{
 body>nav a.navicon, body>nav a.navicon:hover{
         position: relative;
 	background: transparent;
-	background-position: 2px 2px;
 	height: 22px;
 	text-align: left;
 	padding: 2px;
@@ -339,6 +339,9 @@ td{
 	padding: 4px;	
 	border-bottom: 1px solid #889;
 	font-size: 13px;
+}
+td.selectable{
+        cursor:pointer;
 }
 tr td.meeting{
 	background: #a56;
@@ -749,16 +752,112 @@ div.popup h1{
         margin-bottom: 8px;
 }
 /***********/
+/* MESSAGES*/
+/***********/
+div.message{
+        font-size: 12px;
+        position: relative;
+        height: 96px;
+        padding: 0;
+        padding-left: 30px;
+        color: #778;
+        position: relative;
+        background: #fff;
+        margin-top: 8px;
+        box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
+        border-radius: 6px;
+}
+div.message span{
+        font-size: 12px;
+        line-height: 22px;
+        padding-left: 8px;
+        height: 22px;
+        position: absolute;
+        top: 0;
+        left: 22px;
+        display: block;
+        width: 96px;
+        color: #fff;
+        background-color: #889;
+        text-shadow: 1px 1px 2px #778;
+        border-radius: 0 0 6px 6px;
+         -webkit-transform-origin: 0 0;
+        -moz-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+        -o-transform-origin: 0 0;
+        
+        -webkit-transform: rotate(90deg); 
+        -moz-transform:    rotate(90deg); 
+        -ms-transform:     rotate(90deg); 
+        -o-transform:      rotate(90deg); 
+}
+div.message span.meeting{
+    background-color: #a56;
+    text-shadow: 1px 1px 2px #723;
+}
+div.message span.cancellation{
+    background-color: #48e;
+    text-shadow: 1px 1px 2px #06c;
+}
+div.message h1{
+        font-size: 18px;
+        height: 22px;
+        line-height: 24px;
+        color: #778;
+}
+/**********/
+/* ERRORS */
+/**********/
+div.errors{
+        position: relative;
+        min-width: 400px;
+        background: #fff;
+        margin-top: 8px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
+        border-radius: 6px;
+}
+div.errors h1{
+        position: relative;
+        height: 28px;
+        background-repeat: no-repeat;
+        background-image: url('error.png');
+        line-height: 28px;
+        background-color: #778;
+        color: #FFF;
+        background-size: 18px 18px;
+        background-position: 8px 4px;
+        padding-left: 30px;
+}
+div.errors h1 span{
+        color: #FFF;
+        background-color: #A56;
+        border-top: 1px solid #E89;
+        text-shadow: 1px 1px 2px #000;
+        box-shadow: 0px 2px 4px #000;
+        display: inline-block;
+        position: absolute;
+        border-radius: 2px;
+        text-align: center;
+        font-size: 8px;
+        min-width: 14px;
+        height: 12px;
+        line-height: 10px;
+        top: -4px;
+        left: 14px;
+}
+/***********/
 /* PROFILE */
 /***********/
 div.profile{
-    min-width: 400px;
-    background: #fff;
-    margin-top: 8px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
-    border-radius: 6px;
+        min-width: 400px;
+        background: #fff;
+        margin-top: 8px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
+        border-radius: 6px;
 }
 div.profile div.img{
     background: url('http://upload.wikimedia.org/wikipedia/commons/b/bd/Apodemus_sylvaticus_bosmuis.jpg');

@@ -337,12 +337,32 @@ public class Output {
         TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(users);
         suggestion.nextSuggestedTimeSlot(meetingLength, overridePriority, clearPreviousSuggestion);
-        finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
         return finalHTML;
     }
     
+    /**
+     * A helper method for generating the html for a single message
+     * Takes in a notification object and generates a html representation of it
+     */
+    private String createMessageBox(String messageType){
+        String finalHTML = "";
+        finalHTML += "<div class='message'>";
+        switch(messageType){
+            case "meeting":
+                finalHTML += "<span class='meeting'>Meeting</span>"
+                        + "<h1></h1>"
+                        + "<p></p>"
+                        + "<p></p>"
+                        + "<input type='checkbox' name='accept' value='notificationNumber'>";
+                break;
+            default:
+                break;
+        }
+        finalHTML += "</div>";
+        return finalHTML;
+    }
     /**
      * A helper method for including the contents of a file.
      * @param fileName The name of the file to retrieve the contents of.

@@ -60,9 +60,10 @@ $(document).ready(function(){
         var infoNode = $("div.hidden", this);
         var date = infoNode.attr("data-date");
         var time = infoNode.attr("data-time");
-        alert(date);
-        alert(time);
-        //fill out the date and time in the form:
+        $('#date').val(date);
+        $('#time').val(time);
+        $('#date').effect("highlight", {times:3, color:"#eeeeff"}, 450 );
+        $('#time').effect("highlight", {times:3, color:"#eeeeff"}, 450 );
     });
 }); 
 
