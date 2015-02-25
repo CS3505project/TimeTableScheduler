@@ -179,9 +179,11 @@ public class Output {
         "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
         "<form>\n" +
         "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<select id=\"gname\" value=\"<%= GroupRequest.getGroupName() %>\">\n" +
-                //stuff from database
-        "	</select><br>\n" +
+        "	<select id=\"gname\" value=\"<%= GroupRequest.getGroupName() %>\">\n";
+        
+        finalHTML += createGroupDropDown(userid);
+        
+        finalHTML += "</select><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
         "</form>" +
@@ -190,6 +192,29 @@ public class Output {
             "<%= GroupRequest.joinGroup(" + userid + ") %>" +
         "</p>";
         //add actual code
+        return finalHTML;
+    }
+    
+    /**
+     * Creates a HTML drop down list of group names
+     * 
+     * @param user User in the groups
+     * @return html of the drop down
+     */
+    public String createGroupDropDown(String userid) {
+        String finalHTML = "";
+        Database db = Database.getSetupDatabase();
+        
+        //TO-DO
+        ResultSet result = db.select("");
+        try {
+            while (result.next()) {
+                finalHTML += "<value>" + result.getString("groupName") + "</value>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving group list");
+        }
+        
         return finalHTML;
     }
     
@@ -221,28 +246,7 @@ public class Output {
         //add actual code
         return finalHTML;
     }
-    
-    /**
-     * Creates a page section with the users profile image, name and details
-     * @return the html representing the users profile info
-     */
-    public String createProfileBox(User user){        
-        String finalHTML = "";
-        //later edit this so that it actually gives user info
-        finalHTML +="<h1>Profile</h1>" 
-                + "<div class='profile'>"
-                + "    <div class='img'></div>"
-                + "        <h1>" + user.getFirstName() + " " + user.getSurName() + "</h1>"
-                + "        <h2>" + user.getEmail() + "</h2>"
-                + "        <p>Hello,m I am a profile blbsjbjbv</p>"
-                + "        <p>Hsdfsdf am a zzproxfile blbsjbjbv</p>"
-                + "        <div>"
-                + "             <h1>Some Stats Maybe</h1>"
-                + "             <p>blah blah blah</p>"
-                + "</div>"
-                + "</div>";
-        return finalHTML;
-    }
+
     /**
      * Creates a page section with the users messages
      * @return the html representing the messages
