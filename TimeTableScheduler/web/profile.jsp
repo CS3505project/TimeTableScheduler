@@ -10,7 +10,7 @@
                 <div class='img'></div>
                 <h1><%= user.getFirstName() %> <%= user.getSurName() %></h1>
                 <h2><%= user.getEmail() %></h2>
-                <p>Hello,m I am a profile blbsjbjbv</p>
+                <p>Hello,m I am a profile</p>
                 <p>Hsdfsdf am a zzproxfile blbsjbjbv</p>
                 <div>
                     <h1>Some Stats Maybe</h1>
