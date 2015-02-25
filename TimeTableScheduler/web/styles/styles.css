@@ -25,6 +25,19 @@ body{
 .hidden{
     display:none;
 }
+/**********************/
+/* triangle, messages */
+/**********************/
+span.triangle{
+        display: inline-block;
+	position: relative;
+        right: 0px;
+	width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 8px 8px 0;
+        border-color: transparent #48e transparent 
+}
 /*****************/
 /* COLUMN LAYOUT */
 /*****************/
@@ -51,7 +64,8 @@ section.main{
 /* NAV SIDEBAR */
 /***************/
 body>nav{
-	background: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.5);
+        background-image: url('footerbg.png');
 	color: #9494b7;
 	box-shadow: inset 0 0 10px #000;
 }
@@ -88,13 +102,15 @@ body>nav h1{
 }
 body>nav>ul>li{
 	display: block;
+        height: 18px;
+        margin-top: 2px;
+        margin-bottom: 2px;
 }
 body>nav a{
+        height: 18px;
 	display: block;
 	padding-top: 2px;
 	padding-bottom: 2px;
-	margin-top: 2px;
-	margin-bottom: 2px;
 	color: #9494b7;
 	text-shadow: 1px 1px 2px #000;
 	text-align: left;
@@ -104,11 +120,10 @@ body>nav a{
 	transition: all 0.4s ease;
 }
 body>nav a:hover{
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.4);
 }
 body>nav a:focus{
-	background: rgba(0,0,0,0.3);
-	font-style: italic;
+	background: rgba(0,0,0,0.5);
 	text-decoration: underline;
 }
 body>nav a.navicon, body>nav a.navicon:hover{
@@ -273,6 +288,11 @@ ul.filters li a{
         display: block;
         color: #fff;
         text-decoration: none;
+}
+ul.filters li a:focus{
+        box-shadow: inset 1px 0 12px 2px #778;
+        background-image: url('footerbg.png');
+        outline: 0;
 }
 /*********/
 /* TABLE */
@@ -461,6 +481,9 @@ input[type="submit"]{
 	color: #eef;
 	cursor: pointer;
 }
+input[type="submit"]:hover{
+        box-shadow: none;
+}
 input[type="submit"]:focus{
         outline: 0;
         background: #59f;
@@ -468,9 +491,13 @@ input[type="submit"]:focus{
         font-style: normal;
 	text-decoration: none;
 }
+input:hover, select:hover{
+        box-shadow: inset 0 0 10px #667;
+}
 input:focus, select:focus{
 	color: #e0eafd;
-	background: #778;
+	background-color: #778;
+        background-image: url('footerbg.png');
 	border: #667;
 	font-style: italic;
 	text-decoration: underline;
@@ -540,9 +567,9 @@ body.login h1{
 }
 body.login a{
         text-decoration: none;
-        color: #6e6e92;
+        color: #9494b7;
 }
-body.login p{
+body.login p, div.signup p{
         position: relative;
         top: -22px;
         font-size: 14px;
@@ -550,6 +577,9 @@ body.login p{
         text-shadow: 1px 1px 2px #000;
         width: 100%;
         text-align: center;
+}
+div.signup p{
+        top: 8px;
 }
 div.login, div.signup{
         text-shadow: 1px 1px 2px #000;
@@ -564,13 +594,17 @@ div.login, div.signup{
         margin-top: 8%;
         border-bottom: 1px solid rgba(240,240,255,0.5);
 }
+div.signup{
+    height: 250px;
+    width: 442px;
+}
 div.login input, div.login input:hover,  div.signup input,  div.signup input:hover{
-        background: #112;
+        background: rgba(0,0,0,0.5);
         border: none;
         border-bottom: 1px solid #334;
         box-shadow: inset 0 0 10px #000;
 }
-div.login input[type="submit"]{
+div.login input[type="submit"], div.signup input[type="submit"]{
         display: block;
         width: 320px;
         background: #26c;
@@ -585,10 +619,10 @@ div.login input[type="submit"]{
 	font-weight: bold;
 	color: #dde;
 }
-div.login label{
+div.login label, div.signup label{
         font-size: 16px;
         width: 7em;
-        color: #779;
+        color: #9494b7;
         background: transparent;
         background-image: url('pass.png');
 	background-position: 2px 2px;
@@ -599,8 +633,14 @@ div.login label{
 	background-repeat: no-repeat;
 	background-position: 7px 2px;
 }
-div.login label#email{
+div.signup label{
+        width: 8em;
+}
+div.login label#email, div.signup label[for="email"]{
         background-image: url('msg.png');
+}
+div.signup label[for="id"],div.signup label[for="surname"],div.signup label[for="firstName"]{
+        background-image: url('profile.png');
 }
 div.login footer{
         text-align: center;
@@ -609,15 +649,37 @@ div.login footer{
 }
 footer.loginFooter{
         text-shadow: 1px 1px 2px #000;
-        background: rgba(0,0,0,0.5);
-        padding: 8px;
+        background-image: url('footerbg.png');
+        background-color: rgba(0,0,0,0.5);
         width: 100%;
         position: fixed;
         bottom: 0;
         left: 0;
         box-shadow: inset 0 0 8px #000;
         border-top: 1px solid rgba(240,240,255,0.5);
-        height: 120px;
+        height: 40px;
+}
+footer.loginFooter small{
+    font-size: 16px;
+    position: fixed;
+    bottom: 8px;
+    left: 8px;
+}
+footer.loginFooter ul{
+    display: inline-block;
+    font-size: 16px;
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+}
+footer.loginFooter ul li{
+    display: inline-block;
+    margin-left: 4px;
+}
+footer.loginFooter ul li:before{
+    display: inline-block;
+    content: "|";
+    margin-right: 4px;
 }
 /*********/
 /* POPUP */
@@ -662,6 +724,11 @@ div.popup button{
 	font-weight: bold;
 	color: #eef;
 	cursor: pointer;
+}
+div.popup h1{
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 8px;
 }
 /***********/
 /* PROFILE */

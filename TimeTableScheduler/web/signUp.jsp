@@ -36,7 +36,7 @@
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
                     <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
-                    <label for="rePassword">Re-enter Password:</label> 
+                    <label for="rePassword">Re-enter:</label> 
                     <input type="password" id="rePassword"name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
@@ -74,7 +74,7 @@
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
                     <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
-                    <label for="rePassword">Re-enter Password:</label> 
+                    <label for="rePassword">Re-enter:</label> 
                     <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Sign Up">
                 </form>
@@ -101,7 +101,7 @@
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
                     <input type="password" id="password" name="password" value="<%= SignUpRequest.getPassword() %>" required="required"><br>
-                    <label for="rePassword">Re-enter Password:</label>
+                    <label for="rePassword">Re-enter:</label>
                     <input type="password" id="rePassword" name="rePassword" value="<%= SignUpRequest.getRePassword() %>" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
@@ -117,8 +117,14 @@
     //session.setAttribute("user", SignUpRequest.getUserObject());
     //session.setAttribute("userType", SignUpRequest.getUserType());
 %>
-        <footer>
-                <div><small>&copy; Team 11 2015</small></div>
-        </footer>
+        <footer class="loginFooter">
+                <small>&copy; Team 11 2015</small>
+                <ul>
+                    <li><a>about</a></li>
+                    <li><a>contact</a></li>
+                    <li><a>ding</a></li>
+                    <li><a>dong</a></li>
+                </ul>
+       </footer>
     </body>
 </html>

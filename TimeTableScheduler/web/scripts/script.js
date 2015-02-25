@@ -43,7 +43,7 @@ $(document).ready(function(){
             };
         };
     $(closeButton).html("Close");
-    $(helpBox).append("<div><p></p></div>");
+    $(helpBox).append("<div><h1></h1><p></p></div>");
     $(helpBox).append(closeButton);
     $("body").append(helpBox); 
     $("#helpPopup").hide();
@@ -82,9 +82,11 @@ function displayHelp(context){
          $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
         break;
     case "addMeeting":
+        $("#helpPopup div h1").html("Add a Meeting");
         $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
         break;
     default:
+        $("#helpPopup div h1").html("Help");
         $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
     }
 }
