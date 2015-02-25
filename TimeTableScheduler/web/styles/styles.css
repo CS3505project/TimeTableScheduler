@@ -31,7 +31,8 @@ body{
 span.triangle{
         display: inline-block;
 	position: relative;
-        right: 0px;
+        right: -5px;
+        top: 3px;
 	width: 0;
         height: 0;
         border-style: solid;
@@ -102,22 +103,21 @@ body>nav h1{
 }
 body>nav>ul>li{
 	display: block;
-        height: 18px;
+        height: 20px;
         margin-top: 2px;
         margin-bottom: 2px;
 }
 body>nav a{
-        height: 18px;
+        height: 20px;
+        line-height: 18px;
 	display: block;
-	padding-top: 2px;
-	padding-bottom: 2px;
 	color: #9494b7;
 	text-shadow: 1px 1px 2px #000;
 	text-align: left;
 	padding-left: 8px;
 	font-size: 15px;
 	outline: none;
-	transition: all 0.4s ease;
+	transition: all 0.2s ease;
 }
 body>nav a:hover{
 	background: rgba(0,0,0,0.4);
