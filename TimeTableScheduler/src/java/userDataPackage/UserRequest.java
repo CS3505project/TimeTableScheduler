@@ -112,7 +112,6 @@ public abstract class UserRequest {
     public boolean isValid() {
         boolean valid = true;
         for (int i = 0; i < validDataValues.length; i++) {
-            System.out.println(validDataValues[i]);
             valid = valid && validDataValues[i];
         }
         valid = valid && errors.isEmpty();

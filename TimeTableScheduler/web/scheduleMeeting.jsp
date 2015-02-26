@@ -1,21 +1,30 @@
 <%@page import="toolsPackage.Database"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="MeetingRequest" class="userDataPackage.MeetingRequest" scope="session"/>
-<jsp:useBean id="TimeTable" class="timeTablePackage.TimeTable" scope="session"/>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        //java.util.List<String> userIds 
-        //        = MeetingRequest.getUsersToMeet(Database.getSetupDatabase(), 
-        //                                       (String)request.getParameter("withType"),
-        //                                        request);
         
-       // TimeTable.initialiseTimeTable((String[])userIds.toArray());
+        timeTablePackage.TimeTable timetable = new timeTablePackage.TimeTable(timeTablePackage.EventTime.NINE, 
+                                                                              timeTablePackage.EventTime.EIGHTEEN, 
+                                                                              timeTablePackage.Day.MONDAY, 
+                                                                              timeTablePackage.Day.FRIDAY);
         
-        out.println(output.createSuggestedTimeTable(TimeTable,
-                                                    Integer.parseInt(request.getParameter("duration")),
+        java.util.List<String> userIds 
+                = MeetingRequest.getUsersToMeet(Database.getSetupDatabase(), 
+                                               (String)request.getParameter("withType"),
+                                                request);
+        
+        if (((String)request.getParameter("withType")).equals("personal")) {
+            timetable.initialiseTimeTable(user.getUserID());
+        } else {
+            timetable.initialiseTimeTable(userIds);
+        }
+        
+        out.println(output.createSuggestedTimeTable(timetable,
+                                                    Integer.parseInt((String)request.getParameter("duration")),
                                                     (String)request.getParameter("over-priority"),
                                                     true));
         MeetingRequest.setValues(request, user);

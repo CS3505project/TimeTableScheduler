@@ -117,7 +117,7 @@ public class TimeTable {
      * 
      * @param usersToMeet User in the meeting
      */
-    public void initialiseTimeTable(String[] usersToMeet) {
+    public void initialiseTimeTable(List<String> usersToMeet) {
         String sqlUserList = convertToSqlList(usersToMeet);
         Database db = Database.getSetupDatabase();
         
@@ -195,10 +195,10 @@ public class TimeTable {
      * @param userIDs list of user IDs
      * @return SQL styled list of user IDs
      */
-    private static String convertToSqlList(String[] items) {
+    private static String convertToSqlList(List<String> items) {
         String sql = "(";
-        for (int i = 0; i < items.length; i++) {
-            sql += "\"" + items[i] + "\"" + (i < items.length - 1 ? ", " : "");
+        for (int i = 0; i < items.size(); i++) {
+            sql += "\"" + items.get(i) + "\"" + (i < items.size() - 1 ? ", " : "");
         }
         sql += ")";
         return sql;
@@ -431,6 +431,8 @@ public class TimeTable {
             clearSuggestedTimeSlots();
         }
         
+        System.out.println(maxPriority);
+        
         // if reached end reset suggestion to start
         if (suggestedDay == endDay.getIndex()) {
             suggestedDay = -1;
@@ -449,6 +451,8 @@ public class TimeTable {
                 suggestedTime = time;
                 for (int i = 0; i < meetingDuration; i++) {
                     if (events[day][time + i].getTotalPriority() <= maxPriority) {
+                        System.out.println(startTime.getTime());
+                        System.out.println(events[day][time + i].getTotalPriority() + " <= " + maxPriority);
                         found = true;
                     } else {
                         found = false;

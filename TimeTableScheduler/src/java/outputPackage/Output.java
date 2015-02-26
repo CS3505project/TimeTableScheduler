@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
@@ -210,10 +212,16 @@ public class Output {
         Database db = Database.getSetupDatabase();
         
         //TO-DO
-        ResultSet result = db.select("");
+        ResultSet result = db.select("SELECT * " +
+                                    "	FROM Groups " +
+                                    "	WHERE groupid IN " +
+                                    "		(SELECT gid " +
+                                    "		FROM InGroup " +
+                                    "		WHERE uid = " + userid + ") " +
+                                    "			AND grouptype != 'year group';");
         try {
             while (result.next()) {
-                finalHTML += "<option value=\"" + result.getString("gid") + "\">" + result.getString("groupName") + "</option>";
+                finalHTML += "<option value=\"" + result.getString("groupid") + "\">" + result.getString("groupName") + "</option>";
             }
         } catch (SQLException ex) {
             System.err.println("Error retrieving group list");
@@ -269,7 +277,7 @@ public class Output {
         String finalHTML = "";
         
         TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        suggestion.initialiseTimeTable(new String[]{"1", "9"});
+        suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
@@ -287,12 +295,12 @@ public class Output {
         "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
         "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
         //for loop for creating options for legit groups
-        //finalHTML += createGroupDropDown(user.getUserID());
+        finalHTML += createGroupDropDown(user.getUserID());
         
         finalHTML += "</select></div>\n" +
         "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
         //for loop for creating options for legit groups
-        //finalHTML += createIndividualDropDown(user.getUserID());
+        finalHTML += createIndividualDropDown(user.getUserID());
         
         finalHTML += "</select></div>";
         return finalHTML;
@@ -302,12 +310,33 @@ public class Output {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
         
-        //TO-DO
-        ResultSet result = db.select("");
+        ResultSet result = db.select("SELECT uid, firstname, surname, studentid as 'id' " +
+                                    "FROM Student JOIN User " +
+                                    "ON Student.uid = userid " +
+                                    "WHERE Student.uid IN " +
+                                    "	(SELECT uid " +
+                                    "	FROM InGroup " +
+                                    "	WHERE gid IN " +
+                                    "		(SELECT gid " +
+                                    "		FROM InGroup " +
+                                    "		WHERE uid = " + userid + ")" +
+                                    "	AND uid != " + userid + ") " +
+                                    "UNION " +
+                                    "SELECT uid, firstname, surname, lecturerid as 'id' " +
+                                    "FROM Lecturer JOIN User " +
+                                    "ON Lecturer.uid = userid " +
+                                    "WHERE Lecturer.uid IN " +
+                                    "	(SELECT uid " +
+                                    "	FROM InGroup " +
+                                    "	WHERE gid IN " +
+                                    "		(SELECT gid " +
+                                    "		FROM InGroup " +
+                                    "		WHERE uid = " + userid + ")" +
+                                    "	AND uid != " + userid + ");");
         try {
             while (result.next()) {
                 finalHTML += "<option value=\"" + result.getString("uid") + "\">" 
-                        + result.getString("")+ result.getString("firstName") + " " 
+                        + result.getString("id") + " : " + result.getString("firstName") + " " 
                         + result.getString("surname") + "</option>";
             }
         } catch (SQLException ex) {
@@ -358,7 +387,6 @@ public class Output {
         }
         
         int priorityValue = EventPriority.convertToEventPriority(priority).getPriority();
-        System.out.println(meetingLength + "=" + validMeetingLength);
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(validMeetingLength, priorityValue, clearPrevSuggestion);
         finalHTML += "<h1>Timetable for this week</h1>";

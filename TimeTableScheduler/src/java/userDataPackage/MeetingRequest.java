@@ -176,18 +176,27 @@ public final class MeetingRequest extends UserRequest{
         try {
             switch (meetingType) {
                 case "group":
-                    request.getParameter("groupID");
-                    ResultSet groupResult = db.select("");
+                    ResultSet groupResult = db.select("SELECT uid " +
+                                                    "FROM Student JOIN User " +
+                                                    "ON Student.uid = userid " +
+                                                    "WHERE Student.uid IN " +
+                                                    "	(SELECT uid " +
+                                                    "	FROM InGroup " +
+                                                    "	WHERE gid = " + (String)request.getParameter("groupID") + ") " +
+                                                    "UNION " +
+                                                    "SELECT uid " +
+                                                    "FROM Lecturer JOIN User " +
+                                                    "ON Lecturer.uid = userid " +
+                                                    "WHERE Lecturer.uid IN " +
+                                                    "	(SELECT uid " +
+                                                    "	FROM InGroup " +
+                                                    "	WHERE gid = " + (String)request.getParameter("groupID") + ");");
                     while (groupResult.next()) {
                         usersInMeeting.add(groupResult.getString("uid"));
                     }
                     break;
                 case "individual":
-                    request.getParameter("individualID");
-                    ResultSet individualResult = db.select("");
-                    while (individualResult.next()) {
-                        usersInMeeting.add(individualResult.getString("uid"));
-                    }
+                    usersInMeeting.add((String)request.getParameter("individualID"));
                     break;
                 default:
                     usersInMeeting.add(getUser().getUserID());

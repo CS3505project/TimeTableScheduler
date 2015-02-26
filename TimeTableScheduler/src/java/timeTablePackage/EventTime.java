@@ -5,11 +5,8 @@
 package timeTablePackage;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Represents the times the system can display in the timetable
@@ -85,12 +82,14 @@ public enum EventTime {
      */
     public static List<EventTime> getTimes(EventTime startTime, EventTime endTime) {
         List<EventTime> activeTimes = new ArrayList<EventTime>();
+        activeTimes.add(startTime);
         for (EventTime time : EventTime.values()) {
             if (time.getTime().after(startTime.getTime()) 
                     && time.getTime().before(endTime.getTime())) {
                 activeTimes.add(time);
             }
         }
+        activeTimes.add(endTime);
         return activeTimes;
     }
     
