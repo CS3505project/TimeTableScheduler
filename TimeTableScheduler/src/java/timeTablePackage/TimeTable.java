@@ -440,6 +440,7 @@ public class TimeTable {
             for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
                     !found && time < endTime.getTimeIndex(); time++) {
                 suggestedTime = time;
+                found = true;
                 for (int i = 0; i < meetingDuration && (time+ i) < endTime.getTimeIndex(); i++) {
                     found = found && (events[day][time + i].getTotalPriority() <= maxPriority);
                 }

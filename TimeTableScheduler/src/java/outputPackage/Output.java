@@ -276,7 +276,7 @@ public class Output {
     public String createDummyTable(){
         String finalHTML = "";
         
-        TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable suggestion = new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Availability</h1>";

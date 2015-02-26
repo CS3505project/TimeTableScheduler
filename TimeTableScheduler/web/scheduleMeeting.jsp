@@ -8,7 +8,7 @@
         out.println(output.createHeader());
         
         timeTablePackage.TimeTable timetable = new timeTablePackage.TimeTable(timeTablePackage.EventTime.NINE, 
-                                                                              timeTablePackage.EventTime.EIGHTEEN, 
+                                                                              timeTablePackage.EventTime.SEVENTEEN, 
                                                                               timeTablePackage.Day.MONDAY, 
                                                                               timeTablePackage.Day.FRIDAY);
         

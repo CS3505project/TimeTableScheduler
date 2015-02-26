@@ -38,17 +38,6 @@ public class Hash {
     }
     
     /**
-     * Returns the MD2 hash of the string
-     * 
-     * @param message
-     * @return The hash of the string
-     */
-    public static String md2(String message) 
-    {
-        return Hash.getHash(message, "MD2");
-    }
-    
-    /**
      * Returns the MD5 hash of the string
      * 
      * @param message
@@ -69,48 +58,5 @@ public class Hash {
     {
         return Hash.getHash(message, "SHA1");
     }
-    
-    /**
-     * Returns the SHA-224 hash of the string
-     * 
-     * @param message
-     * @return The hash of the string
-     */
-    public static String sha224(String message) 
-    {
-        return Hash.getHash(message, "SHA-224");
-    }
-    
-    /**
-     * Returns the SHA-256 hash of the string
-     * 
-     * @param message
-     * @return The hash of the string
-     */
-    public static String sha256(String message) 
-    {
-        return Hash.getHash(message, "SHA-256");
-    }
-    
-    /**
-     * Returns the SHA-384 hash of the string
-     * 
-     * @param message
-     * @return The hash of the string
-     */
-    public static String sha384(String message) 
-    {
-        return Hash.getHash(message, "SHA-384");
-    }
-    
-    /**
-     * Returns the SHA-512 hash of the string
-     * 
-     * @param message
-     * @return The hash of the string
-     */
-    public static String sha512(String message) 
-    {
-        return Hash.getHash(message, "SHA-512");
-    }
+
 }
