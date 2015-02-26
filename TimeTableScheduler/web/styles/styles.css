@@ -233,7 +233,7 @@ section.main{
 	box-shadow: -3px 0 rgba(0,0,0,0.2), -2px 0 rgba(0,0,0,0.2),-1px 0 rgba(0,0,0,0.3);
 	z-index: 10;
 }
-section.main>h1{
+section.main>h1.banner{
         display: block;
         position: relative;
         top: 0;
@@ -251,7 +251,7 @@ section.main>h1{
         padding-top: 12px;
 	padding-bottom: 4px;
 }
-section.main>h1:after{
+section.main>h1.banner:after{
         position: relative;
         top: 5px;
         left: -9px;
@@ -414,7 +414,7 @@ td.suggested-timeslot{
     color: #fff;
 }
 td.suggested-timeslot:after{
-    content: "free";
+    content: "Free";
 }
 /************/
 /* HEADINGS */
