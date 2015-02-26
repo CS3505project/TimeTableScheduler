@@ -40,6 +40,15 @@ public class TimeTable {
         setupTimeSlots();
     }
     
+    public TimeTable() {
+        this.events = new TimeSlot[Day.numDays][EventTime.numHours];
+        this.startTime = EventTime.EIGHT;
+        this.endTime = EventTime.EIGHTEEN;
+        this.startDay = Day.MONDAY;
+        this.endDay = Day.FRIDAY;
+        setupTimeSlots();
+    }
+    
     /**
      * Checks if the event specified by the day and time indexes are conflicting
      * with existing events
@@ -412,7 +421,7 @@ public class TimeTable {
     /**
      * Highlight the next suggested timeslot(s) for the meeting being organised
      * 
-     * @param hoursForMeeting Duration of the meeting
+     * @param meetingDuration Duration of the meeting
      * @param maxPriority Max priority that can be scheduled over
      * @param clearPrevious Remove the most recently suggested timeslot
      * @return True if another timeslot exists

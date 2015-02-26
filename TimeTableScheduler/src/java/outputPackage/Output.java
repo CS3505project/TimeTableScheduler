@@ -288,14 +288,36 @@ public class Output {
         "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
         "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
         //for loop for creating options for legit groups
+        finalHTML += createGroupDropDown(user.getUserID());
         
         finalHTML += "</select></div>\n" +
         "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
         //for loop for creating options for legit groups
+        finalHTML += createIndividualDropDown(user.getUserID());
         
         finalHTML += "</select></div>";
         return finalHTML;
     }
+    
+    public String createIndividualDropDown(String userid) {
+        String finalHTML = "";
+        Database db = Database.getSetupDatabase();
+        
+        //TO-DO
+        ResultSet result = db.select("");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("uid") + "\">" 
+                        + result.getString("")+ result.getString("firstName") + " " 
+                        + result.getString("surname") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving group list");
+        }
+        
+        return finalHTML;
+    }
+    
     /**
      * Create the main timetable for the users home page
      * 
@@ -325,18 +347,22 @@ public class Output {
      * Create a timetable that suggests the free times for a meeting with 
      * a group of users
      * 
-     * @param users The users to meet
      * @param meetingLength The duration of the meeting
-     * @param overridePriority Highest priority of events that can be scheduled over
-     * @param clearPreviousSuggestion Clear the most recently suggested time slot
+     * @param priority Highest priority of events that can be scheduled over
+     * @param clearPrevSuggestion Clear the most recently suggested time slot
      * @return HTML to create the timetable
      */
-    public String createSuggestedTimeTable(String[] users, int meetingLength, int overridePriority, boolean clearPreviousSuggestion){
-        String finalHTML = "";
+    public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, String priority, boolean clearPrevSuggestion){
+        int validMeetingLength = meetingLength;
+        if (meetingLength == 0) {
+            validMeetingLength = 1;
+        }
         
-        TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
-        suggestion.initialiseTimeTable(users);
-        suggestion.nextSuggestedTimeSlot(meetingLength, overridePriority, clearPreviousSuggestion);
+        int priorityValue = EventPriority.convertToEventPriority(priority).getPriority();
+        
+        String finalHTML  = "";
+        suggestion.nextSuggestedTimeSlot(validMeetingLength, priorityValue, clearPrevSuggestion);
+        finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
         return finalHTML;

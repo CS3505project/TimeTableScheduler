@@ -11,8 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.EventPriority;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -158,7 +157,7 @@ public final class MeetingRequest extends UserRequest{
                             + "VALUES (\""+ meetingDate + "\", \""+ time.toString() + "\", \"" + venue + "\", \"" 
                             + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
             
-            List<Integer> usersInMeeting = getUsersToMeet(db, (String)getRequest().getParameter("withType"));
+            List<String> usersInMeeting = getUsersToMeet(db, (String)getRequest().getParameter("withType"), getRequest());
             addUsersToMeeting(db, db.getPreviousAutoIncrementID("Meeting"), usersInMeeting);
             
             this.setActionCompleted(result);
@@ -172,26 +171,26 @@ public final class MeetingRequest extends UserRequest{
         return EventPriority.convertToEventPriority(priorityLevel);
     }
     
-    private List<Integer> getUsersToMeet(Database db, String meetingType) {
-        List<Integer> usersInMeeting = new ArrayList<Integer>();
+    private List<String> getUsersToMeet(Database db, String meetingType, HttpServletRequest request) {
+        List<String> usersInMeeting = new ArrayList<String>();
         try {
             switch (meetingType) {
                 case "group":
-                    getRequest().getParameter("groupID");
+                    request.getParameter("groupID");
                     ResultSet groupResult = db.select("");
                     while (groupResult.next()) {
-                        usersInMeeting.add(groupResult.getInt("uid"));
+                        usersInMeeting.add(groupResult.getString("uid"));
                     }
                     break;
                 case "individual":
-                    getRequest().getParameter("individualID");
+                    request.getParameter("individualID");
                     ResultSet individualResult = db.select("");
                     while (individualResult.next()) {
-                        usersInMeeting.add(individualResult.getInt("uid"));
+                        usersInMeeting.add(individualResult.getString("uid"));
                     }
                     break;
                 default:
-                    usersInMeeting.add(Integer.parseInt(getUser().getUserID()));
+                    usersInMeeting.add(getUser().getUserID());
                     break;
             }
         } catch (SQLException ex) {
@@ -200,9 +199,9 @@ public final class MeetingRequest extends UserRequest{
         return usersInMeeting;
     }
     
-    private void addUsersToMeeting(Database db, int meetingID, List<Integer> usersInMeeting) {
+    private void addUsersToMeeting(Database db, int meetingID, List<String> usersInMeeting) {
         String values = "";
-        Iterator<Integer> userIds = usersInMeeting.iterator();
+        Iterator<String> userIds = usersInMeeting.iterator();
         while (userIds.hasNext()) {
             values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
         }
