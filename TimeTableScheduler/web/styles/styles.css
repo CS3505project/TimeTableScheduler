@@ -55,6 +55,15 @@ span.unread{
         line-height: 10px;
         top: -4px;
         left: 14px;
+        -webkit-transform-origin: 50% bottom;
+        -moz-transform-origin: 50% bottom;
+        -ms-transform-origin: 50% bottom;
+        -o-transform-origin: 50% bottom;
+        animation: wiggle 0.3s linear 6;
+        -moz-animation: wiggle 0.3s linear 6;
+	-webkit-animation: wiggle 0.3s linear 6;
+	-ms-animation: wiggle 0.3s linear 6;
+	-o-animation: wiggle 0.3s linear 6;
 }
 /*****************/
 /* COLUMN LAYOUT */
@@ -140,7 +149,7 @@ body>nav a{
 	outline: none;
 	transition: all 0.2s ease;
 }
-body>nav a:hover,body>nav a.current{
+body>nav a:hover,body>nav a.current, body>nav a.navicon.current{
 	background-color: rgba(0,0,0,0.4);
 }
 body>nav a:focus, body>nav a.navicon:focus{
@@ -942,4 +951,115 @@ div.profile>div>h1{
 }
 div.profile>div>p{
     padding: 6px;
+}
+/**************/
+/* ANIMATIONS */
+/**************/
+@-webkit-keyframes wiggle{
+    0%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%{
+        -ms-transform: rotate(15deg);
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    50%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    75%{
+        -ms-transform: rotate(-15deg);
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    100%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+@-o-keyframes wiggle{
+    0%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%{
+        -ms-transform: rotate(15deg);
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    50%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    75%{
+        -ms-transform: rotate(-15deg);
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    100%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+@-moz-keyframes wiggle{
+    0%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%{
+        -ms-transform: rotate(15deg);
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    50%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    75%{
+        -ms-transform: rotate(-15deg);
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    100%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+keyframes wiggle{
+    0%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%{
+        -ms-transform: rotate(15deg);
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    50%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    75%{
+        -ms-transform: rotate(-15deg);
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    100%{
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
 }
