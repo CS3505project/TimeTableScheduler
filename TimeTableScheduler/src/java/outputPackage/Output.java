@@ -273,7 +273,6 @@ public class Output {
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Timetable for this week</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
-        finalHTML += "<caption>Week 4, 23/23/1234 to 12/12/1234</caption>";
         
         return finalHTML;
     }
@@ -288,12 +287,12 @@ public class Output {
         "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
         "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
         //for loop for creating options for legit groups
-        finalHTML += createGroupDropDown(user.getUserID());
+        //finalHTML += createGroupDropDown(user.getUserID());
         
         finalHTML += "</select></div>\n" +
         "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
         //for loop for creating options for legit groups
-        finalHTML += createIndividualDropDown(user.getUserID());
+        //finalHTML += createIndividualDropDown(user.getUserID());
         
         finalHTML += "</select></div>";
         return finalHTML;

@@ -129,17 +129,18 @@ public class TimeSlot {
                    + (isSuggested() ? " class=\"suggested-timeslot\">" : ">")
                     
                    + "<div class=\"hidden\""
-                   + "data-date=\"" + date + "\""
-                   + "data-time=\"" + time + "\"></div>"
+                   + " data-date=\"" + date + "\""
+                   + " data-time=\"" + time + "\"></div>"
                     
                    + "Lecture: " + numLectures() + "<br />"
                    + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
-            return "<td" + (isSuggested() ? " class=\"animate selectable suggested-timeslot\">" : ">") 
+            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\"" : "") 
+                   + " class=\"animate selectable priority-" + totalPriority + "\">"
                    + "<div class=\"hidden\""
-                   + "data-date=\"" + date + "\""
-                   + "data-time=\"" + time + "\"></div>"
+                   + " data-date=\"" + date + "\""
+                   + " data-time=\"" + time + "\"></div>"
                    + "</td>";
         }
     }
@@ -150,17 +151,22 @@ public class TimeSlot {
      * @return HTML to print into a table cell
      */
     public String printDetailedTableCell(EventType filter) {
-        String html = "<td" +
-                    (largestPriority == null ? "" : " class=\"" + largestPriority.getPriorityName() + "\"")
-                     + ">";
-
+        EventPriority highPriority = EventPriority.MEETING;
+        String eventList = "";
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
-                html += event.toString();
+                eventList += event.toString() + "<br />";
+                highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
+                                            ? event.getEventPriority() : highPriority);
             }
         }
-        
-        html += "</td>";
+        String html = "<td";
+        if (eventList.equals("")) {
+            html += ">";
+        } else {
+            html += " class=\"" + highPriority.getPriorityName() + "\">";
+        }
+        html += eventList + "</td>";
         return html;
     }
     

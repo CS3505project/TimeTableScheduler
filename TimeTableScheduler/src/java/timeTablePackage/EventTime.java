@@ -17,10 +17,11 @@ import java.util.Locale;
  * @author John O Riordan
  */
 public enum EventTime {
+    ZERO("00:00", Time.valueOf("00:00:00"), 0),
     ONE("1:00", Time.valueOf("01:00:00"), 1),
     TWO("2:00", Time.valueOf("02:00:00"), 2),
     THREE("3:00", Time.valueOf("03:00:00"), 3),
-    FOUR("4:00", Time.valueOf("04:00:00") ,4),
+    FOUR("4:00", Time.valueOf("04:00:00"), 4),
     FIVE("5:00", Time.valueOf("05:00:00"), 5),
     SIX("6:00", Time.valueOf("06:00:00"), 6),
     SEVEN("7:00", Time.valueOf("07:00:00"), 7),
@@ -39,8 +40,8 @@ public enum EventTime {
     TWENTY("20:00", Time.valueOf("20:00:00"), 20),
     TWENTYONE("21:00", Time.valueOf("21:00:00"), 21),
     TWENTYTWO("22:00", Time.valueOf("22:00:00"), 22),
-    TWENTYTHREE("23:00", Time.valueOf("23:00:00"), 23),
-    TWENTYFOUR("24:00", Time.valueOf("24:00:00"), 24);
+    TWENTYTHREE("23:00", Time.valueOf("23:00:00"), 23);
+    
     
     private String printTime;
     private Time time;

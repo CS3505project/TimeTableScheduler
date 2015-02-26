@@ -5,7 +5,6 @@
 package timeTablePackage;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -16,13 +15,13 @@ import java.util.List;
  * @author John O Riordan
  */
 public enum Day {
-    MONDAY("Monday", 1),
-    TUESDAY("Tuesday", 2),
-    WEDNESDAY("Wednesday", 3),
-    THURSDAY("Thursday", 4),
-    FRIDAY("Friday", 5),
-    SATURDAY("Saturday", 6),
-    SUNDAY("Sunday", 7);
+    MONDAY("Monday", 0),
+    TUESDAY("Tuesday", 1),
+    WEDNESDAY("Wednesday", 2),
+    THURSDAY("Thursday", 3),
+    FRIDAY("Friday", 4),
+    SATURDAY("Saturday", 5),
+    SUNDAY("Sunday", 6);
 
     private String day;
     private int index;

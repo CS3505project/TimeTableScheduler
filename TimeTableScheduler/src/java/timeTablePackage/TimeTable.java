@@ -122,14 +122,14 @@ public class TimeTable {
         Database db = Database.getSetupDatabase();
         
         // get all events for each user in meeting
-        ResultSet usersEvents = db.select("SELECT weekday, Practical.time, 4 'priority' " +
+        ResultSet usersEvents = db.select("SELECT weekday, Practical.time, " + EventPriority.PRACTICAL.getPriority() + " 'priority' " +
                                         "FROM Practical " +
                                         "WHERE moduleCode NOT IN " +
                                         "( " +
                                         "	SELECT moduleCode " +
                                         "	FROM Cancellation " +
                                         "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
-                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date) " +
                                         "	AND Cancellation.time = Practical.time " +
                                         ") " +
                                         "AND Practical.moduleCode IN " +
@@ -143,14 +143,14 @@ public class TimeTable {
                                         "			FROM InGroup " +
                                         "			WHERE uid IN " + sqlUserList + "))) " +
                                         "UNION " +
-                                        "SELECT weekday, Lecture.time, 5 'priority' " +
+                                        "SELECT weekday, Lecture.time, " + EventPriority.LECTURE.getPriority() + " 'priority' " +
                                         "FROM Lecture " +
                                         "WHERE moduleCode NOT IN " +
                                         "( " +
                                         "	SELECT moduleCode " +
                                         "	FROM Cancellation " +
                                         "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
-                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date) " +
                                         "	AND Cancellation.time = Lecture.time " +
                                         ") " +
                                         "AND Lecture.moduleCode IN " +
@@ -164,7 +164,7 @@ public class TimeTable {
                                         "			FROM InGroup " +
                                         "			WHERE uid IN " + sqlUserList + "))) " +
                                         "UNION " +
-                                        "SELECT WEEKDAY(date + 1) as 'weekday', time, priority " +
+                                        "SELECT WEEKDAY(date) as 'weekday', time, priority " +
                                         "FROM Meeting " +
                                         "WHERE meetingid IN " +
                                         "(	SELECT mid " +
@@ -221,7 +221,7 @@ public class TimeTable {
                                                     "	SELECT moduleCode " +
                                                     "	FROM Cancellation " +
                                                     "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
-                                                    "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                                    "	AND weekday = WEEKDAY(Cancellation.date) " +
                                                     "	AND Cancellation.time = Lecture.time " +
                                                     ")" +
                                                     "AND Lecture.moduleCode IN " +
@@ -254,7 +254,7 @@ public class TimeTable {
                                                         "	SELECT moduleCode " +
                                                         "	FROM Cancellation " +
                                                         "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
-                                                        "	AND weekday = WEEKDAY(Cancellation.date + 1) " +
+                                                        "	AND weekday = WEEKDAY(Cancellation.date) " +
                                                         "	AND Cancellation.time = Practical.time " +
                                                         ")" +
                                                         "AND Practical.moduleCode IN " +
@@ -310,20 +310,19 @@ public class TimeTable {
      */
     private void setupTimeSlots() {        
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
 
         // Set the calendar to monday of the current week
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         // Print dates of the current week starting on Monday
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                
         for (Day day : Day.values()) {
-            cal.add(Calendar.DATE, 1);
             for (EventTime time : EventTime.values()) {
-                events[day.getIndex() - 1][time.getTimeIndex() - 1] 
-                        = new TimeSlot(format.format(cal.getTime()), time.printSQLTimeFormat());
+                events[day.getIndex()][time.getTimeIndex()] 
+                        = new TimeSlot(dateFormat.format(cal.getTime()), time.printSQLTimeFormat());
             }
+            cal.add(Calendar.DATE, 1);
         }
     }
     

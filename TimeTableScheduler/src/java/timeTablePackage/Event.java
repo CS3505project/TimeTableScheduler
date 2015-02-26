@@ -20,7 +20,7 @@ public abstract class Event {
     private Time time;
     private String location;
     
-    public static final String DAY_INDEX = "u";
+    public static final String DAY = "EEEE";
     public static final String HOUR_INDEX = "k";
 
     public Event(String eventID, Date date, Time time, String location) {
@@ -50,8 +50,8 @@ public abstract class Event {
      * @return Index for the day
      */
     public int getDayOfWeek() {
-        SimpleDateFormat dateTime = new SimpleDateFormat(DAY_INDEX);
-        return Integer.parseInt(dateTime.format(date));
+        SimpleDateFormat dateTime = new SimpleDateFormat(DAY);
+        return Day.convertToDay(dateTime.format(date)).getIndex();
     }
     
     /**
