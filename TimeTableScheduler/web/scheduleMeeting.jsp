@@ -1,32 +1,35 @@
-<%@page import="toolsPackage.Database"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="MeetingRequest" class="userDataPackage.MeetingRequest" scope="session"/>
+<jsp:useBean id="MeetingRequest" class="userDataPackage.MeetingRequest" scope="page"/>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
-        if (MeetingRequest.getTimeTable() == null) {
-            MeetingRequest.getUsersToMeet((String)request.getParameter("withType"), request);
-            MeetingRequest.setTimeTable(timeTablePackage.TimeTable.getPreSetTimeTable());
+        MeetingRequest.setValues(request, user);
+        
+        if (MeetingRequest.getTimeTables() == null) {
+            MeetingRequest.setTimeTables(timeTablePackage.TimeTable.getPreSetTimeTable());
             
             if (((String)request.getParameter("withType")).equals("personal")) {
-                MeetingRequest.getTimeTable().initialiseTimeTable(user.getUserID());
+                MeetingRequest.getTimeTables().initialiseTimeTable(user.getUserID());
             } else {
-                MeetingRequest.getTimeTable().initialiseTimeTable(MeetingRequest.getUsersToMeet());
+                MeetingRequest.getUsersToMeet((String)request.getParameter("withType"), request);
+                MeetingRequest.getTimeTables().initialiseTimeTable(MeetingRequest.getUsersToMeet());
             }
             
             MeetingRequest.setDuration((String)request.getParameter("duration"));
             MeetingRequest.setOverPriority((String)request.getParameter("over-priority"));
         }
         
-        out.println(output.createSuggestedTimeTable(MeetingRequest.getTimeTable(),
+        if (MeetingRequest.getTimeTables() == null) {
+            System.out.println("null timetable");
+        }
+        out.println(output.createSuggestedTimeTable(MeetingRequest.getTimeTables(),
                                                     MeetingRequest.getDuration(),
                                                     MeetingRequest.getOverPriority(),
                                                     true));
-        MeetingRequest.setValues(request, user);
-        MeetingRequest.setActionCompleted(false);
+
 %>
         <div class="hidden" name="context" value="scheduleMeeting"></div>
         <hgroup class="animate">
@@ -54,11 +57,8 @@
             <%-- print errors and comit valid values to database --%>
             <%
                 out.println(MeetingRequest.getErrors());
-                MeetingRequest.createMeeting();
-                if (MeetingRequest.isActionCompleted()) {
-                    %>
-                    <jsp:forward page="/index.jsp" />
-                    <%
+                if(MeetingRequest.createMeeting()) {
+                    out.println("Meeting added successfully");
                 }
             %>
         </p>

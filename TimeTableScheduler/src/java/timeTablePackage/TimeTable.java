@@ -425,9 +425,7 @@ public class TimeTable {
         if (clearPrevious) {
             clearSuggestedTimeSlots();
         }
-        
-        System.out.println(maxPriority);
-        
+                
         // if reached end reset suggestion to start
         if (suggestedDay == endDay.getIndex()) {
             suggestedDay = -1;

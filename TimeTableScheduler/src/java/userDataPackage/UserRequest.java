@@ -19,7 +19,6 @@ public abstract class UserRequest {
     private userPackage.User user;
     private List<String> errors;
     private boolean[] validDataValues;
-    private boolean actionCompleted;
     
     public UserRequest(){
         this.errors = new ArrayList<String>();
@@ -51,16 +50,8 @@ public abstract class UserRequest {
         return user;
     }
     
-    public boolean isActionCompleted() {
-        return actionCompleted;
-    }
-    
-    public void setActionCompleted(boolean actionCompleted) {
-        this.actionCompleted = actionCompleted;
-    }
-    
     public void clearErrors() {
-        errors = new ArrayList<String>();
+        errors.clear();
     }
     
     /**
@@ -101,6 +92,7 @@ public abstract class UserRequest {
         for(String error : errors){
             result += (error + "<br>");
         }
+        System.out.println("errors= " + result);
         return result;
     }
     
@@ -112,6 +104,7 @@ public abstract class UserRequest {
     public boolean isValid() {
         boolean valid = true;
         for (int i = 0; i < validDataValues.length; i++) {
+            System.out.println(validDataValues[i]);
             valid = valid && validDataValues[i];
         }
         valid = valid && errors.isEmpty();
