@@ -12,7 +12,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import timeTablePackage.Day;
 import timeTablePackage.EventPriority;
+import timeTablePackage.EventTime;
+import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
 
@@ -24,6 +27,13 @@ public final class MeetingRequest extends UserRequest{
     private String venue = "";
     private Time time;
     private String description = "";
+    private int duration = 1;
+    private String groupOrUserId = "";
+    private List<String> usersToMeet = new ArrayList<String>();
+    private TimeTable timeTable = null;
+    private int overPriority = -1;
+    
+    public static final String TIME_FORMAT = "HH:mm:ss";
             
     /**
      * Default constructor
@@ -37,7 +47,58 @@ public final class MeetingRequest extends UserRequest{
         venue = "";
         time = null;
         description = "";
+        duration = 1;
+        groupOrUserId = "";
+        usersToMeet = null;
+        timeTable = null;
+        overPriority = -1;
         this.clearErrors();
+    }
+    
+    public int getOverPriority() {
+        return overPriority;
+    }
+    
+    public void setOverPriority(String overPriority) {
+        try {
+            this.overPriority = Integer.parseInt(overPriority);
+        } catch (Exception ex) {
+            System.err.println("Error with duration");
+            this.overPriority = 1;
+        }
+    }
+    
+    public TimeTable getTimeTable() {
+        return timeTable;
+    }
+    
+    public void setTimeTable(TimeTable timeTable) {
+        this.timeTable = timeTable;
+    }
+    
+    public List<String> getUsersToMeet() {
+        return usersToMeet;
+    }
+    
+    public String getGroupOrUserId() {
+        return groupOrUserId;
+    }
+    
+    public void setGroupOrUserId(String idOfGroupOrUser) {
+        this.groupOrUserId = idOfGroupOrUser;
+    }
+    
+    public int getDuration() {
+        return duration;
+    }
+    
+     public void setDuration(String duration) {
+        try {
+            this.duration = Integer.parseInt(duration);
+        } catch (Exception ex) {
+            System.err.println("Error with duration");
+            this.duration = 1;
+        }
     }
     
     /**
@@ -145,20 +206,30 @@ public final class MeetingRequest extends UserRequest{
     public boolean createMeeting() {
         boolean result = false;
         
-        if (this.isValid()) {
+        if (this.isValid() && usersToMeet != null) {
             System.out.println("here");
             
             EventPriority priority = getPriority((String)getRequest().getParameter("priority"));
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(date);
-            Database db = Database.getSetupDatabase();
-            result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
-                            + "VALUES (\""+ meetingDate + "\", \""+ time.toString() + "\", \"" + venue + "\", \"" 
-                            + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
             
-            List<String> usersInMeeting = getUsersToMeet(db, (String)getRequest().getParameter("withType"), getRequest());
-            addUsersToMeeting(db, db.getPreviousAutoIncrementID("Meeting"), usersInMeeting);
+            Database db = Database.getSetupDatabase();
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(this.time);
+            SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+            for (int i = 0; i < duration; i++) {  
+                result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
+                                + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
+                                + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
+
+                addUsersToMeeting(db, db.getPreviousAutoIncrementID("Meeting"));
+                
+                // increment to the next time slot if the meeting is longer 
+                // than one hour
+                cal.add(Calendar.HOUR, 1);
+            }
             
             this.setActionCompleted(result);
             resetForm();
@@ -171,18 +242,19 @@ public final class MeetingRequest extends UserRequest{
         return EventPriority.convertToEventPriority(priorityLevel);
     }
     
-    public List<String> getUsersToMeet(Database db, String meetingType, HttpServletRequest request) {
-        List<String> usersInMeeting = new ArrayList<String>();
+    public void getUsersToMeet(String meetingType, HttpServletRequest request) {
+        Database db = Database.getSetupDatabase();
         try {
             switch (meetingType) {
                 case "group":
+                    groupOrUserId = (String)request.getParameter("groupID");
                     ResultSet groupResult = db.select("SELECT uid " +
                                                     "FROM Student JOIN User " +
                                                     "ON Student.uid = userid " +
                                                     "WHERE Student.uid IN " +
                                                     "	(SELECT uid " +
                                                     "	FROM InGroup " +
-                                                    "	WHERE gid = " + (String)request.getParameter("groupID") + ") " +
+                                                    "	WHERE gid = " + groupOrUserId + ") " +
                                                     "UNION " +
                                                     "SELECT uid " +
                                                     "FROM Lecturer JOIN User " +
@@ -190,27 +262,28 @@ public final class MeetingRequest extends UserRequest{
                                                     "WHERE Lecturer.uid IN " +
                                                     "	(SELECT uid " +
                                                     "	FROM InGroup " +
-                                                    "	WHERE gid = " + (String)request.getParameter("groupID") + ");");
+                                                    "	WHERE gid = " + groupOrUserId + ");");
                     while (groupResult.next()) {
-                        usersInMeeting.add(groupResult.getString("uid"));
+                        usersToMeet.add(groupResult.getString("uid"));
                     }
                     break;
                 case "individual":
-                    usersInMeeting.add((String)request.getParameter("individualID"));
+                    groupOrUserId = (String)request.getParameter("individualID");
+                    usersToMeet.add(groupOrUserId);
                     break;
                 default:
-                    usersInMeeting.add(getUser().getUserID());
+                    usersToMeet.add(getUser().getUserID());
                     break;
             }
         } catch (SQLException ex) {
             System.err.println("Problem getting users in meeting.");
         }
-        return usersInMeeting;
+        db.close();
     }
     
-    private void addUsersToMeeting(Database db, int meetingID, List<String> usersInMeeting) {
+    private void addUsersToMeeting(Database db, int meetingID) {
         String values = "";
-        Iterator<String> userIds = usersInMeeting.iterator();
+        Iterator<String> userIds = usersToMeet.iterator();
         while (userIds.hasNext()) {
             values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
         }

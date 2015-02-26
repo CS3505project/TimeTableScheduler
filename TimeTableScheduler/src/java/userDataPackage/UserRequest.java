@@ -60,7 +60,7 @@ public abstract class UserRequest {
     }
     
     public void clearErrors() {
-        errors.clear();
+        errors = new ArrayList<String>();
     }
     
     /**

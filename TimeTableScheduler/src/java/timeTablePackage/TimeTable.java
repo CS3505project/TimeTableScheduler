@@ -40,6 +40,10 @@ public class TimeTable {
         setupTimeSlots();
     }
     
+    public static TimeTable getPreSetTimeTable() {
+        return new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
+    }
+    
     /**
      * Checks if the event specified by the day and time indexes are conflicting
      * with existing events

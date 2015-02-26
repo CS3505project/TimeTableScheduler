@@ -118,8 +118,8 @@ public class TimeSlot {
      */
     public String printTableCell() {
         if (totalPriority > 0) {
-            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\"" : "") 
-                   + " class=\"animate selectable priority-" + totalPriority + "\">"
+            return "<td class=\"animate selectable priority-" + totalPriority + " "
+                   + (isSuggested() ? "suggested-timeslot\"" : "\"") + ">"
                     
                    + "<div class=\"hidden\""
                    + " data-date=\"" + date + "\""
@@ -129,8 +129,8 @@ public class TimeSlot {
                    + "Practical: " + numPracticals() + "<br />"
                    + "Meeting: " + numMeetings() + "</td>";
         } else {
-            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\"" : "") 
-                   + " class=\"animate selectable priority-" + totalPriority + "\">"
+            return "<td class=\"animate selectable priority-" + totalPriority + " "
+                   + (isSuggested() ? "suggested-timeslot\"" : "\"") + ">"
                    + "<div class=\"hidden\""
                    + " data-date=\"" + date + "\""
                    + " data-time=\"" + time + "\"></div>"
@@ -157,7 +157,7 @@ public class TimeSlot {
         if (eventList.equals("")) {
             html += ">";
         } else {
-            html += " class=\"" + highPriority.getPriorityName() + " hoverable\">";
+            html += " data-description=\"null\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
         }
         html += eventList + "</td>";
         return html;

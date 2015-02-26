@@ -7,25 +7,23 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
-        timeTablePackage.TimeTable timetable = new timeTablePackage.TimeTable(timeTablePackage.EventTime.NINE, 
-                                                                              timeTablePackage.EventTime.SEVENTEEN, 
-                                                                              timeTablePackage.Day.MONDAY, 
-                                                                              timeTablePackage.Day.FRIDAY);
-        
-        java.util.List<String> userIds 
-                = MeetingRequest.getUsersToMeet(Database.getSetupDatabase(), 
-                                               (String)request.getParameter("withType"),
-                                                request);
-        
-        if (((String)request.getParameter("withType")).equals("personal")) {
-            timetable.initialiseTimeTable(user.getUserID());
-        } else {
-            timetable.initialiseTimeTable(userIds);
+        if (MeetingRequest.getTimeTable() == null) {
+            MeetingRequest.getUsersToMeet((String)request.getParameter("withType"), request);
+            MeetingRequest.setTimeTable(timeTablePackage.TimeTable.getPreSetTimeTable());
+            
+            if (((String)request.getParameter("withType")).equals("personal")) {
+                MeetingRequest.getTimeTable().initialiseTimeTable(user.getUserID());
+            } else {
+                MeetingRequest.getTimeTable().initialiseTimeTable(MeetingRequest.getUsersToMeet());
+            }
+            
+            MeetingRequest.setDuration((String)request.getParameter("duration"));
+            MeetingRequest.setOverPriority((String)request.getParameter("over-priority"));
         }
         
-        out.println(output.createSuggestedTimeTable(timetable,
-                                                    Integer.parseInt((String)request.getParameter("duration")),
-                                                    (String)request.getParameter("over-priority"),
+        out.println(output.createSuggestedTimeTable(MeetingRequest.getTimeTable(),
+                                                    MeetingRequest.getDuration(),
+                                                    MeetingRequest.getOverPriority(),
                                                     true));
         MeetingRequest.setValues(request, user);
         MeetingRequest.setActionCompleted(false);

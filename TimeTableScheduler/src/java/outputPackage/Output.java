@@ -211,7 +211,6 @@ public class Output {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
         
-        //TO-DO
         ResultSet result = db.select("SELECT * " +
                                     "	FROM Groups " +
                                     "	WHERE groupid IN " +
@@ -276,7 +275,7 @@ public class Output {
     public String createDummyTable(){
         String finalHTML = "";
         
-        TimeTable suggestion = new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable suggestion = TimeTable.getPreSetTimeTable();
         suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Availability</h1>";
@@ -356,7 +355,7 @@ public class Output {
     public String createUserTimeTable(String userID, String filter){
         String finalHTML = "";
         
-        TimeTable timetable = new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable timetable = TimeTable.getPreSetTimeTable();
         timetable.initialiseTimeTable(userID);
         finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable
@@ -380,15 +379,9 @@ public class Output {
      * @param clearPrevSuggestion Clear the most recently suggested time slot
      * @return HTML to create the timetable
      */
-    public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, String priority, boolean clearPrevSuggestion){
-        int validMeetingLength = meetingLength;
-        if (meetingLength == 0) {
-            validMeetingLength = 1;
-        }
-        
-        int priorityValue = EventPriority.convertToEventPriority(priority).getPriority();
+    public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, int priority, boolean clearPrevSuggestion){
         String finalHTML  = "";
-        suggestion.nextSuggestedTimeSlot(validMeetingLength, priorityValue, clearPrevSuggestion);
+        suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
         finalHTML += "<h1>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
