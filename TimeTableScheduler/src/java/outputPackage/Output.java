@@ -265,7 +265,7 @@ public class Output {
      */
     public String createMessages(User user){        
         String finalHTML = "";
-        finalHTML += "<h1>Messages</h1>";
+        finalHTML += "<h1 class='banner'>Messages</h1>";
         return finalHTML;
     }
     /**
@@ -279,7 +279,7 @@ public class Output {
         TimeTable suggestion = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
-        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += "<h1>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
         return finalHTML;
@@ -358,7 +358,7 @@ public class Output {
         
         TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.initialiseTimeTable(userID);
-        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable
         finalHTML += "<ul class=\"filters\">" +
                          "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +
@@ -389,7 +389,7 @@ public class Output {
         int priorityValue = EventPriority.convertToEventPriority(priority).getPriority();
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(validMeetingLength, priorityValue, clearPrevSuggestion);
-        finalHTML += "<h1>Timetable for this week</h1>";
+        finalHTML += "<h1>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true);
         
         return finalHTML;
