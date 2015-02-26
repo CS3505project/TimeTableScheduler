@@ -157,7 +157,7 @@ public class TimeSlot {
         if (eventList.equals("")) {
             html += ">";
         } else {
-            html += " class=\"" + highPriority.getPriorityName() + "\">";
+            html += " class=\"" + highPriority.getPriorityName() + " hoverable\">";
         }
         html += eventList + "</td>";
         return html;

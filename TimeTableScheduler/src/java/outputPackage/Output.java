@@ -356,7 +356,7 @@ public class Output {
     public String createUserTimeTable(String userID, String filter){
         String finalHTML = "";
         
-        TimeTable timetable = new TimeTable(EventTime.EIGHT, EventTime.EIGHTEEN, Day.MONDAY, Day.FRIDAY);
+        TimeTable timetable = new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
         timetable.initialiseTimeTable(userID);
         finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable

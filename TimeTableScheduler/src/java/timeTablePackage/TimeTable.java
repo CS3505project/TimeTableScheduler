@@ -40,15 +40,6 @@ public class TimeTable {
         setupTimeSlots();
     }
     
-    public TimeTable() {
-        this.events = new TimeSlot[Day.numDays][EventTime.numHours];
-        this.startTime = EventTime.EIGHT;
-        this.endTime = EventTime.EIGHTEEN;
-        this.startDay = Day.MONDAY;
-        this.endDay = Day.FRIDAY;
-        setupTimeSlots();
-    }
-    
     /**
      * Checks if the event specified by the day and time indexes are conflicting
      * with existing events
@@ -449,14 +440,8 @@ public class TimeTable {
             for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
                     !found && time < endTime.getTimeIndex(); time++) {
                 suggestedTime = time;
-                for (int i = 0; i < meetingDuration; i++) {
-                    if (events[day][time + i].getTotalPriority() <= maxPriority) {
-                        System.out.println(startTime.getTime());
-                        System.out.println(events[day][time + i].getTotalPriority() + " <= " + maxPriority);
-                        found = true;
-                    } else {
-                        found = false;
-                    }
+                for (int i = 0; i < meetingDuration && (time+ i) < endTime.getTimeIndex(); i++) {
+                    found = found && (events[day][time + i].getTotalPriority() <= maxPriority);
                 }
             }
         }
