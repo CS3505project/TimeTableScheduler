@@ -431,6 +431,14 @@ public class TimeTable {
             clearSuggestedTimeSlots();
         }
         
+        // if reached end reset suggestion to start
+        if (suggestedDay == endDay.getIndex()) {
+            suggestedDay = -1;
+        }
+        if (suggestedTime == endTime.getTimeIndex()) {
+            suggestedTime = -1;
+        }
+        
         boolean found = false;
         // loop through each timeslot in the timetable
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
@@ -439,7 +447,7 @@ public class TimeTable {
             for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
                     !found && time < endTime.getTimeIndex(); time++) {
                 suggestedTime = time;
-                for (int i = 0; i < meetingDuration && (time + meetingDuration) < endTime.getTimeIndex(); i++) {
+                for (int i = 0; i < meetingDuration; i++) {
                     if (events[day][time + i].getTotalPriority() <= maxPriority) {
                         found = true;
                     } else {

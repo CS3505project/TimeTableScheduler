@@ -17,7 +17,6 @@ public class TimeSlot {
     private int totalPriority;
     private boolean suggested;
     private List<Event> events;
-    private EventPriority largestPriority;
     private String date;
     private String time;
     
@@ -42,12 +41,6 @@ public class TimeSlot {
      * @param event The event
      */
     public void addEvent(Event event) {
-        // keep track of the largest priority for this timeslot
-        if (largestPriority == null 
-                || event.getEventPriority().getPriority() < largestPriority.getPriority()) {
-            largestPriority = event.getEventPriority();
-        }
-        
         events.add(event);
     }
     
@@ -125,8 +118,8 @@ public class TimeSlot {
      */
     public String printTableCell() {
         if (totalPriority > 0) {
-            return "<td class=\"animate selectable priority-" + totalPriority + "\"" 
-                   + (isSuggested() ? " class=\"suggested-timeslot\">" : ">")
+            return "<td" + (isSuggested() ? " class=\"suggested-timeslot\"" : "") 
+                   + " class=\"animate selectable priority-" + totalPriority + "\">"
                     
                    + "<div class=\"hidden\""
                    + " data-date=\"" + date + "\""

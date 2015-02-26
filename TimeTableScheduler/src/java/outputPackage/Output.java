@@ -358,7 +358,7 @@ public class Output {
         }
         
         int priorityValue = EventPriority.convertToEventPriority(priority).getPriority();
-        
+        System.out.println(meetingLength + "=" + validMeetingLength);
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(validMeetingLength, priorityValue, clearPrevSuggestion);
         finalHTML += "<h1>Timetable for this week</h1>";

@@ -171,7 +171,7 @@ public final class MeetingRequest extends UserRequest{
         return EventPriority.convertToEventPriority(priorityLevel);
     }
     
-    private List<String> getUsersToMeet(Database db, String meetingType, HttpServletRequest request) {
+    public List<String> getUsersToMeet(Database db, String meetingType, HttpServletRequest request) {
         List<String> usersInMeeting = new ArrayList<String>();
         try {
             switch (meetingType) {
