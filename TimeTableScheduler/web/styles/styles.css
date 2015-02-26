@@ -30,9 +30,9 @@ body{
 /**********************/
 span.triangle{
         display: inline-block;
-	position: relative;
-        right: -5px;
-        top: 3px;
+	position: absolute;
+        right: 1px;
+        top: 2px;
 	width: 0;
         height: 0;
         border-style: solid;
@@ -121,13 +121,16 @@ body>nav h1{
 }
 body>nav>ul>li{
 	display: block;
+        width: 132px;
         height: 20px;
         margin-top: 2px;
         margin-bottom: 2px;
 }
 body>nav a{
+        position: relative;
         height: 20px;
-        line-height: 18px;
+        width: 132px;
+        line-height: 20px;
 	display: block;
 	color: #9494b7;
 	text-shadow: 1px 1px 2px #000;
@@ -137,14 +140,14 @@ body>nav a{
 	outline: none;
 	transition: all 0.2s ease;
 }
-body>nav a:hover{
-	background: rgba(0,0,0,0.4);
+body>nav a:hover,body>nav a.current{
+	background-color: rgba(0,0,0,0.4);
 }
-body>nav a:focus{
-	background: rgba(0,0,0,0.5);
-	text-decoration: underline;
+body>nav a:focus, body>nav a.navicon:focus{
+	background-color: rgba(0,0,0,0.8);
 }
 body>nav a.navicon, body>nav a.navicon:hover{
+        line-height: 17px;
         position: relative;
 	background: transparent;
 	height: 22px;
@@ -161,10 +164,6 @@ body>nav a.navicon{
 	transition: transform 0.2s ease;
 }
 body>nav a.navicon:hover{
-	color: #88a;
-	background-color: rgba(0,0,0,0.3);
-}
-body>nav a.navicon:focus{
 	color: #88a;
 	background-color: rgba(0,0,0,0.3);
 }
@@ -325,23 +324,31 @@ table>caption{
 	caption-side: bottom;
 	font-size: 14px;
 }
+tr{
+    height: 34px;
+}
 th{
 	font-family: Helvetica, sans-serif;
 	padding: 4px;
-        min-height: 36px;
 	background: #889;
 	color: #fff;
 	border-right: 1px solid #778;
 	min-width: 4em;
 }
 td{
+        line-height: 12px;
 	text-align: center;
-	padding: 4px;	
+	padding: 2px;
+        padding-top: 0px;
 	border-bottom: 1px solid #889;
-	font-size: 13px;
+	font-size: 12px;
 }
 td.selectable{
         cursor:pointer;
+}
+td.hoverable{
+    position: relative;
+    cursor: help;
 }
 tr td.meeting{
 	background: #a56;
@@ -409,12 +416,14 @@ td.priority-1{
     color: #fff;
 }
 td.suggested-timeslot{
-    background-color: #e0eafd;
-    text-shadow: 1px 1px 2px #6af;
+    text-shadow: 1px 1px 2px #889;
     color: #fff;
+    cursor: pointer;
 }
 td.suggested-timeslot:after{
+    font-size: 16px;
     content: "Free";
+    cursor: pointer;
 }
 /************/
 /* HEADINGS */
@@ -705,6 +714,33 @@ footer.loginFooter ul li:before{
 /*********/
 /* POPUP */
 /*********/
+div.popupDescription{
+        position: absolute;
+        width: 90%;
+        height: 50px;
+        top: -58px;
+        left: 5%;
+        padding: 4px;
+        text-shadow: none;
+        font-size: 12px;
+        background: #fff;
+	border-radius: 6px;
+        color: #000;
+	z-index: 20;
+	box-shadow: 1px 1px rgba(0,0,0,0.3), 0 2px 6px -1px rgba(0,0,0,0.8);
+}
+div.popupDescription:after{
+        content:"";
+        display: block;
+	position: absolute;
+	left: 14px;
+	bottom: -10px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 14px 14px 0 14px;
+	border-color: #fff transparent transparent transparent;
+}
 div.popup{
         position: fixed;
         min-width: 200px;

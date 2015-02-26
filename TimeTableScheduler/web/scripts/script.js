@@ -1,8 +1,11 @@
+//run on pageload
 $(document).ready(function(){
-    //fix form for meeting
+    /////////////////////////////////
+    //Make Meeting Form Interactive//
+    /////////////////////////////////
     $("#individualSelectDiv").hide();
     
-    $('#createMeetingForm input').on('change', function() {
+    $('#createMeetingForm input').on('change', function(){
         var checked = $('input[name="withType"]:checked', '#createMeetingForm').val();
         switch (checked){
             case 'personal':
@@ -30,6 +33,7 @@ $(document).ready(function(){
     });
     //////////////////////////////
     //Create the popup box node //
+    //////////////////////////////
     var helpBox = document.createElement("div");
     helpBox.setAttribute("class","popup");
     helpBox.setAttribute("id","helpPopup");
@@ -46,25 +50,50 @@ $(document).ready(function(){
     $(helpBox).append("<div><h1></h1><p></p></div>");
     $(helpBox).append(closeButton);
     $("body").append(helpBox); 
-    $("#helpPopup").hide();
     //put context in the help button
     var context = $("div[name='context']").attr("value");
     $("#help").click(displayHelp(context));
+    $("#helpPopup").hide();
     
-    //set flashing animation for clicked animated class nodes
-    $(".animate").click(function() {
-        $(this).effect("highlight", {color:"#eeeeff"}, 250 );
+    ///////////////////////////////////////////////////////////
+    //set flashing animation for clicked animated class nodes//
+    ///////////////////////////////////////////////////////////
+    $(".animate").click(function(){
+        $(this).effect("highlight", {color:"#ffffff"}, 650 );
     });
-    //get info from selectable nodes in timetable
-    $(".selectable").click(function() {
+    /////////////////////////////////////////////////////
+    //put selectable info into form from table on click//
+    /////////////////////////////////////////////////////
+    $(".selectable").click(function(){
+        $(".selected").remove();
+        $(this).append("<div class='selected'>✔ selected</div>");
         var infoNode = $("div.hidden", this);
         var date = infoNode.attr("data-date");
         var time = infoNode.attr("data-time");
         $('#date').val(date);
         $('#time').val(time);
-        $('#date').effect("highlight", {times:3, color:"#eeeeff"}, 450 );
-        $('#time').effect("highlight", {times:3, color:"#eeeeff"}, 450 );
     });
+    //////////////////////////////////////////////////////////////////
+    //Show event description when event in timetable is hovered over//
+    //////////////////////////////////////////////////////////////////
+    $(".hoverable").hover(
+        function(){//on mouse over
+            var description = $(this).attr("data-description");
+            $(this).append("<div class='popupDescription' id='popupDescription'>"+ description+"</div>");
+            $('#popupDescription').hide();
+            $('#popupDescription').show("fade", {}, 150);
+        },
+        function(){//on mouse leave
+            $('#popupDescription').hide("fade", {}, 150);
+            $('#popupDescription').remove();
+        });
+    /////////////////////////////////////////////////////////
+    //add little blue triangle to current page on side menu//
+    /////////////////////////////////////////////////////////
+    var page = document.location.href.match(/[^\/]+$/)[0];
+    $("nav a[href='"+page+"']").append("<span class='triangle'></span>");
+    $("nav a[href='"+page+"']").addClass("current");
+
 }); 
 
 function displayHelp(context){
