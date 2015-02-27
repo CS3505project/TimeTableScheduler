@@ -40,7 +40,7 @@ public final class MeetingRequest extends UserRequest{
      * Default constructor
      */
     public MeetingRequest(){ 
-        initialiseValidData(4);
+        initialiseErrorArray(4);
         date = new Date();//initialise to todays date
         venue = "";
         time = null;
@@ -58,7 +58,6 @@ public final class MeetingRequest extends UserRequest{
         time = null;
         usersToMeet = new ArrayList<String>();
         clearErrors();
-        clearValidData();
     }
     
     public TimeTable getTimeTable() {
@@ -106,7 +105,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setDate(String date) {
         if (this.errorInString(date)) {
-            this.addError("Invalid date entered.");
+            this.addErrorMessage(0, "Invalid date entered.");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
@@ -115,7 +114,7 @@ public final class MeetingRequest extends UserRequest{
             }
             catch (ParseException e) {
                 System.err.println("Invalid Date: " + date);
-                this.addError("Invalid Date: " + date);
+                this.addErrorMessage(0, "Invalid Date: " + date);
             }
         }
     }
@@ -126,7 +125,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setVenue(String venue){
         if (this.errorInString(venue)) {
-            this.addError("Venue is incorrect.");
+            this.addErrorMessage(1, "Venue is incorrect.");
         } else {
             this.venue = Validator.escapeJava(venue);
             setValidData(1, true);
@@ -147,7 +146,7 @@ public final class MeetingRequest extends UserRequest{
         }
         catch (Exception e) {
             System.err.println("Invalid Time: " + time);
-            this.addError("Invalid Time: " + time);
+            this.addErrorMessage(2, "Invalid Time: " + time);
         }
     }
     
@@ -157,7 +156,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public void setDescription(String description) {
         if (this.errorInString(description)) {
-            addError("Your description is incorrect.");
+            addErrorMessage(3, "Your description is incorrect.");
         } else {
             this.description = Validator.escapeJava(description);
             setValidData(3, true);

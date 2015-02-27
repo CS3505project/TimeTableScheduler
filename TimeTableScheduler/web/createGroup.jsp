@@ -24,22 +24,28 @@
                     <% out.println(output.createGroupTypeDropDown()); %>
                 </select></div>
                 <div><label for="inGroup">In Group:</label>                
-                <select multiple="multiple" name="inGroup">
+                <select multiple name="inGroup">
                     <% out.println(output.createIndividualDropDown(user.getUserID())); %>
-                </select>
+                </select></div>
                 <div><label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next"></div>
         </form>
-        <p>
-            <%-- print errors and comit valid values to database --%>
-            <% 
-                if (GroupRequest.isFormLoaded()) {
-                    out.println(GroupRequest.getErrors());
-                }
-                GroupRequest.createGroup();
-                
-            %>
-        </p>
+        <div class="errors">
+            <h1><span><% out.println(GroupRequest.numErrors()); %></span></h1>
+            <p>
+                <%-- print errors and comit valid values to database --%>
+                <% 
+                    if (GroupRequest.isFormLoaded()) {
+                        out.println(GroupRequest.getErrors());
+                    }
+                    if (GroupRequest.createGroup()) {
+                        response.sendRedirect("index.jsp");
+                    } else if (GroupRequest.isFormLoaded()){
+                        out.println("Unable to create group");
+                    }
+                %>
+            </p>
+        </div>
  <%
         out.println(output.createFooter());
     } else {

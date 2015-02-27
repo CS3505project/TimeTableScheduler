@@ -61,7 +61,7 @@
                     }
                     if(MeetingRequest.createMeeting()) {
                         response.sendRedirect("index.jsp");
-                    } else {
+                    } else if (MeetingRequest.isFormLoaded()){
                         out.println("Unable to create meeting");
                     }
                     MeetingRequest.setFormLoaded(true);

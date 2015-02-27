@@ -17,12 +17,10 @@ import userPackage.User;
 public abstract class UserRequest {
     private HttpServletRequest request;
     private userPackage.User user;
-    private List<String> errors;
-    private boolean[] validDataValues;
+    private DataEntry data;
     private boolean formLoaded;
     
     public UserRequest(){
-        this.errors = new ArrayList<String>();
     }
     
     public void setValues(HttpServletRequest request, userPackage.User user) {
@@ -31,7 +29,7 @@ public abstract class UserRequest {
     }
     
     public int numErrors() {
-        return errors.size();
+        return data.numErrors();
     }
     
     public void setFormLoaded(boolean loaded) {
@@ -42,16 +40,12 @@ public abstract class UserRequest {
         return formLoaded;
     }
     
-    public void initialiseValidData(int length) {
-        validDataValues = new boolean[length];
+    public void initialiseErrorArray(int length) {
+        data = new DataEntry(length);
     }
-    
-    public void clearValidData() {
-        validDataValues = new boolean[validDataValues.length];
-    }
-    
+
     public void setValidData(int index, boolean value) {
-        validDataValues[index] = value;
+        data.setValidEntry(index, value);
     }
     
     /**
@@ -64,7 +58,7 @@ public abstract class UserRequest {
     }
     
     public void clearErrors() {
-        errors.clear();
+        data.clear();
     }
     
     /**
@@ -91,8 +85,8 @@ public abstract class UserRequest {
      * 
      * @param message Error message
      */
-    public void addError(String message) {
-        errors.add(message);
+    public void addErrorMessage(int index, String message) {
+        data.addErrorMessage(index, message);
     }
     
     /**
@@ -101,12 +95,7 @@ public abstract class UserRequest {
      * @return a list of the errors, separated by line breaks. 
      */
     public String getErrors(){
-        String result = "";
-        for(String error : errors){
-            result += (error + "<br>");
-        }
-        System.out.println("errors= " + result);
-        return result;
+        return data.getErrorMessages();
     }
     
     /**
@@ -115,13 +104,7 @@ public abstract class UserRequest {
      * @return True if errors present
      */
     public boolean isValid() {
-        boolean valid = true;
-        for (int i = 0; i < validDataValues.length; i++) {
-            System.out.println(validDataValues[i]);
-            valid = valid && validDataValues[i];
-        }
-        valid = valid && errors.isEmpty();
-        return valid;
+        return data.isValid();
     }
     
     /**

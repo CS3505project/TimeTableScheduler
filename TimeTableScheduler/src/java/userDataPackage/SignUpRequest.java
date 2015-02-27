@@ -31,7 +31,7 @@ public class SignUpRequest extends UserRequest {
     private boolean signedUp;
     
     public SignUpRequest() {
-        initialiseValidData(5);
+        initialiseErrorArray(6);
         id = "";
         title = "";
         firstName = "";
@@ -46,7 +46,6 @@ public class SignUpRequest extends UserRequest {
         surname = "";
         email = "";
         clearErrors();
-        clearValidData();
     }
     
     public void setUserType(UserType userType) {
@@ -61,7 +60,7 @@ public class SignUpRequest extends UserRequest {
         switch (userType) {
             case ADMIN:
                 if (errorInString(id)) {
-                    addError("Please enter your administrator ID.");
+                    addErrorMessage(0, "Please enter your administrator ID.");
                 } else {
                     this.id = Validator.escapeJava(id);
                     setValidData(0, true);
@@ -69,7 +68,7 @@ public class SignUpRequest extends UserRequest {
                 break;
             case LECTURER:
                 if (errorInString(id)) {
-                    addError("Please enter your lecturer ID.");
+                    addErrorMessage(0, "Please enter your lecturer ID.");
                 } else {
                     this.id = Validator.escapeJava(id);
                     setValidData(0, true);
@@ -77,7 +76,7 @@ public class SignUpRequest extends UserRequest {
                 break;
             default:
                 if (errorInString(id)) {
-                    addError("Please enter your student ID.");
+                    addErrorMessage(0, "Please enter your student ID.");
                 } else {
                     this.id = Validator.escapeJava(id);
                     setValidData(0, true);
@@ -89,7 +88,7 @@ public class SignUpRequest extends UserRequest {
     public void setTitle(String title) {
         if (userType.equals(UserType.LECTURER)) {
             if (errorInString(title)) {
-                addError("Incorrect title entered.");
+                addErrorMessage(1, "Incorrect title entered.");
                 System.err.println("Error with title.");
             } else {
                 this.title = Validator.escapeJava(title);
@@ -102,7 +101,7 @@ public class SignUpRequest extends UserRequest {
     
     public void setFirstName(String firstName) {
         if (errorInString(firstName)) {
-            addError("Incorrect first name entered.");
+            addErrorMessage(2, "Incorrect first name entered.");
             System.err.println("Error with first name.");
         } else {
             this.firstName = Validator.escapeJava(firstName);
@@ -112,7 +111,7 @@ public class SignUpRequest extends UserRequest {
     
     public void setSurname(String surname) {
         if (errorInString(surname)) {
-            addError("Incorrect surname entered.");
+            addErrorMessage(3, "Incorrect surname entered.");
             System.err.println("Error with surname.");
         } else {
             this.surname = Validator.escapeJava(surname);
@@ -126,7 +125,7 @@ public class SignUpRequest extends UserRequest {
             this.email = Validator.escapeJava(email);
             setValidData(4, true);
         } else {
-            addError("Incorrect email entered.");
+            addErrorMessage(4, "Incorrect email entered.");
             System.err.println("Error with email.");
         }
     }
@@ -158,15 +157,16 @@ public class SignUpRequest extends UserRequest {
         String secondPassword = (String)getRequest().getParameter("rePassword");
         
         if (errorInString(firstPassword)) {
-            addError("Enter a password");
+            addErrorMessage(5, "Enter a password");
             result = false;
         } else if (errorInString(secondPassword)) {
-            addError("Please re-enter your password");
+            addErrorMessage(5, "Please re-enter your password");
             result = false;
         } else if (firstPassword.equals(secondPassword)) {
-            addError("Passwords are different.");
+            addErrorMessage(5, "Passwords are different.");
             result = false;
         }
+        setValidData(5, result);
         return result;
     }
     

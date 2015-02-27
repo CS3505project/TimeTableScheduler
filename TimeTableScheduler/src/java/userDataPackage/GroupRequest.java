@@ -33,13 +33,10 @@ public final class GroupRequest extends UserRequest{
      * Default constructor
      */
     public GroupRequest(){ 
-        initialiseValidData(2);
+        initialiseErrorArray(1);
         groupName = "";
         groupType = GroupType.COLLEGE_WORK;
-    }
-     
-    public boolean isSetup() {
-        return setup;
+        usersInGroup = new ArrayList<String>();
     }
     
     private void resetForm() {
@@ -47,12 +44,11 @@ public final class GroupRequest extends UserRequest{
         groupType = GroupType.COLLEGE_WORK;
         usersInGroup = new ArrayList<String>();
         clearErrors();
-        clearValidData();
     }
     
     public void setGroupName(String groupName){
         if (this.errorInString(groupName)) {
-            this.addError("Group name is incorrect.");
+            this.addErrorMessage(0, "Group name is incorrect.");
         } else {
             this.groupName = Validator.escapeJava(groupName);
             setValidData(0, true);
@@ -61,7 +57,6 @@ public final class GroupRequest extends UserRequest{
     
     public void setGroupType(String groupType){
         this.groupType = GroupType.convertToGroupType(groupType);
-        setValidData(1, true);
     }
 
     public String getGroupName(){
@@ -77,11 +72,12 @@ public final class GroupRequest extends UserRequest{
             for (int i = 0; i < userIds.length; i++) {
                 usersInGroup.add(Validator.escapeJava(userIds[i]));
             }
+            usersInGroup.add(getUser().getUserID());
         }
     }
     
     public boolean createGroup() {
-        if (isValid() && isSetup()) {
+        if (isValid()) {
             boolean result = false;
             
             Database db = Database.getSetupDatabase();

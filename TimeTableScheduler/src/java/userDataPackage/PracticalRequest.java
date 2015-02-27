@@ -43,7 +43,7 @@ public class PracticalRequest extends UserRequest{
      * Default constructor
      */
     public PracticalRequest(){ 
-        initialiseValidData(4);
+        initialiseErrorArray(4);
         startDate = new java.util.Date();//initialise to todays date
         endDate = new java.util.Date();//initialise to todays date
         venue = "";
@@ -65,7 +65,6 @@ public class PracticalRequest extends UserRequest{
         time = null;
         usersInvolved = new ArrayList<String>();
         clearErrors();
-        clearValidData();
     }
     
     public TimeTable getTimeTable() {System.out.println("error: 2");
@@ -110,7 +109,7 @@ public class PracticalRequest extends UserRequest{
      */
     public void setStartDate(String date) {System.out.println("error: 9.3");
         if (this.errorInString(date)) {
-            this.addError("Invalid date entered.");
+            this.addErrorMessage(0, "Invalid date entered.");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
@@ -119,7 +118,7 @@ public class PracticalRequest extends UserRequest{
             }
             catch (ParseException e) {
                 System.err.println("Invalid Date: " + date);
-                this.addError("Invalid Date: " + date);
+                this.addErrorMessage(0, "Invalid Date: " + date);
             }
         }
     }
@@ -130,7 +129,7 @@ public class PracticalRequest extends UserRequest{
      */
     public void setVenue(String venue){System.out.println("error: 10");
         if (this.errorInString(venue)) {
-            this.addError("Venue is incorrect.");
+            this.addErrorMessage(1, "Venue is incorrect.");
         } else {
             this.venue = Validator.escapeJava(venue);
             setValidData(1, true);
@@ -151,7 +150,7 @@ public class PracticalRequest extends UserRequest{
         }
         catch (Exception e) {
             System.err.println("Invalid Time: " + time);
-            this.addError("Invalid Time: " + time);
+            this.addErrorMessage(2, "Invalid Time: " + time);
         }
     }
     
@@ -161,16 +160,16 @@ public class PracticalRequest extends UserRequest{
      */
     public void setEndDate(String date) {System.out.println("error: 9.2");
         if (this.errorInString(date)) {
-            this.addError("Invalid date entered.");
+            this.addErrorMessage(3, "Invalid date entered.");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 this.endDate = sdf.parse(date);
-                setValidData(0, true);
+                setValidData(3, true);
             }
             catch (ParseException e) {
                 System.err.println("Invalid Date: " + date);
-                this.addError("Invalid Date: " + date);
+                this.addErrorMessage(3, "Invalid Date: " + date);
             }
         }
     }
