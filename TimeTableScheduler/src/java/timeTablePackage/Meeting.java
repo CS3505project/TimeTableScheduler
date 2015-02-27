@@ -5,7 +5,12 @@
 package timeTablePackage;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import toolsPackage.Database;
 
 /**
  * Represent a meeting in the timetable
@@ -84,6 +89,19 @@ public class Meeting extends Event {
      */
     public String getOrganiser() {
         return organiser;
+    }
+    
+    public String retrieveOrganiserDetails() {
+        String details = "";
+        Database db = Database.getSetupDatabase();
+        ResultSet result = db.select("SELECT * FROM User WHERE userid = " + organiser + ";");
+        try {
+            while (result.next()) {
+                details += result.getString("firstname") + " " + result.getString("surname");
+            }
+        } catch (SQLException ex) {
+        }
+        return details;
     }
 
     /**

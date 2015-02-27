@@ -52,7 +52,7 @@
                 out.println(MeetingRequest.getErrors());
                 if(MeetingRequest.createMeeting()) {
                     System.out.println("redirect here");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    response.sendRedirect("index.jsp");
                 }
             %>
         </p>

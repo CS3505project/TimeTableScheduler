@@ -146,9 +146,11 @@ public class TimeSlot {
     public String printDetailedTableCell(EventType filter) {
         EventPriority highPriority = EventPriority.MEETING;
         String eventList = "";
+        String description = "";
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
                 eventList += event.toString() + "<br />";
+                description += getEventDescription(event);
                 highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
                                             ? event.getEventPriority() : highPriority);
             }
@@ -157,10 +159,29 @@ public class TimeSlot {
         if (eventList.equals("")) {
             html += ">";
         } else {
-            html += " data-description=\"null\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
+            html += " data-description=\"" + description + "\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
         }
         html += eventList + "</td>";
         return html;
+    }
+    
+    private String getEventDescription(Event event) {
+        String description = "";
+        if (event.getEventType().equals(EventType.MEETING)) {
+            Meeting meeting = ((Meeting)event);
+            description += "Description: " + meeting.getDescription() + "<br />"
+                           + "Organiser: " + meeting.retrieveOrganiserDetails() + "<br />";
+        } else if (event.getEventType().equals(EventType.LECTURE)) {
+            Lecture lecture = ((Lecture)event);
+            description += "Module: " + lecture.getEventID() + "<br />"
+                           + "Semester: " + lecture.getSemester() + "<br />";
+        } else {
+            Practical practical = ((Practical)event);
+            description += "Module: " + practical.getEventID() + "<br />"
+                           + "Semester: " + practical.getSemester() + "<br />";
+        }
+        description += "Time: " + event.getTime() + "<br />Location: " + event.getLocation();
+        return description;
     }
     
     /**
