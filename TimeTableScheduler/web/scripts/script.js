@@ -34,6 +34,7 @@ $(document).ready(function(){
     //////////////////////////////
     //Create the popup box node //
     //////////////////////////////
+    helpToggle = false;
     var helpBox = document.createElement("div");
     helpBox.setAttribute("class","popup");
     helpBox.setAttribute("id","helpPopup");
@@ -43,7 +44,7 @@ $(document).ready(function(){
         $("#helpPopup").hide("drop", {direction: "left"}, 250);
         //reset help button to show rather than hide popup
         document.getElementById("help").onclick = function(){
-            displayHelp(context);
+            displayHelp();
             };
         };
     $(closeButton).html("Close");
@@ -51,8 +52,10 @@ $(document).ready(function(){
     $(helpBox).append(closeButton);
     $("body").append(helpBox); 
     //put context in the help button
-    var context = $("div[name='context']").attr("value");
-    $("#help").click(displayHelp(context));
+    
+    $("#help").click(function(){
+        displayHelp();
+    });
     $("#helpPopup").hide();
     
     ///////////////////////////////////////////////////////////
@@ -104,16 +107,18 @@ $(document).ready(function(){
 
 }); 
 
-function displayHelp(context){
-    //show the popup, it already exists in the DOM but is hidden
-    $("#helpPopup").show("drop", {direction: "left"}, 250);
-    //set the help button to close the popup
-    document.getElementById("help").onclick = function(){
+function displayHelp(){
+    var context = $("div[name='context']").attr("value");
+    if(helpToggle){//help is onscreen, hide the popup
         $("#helpPopup").hide("drop", {direction: "left"}, 250);
-        document.getElementById("help").onclick = function(){
-            displayHelp(context);
-        };
-    };
+        //set the helpToggle to show that help is now shown
+        helpToggle = true;
+    }
+    else{//help is hidden, show the popup
+        $("#helpPopup").show("drop", {direction: "left"}, 250);
+        //set the helpToggle to show that help is now hidden
+        helpToggle = false;
+    }
     //Switch on the context name, if the context is meeting, get info from the meetong JSON file
     switch(context){
     case "placeholder":

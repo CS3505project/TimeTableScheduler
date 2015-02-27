@@ -4,9 +4,10 @@
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
+        out.println(output.createUserTimeTable(user.getUserID(), (String)request.getParameter("filter")));
 %>
         <div class="hidden" name="context" value="addMeeting"></div>
-        <hgroup class="animate">
+        <hgroup>
         	<h1>Add Meeting</h1>
         	<h2>Step 1 of 2</h2>
         </hgroup>

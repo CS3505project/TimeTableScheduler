@@ -490,8 +490,7 @@ section.main hgroup{
     padding: 0;
     height: 30px;
     line-height: 28px;
-    margin-bottom: 6px;
-    margin-top: 6px;
+    margin-top: 8px;
 }
 section.main hgroup h1{
     position: relative;
@@ -559,8 +558,6 @@ input, select{
     background: #889;
     border: 1px solid #778;
     outline: none;
-}
-select{
 }
 select:focus{
     outline: none;
