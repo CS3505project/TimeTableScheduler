@@ -30,6 +30,10 @@ public abstract class UserRequest {
         this.user = user;
     }
     
+    public int numErrors() {
+        return errors.size();
+    }
+    
     public void setFormLoaded(boolean loaded) {
         this.formLoaded = loaded;
     }

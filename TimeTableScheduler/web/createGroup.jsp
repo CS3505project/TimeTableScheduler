@@ -32,8 +32,13 @@
         </form>
         <p>
             <%-- print errors and comit valid values to database --%>
-            <%= GroupRequest.getErrors()%>
-            <%= GroupRequest.createGroup() %>
+            <% 
+                if (GroupRequest.isFormLoaded()) {
+                    out.println(GroupRequest.getErrors());
+                }
+                GroupRequest.createGroup();
+                
+            %>
         </p>
  <%
         out.println(output.createFooter());
