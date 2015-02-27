@@ -14,7 +14,7 @@
 }
 
 body{
-    background-color: #124;
+    background-color: #244264;
     background: url('http://i.imgur.com/qmEO6sh.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
@@ -24,6 +24,9 @@ body{
 }
 .hidden{
     display:none;
+}
+.relative{
+    position: relative;
 }
 /**********************/
 /* triangle, messages */
@@ -315,7 +318,7 @@ ul.filters li a{
     color: #fff;
     text-decoration: none;
 }
-ul.filters li a:focus{
+ul.filters li a:focus, ul.filters li a.selected{
     box-shadow: inset 1px 0 12px 2px #778;
     background-image: url('footerbg.png');
     outline: 0;
@@ -327,6 +330,8 @@ table{
     width: 100%;
     border: 1px solid #778;
     margin-bottom: 8px;
+    border-collapse: collapse;
+    border-bottom: none;
 }
 table>caption{
     margin-top: 4px;
@@ -342,6 +347,7 @@ th{
     background: #889;
     color: #fff;
     border-right: 1px solid #778;
+    border-bottom: 1px solid #778;
     min-width: 4em;
 }
 td{
@@ -349,31 +355,36 @@ td{
     text-align: center;
     padding: 2px;
     padding-top: 0px;
-    border-bottom: 1px solid #889;
+    border-top: none;
     font-size: 12px;
+}
+table tr td{
+    border-bottom: 1px solid #778;
 }
 td.selectable{
     cursor:pointer;
 }
 td.hoverable{
-    position: relative;
     cursor: help;
 }
 tr td.meeting{
     background: #a56;
     border: 1px solid #723;
+    border-top: none;
     text-shadow: 1px 1px 2px #723;
     color: #eef;
 }
 tr td.practical{
     background: #48e;
     border: 1px solid #06c;
+    border-top: none;
     text-shadow: 1px 1px 2px #06c;
     color: #eef;
 }
 tr td.lecture{
     background: #bbc;
     border: 1px solid #889;
+    border-top: none;
     text-shadow: 1px 1px 2px #889;
     color: #eef;
 }
@@ -384,6 +395,9 @@ tr th:first-child{
 td:nth-child(even){
     background-color: #e0eafd;
 }
+td.animate{
+    border: 1px solid #889;
+}
 /****************/
 /* priority bgs */
 /****************/
@@ -391,48 +405,79 @@ td.priority-8,td.priority-9,td.priority-10,td.priority-11,td.priority-12,
 td.priority-13,td.priority-14,td.priority-15,td.priority-16,td.priority-17{
     background-color: #a56;
     border: 1px solid #723;
+    border-top: none;
     text-shadow: 1px 1px 2px #723;
     color: #fff;
 }
 td.priority-5,td.priority-6,td.priority-7{
     background-color: #b75;
     border: 1px solid #831;
+    border-top: none;
     text-shadow: 1px 1px 2px #831;
     color: #fff;
 }
 td.priority-4{
     background-color: #c95;
     border: 1px solid #a51;
+    border-top: none;
     text-shadow: 1px 1px 2px #a51;
     color: #fff;
 }
 td.priority-3{
     background-color: #db6;
     border: 1px solid #c82;
+    border-top: none;
     text-shadow: 1px 1px 2px #c82;
     color: #fff;
 }
 td.priority-2{
     background-color: #cd6;
     border: 1px solid #8a1;
+    border-top: none;
     text-shadow: 1px 1px 2px #8a1;
     color: #fff;
 }
 td.priority-1{
     background-color: #9d7;
     border: 1px solid #4a2;
+    border-top: none;
     text-shadow: 1px 1px 2px #4a2;
     color: #fff;
 }
-td.suggested-timeslot{
-    text-shadow: 1px 1px 2px #889;
+td.priority-0,td.suggested-timeslot{
+    text-shadow: 1px 1px 2px #889, 0 0 1px rgba(0,0,0,0.6);
     color: #fff;
     cursor: pointer;
 }
-td.suggested-timeslot:after{
-    font-size: 16px;
+td.priority-0:after{
+    font-size: 12px;
     content: "Free";
     cursor: pointer;
+}
+td.suggested-timeslot:after{
+    font-size: 12px;
+    content: "Suggested";
+    cursor: pointer;
+}
+table tr td.selected{
+    background-image: url('footerbg.png');
+    text-shadow: 0 0 10px rgba(0,0,0,0.4);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+    background-color: #889;
+    border: 1px solid #889;
+}
+td.selected:after{
+    display: inline-block;
+    text-shadow: 0 0 6px rgba(0,0,0,0.4);
+    font-size: 12px;
+    line-height: 22px;
+    content:"✔ Selected";
+}
+td.priority-1:after,td.priority-2:after,td.priority-3:after,td.priority-4:after,
+td.priority-5:after,td.priority-6:after,td.priority-7:after,td.priority-8:after,
+td.priority-9:after,td.priority-10:after,td.priority-11:after,td.priority-12:after,
+td.priority-13:after,td.priority-14:after{
+    content:"";
 }
 /************/
 /* HEADINGS */
@@ -538,8 +583,6 @@ input:focus, select:focus{
     background-color: #778;
     background-image: url('footerbg.png');
     border: #667;
-    font-style: italic;
-    text-decoration: underline;
     box-shadow: inset 0 0 10px #667;
 }
 form div.radioBox{
@@ -585,6 +628,10 @@ label{
     text-align: right;
     background: #778;
     color: #fff;
+}
+label[for="over-priority"]{
+    font-size:14px;
+    line-height: 22px;
 }
 div.login label{
     line-height: 22px;
@@ -725,10 +772,13 @@ footer.loginFooter ul li:before{
 /*********/
 div.popupDescription{
     position: absolute;
-    width: 90%;
-    height: 50px;
-    top: -58px;
+    bottom: 20px;
     left: 5%;
+    width: 90%;
+    min-height: 50px;
+    margin:auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
     padding: 4px;
     text-shadow: none;
     font-size: 12px;
@@ -969,7 +1019,7 @@ div.profile>div>p{
     50%{
         -ms-transform: rotate(0deg);
         -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+        transform: rotate(0deg);   
     }
     75%{
         -ms-transform: rotate(-15deg);
@@ -1023,7 +1073,7 @@ div.profile>div>p{
     50%{
         -ms-transform: rotate(0deg);
         -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+        transform: rotate(0deg); 
     }
     75%{
         -ms-transform: rotate(-15deg);
@@ -1050,7 +1100,7 @@ div.profile>div>p{
     50%{
         -ms-transform: rotate(0deg);
         -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+        transform: rotate(0deg);  
     }
     75%{
         -ms-transform: rotate(-15deg);

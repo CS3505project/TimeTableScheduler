@@ -5,7 +5,7 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader()); 
 %>
-            <h1>Profile</h1> 
+            <h1 class="banner">Profile</h1> 
             <div class='profile'>
                 <div class='img'></div>
                 <h1><%= user.getFirstName() %> <%= user.getSurName() %></h1>

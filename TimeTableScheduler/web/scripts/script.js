@@ -59,14 +59,14 @@ $(document).ready(function(){
     //set flashing animation for clicked animated class nodes//
     ///////////////////////////////////////////////////////////
     $(".animate").click(function(){
-        $(this).effect("highlight", {color:"#ffffff"}, 650 );
+        $(this).effect("highlight", {color:"#ffffff"}, 65 );
     });
     /////////////////////////////////////////////////////
     //put selectable info into form from table on click//
     /////////////////////////////////////////////////////
     $(".selectable").click(function(){
-        $(".selected").remove();
-        $(this).append("<div class='selected'>✔ selected</div>");
+        $(".selected").removeClass("selected");
+        $(this).addClass("selected");
         var infoNode = $("div.hidden", this);
         var date = infoNode.attr("data-date");
         var time = infoNode.attr("data-time");
@@ -79,7 +79,7 @@ $(document).ready(function(){
     $(".hoverable").hover(
         function(){//on mouse over
             var description = $(this).attr("data-description");
-            $(this).append("<div class='popupDescription' id='popupDescription'>"+ description+"</div>");
+            $(this).append("<div class='relative'><div class='popupDescription' id='popupDescription'>"+ description+"</div></div>");
             $('#popupDescription').hide();
             $('#popupDescription').show("fade", {}, 150);
         },
@@ -91,8 +91,16 @@ $(document).ready(function(){
     //add little blue triangle to current page on side menu//
     /////////////////////////////////////////////////////////
     var page = document.location.href.match(/[^\/]+$/)[0];
-    $("nav a[href='"+page+"']").append("<span class='triangle'></span>");
-    $("nav a[href='"+page+"']").addClass("current");
+    var split = page.split('?');
+    split = split[0];
+    
+    $("nav a[href='"+split+"']").append("<span class='triangle'></span>");
+    $("nav a[href='"+split+"']").addClass("current");
+    
+    ///////////////////////////////////////////////////////
+    //make the selected filter highlited in the filter bar//
+    ////////////////////////////////////////////////////////
+    $("ul.filters li a[href='"+page+"']").addClass("selected");
 
 }); 
 
