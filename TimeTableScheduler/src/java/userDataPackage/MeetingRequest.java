@@ -60,7 +60,9 @@ public final class MeetingRequest extends UserRequest{
         venue = "";
         description = "";
         time = null;
-        this.clearErrors();
+        usersToMeet = new ArrayList<String>();
+        clearErrors();
+        clearValidData();
     }
     
     public TimeTable getTimeTable() {System.out.println("error: 2");
@@ -220,14 +222,16 @@ public final class MeetingRequest extends UserRequest{
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             for (int i = 0; i < duration; i++) {  
-                result = result && db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
+                System.out.println(db.getPreviousAutoIncrementID("Meeting"));
+                result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
                                             + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
 
                
+                System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
                 if (!values.equals("")) {
-                    db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
+                    result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
                 }
                 
                 // increment to the next time slot if the meeting is longer 

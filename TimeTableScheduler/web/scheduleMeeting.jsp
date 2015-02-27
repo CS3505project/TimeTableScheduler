@@ -16,6 +16,11 @@
                                  (String)request.getParameter("individualID"),
                                  (String)request.getParameter("groupID"));
             
+        } else {
+            MeetingRequest.setDate((String)request.getParameter("date"));
+            MeetingRequest.setTime((String)request.getParameter("time"));
+            MeetingRequest.setDescription((String)request.getParameter("description"));
+            MeetingRequest.setVenue((String)request.getParameter("venue"));
         }
         
         out.println(output.createSuggestedTimeTable(MeetingRequest.getTimeTable(),
@@ -48,13 +53,7 @@
                 if(MeetingRequest.createMeeting()) {
                     System.out.println("redirect here");
                     request.getRequestDispatcher("index.jsp").forward(request, response);
-                    
-                    userDataPackage.MeetingRequest bean = (userDataPackage.MeetingRequest)session.getAttribute("MeetingRequest");
-                    if (bean != null) {
-                        session.setAttribute("MeetingRequest", null);   
-                    }
                 }
-
             %>
         </p>
     <%
