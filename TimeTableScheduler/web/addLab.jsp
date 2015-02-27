@@ -10,7 +10,7 @@
         	<h1>Add Practical</h1>
         	<h2>Step 1 of 2</h2>
         </hgroup>
-        <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
+        <form id="createMeetingForm" action="scheduleLab.jsp" method="GET">
                 <% out.println(output.createModuleDropDown(user.getUserID())); %>
                 <label for="duration">Duration:</label>
         	<input type="duration" name="duration" id="date" required="required"><br>

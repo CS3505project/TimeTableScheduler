@@ -5,15 +5,17 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
 %>
-        <div class="hidden" name="context" value="addMeeting"></div>
+        <div class="hidden" name="context" value="addLecture"></div>
         <hgroup class="animate">
-        	<h1>Add Meeting</h1>
+        	<h1>Add Lecture</h1>
         	<h2>Step 1 of 2</h2>
         </hgroup>
-        <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
-                <% out.println(output.createMeetingFormGroupDropdown(user)); %>
+        <form id="createMeetingForm" action="scheduleLecture.jsp" method="GET">
+                <% out.println(output.createModuleDropDown(user.getUserID())); %>
                 <label for="duration">Duration:</label>
         	<input type="duration" name="duration" id="date" required="required"><br>
+                <label for="semester">Semester:</label>
+        	<input type="semester" name="semester" id="semester" required="required"><br>
         	<label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next" class="animate">
         </form>

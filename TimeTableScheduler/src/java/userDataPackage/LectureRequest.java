@@ -23,7 +23,7 @@ import toolsPackage.Validator;
  *
  * @author cdol1
  */
-public class PracticalRequest extends UserRequest{
+public class LectureRequest extends UserRequest{
     private java.util.Date startDate = new java.util.Date();//initialise to todays date
     private String venue = "";
     private Time time;
@@ -42,7 +42,7 @@ public class PracticalRequest extends UserRequest{
     /**
      * Default constructor
      */
-    public PracticalRequest(){ 
+    public LectureRequest(){ 
         initialiseValidData(4);
         startDate = new java.util.Date();//initialise to todays date
         endDate = new java.util.Date();//initialise to todays date
@@ -215,7 +215,7 @@ public class PracticalRequest extends UserRequest{
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createPractical() {System.out.println("error: 17");
+    public boolean createLecture() {System.out.println("error: 17");
         print();
         if (isValid() && isSetup()) {
             boolean result = false;
@@ -234,7 +234,7 @@ public class PracticalRequest extends UserRequest{
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             for (int i = 0; i < duration; i++) {  
                 System.out.println(db.getPreviousAutoIncrementID("Meeting"));
-                result = db.insert("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
+                result = db.insert("INSERT INTO Lecture (modulecode, semester, weekday, time, room, startdate, enddate) "
                                     + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
                                     + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
 
@@ -277,7 +277,7 @@ public class PracticalRequest extends UserRequest{
      * @param description Reason for cancellation, optional
      * @return True if cancellation successfully added
      */
-    public boolean cancelPractical(String moduleCode, Date date, Time time, String description) {
+    public boolean cancelLecture(String moduleCode, Date date, Time time, String description) {
         return this.insertDbQuery("INSERT INTO Cancellation (modulecode, semester, weekday, time, room, startdate, enddate) "
                 + "VALUES ("+ moduleCode + "\", \""+ date.toString() + "\", " + time.toString() + ", \"" + description + "\");");
     }

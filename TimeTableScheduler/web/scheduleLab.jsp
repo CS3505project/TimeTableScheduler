@@ -33,7 +33,7 @@
         	<h2>Step 2 of 2</h2>
         </hgroup>
 
-        <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
+        <form id="createMeetingForm" action="scheduleLab.jsp" method="GET">
                 <label for="startDate">Start Date:</label>
         	<input type="date" name="startDate" id="startDate" value="<%= PracticalRequest.getStartDate() %>" required="required"><br>
                 <label for="time">Time:</label>

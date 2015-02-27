@@ -32,6 +32,21 @@ public class SignUpRequest extends UserRequest {
     
     public SignUpRequest() {
         initialiseValidData(5);
+        id = "";
+        title = "";
+        firstName = "";
+        surname = "";
+        email = "";
+    }
+    
+    public void resetForm() {
+        id = "";
+        title = "";
+        firstName = "";
+        surname = "";
+        email = "";
+        clearErrors();
+        clearValidData();
     }
     
     public void setUserType(UserType userType) {
@@ -171,13 +186,13 @@ public class SignUpRequest extends UserRequest {
             result = db.insert("");
             
             db.close();
-        } else {
-            addError("Problem creating user.");
-            System.err.println("Problem creating user in database.");
-        }
-        
-        signedUp = result;
-        
+            if (!result) {
+                System.err.println("Problem creating user in database.");
+            } else {
+                signedUp = true;
+                resetForm();
+            }
+        }        
         return result;
     }
 
