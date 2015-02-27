@@ -59,13 +59,13 @@ $(document).ready(function(){
     //set flashing animation for clicked animated class nodes//
     ///////////////////////////////////////////////////////////
     $(".animate").click(function(){
-        $(this).effect("highlight", {color:"#ffffff"}, 65 );
+        $(this).effect("highlight", {color:"#777788"}, 125 );
     });
     /////////////////////////////////////////////////////
     //put selectable info into form from table on click//
     /////////////////////////////////////////////////////
     $(".selectable").click(function(){
-        $(".selected").removeClass("selected");
+        $("td.selected").removeClass("selected");
         $(this).addClass("selected");
         var infoNode = $("div.hidden", this);
         var date = infoNode.attr("data-date");

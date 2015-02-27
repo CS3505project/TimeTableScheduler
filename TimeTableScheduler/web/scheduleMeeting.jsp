@@ -35,16 +35,21 @@
         </hgroup>
 
         <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
-                <label for="date">Date:</label>
+                <div><label for="date">Date:</label>
         	<input type="date" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
-                <label for="time">Time:</label>
+                </div>
+                <div><label for="time">Time:</label>
         	<input type="text" name="time" id="time" value="<%= MeetingRequest.getTime() %>" required="required"><br>
-                <label for="description">Description:</label>
+                </div>
+                <div><label for="description">Description:</label>
         	<input type="textarea" name="description" id="description" value="<%= MeetingRequest.getDescription() %>" required="required"><br>
-                <label for="venue">Venue:</label>
+                </div>
+                <div><label for="venue">Venue:</label>
         	<input type="text" name="venue" id="venue" value="<%= MeetingRequest.getVenue() %>" required="required"><br>
-        	<label for="submit">Submit:</label>
+        	</div>
+                <div><label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next" class="animate">
+                </div>
         </form>
         <p>
             <%-- print errors and comit valid values to database --%>

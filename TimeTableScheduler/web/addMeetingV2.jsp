@@ -12,10 +12,10 @@
         </hgroup>
         <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
                 <% out.println(output.createMeetingFormGroupDropdown(user)); %>
-                <label for="duration">Duration:</label>
-        	<input type="duration" name="duration" id="date" required="required"><br>
-        	<label for="submit">Submit:</label>
-        	<input type="submit" id="submit" value="Next" class="animate">
+                <div><label for="duration">Duration:</label>
+        	<input type="duration" name="duration" id="date" required="required"></div>
+        	<div><label for="submit">Submit:</label>
+        	<input type="submit" id="submit" value="Next" class="animate"></div>
         </form>
     <%
         out.println(output.createFooter());

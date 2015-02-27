@@ -102,20 +102,20 @@ public class Output {
         "	<h2>Step 1 of 2</h2>\n" +
         "</hgroup>\n" +
         "<form>\n" +
-        "	<label for=\"bday\">Day:</label>\n" +
-        "	<select id=\"bday\">\n" +
+        "	<div><label for=\"day\">Day:</label>\n" +
+        "	<select id=\"day\">/div>\n" +
         //stuff from database
-        "	</select><br>\n" +
-        "	<label for=\"select\">Group:</label>\n" +
+        "	</select></div>\n" +
+        "	<div><label for=\"select\">Group:</label>\n" +
         "	<select id=\"select\">\n" +
         //stuff from database
-        "	</select><br>\n" +
-        "	<label for=\"formText\">Module Code:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
+        "	</select></div>\n" +
+        "	<div><label for=\"formText\">Module Code:</label>\n" +
+        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"></div>\n" +
         "	<label for=\"venueText\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
-        "	<label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"></div>\n" +
+        "	<div><label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\"></div>\n" +
         "</form>";
         //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
         return finalHTML;
@@ -154,12 +154,11 @@ public class Output {
         "	<h1>Create Group</h1>\n" +
         "	<h2>Step 1 of 2</h2>\n" +
         "</hgroup>\n" +
-        "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
         "<form>\n" +
-        "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" value=\"<%= GroupRequest.getGroupName() %>\" required=\"required\"><br>\n" +
-        "	<label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
+        "	<div><label for=\"gname\">Group Name:</label>\n" +
+        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" value=\"<%= GroupRequest.getGroupName() %>\" required=\"required\"></div>\n" +
+        "	<div><label for=\"submit\">Submit:</label>\n" +
+        "	<input type=\"submit\" id=\"submit\" value=\"Next\"></div>\n" +
         "</form>" +
         "<p>" +
             "<%-- print errors and comit valid values to database --%>" +
