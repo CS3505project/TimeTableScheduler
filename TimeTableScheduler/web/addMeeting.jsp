@@ -7,7 +7,6 @@
         out.println(output.createHeader());
         out.println(output.createUserTimeTable(user.getUserID(),(String)request.getAttribute("filter")));
         MeetingRequest.setValues(request, user);
-        MeetingRequest.setActionCompleted(false);
 %>
         <div class="hidden" name="context" value="addMeeting"></div>
         <hgroup class="animate">

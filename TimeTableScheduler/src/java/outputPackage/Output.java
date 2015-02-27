@@ -4,6 +4,7 @@
  */
 package outputPackage;
 
+import groupPackage.GroupType;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,30 +146,6 @@ public class Output {
         
         groups += "</ul>";
         return groups;
-    }
-    
-    /**
-     * Creates the form for creating a group,
-     * @return A string with all the HTML for the form.
-     */
-    public String createCreateGroupForm(){
-        String finalHTML = "<hgroup>\n" +
-        "	<h1>Create Group</h1>\n" +
-        "	<h2>Step 1 of 2</h2>\n" +
-        "</hgroup>\n" +
-        "<form>\n" +
-        "	<div><label for=\"gname\">Group Name:</label>\n" +
-        "	<input type=\"text\" name=\"groupname\" id=\"gnametext\" value=\"<%= GroupRequest.getGroupName() %>\" required=\"required\"></div>\n" +
-        "	<div><label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\"></div>\n" +
-        "</form>" +
-        "<p>" +
-            "<%-- print errors and comit valid values to database --%>" +
-            "<%= GroupRequest.getErrors()%>" +
-            "<%= GroupRequest.createGroup() %>" +
-        "</p>";
-        //add actual code etc
-        return finalHTML;
     }
     
     /**
@@ -325,6 +302,17 @@ public class Output {
         db.close();
         
         finalHTML += "</select>";
+        return finalHTML;
+    }
+    
+    public String createGroupTypeDropDown() {
+        String finalHTML = "";
+        
+        for (GroupType type : GroupType.values()) {
+            finalHTML += "<option value=\"" + type.getName() + "\">"
+                         + type.getName() + "</option>";
+        }
+        
         return finalHTML;
     }
     

@@ -19,6 +19,7 @@ public abstract class UserRequest {
     private userPackage.User user;
     private List<String> errors;
     private boolean[] validDataValues;
+    private boolean formLoaded;
     
     public UserRequest(){
         this.errors = new ArrayList<String>();
@@ -27,6 +28,14 @@ public abstract class UserRequest {
     public void setValues(HttpServletRequest request, userPackage.User user) {
         this.request = request;
         this.user = user;
+    }
+    
+    public void setFormLoaded(boolean loaded) {
+        this.formLoaded = loaded;
+    }
+    
+    public boolean isFormFilled() {
+        return formLoaded;
     }
     
     public void initialiseValidData(int length) {

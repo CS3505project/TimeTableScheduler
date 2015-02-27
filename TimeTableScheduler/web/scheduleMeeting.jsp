@@ -54,12 +54,15 @@
         <p>
             <%-- print errors and comit valid values to database --%>
             <%
-                out.println(MeetingRequest.getErrors());
+                if (MeetingRequest.isFormLoaded()) {
+                    out.println(MeetingRequest.getErrors());
+                }
                 if(MeetingRequest.createMeeting()) {
                     response.sendRedirect("index.jsp");
                 } else {
                     out.println("Unable to create meeting");
                 }
+                MeetingRequest.setFormLoaded(true);
             %>
         </p>
     <%
