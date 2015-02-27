@@ -34,7 +34,7 @@ public abstract class UserRequest {
         this.formLoaded = loaded;
     }
     
-    public boolean isFormFilled() {
+    public boolean isFormLoaded() {
         return formLoaded;
     }
     
