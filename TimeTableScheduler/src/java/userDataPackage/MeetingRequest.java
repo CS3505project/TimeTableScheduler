@@ -46,10 +46,6 @@ public final class MeetingRequest extends UserRequest{
         time = null;
         description = "";
     }
-    
-    public void print() {
-        System.out.println("date: " + date + "venue: " + venue + "time: " + time + "description: " + description);
-    }
      
     public boolean isSetup() {
         return setup;
@@ -65,15 +61,15 @@ public final class MeetingRequest extends UserRequest{
         clearValidData();
     }
     
-    public TimeTable getTimeTable() {System.out.println("error: 2");
+    public TimeTable getTimeTable() {
         return timeTable;
     }
     
-    public int getDuration() {System.out.println("error: 7");
+    public int getDuration() {
         return duration;
     }
     
-     public void setup(String withType, String duration, String individualID, String groupID) {System.out.println("error: 8");
+     public void setup(String withType, String duration, String individualID, String groupID) {
         this.setup = true;
         
         try {
@@ -91,7 +87,6 @@ public final class MeetingRequest extends UserRequest{
         }
 
         this.meetingType = withType;
-        System.out.println("type" + withType + " = " + meetingType);
         
         this.timeTable = TimeTable.getPreSetTimeTable();
         getUsersToMeet();
@@ -109,7 +104,7 @@ public final class MeetingRequest extends UserRequest{
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.
      * @param date the date string in HTML's format dd/MM/yyyy, inputted by the user
      */
-    public void setDate(String date) {System.out.println("error: 9");
+    public void setDate(String date) {
         if (this.errorInString(date)) {
             this.addError("Invalid date entered.");
         } else {
@@ -129,7 +124,7 @@ public final class MeetingRequest extends UserRequest{
      * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
      */
-    public void setVenue(String venue){System.out.println("error: 10");
+    public void setVenue(String venue){
         if (this.errorInString(venue)) {
             this.addError("Venue is incorrect.");
         } else {
@@ -142,7 +137,7 @@ public final class MeetingRequest extends UserRequest{
      * Sets the time for the event
      * @param time Time in format hh:mm:ss
      */
-    public void setTime(String time) {System.out.println("error: 11");
+    public void setTime(String time) {
         try {
             this.time = Time.valueOf(time);
             Calendar cal = Calendar.getInstance();
@@ -160,7 +155,7 @@ public final class MeetingRequest extends UserRequest{
      * Sets the description
      * @param description description
      */
-    public void setDescription(String description) {System.out.println("error: 12");
+    public void setDescription(String description) {
         if (this.errorInString(description)) {
             addError("Your description is incorrect.");
         } else {
@@ -173,7 +168,7 @@ public final class MeetingRequest extends UserRequest{
      * gets the date
      * @return the date in dd/mm/yyyy format as a string
      */
-    public String getDate(){System.out.println("error: 13");
+    public String getDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.date);
     }
@@ -182,7 +177,7 @@ public final class MeetingRequest extends UserRequest{
      * Gets the venue for the meeting
      * @return venue
      */
-    public String getVenue(){System.out.println("error: 14");
+    public String getVenue(){
         return Validator.unescapeJava(this.venue);
     }
     
@@ -190,7 +185,7 @@ public final class MeetingRequest extends UserRequest{
      * Returns the time for the meeting
      * @return In format hh:mm:ss
      */
-    public String getTime() {System.out.println("error: 15");
+    public String getTime() {
         return (time == null ? "" : time.toString());
     }
     
@@ -198,7 +193,7 @@ public final class MeetingRequest extends UserRequest{
      * Gets the description of the event
      * @return description
      */
-    public String getDescription() {System.out.println("error: 16");
+    public String getDescription() {
         return Validator.unescapeJava(description);
     }
     
@@ -207,11 +202,9 @@ public final class MeetingRequest extends UserRequest{
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createMeeting() {System.out.println("error: 17");
-    print();
+    public boolean createMeeting() {
         if (isValid() && isSetup()) {
             boolean result = false;
-            System.out.println("here");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(date);
@@ -222,13 +215,11 @@ public final class MeetingRequest extends UserRequest{
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             for (int i = 0; i < duration; i++) {  
-                System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
                                             + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
 
                
-                System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
                 if (!values.equals("")) {
                     result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
@@ -248,7 +239,7 @@ public final class MeetingRequest extends UserRequest{
         }
     }
     
-    public void getUsersToMeet() {System.out.println("error: 20");
+    public void getUsersToMeet() {
         Database db = Database.getSetupDatabase();
         try {
             switch (this.meetingType) {
@@ -286,7 +277,7 @@ public final class MeetingRequest extends UserRequest{
         db.close();
     }
     
-    private String getMeetingInsertValues(int meetingID) {System.out.println("error: 21");
+    private String getMeetingInsertValues(int meetingID) {
         String values = "";
         Iterator<String> userIds = usersToMeet.iterator();
         while (userIds.hasNext()) {
@@ -301,7 +292,7 @@ public final class MeetingRequest extends UserRequest{
      * @param meetingID The ID of the meeting to be joined
      * @return True if joined to the meeting successfully
      */
-    public boolean joinMeeting(int meetingID) {System.out.println("error: 22");
+    public boolean joinMeeting(int meetingID) {
         boolean result = false;
         if (this.isValid()) {
             result = insertDbQuery("INSERT INTO HasMeeting (uid, mid) "
