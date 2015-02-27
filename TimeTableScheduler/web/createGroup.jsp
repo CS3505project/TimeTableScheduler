@@ -24,7 +24,7 @@
                     <% out.println(output.createGroupTypeDropDown()); %>
                 </select></div>
                 <div><label for="inGroup">In Group:</label>                
-                <select multiple name="inGroup">
+                <select multiple="multiple" name="inGroup">
                     <% out.println(output.createIndividualDropDown(user.getUserID())); %>
                 </select></div>
                 <div><label for="submit">Submit:</label>
