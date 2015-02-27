@@ -51,9 +51,8 @@
             <%
                 out.println(MeetingRequest.getErrors());
                 if(MeetingRequest.createMeeting()) {
+                    System.out.println("redirect here");
                     response.sendRedirect("index.jsp");
-                } else {
-                    out.println("Unable to create meeting");
                 }
             %>
         </p>

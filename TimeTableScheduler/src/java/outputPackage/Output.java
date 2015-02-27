@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.EventPriority;
@@ -302,6 +304,28 @@ public class Output {
         finalHTML += createIndividualDropDown(user.getUserID());
         
         finalHTML += "</select></div>";
+        return finalHTML;
+    }
+    
+    public String createModuleDropDown(String userid) {
+        String finalHTML = "<select name=\"moduleCode\">";
+        
+        Database db = Database.getSetupDatabase();
+        
+        //TO-DO
+        ResultSet result = db.select("SELECT * FROM Module WHERE ");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("moduleCode") + "\">"
+                             + result.getString("moduleCode") + ": " + result.getString("name")
+                             + "</option>";
+            }
+        } catch (SQLException ex) {
+        }
+        
+        db.close();
+        
+        finalHTML += "</select>";
         return finalHTML;
     }
     
