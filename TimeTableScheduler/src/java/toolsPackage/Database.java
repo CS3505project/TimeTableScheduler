@@ -49,15 +49,13 @@ public class Database {
     public int getPreviousAutoIncrementID(String table) {
         int id = -1;
         try {
-            if (statementObject.execute("SELECT `AUTO_INCREMENT` " +
+            ResultSet result = select("SELECT `AUTO_INCREMENT` " +
                                         "FROM  INFORMATION_SCHEMA.TABLES " +
                                         "WHERE TABLE_SCHEMA = '" + DSN + "' " +
-                                        "AND TABLE_NAME = '" + table + "';")) {
-                ResultSet result = statementObject.getResultSet();
+                                        "AND TABLE_NAME = '" + table + "';");
                 while (result.next()) {
                     id = result.getInt("AUTO_INCREMENT") - 1;
                 }
-            }
         } catch (SQLException ex) {
         }
         return id;
