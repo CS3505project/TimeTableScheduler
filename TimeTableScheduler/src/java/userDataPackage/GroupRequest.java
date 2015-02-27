@@ -72,7 +72,6 @@ public final class GroupRequest extends UserRequest{
             for (int i = 0; i < userIds.length; i++) {
                 usersInGroup.add(Validator.escapeJava(userIds[i]));
             }
-            usersInGroup.add(getUser().getUserID());
         }
     }
     
@@ -83,9 +82,9 @@ public final class GroupRequest extends UserRequest{
             Database db = Database.getSetupDatabase();
  
             result = db.insert("INSERT INTO Groups (groupName, groupType) " 
-                                  + "VALUES ("+ groupName + "\", \"" + groupType.getName() + "\");");
+                                  + "VALUES (\""+ groupName + "\", \"" + groupType.getName() + "\");");
 
-               
+            usersInGroup.add(getUser().getUserID());
             String values = getGroupInsertValues(db.getPreviousAutoIncrementID("Groups")); 
             if (!values.equals("")) {
                 result = db.insert("INSERT INTO InGroup (uid, gid) VALUES " + values);
