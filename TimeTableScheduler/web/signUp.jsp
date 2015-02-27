@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="SignUpRequest" class="userDataPackage.SignUpRequest" scope="session"/>
+<jsp:useBean id="SignUpRequest" class="userDataPackage.SignUpRequest" scope="session">
+    <jsp:setProperty name="SignUpRequest" property="*"/>
+</jsp:useBean>
 <%
     SignUpRequest.setValues(request, null);
 %>
@@ -14,7 +16,6 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
     <body>
-    <jsp:setProperty name="SignUpRequest" property="*"/>
 
 <%
     switch (userPackage.UserType.getUserType((String)request.getParameter("type"))){
@@ -113,8 +114,8 @@
                 </p>
             </div>
             <ul id="signUpMenu">
-                <li><a href="/signUp.jsp?type=student">Student</a></li>
-                <li><a href="/signUp.jsp?type=lecturer">Lecturer</a></li>
+                <li><a href="signUp.jsp?type=student">Student</a></li>
+                <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
             </ul>
 <%
         break;
