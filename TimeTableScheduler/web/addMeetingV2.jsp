@@ -14,10 +14,6 @@
                 <% out.println(output.createMeetingFormGroupDropdown(user)); %>
                 <label for="duration">Duration:</label>
         	<input type="duration" name="duration" id="date" required="required"><br>
-                <label for="over-priority">Schedule Over:</label>
-                <select id="over-priority" name="over-priority">
-                    <% out.println(output.createPriorityDropDown()); %>
-                </select>
         	<label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next" class="animate">
         </form>

@@ -25,12 +25,14 @@ public final class MeetingRequest extends UserRequest{
     private String venue = "";
     private Time time;
     private String description = "";
-    private int duration = 1;
-    private String groupOrUserId = "";
+    
+    private int duration;
+    private String groupOrUserId;
     private List<String> usersToMeet = new ArrayList<String>();
-    private TimeTable timeTable = null;
-    private int overPriority = -1;
+    private TimeTable timeTable;
     private String meetingType;
+    
+    private boolean setup = false;
     
     public static final String TIME_FORMAT = "HH:mm:ss";
             
@@ -39,63 +41,65 @@ public final class MeetingRequest extends UserRequest{
      */
     public MeetingRequest(){ 
         initialiseValidData(4);
+        date = new Date();//initialise to todays date
+        venue = "";
+        time = null;
+        description = "";
+    }
+    
+    public void print() {
+        System.out.println("date: " + date + "venue: " + venue + "time: " + time + "description: " + description);
     }
      
+    public boolean isSetup() {
+        return setup;
+    }
+    
     private void resetForm() {
         date = new Date();
         venue = "";
         description = "";
-        duration = 1;
-        groupOrUserId = "";
-        usersToMeet = new ArrayList<String>();
-        timeTable = null;
-        overPriority = -1;
+        time = null;
         this.clearErrors();
     }
     
-    public int getOverPriority() { System.out.println("error: 0");
-        return overPriority;
-    }
-    
-    public void setOverPriority(String overPriority) {System.out.println("error: 1");
-        try {
-            this.overPriority = Integer.parseInt(overPriority);
-        } catch (Exception ex) {
-            System.err.println("Error with duration");
-            this.overPriority = 1;
-        }
-    }
-    
-    public TimeTable getTimeTables() {System.out.println("error: 2");
+    public TimeTable getTimeTable() {System.out.println("error: 2");
         return timeTable;
-    }
-    
-    public void setTimeTables(TimeTable timeTable) {System.out.println("error: 3");
-        this.timeTable = timeTable;
-    }
-    
-    public List<String> getUsersToMeet() {System.out.println("error: 4");
-        return usersToMeet;
-    }
-    
-    public String getGroupOrUserId() {System.out.println("error: 5");
-        return groupOrUserId;
-    }
-    
-    public void setGroupOrUserId(String idOfGroupOrUser) {System.out.println("error: 6");
-        this.groupOrUserId = idOfGroupOrUser;
     }
     
     public int getDuration() {System.out.println("error: 7");
         return duration;
     }
     
-     public void setDuration(String duration) {System.out.println("error: 8");
+     public void setup(String withType, String duration, String individualID, String groupID) {System.out.println("error: 8");
+        this.setup = true;
+        
         try {
             this.duration = Integer.parseInt(duration);
         } catch (Exception ex) {
             System.err.println("Error with duration");
             this.duration = 1;
+        }
+        if (individualID != null) {
+            this.groupOrUserId = Validator.escapeJava(individualID);
+        } else if (groupID != null) {
+            this.groupOrUserId = Validator.escapeJava(groupID);
+        } else {
+            setup = false;
+        }
+
+        this.meetingType = withType;
+        System.out.println("type" + withType + " = " + meetingType);
+        
+        this.timeTable = TimeTable.getPreSetTimeTable();
+        getUsersToMeet();
+        
+        if (usersToMeet.size() == 1) {
+            this.timeTable.initialiseTimeTable(usersToMeet.get(0));
+        } else if (usersToMeet.size() > 1) {
+            this.timeTable.initialiseTimeTable(usersToMeet);
+        } else {
+            setup = false;
         }
     }
     
@@ -202,11 +206,10 @@ public final class MeetingRequest extends UserRequest{
      * @return True if the meeting was created successfully
      */
     public boolean createMeeting() {System.out.println("error: 17");
-        if (this.isValid() && usersToMeet != null) {
+    print();
+        if (isValid() && isSetup()) {
             boolean result = false;
             System.out.println("here");
-            
-            EventPriority priority = getPriority((String)getRequest().getParameter("priority"));
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(date);
@@ -219,17 +222,21 @@ public final class MeetingRequest extends UserRequest{
             for (int i = 0; i < duration; i++) {  
                 result = result && db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
-                                            + description + "\", " + priority.getPriority() + ", " + getUser().getUserID() + ");");
+                                            + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
 
-                addUsersToMeeting(db, db.getPreviousAutoIncrementID("Meeting"));
+               
+                String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
+                if (!values.equals("")) {
+                    db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
+                }
+                
                 // increment to the next time slot if the meeting is longer 
                 // than one hour
                 cal.add(Calendar.HOUR, 1);
             }
             
-            System.out.println("timetable: " + timeTable);
             resetForm();
-            System.out.println("timetable: " + timeTable);
+            setup = false;
             db.close();
             return result;
         } else {
@@ -237,17 +244,11 @@ public final class MeetingRequest extends UserRequest{
         }
     }
     
-    private EventPriority getPriority(String priorityLevel) {System.out.println("error: 19");
-        return EventPriority.convertToEventPriority(priorityLevel);
-    }
-    
-    public void getUsersToMeet(String meetingType, HttpServletRequest request) {System.out.println("error: 20");
+    public void getUsersToMeet() {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
-        this.meetingType = meetingType;
         try {
             switch (this.meetingType) {
                 case "group":
-                    groupOrUserId = (String)request.getParameter("groupID");
                     ResultSet groupResult = db.select("SELECT uid " +
                                                     "FROM Student JOIN User " +
                                                     "ON Student.uid = userid " +
@@ -268,7 +269,6 @@ public final class MeetingRequest extends UserRequest{
                     }
                     break;
                 case "individual":
-                    groupOrUserId = (String)request.getParameter("individualID");
                     usersToMeet.add(groupOrUserId);
                     usersToMeet.add(getUser().getUserID());
                     break;
@@ -282,13 +282,13 @@ public final class MeetingRequest extends UserRequest{
         db.close();
     }
     
-    private void addUsersToMeeting(Database db, int meetingID) {System.out.println("error: 21");
+    private String getMeetingInsertValues(int meetingID) {System.out.println("error: 21");
         String values = "";
         Iterator<String> userIds = usersToMeet.iterator();
         while (userIds.hasNext()) {
             values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
         }
-        db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
+        return values;
     }
     
     /**
