@@ -1,8 +1,6 @@
 package userDataPackage;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
 import userPackage.User;
@@ -20,8 +18,7 @@ public abstract class UserRequest {
     private DataEntry data;
     private boolean formLoaded;
     
-    public UserRequest(){
-    }
+    public UserRequest(){ }
     
     public void setValues(HttpServletRequest request, userPackage.User user) {
         this.request = request;

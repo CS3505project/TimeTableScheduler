@@ -28,7 +28,6 @@ public class SignUpRequest extends UserRequest {
     private String surname = "";
     private String email = "";
     private UserType userType = UserType.STUDENT;
-    private boolean signedUp;
     
     public SignUpRequest() {
         initialiseErrorArray(6);
@@ -179,51 +178,50 @@ public class SignUpRequest extends UserRequest {
     public boolean signUp() {        
         boolean result = false;
         if (this.isValid() && validPasswords()) {
+            
             System.out.println("here");
+            
             Database db = Database.getSetupDatabase();
             String passwordHash = Hash.sha1((String)getRequest().getParameter("password"));
             
             result = db.insert("");
             
-            db.close();
             if (!result) {
                 System.err.println("Problem creating user in database.");
             } else {
-                signedUp = true;
                 resetForm();
             }
+            db.close();
         }        
         return result;
     }
 
     public User getUserObject() {
         User user = null;
-        if (signedUp) {
-            Database db = Database.getSetupDatabase();
-            
-            ResultSet result = db.select("");
-            
-            String uid = "";
-            try {
-                while (result.next()) {
-                    uid = result.getString("uid");
-                }
-            } catch (SQLException ex) {
-                System.err.println("Error get user id from database.");
-            }
+        Database db = Database.getSetupDatabase();
 
-            
-            switch (userType) {
-                case ADMIN:
-                    user = new Admin(id, email, firstName, surname, uid);
-                    break;
-                case LECTURER:
-                    user = new Lecturer(id, email, title, firstName, surname, uid);
-                    break;
-                default:
-                    user = new Student(id, email, firstName, surname, uid);
-                    break;
+        ResultSet result = db.select("");
+
+        String uid = "";
+        try {
+            while (result.next()) {
+                uid = result.getString("uid");
             }
+        } catch (SQLException ex) {
+            System.err.println("Error get user id from database.");
+        }
+
+
+        switch (userType) {
+            case ADMIN:
+                user = new Admin(id, email, firstName, surname, uid);
+                break;
+            case LECTURER:
+                user = new Lecturer(id, email, title, firstName, surname, uid);
+                break;
+            default:
+                user = new Student(id, email, firstName, surname, uid);
+                break;
         }
         return user;
     }

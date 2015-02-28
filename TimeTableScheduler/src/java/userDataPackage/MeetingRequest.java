@@ -214,14 +214,14 @@ public final class MeetingRequest extends UserRequest{
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             for (int i = 0; i < duration; i++) {  
-                result = db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
+                result = result && db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
                                             + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
 
                
                 String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
                 if (!values.equals("")) {
-                    result = db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
+                    result = result && db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
                 }
                 
                 // increment to the next time slot if the meeting is longer 

@@ -41,25 +41,20 @@
                     <input type="password" id="rePassword"name="rePassword" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
-                <p>
-                    <%-- print errors and comit valid values to database --%>
-                    <%= SignUpRequest.getErrors()%>
-                </p>
             </div>
 <%
         } else { 
-%>
-
-            <p>
-                You must be Administrator to access this page.
-            </p>
-
-<%
+            //You must be an administrator to access this page.
+            response.sendRedirect("login.jsp");
         }
         break;
         case LECTURER:
             SignUpRequest.setUserType(userPackage.UserType.LECTURER);
 %>
+            <ul id="signUpMenu">
+                <li><a href="signUp.jsp?type=student">Student</a></li>
+                <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
+            </ul>
             <div>
                 <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Lecturer ID:</label> 
@@ -78,20 +73,16 @@
                     <input type="password" id="rePassword" name="rePassword" required="required"><br>
                     <input type="submit" value="Sign Up">
                 </form>
-                <p>
-                    <%-- print errors and comit valid values to database --%>
-                    <%= SignUpRequest.getErrors()%>
-                </p>
             </div>
-            <ul id="signUpMenu">
-                <li><a href="/signUp.jsp?type=student">Student</a></li>
-                <li><a href="/signUp.jsp?type=lecturer">Lecturer</a></li>
-            </ul>
 <%
         break;
         default:
             SignUpRequest.setUserType(userPackage.UserType.STUDENT);
 %>
+            <ul id="signUpMenu">
+                <li><a href="signUp.jsp?type=student">Student</a></li>
+                <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
+            </ul>
             <div>
                 <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Student ID:</label> 
@@ -108,23 +99,29 @@
                     <input type="password" id="rePassword" name="rePassword" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
-                <p>
-                    <%-- print errors and comit valid values to database --%>
-                    <%= SignUpRequest.getErrors()%>
-                </p>
             </div>
-            <ul id="signUpMenu">
-                <li><a href="signUp.jsp?type=student">Student</a></li>
-                <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
-            </ul>
 <%
         break;
     } 
     
-    SignUpRequest.signUp();
-    session.setAttribute("user", SignUpRequest.getUserObject());
-    session.setAttribute("userType", SignUpRequest.getUserType());
-   
+    // if the form has been loaded then errors are displayed if they occur
+    if (SignUpRequest.isFormLoaded()) { 
+%>
+        <div class="errors">
+            <h1><span><% out.println(SignUpRequest.numErrors()); %></span></h1>
+            <p>
+                <%-- print errors and comit valid values to database --%>
+                <%= SignUpRequest.getErrors()%>
+            </p>
+        </div>
+<%
+    }
+    if (SignUpRequest.signUp()) {
+        session.setAttribute("user", SignUpRequest.getUserObject());
+        session.setAttribute("userType", SignUpRequest.getUserType());
+        response.sendRedirect("index.jsp");
+    }
+    SignUpRequest.setFormLoaded(true);
 %>
         <footer class="loginFooter">
                 <small>&copy; Team 11 2015</small>

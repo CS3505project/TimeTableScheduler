@@ -51,30 +51,25 @@
         	<input type="submit" id="submit" value="Next" class="animate">
                 </div>
         </form>
-        <div class="errors">
-            <h1><span><% out.println(MeetingRequest.numErrors()); %></span></h1>
-            <p>
-                <%-- print errors and comit valid values to database --%>
-                <%
-                    if (MeetingRequest.isFormLoaded()) {
-                        out.println(MeetingRequest.getErrors());
-                    }
-                    if(MeetingRequest.createMeeting()) {
-                        response.sendRedirect("index.jsp");
-                    } else if (MeetingRequest.isFormLoaded()){
-                        out.println("Unable to create meeting");
-                    }
-                    MeetingRequest.setFormLoaded(true);
-                %>
-            </p>
-        </div>
-    <%
+        <% if (MeetingRequest.isFormLoaded()) { %>
+            <div class="errors">
+                <h1><span><% out.println(MeetingRequest.numErrors()); %></span></h1>
+                <p>
+                    <% out.println(MeetingRequest.getErrors()); %>
+                </p>
+            </div>
+<%
+        }
+        
+        if(MeetingRequest.createMeeting()) {
+            response.sendRedirect("index.jsp");
+        }
+        MeetingRequest.setFormLoaded(true);
         out.println(output.createFooter());
+        
     } else {
-        
-    %>
-    <jsp:forward page="/login.jsp" />
-    <%
-        
+%>
+        <jsp:forward page="/login.jsp" />
+<%
     }
 %>
