@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="ModuleRequest" class="userDataPackage.ModuleRequest" scope="session">
-    <jsp:setProperty name="ModuleRequest" property="*"/>
+<jsp:useBean id="CourseRequest" class="userDataPackage.CourseRequest" scope="session">
+    <jsp:setProperty name="CourseRequest" property="*"/>
 </jsp:useBean>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
@@ -8,41 +8,41 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
-        ModuleRequest.setValues(request, user);
-        ModuleRequest.setGroup((String)request.getParameter("group"));
-        ModuleRequest.setModuleName((String)request.getParameter("moduleName"));
-        ModuleRequest.setModuleCode((String)request.getParameter("moduleCode"));
+        CourseRequest.setValues(request, user);
+        CourseRequest.setGroup((String)request.getParameter("group"));
+        CourseRequest.setModuleName((String)request.getParameter("moduleName"));
+        CourseRequest.setModuleCode((String)request.getParameter("moduleCode"));
 %>
         
         <hgroup>
-        	<h1>Add Module</h1>
+        	<h1>Add Course</h1>
         </hgroup>
-        <form action="addModule.jsp" method="GET">
+        <form action="addCourse.jsp" method="GET">
             <label for="group">Group:</label>
             <select id="group">
                 <% out.println(output.createGroupList()); %>
             </select>
             <label for="moduleName">Module Name:</label>
-            <input type="text" name="moduleName" id="moduleName" value="<%= ModuleRequest.getModuleName() %>" required="required"><br>
+            <input type="text" name="moduleName" id="moduleName" value="<%= CourseRequest.getModuleName() %>" required="required"><br>
             <label for="moduleCode">Module Code:</label>
-            <input type="text" name="moduleCode" id="moduleCode" value="<%= ModuleRequest.getModuleCode() %>" required="required"><br>
+            <input type="text" name="moduleCode" id="moduleCode" value="<%= CourseRequest.getModuleCode() %>" required="required"><br>
             <label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next">
         </form>
-        <% if (ModuleRequest.isFormLoaded()) { %>
+        <% if (CourseRequest.isFormLoaded()) { %>
             <div class="errors">
-                <h1><span><% out.println(ModuleRequest.numErrors()); %></span></h1>
+                <h1><span><% out.println(CourseRequest.numErrors()); %></span></h1>
                 <p>
-                    <% out.println(ModuleRequest.getErrors()); %>
+                    <% out.println(CourseRequest.getErrors()); %>
                 </p>
             </div>
 <%
         }
         
-        if(ModuleRequest.createModule()) {
+        if(CourseRequest.createModule()) {
             response.sendRedirect("index.jsp");
         }
-        ModuleRequest.setFormLoaded(true);
+        CourseRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         
@@ -52,3 +52,4 @@
         
     }
 %>
+

@@ -125,26 +125,26 @@ public class Output {
     }
     
     /**
-     * Return an unordered HTML list of the groups in the database
+     * Return an HTML drop down of all the groups in the database
      * 
-     * @return HTML list of groups
+     * @return HTML options of groups
      */
     public String createGroupList() {
-        String groups = "<ul>";
+        String groups = "";
         
         Database db = Database.getSetupDatabase();
         
         // get list of all groups
-        ResultSet result = db.select("SELECT groupName FROM Group;");
+        ResultSet result = db.select("SELECT * FROM Group;");
         try {
             while (result.next()) {
-                groups += "<li>" + result.getString("groupName") + "</li>";
+                groups += "<option value=\"" + result.getString("groupid") + "\">" 
+                          + result.getString("groupName") + "</option>";
             }
         } catch (SQLException ex) {
             System.err.println("Error while getting group list.");
         }
         
-        groups += "</ul>";
         return groups;
     }
     
@@ -243,6 +243,19 @@ public class Output {
     public String createMessages(User user){        
         String finalHTML = "";
         finalHTML += "<h1 class='banner'>Messages</h1>";
+        
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select("");
+        try {
+            while (result.next()) {
+                finalHTML += "<div class=\"message\"><h2>" + result.getString("") + "</h2>"
+                             + "<p>" + result.getString("") + "</p></div>";
+            }
+        } catch (SQLException ex) {
+            
+        }
+        
         return finalHTML;
     }
     /**

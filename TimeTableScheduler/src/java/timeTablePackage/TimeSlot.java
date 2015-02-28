@@ -159,8 +159,13 @@ public class TimeSlot {
         if (eventList.equals("")) {
             html += ">";
         } else {
-            html += " data-description=\"" + description + "\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
+            html += " data-description=\"" + description 
+                    + "\" class=\"" + highPriority.getPriorityName() + " animate selectable hoverable\">";
         }
+        html += "<div class=\"hidden\""
+                + " data-date=\"" + date + "\""
+                + " data-time=\"" + time + "\"></div>";
+        
         html += eventList + "</td>";
         return html;
     }

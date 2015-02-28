@@ -1,6 +1,5 @@
 package userDataPackage;
 
-
 import timeTablePackage.EventPriority;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -8,8 +7,8 @@ import toolsPackage.Validator;
 /**
  * A javaBean for handling requests to add a meeting
  */
-public final class ModuleRequest extends UserRequest{
-        private String group = "";
+public final class CourseRequest extends UserRequest{
+    private String group = "";
     private String moduleCode = "";
     private String moduleName = "";
         
@@ -20,7 +19,7 @@ public final class ModuleRequest extends UserRequest{
     /**
      * Default constructor
      */
-    public ModuleRequest(){ 
+    public CourseRequest(){ 
         initialiseErrorArray(3);
         group = "";
         moduleCode = "";

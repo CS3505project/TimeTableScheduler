@@ -30,6 +30,7 @@ public class DataEntry {
     
     public void setValidEntry(int index, boolean valid) {
         data[index].setValidData(valid);
+        data[index].setErrorMessage("");
     }
     
     public void clear() {
@@ -50,6 +51,7 @@ public class DataEntry {
     }
     
     public void addErrorMessage(int index, String message) {
+        data[index].setValidData(false);
         data[index].setErrorMessage(message);
     }
     

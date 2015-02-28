@@ -110,29 +110,22 @@ public final class GroupRequest extends UserRequest{
         return values;
     }
     
-    /**
-     * Add a users to the specified group
-     * 
-     * @param userid user ids to add
-     * @return String to indicate success
-     */
-    public String joinGroup(String userid) {
-        String result = "Not joined group.";
+    public boolean joinGroup(String groupId) {
+        boolean result = false;
+        try {
+            if (errorInString(groupId)) {
+                int gid = Integer.parseInt(groupId);        
         
-        if (!isValid()) {
-            Database db = Database.getSetupDatabase();
-            
-            ResultSet groups = db.select("SELECT gid FROM Group" +
-                                       "WHERE groupName = \"" + groupName + "\"");
-            
-            //TO-DO
-            
-            // add the users to the group
-            db.insert("INSERT INTO InGroup (uid, gid) "
-                + "VALUES (" + userid + "\", " + groupName + ");");
-            
-            db.close();
-            result = "Joined group.";
+                Database db = Database.getSetupDatabase();
+
+                // add the users to the group
+                result = db.insert("INSERT INTO InGroup (uid, gid) "
+                            + "VALUES (" + getUser().getUserID() + ", " + gid + ");");
+
+                db.close();
+            }
+        } catch (Exception ex) {
+        
         }
         
         return result;
