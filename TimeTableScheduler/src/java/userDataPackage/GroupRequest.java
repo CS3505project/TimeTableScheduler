@@ -114,18 +114,17 @@ public final class GroupRequest extends UserRequest{
         boolean result = false;
         try {
             if (errorInString(groupId)) {
-                int gid = Integer.parseInt(groupId);        
         
                 Database db = Database.getSetupDatabase();
 
                 // add the users to the group
                 result = db.insert("INSERT INTO InGroup (uid, gid) "
-                            + "VALUES (" + getUser().getUserID() + ", " + gid + ");");
+                            + "VALUES (" + getUser().getUserID() + ", " + groupid + ");");
 
                 db.close();
             }
         } catch (Exception ex) {
-        
+
         }
         
         return result;

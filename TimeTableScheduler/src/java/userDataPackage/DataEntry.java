@@ -58,7 +58,6 @@ public class DataEntry {
     public boolean isValid() {
         boolean valid = true;
         for (int i = 0; i < data.length; i++) {
-            System.out.println(i + " = " + data[i].isValidData());
             valid = valid && data[i].isValidData();
         }
         return valid;
