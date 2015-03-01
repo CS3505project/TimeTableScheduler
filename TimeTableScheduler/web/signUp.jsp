@@ -1,9 +1,29 @@
+<%@page import="userPackage.UserType"%>
+<%@page import="inputPackage.Input"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="SignUpRequest" class="userDataPackage.SignUpRequest" scope="session">
     <jsp:setProperty name="SignUpRequest" property="*"/>
 </jsp:useBean>
 <%
     SignUpRequest.setValues(request, null);
+    if ((String)request.getParameter("type") == null) {
+        if (SignUpRequest.getUserType() == null) {
+            SignUpRequest.setUserType(UserType.STUDENT);
+        }
+    } else if (((String)request.getParameter("type")).equals("lecturer")) {
+        SignUpRequest.setUserType(UserType.LECTURER);
+    } else if (((String)request.getParameter("type")).equals("student")) {
+        SignUpRequest.setUserType(UserType.STUDENT);
+    }
+    
+    if (SignUpRequest.isFormLoaded()) {
+        SignUpRequest.setId((String)request.getParameter("id"));
+        SignUpRequest.setFirstName((String)request.getParameter("firstName"));
+        SignUpRequest.setSurname((String)request.getParameter("surname"));
+        SignUpRequest.setTitle((String)request.getParameter("title"));
+        SignUpRequest.setEmail((String)request.getParameter("email"));
+    }
+
 %>
 
 <html lang="en">
@@ -18,12 +38,12 @@
     <body>
 
 <%
-    switch (userPackage.UserType.getUserType((String)request.getParameter("type"))){
+    switch (SignUpRequest.getUserType()){
         case ADMIN:
             if (((userPackage.User)session.getAttribute("user")) != null 
                 && ((userPackage.UserType)session.getAttribute("userType")).equals(userPackage.UserType.ADMIN)
                 && ((userPackage.User)session.getAttribute("user")).getUserType().equals(userPackage.UserType.ADMIN)) {
-                    SignUpRequest.setUserType(userPackage.UserType.ADMIN);
+                    SignUpRequest.setUserType(UserType.ADMIN);
 %>
             <div>
                 <form id="signup" action="signUp.jsp" method="POST">
@@ -49,7 +69,6 @@
         }
         break;
         case LECTURER:
-            SignUpRequest.setUserType(userPackage.UserType.LECTURER);
 %>
             <ul id="signUpMenu">
                 <li><a href="signUp.jsp?type=student">Student</a></li>
@@ -77,7 +96,6 @@
 <%
         break;
         default:
-            SignUpRequest.setUserType(userPackage.UserType.STUDENT);
 %>
             <ul id="signUpMenu">
                 <li><a href="signUp.jsp?type=student">Student</a></li>
@@ -105,7 +123,7 @@
     } 
     
     // if the form has been loaded then errors are displayed if they occur
-    if (SignUpRequest.isFormLoaded()) { 
+    if (SignUpRequest.numErrors() > 0) { 
 %>
         <div class="errors">
             <h1><span><% out.println(SignUpRequest.numErrors()); %></span></h1>
@@ -117,9 +135,7 @@
 <%
     }
     if (SignUpRequest.signUp()) {
-        session.setAttribute("user", SignUpRequest.getUserObject());
-        session.setAttribute("userType", SignUpRequest.getUserType());
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
     }
     SignUpRequest.setFormLoaded(true);
 %>

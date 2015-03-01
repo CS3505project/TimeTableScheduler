@@ -28,7 +28,7 @@ public class Lecture extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "Lecture " + this.getTime().toString();
+        return "Lecture";
     }
     
     @Override

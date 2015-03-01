@@ -160,11 +160,8 @@ public class TimeSlot {
             html += ">";
         } else {
             html += " data-description=\"" + description 
-                    + "\" class=\"" + highPriority.getPriorityName() + " animate selectable hoverable\">";
+                    + "\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
         }
-        html += "<div class=\"hidden\""
-                + " data-date=\"" + date + "\""
-                + " data-time=\"" + time + "\"></div>";
         
         html += eventList + "</td>";
         return html;
@@ -185,7 +182,7 @@ public class TimeSlot {
             description += "Module: " + practical.getEventID() + "<br />"
                            + "Semester: " + practical.getSemester() + "<br />";
         }
-        description += "Time: " + event.getTime() + "<br />Location: " + event.getLocation();
+        description += "Time: " + event.getTime() + "<br />Location: " + event.getLocation() + "<br />";
         return description;
     }
     

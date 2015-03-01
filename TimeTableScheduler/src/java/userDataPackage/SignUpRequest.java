@@ -27,7 +27,7 @@ public class SignUpRequest extends UserRequest {
     private String firstName = "";
     private String surname = "";
     private String email = "";
-    private UserType userType = UserType.STUDENT;
+    private UserType userType;
     
     public SignUpRequest() {
         initialiseErrorArray(6);
@@ -47,15 +47,15 @@ public class SignUpRequest extends UserRequest {
         clearErrors();
     }
     
-    public void setUserType(UserType userType) {
+    public void setUserType(UserType userType) { System.out.println("here: 1" + userType);
         this.userType = userType;
     }
     
-    public UserType getUserType() {
+    public UserType getUserType() {System.out.println("here: 2");
         return userType;
     }
 
-    public void setId(String id) {
+    public void setId(String id) {System.out.println("here: 3");
         switch (userType) {
             case ADMIN:
                 if (errorInString(id)) {
@@ -84,7 +84,7 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    public void setTitle(String title) {
+    public void setTitle(String title) {System.out.println("here: 4");
         if (userType.equals(UserType.LECTURER)) {
             if (errorInString(title)) {
                 addErrorMessage(1, "Incorrect title entered.");
@@ -98,7 +98,7 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {System.out.println("here: 5");
         if (errorInString(firstName)) {
             addErrorMessage(2, "Incorrect first name entered.");
             System.err.println("Error with first name.");
@@ -108,7 +108,7 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    public void setSurname(String surname) {
+    public void setSurname(String surname) {System.out.println("here: 6");
         if (errorInString(surname)) {
             addErrorMessage(3, "Incorrect surname entered.");
             System.err.println("Error with surname.");
@@ -118,8 +118,7 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    public void setEmail(String email) {
-        System.out.println("here");
+    public void setEmail(String email) {System.out.println("here: 7");
         if (Validator.isValidEmail(email)) {
             this.email = Validator.escapeJava(email);
             setValidData(4, true);
@@ -129,27 +128,27 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
-    public String getId() {
+    public String getId() {System.out.println("here: 8");
         return Validator.unescapeJava(id);
     }
     
-    public String getTitle() {
+    public String getTitle() {System.out.println("here: 9");
         return Validator.unescapeJava(title);
     }
     
-    public String getFirstName() {
+    public String getFirstName() {System.out.println("here: 410");
         return Validator.unescapeJava(firstName);
     }
     
-    public String getSurname() {
+    public String getSurname() {System.out.println("here: 11");
         return Validator.unescapeJava(surname);
     }
     
-    public String getEmail() {
+    public String getEmail() {System.out.println("here: 12");
         return Validator.unescapeJava(email);
     }
  
-    private boolean validPasswords() {
+    private boolean validPasswords() {System.out.println("here: 13");
         boolean result = true;
         
         String firstPassword = (String)getRequest().getParameter("password");
@@ -161,11 +160,12 @@ public class SignUpRequest extends UserRequest {
         } else if (errorInString(secondPassword)) {
             addErrorMessage(5, "Please re-enter your password");
             result = false;
-        } else if (firstPassword.equals(secondPassword)) {
+        } else if (!firstPassword.equals(secondPassword)) {
             addErrorMessage(5, "Passwords are different.");
             result = false;
+        } else {
+            setValidData(5, result);
         }
-        setValidData(5, result);
         return result;
     }
     
@@ -175,16 +175,32 @@ public class SignUpRequest extends UserRequest {
      * 
      * @return True if insert can be executed
      */
-    public boolean signUp() {        
+    public boolean signUp() {System.out.println("here: 14");
         boolean result = false;
-        if (this.isValid() && validPasswords()) {
-            
-            System.out.println("here");
-            
+        if (validPasswords() && isValid()) {
             Database db = Database.getSetupDatabase();
             String passwordHash = Hash.sha1((String)getRequest().getParameter("password"));
             
-            result = db.insert("");
+            result = db.insert("INSERT INTO User (passwordHash, email, firstName, surname) "
+                               + "VALUES (\"" + passwordHash + "\", \"" + email + "\", \"" + firstName + "\", \"" + surname + "\");");
+            
+            if (result) {
+                int uid = db.getPreviousAutoIncrementID("User");
+                switch (userType) {
+                    case STUDENT:
+                        result = db.insert("INSERT INTO Student (uid, studentid) "
+                                   + "VALUES (\"" + uid + "\", \"" + id + "\");");
+                        break;
+                    case LECTURER:
+                        result = db.insert("INSERT INTO Lecturer (uid, lecturerid, title) "
+                                   + "VALUES (\"" + uid + "\", \"" + id + "\", \"" + title + "\");");
+                        break;
+                    case ADMIN:
+                        result = db.insert("INSERT INTO Admin (uid, adminid) "
+                                   + "VALUES (\"" + uid + "\", \"" + id + "\");");
+                        break;
+                }
+            }
             
             if (!result) {
                 System.err.println("Problem creating user in database.");
@@ -194,35 +210,5 @@ public class SignUpRequest extends UserRequest {
             db.close();
         }        
         return result;
-    }
-
-    public User getUserObject() {
-        User user = null;
-        Database db = Database.getSetupDatabase();
-
-        ResultSet result = db.select("");
-
-        String uid = "";
-        try {
-            while (result.next()) {
-                uid = result.getString("uid");
-            }
-        } catch (SQLException ex) {
-            System.err.println("Error get user id from database.");
-        }
-
-
-        switch (userType) {
-            case ADMIN:
-                user = new Admin(id, email, firstName, surname, uid);
-                break;
-            case LECTURER:
-                user = new Lecturer(id, email, title, firstName, surname, uid);
-                break;
-            default:
-                user = new Student(id, email, firstName, surname, uid);
-                break;
-        }
-        return user;
     }
 }

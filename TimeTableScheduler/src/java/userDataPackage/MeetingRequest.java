@@ -45,6 +45,7 @@ public final class MeetingRequest extends UserRequest{
         venue = "";
         time = null;
         description = "";
+        usersToMeet = new ArrayList<String>();
     }
      
     public boolean isSetup() {
@@ -70,7 +71,7 @@ public final class MeetingRequest extends UserRequest{
     
      public void setup(String withType, String duration, String individualID, String groupID) {
         this.setup = true;
-        
+         
         try {
             this.duration = Integer.parseInt(duration);
         } catch (Exception ex) {
@@ -81,18 +82,18 @@ public final class MeetingRequest extends UserRequest{
             this.groupOrUserId = Validator.escapeJava(individualID);
         } else if (groupID != null) {
             this.groupOrUserId = Validator.escapeJava(groupID);
-        } else {
-            setup = false;
         }
 
-        this.meetingType = withType;
+        if (errorInString(withType)) {
+            this.meetingType = "";
+        } else {
+            this.meetingType = withType;
+        }
         
         this.timeTable = TimeTable.getPreSetTimeTable();
         getUsersToMeet();
         
-        if (usersToMeet.size() == 1) {
-            this.timeTable.initialiseTimeTable(usersToMeet.get(0));
-        } else if (usersToMeet.size() > 1) {
+        if (usersToMeet.size() >= 1) {
             this.timeTable.initialiseTimeTable(usersToMeet);
         } else {
             setup = false;
@@ -103,7 +104,7 @@ public final class MeetingRequest extends UserRequest{
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.
      * @param date the date string in HTML's format dd/MM/yyyy, inputted by the user
      */
-    public void setDate(String date) {
+    public void setDate(String date) { 
         if (this.errorInString(date)) {
             this.addErrorMessage(0, "Invalid date entered.");
         } else {
@@ -203,7 +204,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public boolean createMeeting() {
         if (isValid() && isSetup()) {
-            boolean result = false;
+            boolean result = true;
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(date);
@@ -218,7 +219,6 @@ public final class MeetingRequest extends UserRequest{
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
                                             + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
 
-               
                 String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
                 if (!values.equals("")) {
                     result = result && db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
@@ -231,6 +231,7 @@ public final class MeetingRequest extends UserRequest{
             
             resetForm();
             setup = false;
+            setFormLoaded(false);
             db.close();
             return result;
         } else {

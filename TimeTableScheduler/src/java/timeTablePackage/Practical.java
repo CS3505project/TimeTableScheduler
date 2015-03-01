@@ -28,7 +28,7 @@ public class Practical extends Event {
     @Override
     public String toString() {
         // To-Do
-        return "Practical " + this.getTime().toString();
+        return "Practical";
     }
     
     @Override

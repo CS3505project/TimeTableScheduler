@@ -51,7 +51,7 @@
         	<input type="submit" id="submit" value="Next" class="animate">
                 </div>
         </form>
-        <% if (MeetingRequest.isFormLoaded()) { %>
+        <% if (MeetingRequest.numErrors() > 0) { %>
             <div class="errors">
                 <h1><span><% out.println(MeetingRequest.numErrors()); %></span></h1>
                 <p>
@@ -64,7 +64,6 @@
         if(MeetingRequest.createMeeting()) {
             response.sendRedirect("index.jsp");
         }
-        MeetingRequest.setFormLoaded(true);
         out.println(output.createFooter());
         
     } else {
