@@ -1,7 +1,6 @@
 package userDataPackage;
 
 
-import timeTablePackage.EventPriority;
 import toolsPackage.Database;
 import toolsPackage.Validator;
 
@@ -9,7 +8,7 @@ import toolsPackage.Validator;
  * A javaBean for handling requests to add a meeting
  */
 public final class ModuleRequest extends UserRequest{
-        private String group = "";
+    private String course = "";
     private String moduleCode = "";
     private String moduleName = "";
         
@@ -22,20 +21,20 @@ public final class ModuleRequest extends UserRequest{
      */
     public ModuleRequest(){ 
         initialiseErrorArray(3);
-        group = "";
+        course = "";
         moduleCode = "";
         moduleName = "";
     }
     
     private void resetForm() {
-        group = "";
+        course = "";
         moduleCode = "";
         moduleName = "";
         clearErrors();
     }
     
-    public String getGroup() {
-        return group;
+    public String getCourse() {
+        return course;
     }
     
     public String getModuleCode() {
@@ -50,11 +49,11 @@ public final class ModuleRequest extends UserRequest{
      * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
      */
-    public void setGroup(String group){
-        if (this.errorInString(group)) {
-            this.addErrorMessage(0, "Group is incorrect.");
+    public void setCourse(String course){
+        if (this.errorInString(course)) {
+            this.addErrorMessage(0, "Course is incorrect.");
         } else {
-            this.group = Validator.escapeJava(group);
+            this.course = Validator.escapeJava(course);
             setValidData(0, true);
         }
     }
@@ -92,9 +91,11 @@ public final class ModuleRequest extends UserRequest{
             
             Database db = Database.getSetupDatabase();
             
-            result = db.insert("INSERT INTO Module (date, time, room, description, priority, organiser_uid) "
-                                            + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
-                                            + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
+            result = db.insert("INSERT INTO Module (moduleCode, name, description) "
+                               + "VALUES (\""+ moduleCode + "\", \"" + moduleName + "\", \"" + "" + "\");");
+            
+            result = db.insert("INSERT INTO ModuleInCourse (moduleCode, courseid) "
+                               + "VALUES (\"" + moduleCode + "\", \"" + course + "\");");
                 
             resetForm();
             setup = false;

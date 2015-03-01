@@ -19,8 +19,8 @@
         </hgroup>
         <form action="addCourse.jsp" method="GET">
             <label for="group">Group:</label>
-            <select id="group">
-                <% out.println(output.createGroupList()); %>
+            <select name="group" id="group">
+                <% out.println(output.createYearGroupList()); %>
             </select>
             <label for="moduleName">Module Name:</label>
             <input type="text" name="moduleName" id="moduleName" value="<%= CourseRequest.getModuleName() %>" required="required"><br>

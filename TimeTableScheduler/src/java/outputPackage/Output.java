@@ -152,6 +152,44 @@ public class Output {
         return groups;
     }
     
+    public String createAllGroupList() {
+        String groups = "";
+        
+        Database db = Database.getSetupDatabase();
+        
+        // get list of all groups
+        ResultSet result = db.select("SELECT * FROM Groups;");
+        try {
+            while (result.next()) {
+                groups += "<option value=\"" + result.getString("groupid") + "\">" + result.getString("groupName") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while getting group list.");
+        }
+        
+        groups += "";
+        return groups;
+    }
+    
+    public String createCourseList() {
+        String groups = "";
+        
+        Database db = Database.getSetupDatabase();
+        
+        // get list of all groups
+        ResultSet result = db.select("SELECT * FROM Course;");
+        try {
+            while (result.next()) {
+                groups += "<option value=\"" + result.getString("id") + "\">" + result.getString("courseCode") + " : " + result.getString("name") + " (Year: " + result.getString("year") + ")</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while getting group list.");
+        }
+        
+        groups += "";
+        return groups;
+    }
+    
     public String createJoinGroupDropDown(String userid) {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();

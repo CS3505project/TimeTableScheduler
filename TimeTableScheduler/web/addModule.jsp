@@ -9,7 +9,7 @@
         out.println(output.createHeader());
         
         ModuleRequest.setValues(request, user);
-        ModuleRequest.setGroup((String)request.getParameter("group"));
+        ModuleRequest.setCourse((String)request.getParameter("course"));
         ModuleRequest.setModuleName((String)request.getParameter("moduleName"));
         ModuleRequest.setModuleCode((String)request.getParameter("moduleCode"));
 %>
@@ -18,13 +18,13 @@
         	<h1>Add Module</h1>
         </hgroup>
         <form action="addModule.jsp" method="GET">
-            <label for="group">Group:</label>
-            <select id="group">
-                <% out.println(output.createGroupList()); %>
+            <label for="course">Course:</label>
+            <select name="course" id="course">
+                <% out.println(output.createCourseList()); %>
             </select>
-            <label for="moduleName">Module Name:</label>
+            <label for="moduleName">Name:</label>
             <input type="text" name="moduleName" id="moduleName" value="<%= ModuleRequest.getModuleName() %>" required="required"><br>
-            <label for="moduleCode">Module Code:</label>
+            <label for="moduleCode">Code:</label>
             <input type="text" name="moduleCode" id="moduleCode" value="<%= ModuleRequest.getModuleCode() %>" required="required"><br>
             <label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next">
