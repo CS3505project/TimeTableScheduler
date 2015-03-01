@@ -29,7 +29,7 @@
             <label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next">
         </form>
-        <% if (ModuleRequest.isFormLoaded()) { %>
+        <% if (ModuleRequest.numErrors() > 0) { %>
             <div class="errors">
                 <h1><span><% out.println(ModuleRequest.numErrors()); %></span></h1>
                 <p>

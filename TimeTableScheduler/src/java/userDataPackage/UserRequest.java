@@ -25,6 +25,10 @@ public abstract class UserRequest {
         this.user = user;
     }
     
+    public boolean isValidData(int index) {
+        return data.isValidEntry(index);
+    }
+     
     public int numErrors() {
         return data.numErrors();
     }

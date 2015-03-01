@@ -18,6 +18,10 @@ public class DataEntry {
         }
     }
     
+    public boolean isValidEntry(int index) {
+        return data[index].isValidData();
+    }
+    
     public int numErrors() {
         int errors = 0;
         for (int i = 0; i < data.length; i++) {

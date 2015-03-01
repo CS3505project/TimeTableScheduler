@@ -8,23 +8,21 @@
         
         CourseRequest.setValues(request, user);
         CourseRequest.setCourse((String)request.getParameter("course"));
-        CourseRequest.setName((String)request.getParameter("name"));
-        CourseRequest.setDepartment((String)request.getParameter("department"));
-        CourseRequest.setYear((String)request.getParameter("year"));
+        CourseRequest.setGroup((String)request.getParameter("group"));
 %>
         
         <hgroup>
-        	<h1>Add Course</h1>
+        	<h1>Add Group To Course</h1>
         </hgroup>
-        <form action="addCourse.jsp" method="GET">
+        <form action="addGroupToCourse.jsp" method="GET">
             <label for="course">Course:</label>
-            <input type="text" name="course" id="course" value="<%= CourseRequest.getCourse() %>" required="required"><br>
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="<%= CourseRequest.getName() %>" required="required"><br>
-            <label for="department">Department:</label>
-            <input type="text" name="department" id="department" value="<%= CourseRequest.getDepartment() %>" required="required"><br>
-            <label for="year">Year:</label>
-            <input type="text" name="year" id="year" value="<%= CourseRequest.getYear() %>" required="required"><br>
+            <select name="course" id="course">
+                <% out.println(output.createCourseList()); %>
+            </select>
+            <label for="group">Groups:</label>
+            <select name="group" id="group">
+                <% out.println(output.createAllGroupList()); %>
+            </select>
             <label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next">
         </form>
@@ -38,7 +36,7 @@
 <%
         }
         
-        if(CourseRequest.createCourse()) {
+        if(CourseRequest.addGroupToCourse()) {
             response.sendRedirect("index.jsp");
         }
         CourseRequest.setFormLoaded(true);
@@ -51,4 +49,3 @@
         
     }
 %>
-

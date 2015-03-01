@@ -12,6 +12,7 @@ public final class CourseRequest extends UserRequest{
     private String name = "";
     private String department = "";
     private int year = 1;
+    private String group = "";
         
     private boolean setup = false;
                 
@@ -20,10 +21,6 @@ public final class CourseRequest extends UserRequest{
      */
     public CourseRequest(){ 
         initialiseErrorArray(4);
-        course = "";
-        name = "";
-        department = "";
-        year = 1;
     }
     
     private void resetForm() {
@@ -48,6 +45,10 @@ public final class CourseRequest extends UserRequest{
     
     public String getYear() {
         return Integer.toString(year);
+    }
+    
+    public String getGroup() {
+        return group;
     }
 
     /**
@@ -93,6 +94,12 @@ public final class CourseRequest extends UserRequest{
             addErrorMessage(3, "Year is incorrect.");
         }
     }
+    
+    public void setGroup(String group) {
+        if (!errorInString(group)) {
+            this.group = Validator.escapeJava(group);
+        }
+    }
 
     /**
      * Creates a meeting and inserts it into the database
@@ -106,8 +113,26 @@ public final class CourseRequest extends UserRequest{
             Database db = Database.getSetupDatabase();
             
             result = db.insert("INSERT INTO Course (courseCode, name, department, year) "
-                                            + "VALUES (\"" + course + "\", \"" + name + "\", \"" 
-                                            + department + "\", " + year + ");");
+                                + "VALUES (\"" + course + "\", \"" + name + "\", \"" 
+                                + department + "\", " + year + ");");
+                
+            resetForm();
+            setup = false;
+            db.close();
+            return result;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean addGroupToCourse() {
+        if (isValidData(0) && !errorInString(group)) {
+            boolean result = false;
+            
+            Database db = Database.getSetupDatabase();
+            
+            result = db.insert("INSERT INTO GroupTakesCourse (gid, courseid) "
+                                + "VALUES (\"" + group + "\", \"" + course + "\");");
                 
             resetForm();
             setup = false;
