@@ -10,15 +10,15 @@
         	<h1>Join Group</h1>
         </hgroup>
         <form action="joinGroup.jsp" method="GET">
-        	<label for="gname">Group Name:</label>
+        	<label for="gname">Group:</label>
         	<select name="gname" id="gname">
-                <% out.println(output.createGroupDropDown(user.getUserID())); %>
+                <% out.println(output.createJoinGroupDropDown(user.getUserID())); %>
                 </select><br>
         	<label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next">
         </form>
 
-        <% if (GroupRequest.isFormLoaded()) { %>
+        <% if (GroupRequest.numErrors() > 0) { %>
             <div class="errors">
                 <h1><span><% out.println(GroupRequest.numErrors()); %></span></h1>
                 <p>

@@ -125,26 +125,30 @@ public class Output {
     }
     
     /**
-     * Return an HTML drop down of all the groups in the database
+     * Return an HTML list of the groups
      * 
-     * @return HTML options of groups
+     * @return HTML list of groups
      */
-    public String createGroupList() {
-        String groups = "";
+    public String createGroupList(String userid) {
+        String groups = "<div><ul>";
         
         Database db = Database.getSetupDatabase();
         
         // get list of all groups
-        ResultSet result = db.select("SELECT * FROM Group;");
+        ResultSet result = db.select("SELECT * FROM Groups " +
+                                      "WHERE groupid IN " +
+                                           "(SELECT gid " +
+                                           "FROM InGroup " +
+                                           "WHERE uid = " + userid + ");");
         try {
             while (result.next()) {
-                groups += "<option value=\"" + result.getString("groupid") + "\">" 
-                          + result.getString("groupName") + "</option>";
+                groups += "<li>" + result.getString("groupName") + "</li>";
             }
         } catch (SQLException ex) {
             System.err.println("Error while getting group list.");
         }
         
+        groups += "</ul><div>";
         return groups;
     }
     
@@ -162,12 +166,33 @@ public class Output {
         "	<label for=\"gname\">Group Name:</label>\n" +
         "	<select name=\"gname\" id=\"gname\">\n";
         
-        finalHTML += createGroupDropDown(userid);
+        finalHTML += createJoinGroupDropDown(userid);
         
         finalHTML += "</select><br>\n" +
         "	<label for=\"submit\">Submit:</label>\n" +
         "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
         "</form>";
+        return finalHTML;
+    }
+    
+    public String createJoinGroupDropDown(String userid) {
+        String finalHTML = "";
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select("SELECT * " +
+                                    "	FROM Groups " +
+                                    "	WHERE groupid NOT IN " +
+                                    "		(SELECT gid " +
+                                    "		FROM InGroup " +
+                                    "		WHERE uid = " + userid + ");");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("groupid") + "\">" + result.getString("groupName") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving group list");
+        }
+        
         return finalHTML;
     }
     
