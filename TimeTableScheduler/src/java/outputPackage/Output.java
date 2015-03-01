@@ -152,29 +152,6 @@ public class Output {
         return groups;
     }
     
-    /**
-     * Creates the form for joining a Group,
-     * with appropriate dropdowns for the public groups etc.
-     * @return A string with all the HTML for the form.
-     */
-    public String createJoinGroupForm(String userid){
-        String finalHTML = "<hgroup>\n" +
-        "	<h1>Join Group</h1>\n" +
-        "</hgroup>\n" +
-        "<jsp:setProperty name=\"GroupRequest\" property=\"*\"/>" +
-        "<form action=\"joinGroup.jsp\" method=\"GET\">\n" +
-        "	<label for=\"gname\">Group Name:</label>\n" +
-        "	<select name=\"gname\" id=\"gname\">\n";
-        
-        finalHTML += createJoinGroupDropDown(userid);
-        
-        finalHTML += "</select><br>\n" +
-        "	<label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>";
-        return finalHTML;
-    }
-    
     public String createJoinGroupDropDown(String userid) {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
