@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="session">
-    <jsp:setProperty name="GroupRequest" property="*"/>
-</jsp:useBean>
+<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="request" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
@@ -30,7 +28,7 @@
             <div><label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next"></div>
         </form>
-        <% if (GroupRequest.isFormLoaded()) { %>
+        <% if (GroupRequest.numErrors() > 0) { %>
             <div class="errors">
                 <h1><span><% out.println(GroupRequest.numErrors()); %></span></h1>
                 <p>

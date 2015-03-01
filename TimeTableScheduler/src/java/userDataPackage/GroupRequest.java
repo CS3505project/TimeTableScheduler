@@ -2,19 +2,9 @@ package userDataPackage;
 
 
 import groupPackage.GroupType;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import timeTablePackage.EventPriority;
-import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
 
@@ -98,9 +88,7 @@ public final class GroupRequest extends UserRequest{
             return false;
         }
     }
-    
-    
-    
+        
     private String getGroupInsertValues(int meetingID) {
         String values = "";
         Iterator<String> userIds = usersInGroup.iterator();
@@ -112,19 +100,16 @@ public final class GroupRequest extends UserRequest{
     
     public boolean joinGroup(String groupId) {
         boolean result = false;
-        try {
-            if (errorInString(groupId)) {
-        
-                Database db = Database.getSetupDatabase();
-
-                // add the users to the group
-                result = db.insert("INSERT INTO InGroup (uid, gid) "
-                            + "VALUES (" + getUser().getUserID() + ", " + groupid + ");");
-
-                db.close();
-            }
-        } catch (Exception ex) {
-
+        if (!errorInString(groupId)) {
+            Database db = Database.getSetupDatabase();
+            // add the users to the group
+            result = db.insert("INSERT INTO InGroup (uid, gid) "
+                               + "VALUES (" + getUser().getUserID() + ", " + groupId + ");");
+            
+            resetForm();
+            setup = false;
+            db.close();
+            result = true;
         }
         
         return result;

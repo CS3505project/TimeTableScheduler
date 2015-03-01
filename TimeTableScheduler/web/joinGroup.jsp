@@ -1,10 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="session" />
+<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="request" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
+        
+        GroupRequest.setValues(request, user);
 %>
         <hgroup>
         	<h1>Join Group</h1>
