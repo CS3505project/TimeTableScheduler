@@ -42,7 +42,7 @@ public final class ModuleRequest extends UserRequest{
     }
     
     public String getModuleName() {
-        return moduleCode;
+        return moduleName;
     }
 
     /**

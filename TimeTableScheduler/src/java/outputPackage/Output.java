@@ -152,6 +152,25 @@ public class Output {
         return groups;
     }
     
+    public String createYearGroupList() {
+        String groups = "";
+        
+        Database db = Database.getSetupDatabase();
+        
+        // get list of all groups
+        ResultSet result = db.select("SELECT * FROM Groups WHERE groupType = \"" + GroupType.YEAR_GROUP.getName() + "\";");
+        try {
+            while (result.next()) {
+                groups += "<option value=\"" + result.getString("groupid") + "\">" + result.getString("groupName") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while getting group list.");
+        }
+        
+        groups += "";
+        return groups;
+    }
+    
     public String createAllGroupList() {
         String groups = "";
         

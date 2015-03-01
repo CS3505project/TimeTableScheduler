@@ -9,23 +9,24 @@
         out.println(output.createHeader());
         
         CourseRequest.setValues(request, user);
-        CourseRequest.setGroup((String)request.getParameter("group"));
-        CourseRequest.setModuleName((String)request.getParameter("moduleName"));
-        CourseRequest.setModuleCode((String)request.getParameter("moduleCode"));
+        CourseRequest.setCourse((String)request.getParameter("course"));
+        CourseRequest.setName((String)request.getParameter("name"));
+        CourseRequest.setDepartment((String)request.getParameter("department"));
+        CourseRequest.setYear((String)request.getParameter("year"));
 %>
         
         <hgroup>
         	<h1>Add Course</h1>
         </hgroup>
         <form action="addCourse.jsp" method="GET">
-            <label for="group">Group:</label>
-            <select name="group" id="group">
-                <% out.println(output.createYearGroupList()); %>
-            </select>
-            <label for="moduleName">Module Name:</label>
-            <input type="text" name="moduleName" id="moduleName" value="<%= CourseRequest.getModuleName() %>" required="required"><br>
-            <label for="moduleCode">Module Code:</label>
-            <input type="text" name="moduleCode" id="moduleCode" value="<%= CourseRequest.getModuleCode() %>" required="required"><br>
+            <label for="course">Course:</label>
+            <input type="text" name="course" id="course" value="<%= CourseRequest.getCourse() %>" required="required"><br>
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="<%= CourseRequest.getName() %>" required="required"><br>
+            <label for="department">Department:</label>
+            <input type="text" name="department" id="department" value="<%= CourseRequest.getDepartment() %>" required="required"><br>
+            <label for="year">Year:</label>
+            <input type="text" name="year" id="year" value="<%= CourseRequest.getYear() %>" required="required"><br>
             <label for="submit">Submit:</label>
             <input type="submit" id="submit" value="Next">
         </form>
@@ -39,7 +40,7 @@
 <%
         }
         
-        if(CourseRequest.createModule()) {
+        if(CourseRequest.createCourse()) {
             response.sendRedirect("index.jsp");
         }
         CourseRequest.setFormLoaded(true);

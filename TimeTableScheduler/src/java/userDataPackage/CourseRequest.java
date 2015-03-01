@@ -8,52 +8,57 @@ import toolsPackage.Validator;
  * A javaBean for handling requests to add a meeting
  */
 public final class CourseRequest extends UserRequest{
-    private String group = "";
-    private String moduleCode = "";
-    private String moduleName = "";
+    private String course = "";
+    private String name = "";
+    private String department = "";
+    private int year = 1;
         
     private boolean setup = false;
-    
-    public static final String TIME_FORMAT = "HH:mm:ss";
-            
+                
     /**
      * Default constructor
      */
     public CourseRequest(){ 
-        initialiseErrorArray(3);
-        group = "";
-        moduleCode = "";
-        moduleName = "";
+        initialiseErrorArray(4);
+        course = "";
+        name = "";
+        department = "";
+        year = 1;
     }
     
     private void resetForm() {
-        group = "";
-        moduleCode = "";
-        moduleName = "";
+        course = "";
+        name = "";
+        department = "";
+        year = 1;
         clearErrors();
     }
     
-    public String getGroup() {
-        return group;
+    public String getCourse() {
+        return course;
     }
     
-    public String getModuleCode() {
-        return moduleCode;
+    public String getName() {
+        return name;
     }
     
-    public String getModuleName() {
-        return moduleCode;
+    public String getDepartment() {
+        return department;
+    }
+    
+    public String getYear() {
+        return Integer.toString(year);
     }
 
     /**
      * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
      */
-    public void setGroup(String group){
-        if (this.errorInString(group)) {
-            this.addErrorMessage(0, "Group is incorrect.");
+    public void setCourse(String course){
+        if (this.errorInString(course)) {
+            this.addErrorMessage(0, "Course code is incorrect.");
         } else {
-            this.group = Validator.escapeJava(group);
+            this.course = Validator.escapeJava(course);
             setValidData(0, true);
         }
     }
@@ -62,21 +67,30 @@ public final class CourseRequest extends UserRequest{
      * Sets the description
      * @param description description
      */
-    public void setModuleCode(String moduleCode) {
-        if (this.errorInString(moduleCode)) {
-            addErrorMessage(1, "Module code is incorrect.");
+    public void setName(String name) {
+        if (this.errorInString(name)) {
+            addErrorMessage(1, "Course name is incorrect.");
         } else {
-            this.moduleCode = Validator.escapeJava(moduleCode);
+            this.name = Validator.escapeJava(name);
             setValidData(1, true);
         }
     }
     
-    public void setModuleName(String moduleName) {
-        if (this.errorInString(moduleName)) {
-            addErrorMessage(2, "Module name is incorrect.");
+    public void setDepartment(String department) {
+        if (this.errorInString(department)) {
+            addErrorMessage(2, "Department is incorrect.");
         } else {
-            this.moduleName = Validator.escapeJava(moduleName);
+            this.department = Validator.escapeJava(department);
             setValidData(2, true);
+        }
+    }
+    
+    public void setYear(String year) {
+        try {
+            this.year = Integer.parseInt(year);
+            setValidData(3, true);
+        } catch (Exception ex) {
+            addErrorMessage(3, "Year is incorrect.");
         }
     }
 
@@ -85,15 +99,15 @@ public final class CourseRequest extends UserRequest{
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createModule() {
+    public boolean createCourse() {
         if (isValid()) {
             boolean result = false;
             
             Database db = Database.getSetupDatabase();
             
-            result = db.insert("INSERT INTO Module (date, time, room, description, priority, organiser_uid) "
-                                            + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
-                                            + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
+            result = db.insert("INSERT INTO Course (courseCode, name, department, year) "
+                                            + "VALUES (\"" + course + "\", \"" + name + "\", \"" 
+                                            + department + "\", " + year + ");");
                 
             resetForm();
             setup = false;
