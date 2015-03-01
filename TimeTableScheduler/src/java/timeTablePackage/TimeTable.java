@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import toolsPackage.Database;
@@ -30,6 +31,7 @@ public class TimeTable {
     private int suggestedTime = -1;
     
     public static final String HOUR_INDEX = "k";
+    public static final String DAY = "EEEE";
 
     public TimeTable(EventTime startTime, EventTime endTime, Day startDay, Day endDay) {
         this.events = new TimeSlot[Day.numDays][EventTime.numHours];
@@ -52,11 +54,21 @@ public class TimeTable {
      * @param times Times for the event
      * @return True if the event doesn't conflict with existing events.
      */
-    public boolean conflictWithEvents(Day day, EventTime[] times) {
+    public boolean conflictWithEvents(Date date, Time time, int duration) {
         boolean conflict = false;
         
-        for (int i = 0; i < times.length && !conflict; i++) {
-            if (events[day.getIndex()][times[i].getTimeIndex()].hasEvents()) {
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat format = new SimpleDateFormat(HOUR_INDEX);
+        
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        // Set the calendar to monday of the current week
+        cal.setTime(time);
+        int hour = Integer.parseInt(format.format(cal.getTime()));
+        
+        format.applyPattern(DAY);
+        int day = Day.convertToDay(format.format(date)).getIndex();
+        for (int i = 0; i < duration; i++) {
+            if (events[day][hour + i].hasEvents()) {
                 conflict = true;
             }
         }
@@ -73,11 +85,22 @@ public class TimeTable {
      * @param maxPriority Max priority that can be scheduled over
      * @return True if the event doesn't conflict with existing events.
      */
-    public boolean conflictWithEvents(Day day, EventTime[] times, int maxPriority) {
+    public boolean conflictWithEvents(Date date, Time time, int duration, int maxPriority) {
         boolean conflict = false;
         
-        for (int i = 0; i < times.length; i++) {
-            if (events[day.getIndex()][times[i].getTimeIndex()].getTotalPriority() > maxPriority) {
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat format = new SimpleDateFormat(HOUR_INDEX);
+        
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        // Set the calendar to monday of the current week
+        cal.setTime(time);
+        int hour = Integer.parseInt(format.format(cal.getTime()));
+        
+        format.applyPattern(DAY);
+        int day = Day.convertToDay(format.format(date)).getIndex();
+
+        for (int i = 0; i < duration && !conflict; i++) {
+            if (events[day][hour + i].getTotalPriority() < maxPriority) {
                 conflict = true;
             }
         }

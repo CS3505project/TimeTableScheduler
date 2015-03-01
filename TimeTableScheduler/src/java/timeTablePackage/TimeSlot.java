@@ -33,7 +33,7 @@ public class TimeSlot {
      * @return True if an event exists
      */
     public boolean hasEvents() {
-        return events.isEmpty();
+        return totalPriority > 0 || !events.isEmpty();
     }
     
     /**

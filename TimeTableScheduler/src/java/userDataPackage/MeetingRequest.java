@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.EventPriority;
+import timeTablePackage.EventTime;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -78,6 +79,11 @@ public final class MeetingRequest extends UserRequest{
             System.err.println("Error with duration");
             this.duration = 1;
         }
+        
+        if (this.duration >= EventTime.numHours || this.duration <= 0) {
+            this.duration = 1;
+        }
+        
         if (individualID != null) {
             this.groupOrUserId = Validator.escapeJava(individualID);
         } else if (groupID != null) {
@@ -203,7 +209,8 @@ public final class MeetingRequest extends UserRequest{
      * @return True if the meeting was created successfully
      */
     public boolean createMeeting() {
-        if (isValid() && isSetup()) {
+        System.out.println(duration);
+        if (isValid() && isSetup() && !timeTable.conflictWithEvents(date, time, duration)) {
             boolean result = true;
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
