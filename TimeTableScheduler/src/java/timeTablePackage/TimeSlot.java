@@ -147,7 +147,7 @@ public class TimeSlot {
      * @param filter Filter the events displayed
      * @return HTML to print into a table cell
      */
-    public String printDetailedTableCell(EventType filter) {
+    public String printDetailedTableCell(EventType filter, boolean clickable) {
         EventPriority highPriority = EventPriority.MEETING;
         String eventList = "";
         String description = "";
@@ -159,16 +159,23 @@ public class TimeSlot {
                                             ? event.getEventPriority() : highPriority);
             }
         }
-        String html = "<td class=\"animate selectable ";
+        String html = "<td class=\"";
+        
+        if (clickable) {
+            html += "animate selectable";
+        }
+        
         if (eventList.equals("")) {
-            html += ">";
+            html = "<td>";
         } else {
-            html += highPriority.getPriorityName() + " hoverable\"" +
+            html += " " + highPriority.getPriorityName() + " hoverable\"" +
                     " data-description=\"" + description + "\">" ;
         }
-        html += "<div class=\"hidden\""
-                   + " data-date=\"" + date + "\""
-                   + " data-time=\"" + time + "\"></div>";
+        if (clickable) {
+            html += "<div class=\"hidden\""
+                    + " data-date=\"" + date + "\""
+                    + " data-time=\"" + time + "\"></div>";
+        }
         html += eventList + "</td>";
         return html;
     }

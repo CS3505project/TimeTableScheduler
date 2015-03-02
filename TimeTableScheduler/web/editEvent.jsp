@@ -10,9 +10,8 @@
         out.println(output.createHeader());
         
         EditRequest.setValues(request, user);
-        if (!EditRequest.isSetup()) {
+        if (!EditRequest.isFormLoaded()) {
             EditRequest.setup((String)request.getParameter("date"), (String)request.getParameter("time"));
-        } else {
             EditRequest.setDate((String)request.getParameter("date"));
             EditRequest.setTime((String)request.getParameter("time"));
             EditRequest.setDescription((String)request.getParameter("description"));
@@ -26,7 +25,7 @@
         
         EditRequest.setTimeTable(timeTable);
         
-        out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName()));
+        out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName(), true));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="editEvent"></div>

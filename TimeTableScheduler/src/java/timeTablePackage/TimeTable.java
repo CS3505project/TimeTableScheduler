@@ -403,7 +403,7 @@ public class TimeTable {
      * @param hideDetail Hide the detail when displaying the timeslot
      * @return Timetable as HTML code 
      */
-    public String createTimeTable(EventType filterEvent, boolean hideDetail) {
+    public String createTimeTable(EventType filterEvent, boolean hideDetail, boolean clickable) {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
@@ -420,7 +420,7 @@ public class TimeTable {
                     timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
                 }
                 else {
-                    timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent);
+                    timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent, clickable);
                 }
             }
             //end tags 

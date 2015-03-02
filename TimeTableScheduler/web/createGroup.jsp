@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="request" />
+<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="session" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {  

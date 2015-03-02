@@ -88,12 +88,13 @@ public final class EditRequest extends UserRequest{
     public void setup(String date, String time) {
         this.setup = true;
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
             dateFormat.parse(date);
             this.date = java.sql.Date.valueOf(date);
         } catch (Exception ex) {
             this.setup = false;
+            System.out.println("her 1");
         }
         
         dateFormat.applyPattern(TIME_FORMAT);
@@ -102,8 +103,11 @@ public final class EditRequest extends UserRequest{
             this.time = Time.valueOf(time);
         } catch (Exception ex) {
             this.setup = false;
+            System.out.println("her 2");
         }
+        System.out.println("her 3");
         if (setup) {
+            System.out.println("herer");
             dateFormat.applyPattern("k");
             int timeIndex = Integer.parseInt(dateFormat.format(this.time));
             dateFormat.applyPattern("EEEE");
