@@ -61,24 +61,19 @@ $(document).ready(function(){
     ////////////////////////////////////////////////////////////
     //Get User's Unread Messages with AJAX and display red box//
     ////////////////////////////////////////////////////////////
-    var numMessages = 22; //replace with AJAX request
-    
-    /*
-    $.get('UserMessagesServlet',{userID : "get the userID somehow"},
-        function(response){ // on sucess
-                numMessages = response;
-        }.fail(function(){
-            alert("Request failed.");
-        })
-    );*/
 
-    
-    if(numMessages > 0 && numMessages < 20){
-        $("#msg").append("<span class='unread'>"+ numMessages +"</span>");
-    }
-    else{
-        $("#msg").append("<span class='unread'>20+</span>");
-    }
+    //get the number of messages from the servlet
+    $.get('UserMessageServlet',{userID:"1"},function(data, textStatus) {
+        numMessages = data;
+        if(numMessages > 0){
+            if(numMessages <=20){
+                $("#msg").append("<span class='unread'>" + numMessages + "</span>");
+            }else{
+                $("#msg").append("<span class='unread'>20+</span>");
+            }
+        }
+    }, "text");
+
     ///////////////////////////////////////////////////////////
     //set flashing animation for clicked animated class nodes//
     ///////////////////////////////////////////////////////////
