@@ -1,16 +1,10 @@
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="PracticalRequest" class="userDataPackage.PracticalRequest" scope="session">
-    <jsp:setProperty name="PracticalRequest" property="*"/>
-</jsp:useBean>
+<jsp:useBean id="PracticalRequest" class="userDataPackage.PracticalRequest" scope="session"/>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
-        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
-            session.setAttribute("PracticalRequest", new userDataPackage.PracticalRequest());
-            session.setAttribute("prevRequest", request.getRequestURI());
-        }
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
@@ -61,11 +55,12 @@
 <%
         if (PracticalRequest.numErrors() > 0) {
             out.println(output.displayErrors(PracticalRequest.numErrors(), PracticalRequest.getErrors()));
-        } else if (PracticalRequest.checkConflict()) {
+        } else if(PracticalRequest.isValid() && PracticalRequest.checkConflict() ) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
-        }
-        if(PracticalRequest.createPractical()) {
-            response.sendRedirect("index.jsp");
+        } else {
+            if (PracticalRequest.createPractical()) {
+                response.sendRedirect("index.jsp");
+            } 
         }
         out.println(output.createFooter());
     } else {

@@ -2,12 +2,7 @@
 <jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="request" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
-    if (user != null) {
-        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
-            session.setAttribute("GroupRequest", new userDataPackage.GroupRequest());
-            session.setAttribute("prevRequest", request.getRequestURI());
-        }
-        
+    if (user != null) {  
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         

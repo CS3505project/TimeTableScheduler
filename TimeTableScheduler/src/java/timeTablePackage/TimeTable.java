@@ -130,7 +130,7 @@ public class TimeTable {
         int day = Day.convertToDay(format.format(date)).getIndex();
 
         for (int i = 0; i < duration && !conflict; i++) {
-            if (events[day][hour + i].getTotalPriority() < maxPriority) {
+            if (events[day][hour + i].getTotalPriority() >= maxPriority) {
                 conflict = true;
             }
         }

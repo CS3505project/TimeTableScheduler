@@ -1,16 +1,11 @@
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="LectureRequest" class="userDataPackage.LectureRequest" scope="session">
-    <jsp:setProperty name="LectureRequest" property="*"/>
-</jsp:useBean>
+<jsp:useBean id="LectureRequest" class="userDataPackage.LectureRequest" scope="session"/>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
-        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
-            session.setAttribute("LectureRequest", new userDataPackage.LectureRequest());
-            session.setAttribute("prevRequest", request.getRequestURI());
-        }
+        
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
@@ -62,11 +57,12 @@
 <%
         if (LectureRequest.numErrors() > 0) {
             out.println(output.displayErrors(LectureRequest.numErrors(), LectureRequest.getErrors()));
-        } else if (LectureRequest.checkConflict()) {
+        } else if(LectureRequest.isValid() && LectureRequest.checkConflict() ) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
-        }
-        if(LectureRequest.createLecture()) {
-            response.sendRedirect("index.jsp");
+        } else {
+            if (LectureRequest.createLecture()) {
+                response.sendRedirect("index.jsp");
+            } 
         }
         out.println(output.createFooter());
     } else {

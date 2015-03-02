@@ -2,9 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
-    if (user != null) {
-        session.setAttribute("prevRequest", request.getRequestURI());
-        
+    if (user != null) {        
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
