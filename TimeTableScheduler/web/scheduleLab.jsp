@@ -1,7 +1,7 @@
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="PracticalRequest" class="userDataPackage.PracticalRequest" scope="session"/>
+<jsp:useBean id="PracticalRequest" class="userDataPackage.PracticalRequest" scope="session" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
@@ -13,7 +13,6 @@
             PracticalRequest.setup((String)request.getParameter("moduleCode"),
                                    (String)request.getParameter("duration"),
                                    (String)request.getParameter("semester"));
-            
         } else {
             PracticalRequest.setStartDate((String)request.getParameter("startDate"));
             PracticalRequest.setTime((String)request.getParameter("time"));
@@ -41,18 +40,19 @@
         </hgroup>
 
         <form id="createMeetingForm" action="scheduleLab.jsp" method="GET">
-                <label for="startDate">Start Date:</label>
-        	<input type="date" name="startDate" id="startDate" value="<%= PracticalRequest.getStartDate() %>" required="required"><br>
-                <label for="time">Time:</label>
-        	<input type="text" name="time" id="time" value="<%= PracticalRequest.getTime() %>" required="required"><br>
-                <label for="endDate">End Date:</label>
-        	<input type="date" name="endDate" id="endDate" value="<%= PracticalRequest.getEndDate() %>" required="required"><br>
-                <label for="venue">Venue:</label>
-        	<input type="text" name="venue" id="venue" value="<%= PracticalRequest.getVenue() %>" required="required"><br>
-        	<label for="submit">Submit:</label>
-        	<input type="submit" id="submit" value="Next" class="animate">
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="startDate" id="startDate" value="<%= PracticalRequest.getStartDate() %>" required="required"><br>
+            <label for="time">Time:</label>
+            <input type="text" name="time" id="time" value="<%= PracticalRequest.getTime() %>" required="required"><br>
+            <label for="endDate">End Date:</label>
+            <input type="date" name="endDate" id="endDate" value="<%= PracticalRequest.getEndDate() %>" required="required"><br>
+            <label for="venue">Venue:</label>
+            <input type="text" name="venue" id="venue" value="<%= PracticalRequest.getVenue() %>" required="required"><br>
+            <label for="submit">Submit:</label>
+            <input type="submit" id="submit" value="Next" class="animate">
         </form>
 <%
+        System.out.println("valid" +PracticalRequest.isValid());
         if (PracticalRequest.numErrors() > 0) {
             out.println(output.displayErrors(PracticalRequest.numErrors(), PracticalRequest.getErrors()));
         } else if(PracticalRequest.isValid() && PracticalRequest.checkConflict() ) {

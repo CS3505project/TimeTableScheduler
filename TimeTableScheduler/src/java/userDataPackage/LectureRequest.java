@@ -262,7 +262,27 @@ public class LectureRequest extends UserRequest{
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("");
+            ResultSet groupResult = db.select("SELECT weekday, time, 5 'priority' " +
+                                            "FROM Lecture " +
+                                            "WHERE moduleCode = 'cs3305' " +
+                                            "UNION " +
+                                            "SELECT weekday, time, 4 'priority' " +
+                                            "FROM Practical " +
+                                            "WHERE moduleCode = 'cs3305' " +
+                                            "UNION " +
+                                            "SELECT WEEKDAY(date) as 'weekday', time, priority " +
+                                            "FROM Meeting JOIN HasMeeting " +
+                                            "ON mid = meetingid " +
+                                            "WHERE uid IN " +
+                                            "	(SELECT uid " +
+                                            "	FROM InGroup " +
+                                            "	WHERE	gid IN " +
+                                            "		(SELECT gid " +
+                                            "		FROM GroupTakesCourse " +
+                                            "		WHERE courseid IN " +
+                                            "			(SELECT courseid " +
+                                            "			FROM ModuleInCourse " +
+                                            "			WHERE moduleCode = 'cs3305')));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }

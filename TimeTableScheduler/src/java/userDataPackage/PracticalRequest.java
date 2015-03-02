@@ -68,7 +68,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.MEETING.getPriority());
     }
     
     private void resetForm() {
@@ -90,11 +90,8 @@ public class PracticalRequest extends UserRequest{
         try {
             this.semester = Integer.parseInt(semester);
         } catch (Exception ex) {
-            System.err.println("Error with duration");
-        }
-        
-        if (this.semester != 1 || this.semester != 2) {
-            this.setup = false;
+            System.err.println("Error with semester");
+            this.semester = 1;
         }
         
         try {
@@ -224,7 +221,8 @@ public class PracticalRequest extends UserRequest{
         print();
         if (isValid() && isSetup()) {
             boolean result = false;
-            System.out.println("here");
+            
+            System.out.println("here exe");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String meetingDate = format.format(startDate);
@@ -262,7 +260,15 @@ public class PracticalRequest extends UserRequest{
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("");
+            ResultSet groupResult = db.select("(SELECT uid " +
+                                            "	FROM InGroup " +
+                                            "	WHERE	gid IN " +
+                                            "		(SELECT gid " +
+                                            "		FROM GroupTakesCourse " +
+                                            "		WHERE courseid IN " +
+                                            "			(SELECT courseid " +
+                                            "			FROM ModuleInCourse " +
+                                            "			WHERE moduleCode = 'cs3305')));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }
