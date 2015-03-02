@@ -56,7 +56,7 @@
         System.out.println("valid" +PracticalRequest.isValid());
         if (PracticalRequest.numErrors() > 0) {
             out.println(output.displayErrors(PracticalRequest.numErrors(), PracticalRequest.getErrors()));
-        } else if(PracticalRequest.isValid() && PracticalRequest.checkConflict() ) {
+        } else if(PracticalRequest.isValid() && PracticalRequest.checkConflict()) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
         } else {
             if (PracticalRequest.createPractical()) {
