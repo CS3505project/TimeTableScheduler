@@ -7,16 +7,12 @@ package timeTablePackage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import toolsPackage.Database;
 
 /**

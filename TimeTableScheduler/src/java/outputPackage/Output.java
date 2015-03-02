@@ -11,18 +11,13 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import timeTablePackage.Day;
 import timeTablePackage.EventPriority;
-import timeTablePackage.EventTime;
 import timeTablePackage.EventType;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
@@ -103,13 +98,11 @@ public class Output {
                 
         // Print dates of the current week starting on Monday
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String startDate = "";
-        String endDate = "";
 
         cal.add(Calendar.DATE, -7);
-        startDate = df.format(cal.getTime());
+        String startDate = df.format(cal.getTime());
         cal.add(Calendar.DATE, 14);
-        endDate = df.format(cal.getTime());
+        String endDate = df.format(cal.getTime());
         cal.add(Calendar.DATE, -7);
                 
         // reconstruct url to and add attribute to it

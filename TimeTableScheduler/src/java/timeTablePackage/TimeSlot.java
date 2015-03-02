@@ -36,6 +36,10 @@ public class TimeSlot {
         return totalPriority > 0 || !events.isEmpty();
     }
     
+    public List<Event> getEvents() {
+        return events;
+    }
+    
     /**
      * Adds an event to this timeslot
      * @param event The event
