@@ -68,6 +68,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
+        print();
         return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     

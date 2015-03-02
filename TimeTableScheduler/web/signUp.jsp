@@ -45,7 +45,7 @@
                 && ((userPackage.User)session.getAttribute("user")).getUserType().equals(userPackage.UserType.ADMIN)) {
                     SignUpRequest.setUserType(UserType.ADMIN);
 %>
-            <div>
+            <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Admin ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
@@ -74,7 +74,7 @@
                 <li><a href="signUp.jsp?type=student">Student</a></li>
                 <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
             </ul>
-            <div>
+            <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Lecturer ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
@@ -101,7 +101,7 @@
                 <li><a href="signUp.jsp?type=student">Student</a></li>
                 <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
             </ul>
-            <div>
+            <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
                     <label for="id">Student ID:</label> 
                     <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
