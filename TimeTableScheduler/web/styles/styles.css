@@ -80,6 +80,7 @@ body>nav{
     margin-bottom: -9000px;
 }
 section.main{
+    overflow-y:auto;
     position: fixed;
     width: 100%;
     min-width: 400px;
