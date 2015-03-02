@@ -167,7 +167,7 @@ public class Output {
      * @return HTML list of groups
      */
     public String createGroupList(String userid) {
-        String groups = "<div><ul>";
+        String groups = "<h1 class='banner'>Your Groups</h1><div><ul>";
         
         Database db = Database.getSetupDatabase();
         
