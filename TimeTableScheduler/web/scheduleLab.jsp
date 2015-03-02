@@ -34,6 +34,7 @@
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="scheduleLab"></div>
+        <div class="hidden" name="context" value="scheduleLab" data-userId="<%= user.getUserID() %>"></div>
         <hgroup class="animate">
         	<h1>Add Practical</h1>
         	<h2>Step 2 of 2</h2>

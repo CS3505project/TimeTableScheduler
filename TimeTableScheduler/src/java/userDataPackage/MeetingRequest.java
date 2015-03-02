@@ -205,7 +205,6 @@ public final class MeetingRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        System.out.println(duration);
         return timeTable.conflictWithEvents(date, time, duration, EventPriority.MEETING.getPriority());
     }
     

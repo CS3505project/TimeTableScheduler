@@ -68,7 +68,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.MEETING.getPriority());
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
     private void resetForm() {
