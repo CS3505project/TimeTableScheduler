@@ -11,6 +11,7 @@
         	<h2>Step 1 of 2</h2>
         </hgroup>
         <form id="createMeetingForm" action="scheduleLab.jsp" method="GET">
+                <label for="moduleCode">Module</label>
                 <% out.println(output.createModuleDropDown(user.getUserID())); %>
                 <label for="duration">Duration:</label>
         	<input type="duration" name="duration" id="date" required="required"><br>

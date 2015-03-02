@@ -159,14 +159,16 @@ public class TimeSlot {
                                             ? event.getEventPriority() : highPriority);
             }
         }
-        String html = "<td";
+        String html = "<td class=\"animate selectable ";
         if (eventList.equals("")) {
             html += ">";
         } else {
-            html += " data-description=\"" + description 
-                    + "\" class=\"" + highPriority.getPriorityName() + " hoverable\">";
+            html += highPriority.getPriorityName() + " hoverable\"" +
+                    " data-description=\"" + description + "\">" ;
         }
-        
+        html += "<div class=\"hidden\""
+                   + " data-date=\"" + date + "\""
+                   + " data-time=\"" + time + "\"></div>";
         html += eventList + "</td>";
         return html;
     }

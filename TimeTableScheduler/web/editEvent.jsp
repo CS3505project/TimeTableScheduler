@@ -22,7 +22,7 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(EditRequest.getUsersToMeet());
+        timeTable.initialiseTimeTable(user.getUserID());
         
         EditRequest.setTimeTable(timeTable);
         
@@ -57,7 +57,7 @@
         } else if(EditRequest.isValid() && EditRequest.checkConflict() ) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
         } else {
-            if (EditRequest.createMeeting()) {
+            if (EditRequest.editEvent()) {
                 response.sendRedirect("index.jsp");
             } 
         }

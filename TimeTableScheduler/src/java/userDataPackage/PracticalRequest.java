@@ -73,7 +73,7 @@ public class PracticalRequest extends UserRequest{
     
     private void resetForm() {
         startDate = new java.util.Date();
-        endDate = new java.util.Date();//initialise to todays date
+        endDate = new java.util.Date(); // initialise to todays date
         venue = "";
         time = null;
         usersInvolved = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class PracticalRequest extends UserRequest{
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) {System.out.println("error: 8");
+     public void setup(String moduleCode, String duration, String semester) { System.out.println("error: 8");
         this.setup = true;
         
         try {
@@ -243,7 +243,7 @@ public class PracticalRequest extends UserRequest{
                                     + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
                                     + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
 
-                //To-Do add to groups 
+                //To-Do add to groups
                 
                 // increment to the next time slot if the meeting is longer 
                 // than one hour

@@ -291,7 +291,7 @@ public class Output {
                                     "		(SELECT gid " +
                                     "		FROM InGroup " +
                                     "		WHERE uid = " + userid + ") " +
-                                    "			AND grouptype != 'year group';");
+                                    "			AND grouptype != \"" + GroupType.YEAR_GROUP.getName() + "\";");
         try {
             while (result.next()) {
                 finalHTML += "<option value=\"" + result.getString("groupid") + "\">" + result.getString("groupName") + "</option>";
@@ -398,7 +398,7 @@ public class Output {
         Database db = Database.getSetupDatabase();
         
         //TO-DO
-        ResultSet result = db.select("SELECT * FROM Module WHERE ");
+        ResultSet result = db.select("SELECT * FROM Module ");
         try {
             while (result.next()) {
                 finalHTML += "<option value=\"" + result.getString("moduleCode") + "\">"

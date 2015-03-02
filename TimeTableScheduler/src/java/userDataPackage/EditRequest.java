@@ -225,8 +225,8 @@ public final class EditRequest extends UserRequest{
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createMeeting() {        
-        if (isValid() && isSetup()) {
+    public boolean editEvent() {        
+        if (isValid() && isSetup() && isValidEvent(meeting, getUser().getUserID())) {
             boolean result = true;
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -237,18 +237,9 @@ public final class EditRequest extends UserRequest{
             Calendar cal = Calendar.getInstance();
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-                result = result && db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
-                                            + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
-                                            + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
-
-                String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
-                if (!values.equals("")) {
-                    result = result && db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
-                }
-                
-                // increment to the next time slot if the meeting is longer 
-                // than one hour
-                cal.add(Calendar.HOUR, 1);
+            result = result && db.insert("UPDATE Meeting (date, time, room, description, priority, organiser_uid) "
+                                        + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
+                                        + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
             
             resetForm();
             setup = false;
@@ -258,55 +249,5 @@ public final class EditRequest extends UserRequest{
         } else {
             return false;
         }
-    }
-    
-    public void setUsersToMeet() {
-        Database db = Database.getSetupDatabase();
-        try {
-            ResultSet groupResult = db.select("SELECT uid " +
-                                            "FROM Student JOIN User " +
-                                            "ON Student.uid = userid " +
-                                            "WHERE Student.uid IN " +
-                                            "	(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE gid = " + groupOrUserId + ") " +
-                                            "UNION " +
-                                            "SELECT uid " +
-                                            "FROM Lecturer JOIN User " +
-                                            "ON Lecturer.uid = userid " +
-                                            "WHERE Lecturer.uid IN " +
-                                            "	(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE gid = " + groupOrUserId + ");");
-            while (groupResult.next()) {
-            }
-        } catch (SQLException ex) {
-            System.err.println("Problem getting users in meeting.");
-        }
-        db.close();
-    }
-    
-    private String getMeetingInsertValues(int meetingID) {
-        String values = "";
-        //Iterator<String> userIds = usersToMeet.iterator();
-        //while (userIds.hasNext()) {
-      //      values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
-       // }
-        return values;
-    }
-    
-    /**
-     * Join this user to an existing meeting
-     * 
-     * @param meetingID The ID of the meeting to be joined
-     * @return True if joined to the meeting successfully
-     */
-    public boolean joinMeeting(int meetingID) {
-        boolean result = false;
-        if (this.isValid()) {
-            result = insertDbQuery("INSERT INTO HasMeeting (uid, mid) "
-                        + "VALUES (" + getUser().getUserID() + "\", " + meetingID + ");");
-        }
-        return result;
     }
 }
