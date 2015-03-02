@@ -124,7 +124,8 @@ $(document).ready(function(){
     ///////////////////////////////////////////////////////
     //make the selected filter highlited in the filter bar//
     ////////////////////////////////////////////////////////
-    $("ul.filters li a[href='"+page+"']").addClass("selected");
+    var splitByAmpersand = page.split('&');
+    $("ul.filters li a[href='"+splitByAmpersand[0]+"']").addClass("selected");
 
 }); 
 
