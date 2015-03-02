@@ -58,6 +58,27 @@ $(document).ready(function(){
     });
     $("#helpPopup").hide();
     
+    ////////////////////////////////////////////////////////////
+    //Get User's Unread Messages with AJAX and display red box//
+    ////////////////////////////////////////////////////////////
+    var numMessages = 22; //replace with AJAX request
+    
+    /*
+    $.get('UserMessagesServlet',{userID : "get the userID somehow"},
+        function(response){ // on sucess
+                numMessages = response;
+        }.fail(function(){
+            alert("Request failed.");
+        })
+    );*/
+
+    
+    if(numMessages > 0 && numMessages < 20){
+        $("#msg").append("<span class='unread'>"+ numMessages +"</span>");
+    }
+    else{
+        $("#msg").append("<span class='unread'>20+</span>");
+    }
     ///////////////////////////////////////////////////////////
     //set flashing animation for clicked animated class nodes//
     ///////////////////////////////////////////////////////////

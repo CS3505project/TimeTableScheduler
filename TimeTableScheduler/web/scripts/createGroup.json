@@ -1,10 +1,6 @@
 {
-    "name": "donncha",
-    "instructions": "to create a group first you must fill in the name of your/N/ 
-     into the group colume /N/
-     /N/
-     next you must select the type of group you want you group to be from the /N/
-     group type drop down menu eg College work. /N/
-     /N/
-     //finish//
+    "title": "Create a Group",
+    "instructions": "to create a group first you must fill in the name of\n\
+    your into the group colume next you must select the type of group you want\n\
+    you group to be from the group type drop down menu eg College work.finish"
 }

@@ -23,7 +23,7 @@
             <select name="groupType">
                 <% out.println(output.createGroupTypeDropDown()); %>
             </select></div>
-            <div><label for="inGroup">In Group:</label>                
+            <div class="autoHeight"><label for="inGroup">In Group:<span>(Hold the Ctrl key to select multiple items)</span></label>                
             <select multiple="multiple" name="inGroup">
                 <% out.println(output.createIndividualDropDown(user.getUserID())); %>
             </select></div>

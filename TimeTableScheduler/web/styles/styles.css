@@ -536,6 +536,9 @@ form div{
     margin: 4px 0;
     height: 24px;
 }
+form div.autoHeight{
+    height: 72px;
+}
 form div label{
     position: absolute;
     top: 0px;
@@ -562,6 +565,9 @@ input, select{
 select:focus{
     outline: none;
     border: 1px solid #778;
+}
+select[multiple="multiple"]{
+    height: 72px;
 }
 input[type="submit"]{
     background: #48e;
@@ -639,6 +645,17 @@ label{
 label[for="over-priority"]{
     font-size:14px;
     line-height: 22px;
+}
+div.autoHeight label{
+    height: 72px;
+}
+label span{
+    color: #ccd;
+    display: block;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    padding-left: 4px;
 }
 div.login label{
     line-height: 22px;
