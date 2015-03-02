@@ -94,7 +94,7 @@ public class Output {
     }
     
     public String createTimeTableNav(Calendar cal, HttpServletRequest request) {
-        String html = "<ul>";
+        String html = "<ul class='weekSelect'>";
                 
         // Print dates of the current week starting on Monday
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
