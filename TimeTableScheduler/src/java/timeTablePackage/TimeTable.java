@@ -378,6 +378,10 @@ public class TimeTable {
         events[event.getDayOfWeek()][event.getHourIndex()].addEvent(event);
     }
     
+    public List<Event> getEvents(int dayIndex, int timeIndex) {
+        return events[dayIndex][timeIndex].getEvents();
+    }
+    
     /**
      * Inserts a priority into the timeslots.
      * 

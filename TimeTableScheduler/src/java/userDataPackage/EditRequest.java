@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import timeTablePackage.Day;
 import timeTablePackage.Event;
 import timeTablePackage.EventPriority;
 import timeTablePackage.EventTime;
+import timeTablePackage.Meeting;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -29,11 +31,8 @@ public final class EditRequest extends UserRequest{
     private Time time;
     private String description = "";
     private String venue = "";
-    
-    private int duration;
-    private String groupOrUserId;
-    private List<String> usersToMeet = new ArrayList<String>();
-    private String meetingType;
+    private String meetingId = "";
+    private Meeting meeting;
     private TimeTable timeTable;
     
     private boolean setup = false;
@@ -48,8 +47,8 @@ public final class EditRequest extends UserRequest{
         date = new Date();//initialise to todays date
         venue = "";
         time = null;
+        meetingId = "";
         description = "";
-        usersToMeet = new ArrayList<String>();
     }
      
     public boolean isSetup() {
@@ -82,16 +81,8 @@ public final class EditRequest extends UserRequest{
         venue = "";
         description = "";
         time = null;
-        usersToMeet = new ArrayList<String>();
+        meetingId = "";
         clearErrors();
-    }
-    
-    public List<String> getUsersToMeet() {
-        return usersToMeet;
-    }
-    
-    public int getDuration() {
-        return duration;
     }
     
     public void setup(String date, String time) {
@@ -105,12 +96,26 @@ public final class EditRequest extends UserRequest{
             this.setup = false;
         }
         
-        dateFormat.applyPattern("hh:mm:ss");
+        dateFormat.applyPattern(TIME_FORMAT);
         try {
             dateFormat.parse(time);
             this.time = Time.valueOf(time);
         } catch (Exception ex) {
             this.setup = false;
+        }
+        if (setup) {
+            dateFormat.applyPattern("k");
+            int timeIndex = Integer.parseInt(dateFormat.format(this.time));
+            dateFormat.applyPattern("EEEE");
+            int dayIndex = Day.convertToDay(dateFormat.format(this.date)).getIndex();
+            // store one event
+            meeting = (Meeting)timeTable.getEvents(dayIndex, timeIndex).get(0);
+            
+            this.date = meeting.getDate();
+            this.description = meeting.getDescription();
+            this.time = meeting.getTime();
+            this.meetingId = meeting.getEventID();
+            this.venue = meeting.getLocation();
         }
     }
     
@@ -212,8 +217,7 @@ public final class EditRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        System.out.println(duration);
-        return timeTable.conflictWithEvents(date, time, duration, EventPriority.MEETING.getPriority());
+        return timeTable.conflictWithEvents(date, time, 1, EventPriority.MEETING.getPriority());
     }
     
     /**
@@ -233,7 +237,6 @@ public final class EditRequest extends UserRequest{
             Calendar cal = Calendar.getInstance();
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-            for (int i = 0; i < duration; i++) {  
                 result = result && db.insert("INSERT INTO Meeting (date, time, room, description, priority, organiser_uid) "
                                             + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
                                             + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
@@ -246,7 +249,6 @@ public final class EditRequest extends UserRequest{
                 // increment to the next time slot if the meeting is longer 
                 // than one hour
                 cal.add(Calendar.HOUR, 1);
-            }
             
             resetForm();
             setup = false;
@@ -261,34 +263,22 @@ public final class EditRequest extends UserRequest{
     public void setUsersToMeet() {
         Database db = Database.getSetupDatabase();
         try {
-            switch (this.meetingType) {
-                case "group":
-                    ResultSet groupResult = db.select("SELECT uid " +
-                                                    "FROM Student JOIN User " +
-                                                    "ON Student.uid = userid " +
-                                                    "WHERE Student.uid IN " +
-                                                    "	(SELECT uid " +
-                                                    "	FROM InGroup " +
-                                                    "	WHERE gid = " + groupOrUserId + ") " +
-                                                    "UNION " +
-                                                    "SELECT uid " +
-                                                    "FROM Lecturer JOIN User " +
-                                                    "ON Lecturer.uid = userid " +
-                                                    "WHERE Lecturer.uid IN " +
-                                                    "	(SELECT uid " +
-                                                    "	FROM InGroup " +
-                                                    "	WHERE gid = " + groupOrUserId + ");");
-                    while (groupResult.next()) {
-                        usersToMeet.add(groupResult.getString("uid"));
-                    }
-                    break;
-                case "individual":
-                    usersToMeet.add(groupOrUserId);
-                    usersToMeet.add(getUser().getUserID());
-                    break;
-                default:
-                    usersToMeet.add(getUser().getUserID());
-                    break;
+            ResultSet groupResult = db.select("SELECT uid " +
+                                            "FROM Student JOIN User " +
+                                            "ON Student.uid = userid " +
+                                            "WHERE Student.uid IN " +
+                                            "	(SELECT uid " +
+                                            "	FROM InGroup " +
+                                            "	WHERE gid = " + groupOrUserId + ") " +
+                                            "UNION " +
+                                            "SELECT uid " +
+                                            "FROM Lecturer JOIN User " +
+                                            "ON Lecturer.uid = userid " +
+                                            "WHERE Lecturer.uid IN " +
+                                            "	(SELECT uid " +
+                                            "	FROM InGroup " +
+                                            "	WHERE gid = " + groupOrUserId + ");");
+            while (groupResult.next()) {
             }
         } catch (SQLException ex) {
             System.err.println("Problem getting users in meeting.");
@@ -298,10 +288,10 @@ public final class EditRequest extends UserRequest{
     
     private String getMeetingInsertValues(int meetingID) {
         String values = "";
-        Iterator<String> userIds = usersToMeet.iterator();
-        while (userIds.hasNext()) {
-            values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
-        }
+        //Iterator<String> userIds = usersToMeet.iterator();
+        //while (userIds.hasNext()) {
+      //      values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
+       // }
         return values;
     }
     
