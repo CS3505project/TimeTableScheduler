@@ -106,23 +106,36 @@ public class Output {
         String startDate = "";
         String endDate = "";
 
+        cal.add(Calendar.DATE, -7);
         startDate = df.format(cal.getTime());
-        cal.add(Calendar.DATE, 7);
+        cal.add(Calendar.DATE, 14);
         endDate = df.format(cal.getTime());
-        
+        cal.add(Calendar.DATE, -7);
+                
         // reconstruct url to and add attribute to it
         StringBuffer startUrl = request.getRequestURL().append("?");
         Map<String, String[]> paramMap = request.getParameterMap();
         for (String key : paramMap.keySet()) {
             for (String value : paramMap.get(key)) {
-                startUrl.append(key).append("=").append(value).append("&");
+                if (!key.equals("displayDate")) {
+                    startUrl.append(key).append("=").append(value).append("&");
+                }
             }
         }
         
-        html += "<li><a href=\"" + startUrl.toString() + "&date=" + startDate + "\">Last Week</a></li>";
-        html += "<li><a href=\"" + startUrl.toString() + "&date=" + endDate + "\">Next Week</a></li></ul>";
+        html += "<li><a href=\"" + startUrl.toString() + "displayDate=" + startDate + "\">Last Week</a></li>";
+        html += "<li><a href=\"" + startUrl.toString() + "displayDate=" + endDate + "\">Next Week</a></li></ul>";
         
         return html;
+    }
+    
+    public String displayErrors(int numErrors, String errorMessage) {
+        return "<div class=\"errors\">" +
+                    "<h1><span>" + numErrors + "</span></h1>" +
+                    "<p>" +
+                        errorMessage +
+                    "</p>" +
+               "</div>";
     }
     
     /**

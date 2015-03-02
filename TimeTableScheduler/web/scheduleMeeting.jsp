@@ -4,9 +4,13 @@
 <jsp:useBean id="MeetingRequest" class="userDataPackage.MeetingRequest" scope="session">
     <jsp:setProperty name="MeetingRequest" property="*"/>
 </jsp:useBean>
-<%
+<%    
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
+        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
+            session.setAttribute("MeetingRequest", new userDataPackage.MeetingRequest());
+            session.setAttribute("prevRequest", request.getRequestURI());
+        }
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
@@ -25,9 +29,11 @@
         }
         
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
-        timeTable.setDisplayWeek((String)request.getParameter("date"));
-        timeTable.initialiseTimeTable(MeetingRequest.getUsersToMeet());
+        timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
+        timeTable.initialiseTimeTable(MeetingRequest.getUsersToMeet());
+        
+        MeetingRequest.setTimeTable(timeTable);
         
         out.println(output.createSuggestedTimeTable(timeTable,
                                                     MeetingRequest.getDuration(),
@@ -59,19 +65,16 @@
         	<input type="submit" id="submit" value="Next" class="animate">
                 </div>
         </form>
-        <% if (MeetingRequest.numErrors() > 0) { %>
-            <div class="errors">
-                <h1><span><% out.println(MeetingRequest.numErrors()); %></span></h1>
-                <p>
-                    <% out.println(MeetingRequest.getErrors()); %>
-                </p>
-            </div>
-<%
+<%      
+        if (MeetingRequest.numErrors() > 0) {
+            out.println(output.displayErrors(MeetingRequest.numErrors(), MeetingRequest.getErrors()));
+        } else if (MeetingRequest.isFormLoaded() && MeetingRequest.checkConflict()) {
+            out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
         }
-        
         if(MeetingRequest.createMeeting()) {
             response.sendRedirect("index.jsp");
         }
+        MeetingRequest.setFormLoaded(true);
         out.println(output.createFooter());
         
     } else {

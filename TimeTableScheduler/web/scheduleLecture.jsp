@@ -7,6 +7,10 @@
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
+        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
+            session.setAttribute("LectureRequest", new userDataPackage.LectureRequest());
+            session.setAttribute("prevRequest", request.getRequestURI());
+        }
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
@@ -24,9 +28,11 @@
         }
         
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
-        timeTable.setDisplayWeek((String)request.getParameter("date"));
-        timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        timeTable.setDisplayWeek((String)request.getParameter("displayDate")); 
         timeTable.setupTimeSlots();
+        timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        
+        LectureRequest.setTimeTable(timeTable);
         
         out.println(output.createSuggestedTimeTable(timeTable,
                                                     LectureRequest.getDuration(),
@@ -52,19 +58,16 @@
         	<label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next" class="animate">
         </form>
-        <p>
             <%-- print errors and comit valid values to database --%>
-            <%
-                out.println(LectureRequest.getErrors());
-                if(LectureRequest.createLecture()) {
-                    System.out.println("redirect here");
-                    response.sendRedirect("index.jsp");
-                } else {
-                    out.println("Unable to create lecture");
-                }
-            %>
-        </p>
-    <%
+<%
+        if (LectureRequest.numErrors() > 0) {
+            out.println(output.displayErrors(LectureRequest.numErrors(), LectureRequest.getErrors()));
+        } else if (LectureRequest.checkConflict()) {
+            out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
+        }
+        if(LectureRequest.createLecture()) {
+            response.sendRedirect("index.jsp");
+        }
         out.println(output.createFooter());
     } else {
         

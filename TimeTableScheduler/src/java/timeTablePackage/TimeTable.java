@@ -56,13 +56,19 @@ public class TimeTable {
     public void setDisplayWeek(String displayDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            dateFormat.parse(displayDate);
-            java.sql.Date date = java.sql.Date.valueOf(dateFormat.format(displayDate));
-            this.displayDate = date.toString();
-            calendar.setTime(date);
+            if (displayDate != null) {
+                dateFormat.parse(displayDate);
+                Date date = dateFormat.parse(displayDate);
+                calendar.setTime(date);
+            } else {
+                System.err.println("Setting to current date");
+                calendar.setTime(new Date());
+            }
         } catch (ParseException ex) {
             System.err.println("Setting to current date");
             calendar.setTime(new Date());
+        } finally {
+            this.displayDate = dateFormat.format(calendar.getTime());
         }
     }
     
@@ -352,7 +358,7 @@ public class TimeTable {
     /**
      * Set ups the timeslot matrix to hold empty TimeSlot objects
      */
-    public void setupTimeSlots() {        
+    public void setupTimeSlots() {  
 
         // Print dates of the current week starting on Monday
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -429,6 +435,7 @@ public class TimeTable {
         startDate = df.format(calendar.getTime());
         calendar.add(Calendar.DATE, 6);
         endDate = df.format(calendar.getTime());
+        calendar.add(Calendar.DATE, -6);
 
         timetable += "<caption>" + startDate + " to " + endDate + "</caption>";
         timetable += "</table>";

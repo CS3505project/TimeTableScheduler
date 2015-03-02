@@ -3,13 +3,20 @@
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
+        if (!((String)session.getAttribute("prevRequest")).equals(request.getRequestURI())) {
+            session.setAttribute("GroupRequest", new userDataPackage.GroupRequest());
+            session.setAttribute("prevRequest", request.getRequestURI());
+        }
+        
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
         GroupRequest.setValues(request, user);
-        GroupRequest.setGroupName((String)request.getParameter("groupName"));
-        GroupRequest.setGroupType((String)request.getParameter("groupType"));
-        GroupRequest.setUsersInGroup((String[])request.getParameterValues("inGroup"));
+        if (GroupRequest.isFormLoaded()) {
+            GroupRequest.setGroupName((String)request.getParameter("groupName"));
+            GroupRequest.setGroupType((String)request.getParameter("groupType"));
+            GroupRequest.setUsersInGroup((String[])request.getParameterValues("inGroup"));
+        }
 %>
         <hgroup>
         	<h1>Create Group</h1>

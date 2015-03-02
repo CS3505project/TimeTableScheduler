@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.List;
 import timeTablePackage.Day;
 import static timeTablePackage.Event.DAY;
+import timeTablePackage.EventPriority;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -33,6 +34,7 @@ public class PracticalRequest extends UserRequest{
     private int duration;
     private String moduleCode;
     private List<String> usersInvolved = new ArrayList<String>();
+    private TimeTable timeTable;
     
     private boolean setup = false;
     
@@ -59,6 +61,14 @@ public class PracticalRequest extends UserRequest{
     
     public List<String> getUsersInvolved() {
         return usersInvolved;
+    }
+    
+    public void setTimeTable(TimeTable timeTable) {
+        this.timeTable = timeTable;
+    }
+    
+    public boolean checkConflict() {
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
     private void resetForm() {

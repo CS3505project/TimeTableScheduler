@@ -31,6 +31,7 @@ public final class MeetingRequest extends UserRequest{
     private String groupOrUserId;
     private List<String> usersToMeet = new ArrayList<String>();
     private String meetingType;
+    private TimeTable timeTable;
     
     private boolean setup = false;
     
@@ -52,6 +53,10 @@ public final class MeetingRequest extends UserRequest{
         return setup;
     }
     
+    public void setTimeTable(TimeTable timeTable) {
+        this.timeTable = timeTable;
+    }
+     
     private void resetForm() {
         date = new Date();
         venue = "";
@@ -199,13 +204,16 @@ public final class MeetingRequest extends UserRequest{
         return Validator.unescapeJava(description);
     }
     
+    public boolean checkConflict() {
+        return timeTable.conflictWithEvents(date, time, duration, EventPriority.MEETING.getPriority());
+    }
+    
     /**
      * Creates a meeting and inserts it into the database
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createMeeting() {
-        System.out.println(duration);
+    public boolean createMeeting() {        
         if (isValid() && isSetup()) {
             boolean result = true;
             
