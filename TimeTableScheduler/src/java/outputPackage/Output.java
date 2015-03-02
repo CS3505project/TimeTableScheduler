@@ -10,8 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,6 +96,33 @@ public class Output {
         String finalHTML = "";
         finalHTML += fileToString("logout.html");
         return finalHTML;
+    }
+    
+    public String createTimeTableNav(Calendar cal, HttpServletRequest request) {
+        String html = "<ul>";
+                
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String startDate = "";
+        String endDate = "";
+
+        startDate = df.format(cal.getTime());
+        cal.add(Calendar.DATE, 7);
+        endDate = df.format(cal.getTime());
+        
+        // reconstruct url to and add attribute to it
+        StringBuffer startUrl = request.getRequestURL().append("?");
+        Map<String, String[]> paramMap = request.getParameterMap();
+        for (String key : paramMap.keySet()) {
+            for (String value : paramMap.get(key)) {
+                startUrl.append(key).append("=").append(value).append("&");
+            }
+        }
+        
+        html += "<li><a href=\"" + startUrl.toString() + "&date=" + startDate + "\">Last Week</a></li>";
+        html += "<li><a href=\"" + startUrl.toString() + "&date=" + endDate + "\">Next Week</a></li></ul>";
+        
+        return html;
     }
     
     /**
@@ -435,11 +466,9 @@ public class Output {
      * @param filter Filter events to display
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(String userID, String filter){
+    public String createUserTimeTable(TimeTable timeTable, String filter){
         String finalHTML = "";
         
-        TimeTable timetable = TimeTable.getPreSetTimeTable();
-        timetable.initialiseTimeTable(userID);
         finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable
         finalHTML += "<ul class=\"filters\">" +
@@ -448,7 +477,7 @@ public class Output {
                          "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
                          "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
                      "</ul>"; 
-        finalHTML += timetable.createTimeTable(EventType.getEventType(filter), false); 
+        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), false); 
         
         return finalHTML;
     }

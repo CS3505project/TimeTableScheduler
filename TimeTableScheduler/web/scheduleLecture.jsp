@@ -1,3 +1,4 @@
+<%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="LectureRequest" class="userDataPackage.LectureRequest" scope="session">
@@ -22,10 +23,16 @@
             LectureRequest.setEndDate((String)request.getParameter("endDate"));
         }
         
-        out.println(output.createSuggestedTimeTable(LectureRequest.getTimeTable(),
+        TimeTable timeTable = TimeTable.getPreSetTimeTable();
+        timeTable.setDisplayWeek((String)request.getParameter("date"));
+        timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        timeTable.setupTimeSlots();
+        
+        out.println(output.createSuggestedTimeTable(timeTable,
                                                     LectureRequest.getDuration(),
                                                     EventPriority.MEETING.getPriority(),
                                                     true));
+        out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="scheduleMeeting"></div>
         <hgroup class="animate">

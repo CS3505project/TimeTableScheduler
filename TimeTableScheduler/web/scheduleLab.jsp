@@ -1,3 +1,4 @@
+<%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="PracticalRequest" class="userDataPackage.PracticalRequest" scope="session">
@@ -22,12 +23,18 @@
             PracticalRequest.setEndDate((String)request.getParameter("endDate"));
         }
         
-        out.println(output.createSuggestedTimeTable(PracticalRequest.getTimeTable(),
+        TimeTable timeTable = TimeTable.getPreSetTimeTable();
+        timeTable.setDisplayWeek((String)request.getParameter("date"));
+        timeTable.initialiseTimeTable(PracticalRequest.getUsersInvolved());
+        timeTable.setupTimeSlots();
+        
+        out.println(output.createSuggestedTimeTable(timeTable,
                                                     PracticalRequest.getDuration(),
                                                     EventPriority.MEETING.getPriority(),
                                                     true));
+        out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
-        <div class="hidden" name="context" value="scheduleMeeting"></div>
+        <div class="hidden" name="context" value="scheduleLab"></div>
         <hgroup class="animate">
         	<h1>Add Practical</h1>
         	<h2>Step 2 of 2</h2>

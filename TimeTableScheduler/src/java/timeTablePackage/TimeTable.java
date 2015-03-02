@@ -7,11 +7,16 @@ package timeTablePackage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import toolsPackage.Database;
 
 /**
@@ -27,6 +32,9 @@ public class TimeTable {
     private Day startDay;
     private Day endDay;
     
+    private Calendar calendar = Calendar.getInstance(Locale.FRANCE);
+    private String displayDate;
+    
     private int suggestedDay = -1;
     private int suggestedTime = -1;
     
@@ -39,11 +47,27 @@ public class TimeTable {
         this.endTime = endTime;
         this.startDay = startDay;
         this.endDay = endDay;
-        setupTimeSlots();
     }
     
     public static TimeTable getPreSetTimeTable() {
         return new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
+    }
+    
+    public void setDisplayWeek(String displayDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            dateFormat.parse(displayDate);
+            java.sql.Date date = java.sql.Date.valueOf(dateFormat.format(displayDate));
+            this.displayDate = date.toString();
+            calendar.setTime(date);
+        } catch (ParseException ex) {
+            System.err.println("Setting to current date");
+            calendar.setTime(new Date());
+        }
+    }
+    
+    public Calendar getDisplayWeek() {
+        return calendar;
     }
     
     /**
@@ -60,7 +84,7 @@ public class TimeTable {
         // Print dates of the current week starting on Monday
         SimpleDateFormat format = new SimpleDateFormat(HOUR_INDEX);
         
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
         // Set the calendar to monday of the current week
         cal.setTime(time);
         int hour = Integer.parseInt(format.format(cal.getTime()));
@@ -91,7 +115,7 @@ public class TimeTable {
         // Print dates of the current week starting on Monday
         SimpleDateFormat format = new SimpleDateFormat(HOUR_INDEX);
         
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
         // Set the calendar to monday of the current week
         cal.setTime(time);
         int hour = Integer.parseInt(format.format(cal.getTime()));
@@ -138,7 +162,7 @@ public class TimeTable {
     public void initialiseTimeTable(List<String> usersToMeet) {
         String sqlUserList = convertToSqlList(usersToMeet);
         Database db = Database.getSetupDatabase();
-        
+                
         // get all events for each user in meeting
         ResultSet usersEvents = db.select("SELECT weekday, Practical.time, " + EventPriority.PRACTICAL.getPriority() + " 'priority' " +
                                         "FROM Practical " +
@@ -146,7 +170,7 @@ public class TimeTable {
                                         "( " +
                                         "	SELECT moduleCode " +
                                         "	FROM Cancellation " +
-                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
                                         "	AND weekday = WEEKDAY(Cancellation.date) " +
                                         "	AND Cancellation.time = Practical.time " +
                                         ") " +
@@ -167,7 +191,7 @@ public class TimeTable {
                                         "( " +
                                         "	SELECT moduleCode " +
                                         "	FROM Cancellation " +
-                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
                                         "	AND weekday = WEEKDAY(Cancellation.date) " +
                                         "	AND Cancellation.time = Lecture.time " +
                                         ") " +
@@ -187,7 +211,8 @@ public class TimeTable {
                                         "WHERE meetingid IN " +
                                         "(	SELECT mid " +
                                         "	FROM HasMeeting " +
-                                        "	WHERE uid IN " + sqlUserList + ");");
+                                        "	WHERE uid IN " + sqlUserList + ") " +
+                                        "AND WEEK(date) = WEEK(\"" + displayDate + "\");");
         try {            
             while (usersEvents.next()) {
                 int dayIndex = usersEvents.getInt("weekday");
@@ -238,7 +263,7 @@ public class TimeTable {
                                                     "(" +
                                                     "	SELECT moduleCode " +
                                                     "	FROM Cancellation " +
-                                                    "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                                    "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
                                                     "	AND weekday = WEEKDAY(Cancellation.date) " +
                                                     "	AND Cancellation.time = Lecture.time " +
                                                     ")" +
@@ -271,7 +296,7 @@ public class TimeTable {
                                                         "(" +
                                                         "	SELECT moduleCode " +
                                                         "	FROM Cancellation " +
-                                                        "	WHERE WEEK(Cancellation.date) = WEEK(CURDATE()) " +
+                                                        "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
                                                         "	AND weekday = WEEKDAY(Cancellation.date) " +
                                                         "	AND Cancellation.time = Practical.time " +
                                                         ")" +
@@ -303,7 +328,8 @@ public class TimeTable {
                                                     "WHERE meetingid IN " +
                                                     "(	SELECT mid " +
                                                     "	FROM HasMeeting " +
-                                                    "	WHERE uid = " + userID + ");");
+                                                    "	WHERE uid = " + userID + ") " +
+                                                    "AND WEEK(date) = WEEK(\"" + displayDate + "\");");
                                                                     
             while (userPersonalEvents.next()) {
                 Meeting meeting = new Meeting(userPersonalEvents.getString("meetingid"),
@@ -326,11 +352,7 @@ public class TimeTable {
     /**
      * Set ups the timeslot matrix to hold empty TimeSlot objects
      */
-    private void setupTimeSlots() {        
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-
-        // Set the calendar to monday of the current week
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+    public void setupTimeSlots() {        
 
         // Print dates of the current week starting on Monday
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -338,10 +360,11 @@ public class TimeTable {
         for (Day day : Day.values()) {
             for (EventTime time : EventTime.values()) {
                 events[day.getIndex()][time.getTimeIndex()] 
-                        = new TimeSlot(dateFormat.format(cal.getTime()), time.printSQLTimeFormat());
+                        = new TimeSlot(dateFormat.format(calendar.getTime()), time.printSQLTimeFormat());
             }
-            cal.add(Calendar.DATE, 1);
+            calendar.add(Calendar.DATE, 1);
         }
+        calendar.add(Calendar.DATE, -Day.numDays);
     }
     
     /**
@@ -398,18 +421,14 @@ public class TimeTable {
             timetable += "</tr>";
         }
         
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-
-        // Set the calendar to monday of the current week
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
         // Print dates of the current week starting on Monday
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String startDate = "", endDate = "";
+        String startDate = "";
+        String endDate = "";
 
-        startDate = df.format(cal.getTime());
-        cal.add(Calendar.DATE, 6);
-        endDate = df.format(cal.getTime());
+        startDate = df.format(calendar.getTime());
+        calendar.add(Calendar.DATE, 6);
+        endDate = df.format(calendar.getTime());
 
         timetable += "<caption>" + startDate + " to " + endDate + "</caption>";
         timetable += "</table>";

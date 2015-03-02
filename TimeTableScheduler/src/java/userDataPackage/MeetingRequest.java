@@ -30,7 +30,6 @@ public final class MeetingRequest extends UserRequest{
     private int duration;
     private String groupOrUserId;
     private List<String> usersToMeet = new ArrayList<String>();
-    private TimeTable timeTable;
     private String meetingType;
     
     private boolean setup = false;
@@ -62,8 +61,8 @@ public final class MeetingRequest extends UserRequest{
         clearErrors();
     }
     
-    public TimeTable getTimeTable() {
-        return timeTable;
+    public List<String> getUsersToMeet() {
+        return usersToMeet;
     }
     
     public int getDuration() {
@@ -96,12 +95,9 @@ public final class MeetingRequest extends UserRequest{
             this.meetingType = withType;
         }
         
-        this.timeTable = TimeTable.getPreSetTimeTable();
-        getUsersToMeet();
+        setUsersToMeet();
         
-        if (usersToMeet.size() >= 1) {
-            this.timeTable.initialiseTimeTable(usersToMeet);
-        } else {
+        if (usersToMeet.size() < 1) {
             setup = false;
         }
     }
@@ -210,7 +206,7 @@ public final class MeetingRequest extends UserRequest{
      */
     public boolean createMeeting() {
         System.out.println(duration);
-        if (isValid() && isSetup() && !timeTable.conflictWithEvents(date, time, duration)) {
+        if (isValid() && isSetup()) {
             boolean result = true;
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -246,7 +242,7 @@ public final class MeetingRequest extends UserRequest{
         }
     }
     
-    public void getUsersToMeet() {
+    public void setUsersToMeet() {
         Database db = Database.getSetupDatabase();
         try {
             switch (this.meetingType) {

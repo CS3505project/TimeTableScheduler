@@ -33,7 +33,6 @@ public class LectureRequest extends UserRequest{
     private int duration;
     private String moduleCode;
     private List<String> usersInvolved = new ArrayList<String>();
-    private TimeTable timeTable;
     
     private boolean setup = false;
     
@@ -58,6 +57,10 @@ public class LectureRequest extends UserRequest{
         return setup;
     }
     
+    public List<String> getUsersInvolved() {
+        return usersInvolved;
+    }
+    
     private void resetForm() {
         startDate = new java.util.Date();
         endDate = new java.util.Date();//initialise to todays date
@@ -65,10 +68,6 @@ public class LectureRequest extends UserRequest{
         time = null;
         usersInvolved = new ArrayList<String>();
         clearErrors();
-    }
-    
-    public TimeTable getTimeTable() {System.out.println("error: 2");
-        return timeTable;
     }
     
     public int getDuration() {System.out.println("error: 7");
@@ -97,10 +96,7 @@ public class LectureRequest extends UserRequest{
         
         this.moduleCode = Validator.escapeJava(moduleCode);
         
-        this.timeTable = TimeTable.getPreSetTimeTable();
-        getUsersInvolved(moduleCode);
-        
-        this.timeTable.initialiseTimeTable(usersInvolved);
+        setUsersInvolved(moduleCode);
     }
     
     /**
@@ -253,7 +249,7 @@ public class LectureRequest extends UserRequest{
         }
     }
     
-    public void getUsersInvolved(String moduleCode) {System.out.println("error: 20");
+    public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
             ResultSet groupResult = db.select("");
