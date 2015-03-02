@@ -43,7 +43,7 @@
 
         <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
                 <div><label for="date">Date:</label>
-        	<input type="date" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
+        	<input type="text" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
                 </div>
                 <div><label for="time">Time:</label>
         	<input type="text" name="time" id="time" value="<%= MeetingRequest.getTime() %>" required="required"><br>
