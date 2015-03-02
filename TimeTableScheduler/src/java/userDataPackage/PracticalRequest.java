@@ -226,7 +226,6 @@ public class PracticalRequest extends UserRequest{
             System.out.println("here exe");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String meetingDate = format.format(startDate);
             
             Database db = Database.getSetupDatabase();
 
@@ -239,8 +238,8 @@ public class PracticalRequest extends UserRequest{
             for (int i = 0; i < duration; i++) {  
                 System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
-                                    + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
-                                    + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
+                                    + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
+                                    + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
                 //To-Do add to groups
                 

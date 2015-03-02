@@ -14,7 +14,7 @@
                                    (String)request.getParameter("duration"),
                                    (String)request.getParameter("semester"));
         } else {
-            PracticalRequest.setStartDate((String)request.getParameter("startDate"));
+            PracticalRequest.setStartDate((String)request.getParameter("date"));
             PracticalRequest.setTime((String)request.getParameter("time"));
             PracticalRequest.setVenue((String)request.getParameter("venue"));
             PracticalRequest.setEndDate((String)request.getParameter("endDate"));
@@ -41,8 +41,8 @@
         </hgroup>
 
         <form id="createMeetingForm" action="scheduleLab.jsp" method="GET">
-            <label for="startDate">Start Date:</label>
-            <input type="date" name="startDate" id="startDate" value="<%= PracticalRequest.getStartDate() %>" required="required"><br>
+            <label for="date">Start Date:</label>
+            <input type="text" name="date" id="date" value="<%= PracticalRequest.getStartDate() %>" required="required"><br>
             <label for="time">Time:</label>
             <input type="text" name="time" id="time" value="<%= PracticalRequest.getTime() %>" required="required"><br>
             <label for="endDate">End Date:</label>
