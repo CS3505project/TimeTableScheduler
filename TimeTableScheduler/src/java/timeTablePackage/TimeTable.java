@@ -693,7 +693,7 @@ public class TimeTable {
                 suggestedTime = time;
                 found = true;
                 for (int i = 0; i < meetingDuration; i++) {
-                    if ((time + i) < endTime.getTimeIndex()) {
+                    if ((time + i) > endTime.getTimeIndex()) {
                         found = false;
                     }
                     found = found && (events[day][time + i].getTotalPriority() < maxPriority);
