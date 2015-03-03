@@ -184,7 +184,7 @@ public class TimeSlot {
                     + " data-date=\"" + date + "\""
                     + " data-time=\"" + time + "\"></div>";
         }
-        html += eventList + "</td>";
+        html += "<div class=\"innerEvent\">" + eventList + "</div></td>";
         return html;
     }
     
