@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
+import messagePackage.MessageType;
 import timeTablePackage.EventPriority;
 import timeTablePackage.EventType;
 import timeTablePackage.TimeTable;
@@ -322,12 +323,20 @@ public class Output {
         
         Database db = Database.getSetupDatabase();
         
-        //To-Do
-        ResultSet result = db.select("");
+        ResultSet result = db.select("SELECT * " +
+                                    "FROM Messages " +
+                                    "WHERE messageid IN " +
+                                    "( " +
+                                    "SELECT messageid " +
+                                    "FROM MessageFor " +
+                                    "WHERE uid = " + user.getUserID() + ");");
         try {
             while (result.next()) {
-                finalHTML += "<div class=\"message\"><h2>" + result.getString("") + "</h2>"
-                             + "<p>" + result.getString("") + "</p></div>";
+                finalHTML += "<div class='" + result.getString("messageType") + "'>" 
+                            + "<h1><span class='" + result.getString("messageType") + "'>" + result.getString("messageType") + "</span><h1><br>"
+                            + "<h2>Subject: " + result.getString("subject") + "</h2>"
+                            + "<p>Message: " + result.getString("body") + "</p><br>"
+                            + "<input type='checkbox' name='accept' value='notificationNumber'></div><br>";
             }
         } catch (SQLException ex) {
             
