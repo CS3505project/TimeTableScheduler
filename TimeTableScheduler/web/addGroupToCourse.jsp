@@ -7,8 +7,10 @@
         out.println(output.createHeader());
         
         CourseRequest.setValues(request, user);
-        CourseRequest.setCourse((String)request.getParameter("course"));
-        CourseRequest.setGroup((String)request.getParameter("group"));
+        if (CourseRequest.isFormLoaded()) {
+            CourseRequest.setCourse((String)request.getParameter("course"));
+            CourseRequest.setGroup((String)request.getParameter("group"));
+        }
 %>
         <div class="hidden" name="context" value="addGroupToCourse" data-userId="<%= user.getUserID() %>"></div>
         <hgroup>
@@ -39,6 +41,7 @@
         if(CourseRequest.addGroupToCourse()) {
             response.sendRedirect("index.jsp");
         }
+        CourseRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         
