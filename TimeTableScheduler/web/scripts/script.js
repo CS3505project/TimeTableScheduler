@@ -121,8 +121,21 @@ $(document).ready(function(){
     ////////////////////////////////////////////////////////
     var splitByAmpersand = page.split('&');
     $("ul.filters li a[href='"+splitByAmpersand[0]+"']").addClass("selected");
-
+    
+    /////////////////////////////////////////////
+    //update the messagecounter every x seconds//
+    /////////////////////////////////////////////
+    var intervalLength = 10000;// set interval to ten seconds to start off with
+    
+    $(function(){
+        setInterval(function() {
+          $("h1.banner").append("<span>"+intervalLength+"</span>");
+          
+          intervalLength += (intervalLength < 150000)? 10000: 0;//add 10s  to interval, till it's 2.5 minutes
+        },intervalLength);}
+    );
 }); 
+
 
 function displayHelp(){
     var context = $("div[name='context']").attr("value");
@@ -138,15 +151,15 @@ function displayHelp(){
     }
     //Switch on the context name, if the context is meeting, get info from the meetong JSON file
     switch(context){
-    case "placeholder":
-         $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
-        break;
-    case "addMeeting":
-        $("#helpPopup div h1").html("Add a Meeting");
-        $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
-        break;
-    default:
-        $("#helpPopup div h1").html("Help");
-        $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
+        case "placeholder":
+             $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
+            break;
+        case "addMeeting":
+            $("#helpPopup div h1").html("Add a Meeting");
+            $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
+            break;
+        default:
+            $("#helpPopup div h1").html("Help");
+            $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
     }
 }
