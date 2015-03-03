@@ -12,7 +12,7 @@
         timeTable.setupTimeSlots();
         timeTable.initialiseTimeTable(user.getUserID());
         
-        out.println(output.createUserTimeTable(timeTable, (String)request.getParameter("filter"), false, user.getUserID()));
+        out.println(output.createUserTimeTableNoFilter(timeTable, (String)request.getParameter("filter"), false, user.getUserID()));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="addMeeting" data-userId="<%= user.getUserID() %>"></div> 

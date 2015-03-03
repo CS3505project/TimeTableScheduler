@@ -33,14 +33,15 @@ public class DeleteRequest {
         
             if (db.getNumRows(meeting) == 1) {
                 while (meeting.next()) {
-                    Message message = new Message("Meeting Cancelled", 
-                                                  meeting.getString("description"), 
-                                                  meeting.getString("room"), 
-                                                  meeting.getDate("date").toString(), 
-                                                  meeting.getTime("time").toString(),
-                                                  false, organiser, MessageType.MEETING);
-                    message.sendMessage(userIds);
-                
+                    if (userIds.size() > 1) {
+                        Message message = new Message("Meeting Cancelled", 
+                                                      meeting.getString("description"), 
+                                                      meeting.getString("room"), 
+                                                      meeting.getDate("date").toString(), 
+                                                      meeting.getTime("time").toString(),
+                                                      false, organiser, MessageType.MEETING);
+                        message.sendMessage(userIds);
+                    }
                 
                     if (meeting.getString("organiser_uid").equals(organiser)) {
                         delete = db.insert("DELETE FROM Meeting " +

@@ -19,6 +19,15 @@
             </fileset>
         </copy>
     </target>
+    
+    <target name="-post-compile-single" depends="-post-compile"/>
+    <target name="-post-compile">
+        <copy todir="${build.classes.dir}">
+            <fileset dir="web/scripts/">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

@@ -235,11 +235,11 @@ public class PracticalRequest extends UserRequest{
 
                 
                 
-                if (result) {
+                if (result && usersInvolved.size() > 1) {
+                    usersInvolved.remove(getUser().getUserID());
                     Message message = new Message("You have a new practical", 
                                                   moduleCode, venue, format.format(startDate), timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.PRACTICAL);
-                    usersInvolved.remove(getUser().getUserID());
                     message.sendMessage(usersInvolved);
                     usersInvolved.add(getUser().getUserID());
                 }

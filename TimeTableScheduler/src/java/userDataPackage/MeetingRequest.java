@@ -235,11 +235,11 @@ public final class MeetingRequest extends UserRequest{
                     result = result && db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
                 }
                 
-                if (result) {
+                if (result && usersToMeet.size() > 1) {
+                    usersToMeet.remove(getUser().getUserID());
                     Message message = new Message("You have a new meeting", 
                                                   description, venue, meetingDate, timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.MEETING);
-                    usersToMeet.remove(getUser().getUserID());
                     message.sendMessage(usersToMeet);
                     usersToMeet.add(getUser().getUserID());
                 }

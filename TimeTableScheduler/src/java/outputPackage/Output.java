@@ -524,20 +524,29 @@ public class Output {
      * @param clickable Sets whether the timetable is interactive for certain forms
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable, String userId){
-        String finalHTML = "";
-        
-        finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
+    public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable, String userId){        
+        String finalHTML = "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable
-        finalHTML += "<ul class=\"filters\">" +
-                         "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +
-                         "<li><a href=\"index.jsp?filter=lecture\">Lecture<a/></li>" +
-                         "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
-                         "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
-                     "</ul>"; 
+        finalHTML += createTimeTableFilter();
         finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), clickable, userId); 
         
         return finalHTML;
+    }
+    
+    public String createUserTimeTableNoFilter(TimeTable timeTable, String filter, boolean clickable, String userId){        
+        String finalHTML = "<h1  class='banner'>Timetable for this week</h1>";
+        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), clickable, userId); 
+        
+        return finalHTML;
+    }
+    
+    public String createTimeTableFilter() {
+        return "<ul class=\"filters\">" +
+                     "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +
+                     "<li><a href=\"index.jsp?filter=lecture\">Lecture<a/></li>" +
+                     "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
+                     "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
+                 "</ul>";
     }
     
     /**

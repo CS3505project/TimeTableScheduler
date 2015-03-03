@@ -232,11 +232,11 @@ public class LectureRequest extends UserRequest{
                                     + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
                                     + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
-                if (result) {
+                if (result && usersInvolved.size() > 1) {
+                    usersInvolved.remove(getUser().getUserID());
                     Message message = new Message("You have a new lecture", 
                                                   moduleCode, venue, format.format(startDate), timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.LECTURE);
-                    usersInvolved.remove(getUser().getUserID());
                     message.sendMessage(usersInvolved);
                     usersInvolved.add(getUser().getUserID());
                 }

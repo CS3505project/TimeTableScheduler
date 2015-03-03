@@ -143,6 +143,16 @@ public class TimeSlot {
         }
     }
     
+    public String addRemoveMeetingButton(Event event, String userId) {
+        String result = "";
+        if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
+            result += "<div class=\"innerEvent\">" + event.toString() + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
+        } else {
+            result += event.toString() + "<br />";
+        }
+        return result;
+    }
+    
     /**
      * Prints a detailed version of the events details
      * @param filter Filter the events displayed
@@ -150,44 +160,40 @@ public class TimeSlot {
      * @return HTML to print into a table cell
      */
     public String printDetailedTableCell(EventType filter, boolean clickable, String userId) {
-        EventPriority highPriority = EventPriority.MEETING;
-        String eventList = "";
-        String description = "";
-        String removeLink = "";
+        String cellInfo = "";
+        String hoverDescription = "";
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
-                if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
-                    removeLink += "<div class=\"innerEvent\"><a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
-                } else {
-                    removeLink = "";
-                }
+                cellInfo += addRemoveMeetingButton(event, userId);
                 
-                eventList += event.toString() + removeLink + "<br />";
-                description += getEventDescription(event);
-                highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
-                                            ? event.getEventPriority() : highPriority);
-                
+                hoverDescription += getEventDescription(event);
             }
         }
         String html = "<td class=\"";
         
         if (clickable) {
-            html += "animate selectable";
+            html += "animate selectable ";
         }
         
-        if (eventList.equals("")) {
-            html = "<td>";
-        } else {
-            html += " " + highPriority.getPriorityName() + " hoverable\"" +
-                    " data-description=\"" + description + "\">" ;
-        }
-        if (clickable) {
-            html += "<div class=\"hidden\""
-                    + " data-date=\"" + date + "\""
-                    + " data-time=\"" + time + "\"></div>";
-        }
-        html += eventList + "</td>";
+        html += createHoverableEvent() + "\"" +
+                " data-description=\"" + hoverDescription + "\">" ;
+        
+        html += "<div class=\"hidden\""
+                + " data-date=\"" + date + "\""
+                + " data-time=\"" + time + "\"></div>";
+        
+        html += cellInfo + "</td>";
         return html;
+    }
+    
+    public String createHoverableEvent() {
+        EventPriority priority = null;
+        for (Event event : events) {
+            if (priority == null || priority.getPriority() < event.getEventPriority().getPriority()) {
+                priority = event.getEventPriority();
+            }
+        }
+        return (priority == null ? "" : priority.getPriorityName() + " hoverable");
     }
     
     /**

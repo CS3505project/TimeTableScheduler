@@ -63,7 +63,7 @@
         } else {
             if (EditRequest.editEvent()) {
                 response.sendRedirect("index.jsp");
-            } 
+            }
         }
         EditRequest.setFormLoaded(true);
         out.println(output.createFooter());
