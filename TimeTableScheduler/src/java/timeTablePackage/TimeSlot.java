@@ -158,9 +158,11 @@ public class TimeSlot {
             if (filterEvent(event.getEventType(), filter)) {
                 if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
                     removeLink += "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a>";
+                } else {
+                    removeLink = "";
                 }
                 
-                eventList += event.toString() + removeLink + "<br />";
+                eventList += "<div class=\"innerEvent\">" + event.toString() + removeLink + "<br /></div>";
                 description += getEventDescription(event);
                 highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
                                             ? event.getEventPriority() : highPriority);
@@ -184,7 +186,7 @@ public class TimeSlot {
                     + " data-date=\"" + date + "\""
                     + " data-time=\"" + time + "\"></div>";
         }
-        html += "<div class=\"innerEvent\">" + eventList + "</div></td>";
+        html += eventList + "</td>";
         return html;
     }
     
