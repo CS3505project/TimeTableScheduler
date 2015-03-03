@@ -174,8 +174,8 @@ public class TimeTableTest {
         boolean hideDetail = false;
         TimeTable instance = null;
         String expResult = "";
-        String result = instance.createTimeTable(filterEvent, hideDetail, hideDetail);
-        assertEquals(expResult, result);
+        //String result = instance.createTimeTable(filterEvent, hideDetail, hideDetail);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
