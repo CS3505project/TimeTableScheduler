@@ -228,7 +228,6 @@ public class LectureRequest extends UserRequest{
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             for (int i = 0; i < duration; i++) {  
-                System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Lecture (modulecode, semester, weekday, time, room, startdate, enddate) "
                                     + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
                                     + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
