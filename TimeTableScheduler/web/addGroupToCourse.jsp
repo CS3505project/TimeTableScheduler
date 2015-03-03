@@ -37,9 +37,10 @@
 <% 
         if (CourseRequest.numErrors() > 0) {
             out.println(output.displayErrors(CourseRequest.numErrors(), CourseRequest.getErrors()));
-        }
-        if(CourseRequest.addGroupToCourse()) {
+        } else if(CourseRequest.addGroupToCourse()) {
             response.sendRedirect("index.jsp");
+        } else {
+            out.println(output.displayErrors(1, "Group already added to course"));
         }
         CourseRequest.setFormLoaded(true);
         out.println(output.createFooter());
