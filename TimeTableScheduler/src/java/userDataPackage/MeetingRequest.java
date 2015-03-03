@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import messagePackage.Message;
+import messagePackage.MessageType;
 import timeTablePackage.EventPriority;
 import timeTablePackage.EventTime;
 import timeTablePackage.TimeTable;
@@ -231,6 +233,13 @@ public final class MeetingRequest extends UserRequest{
                 String values = getMeetingInsertValues(db.getPreviousAutoIncrementID("Meeting")); 
                 if (!values.equals("")) {
                     result = result && db.insert("INSERT INTO HasMeeting (uid, mid) VALUES " + values);
+                }
+                
+                if (result) {
+                    Message message = new Message("You have a new meeting", 
+                                                  description, venue, meetingDate, timeFormat.format(cal.getTime()), 
+                                                  false, getUser().getUserID(), MessageType.MEETING);
+                    message.sendMessage(usersToMeet);
                 }
                 
                 // increment to the next time slot if the meeting is longer 
