@@ -7,10 +7,12 @@
         out.println(output.createHeader());
         
         CourseRequest.setValues(request, user);
-        CourseRequest.setCourse((String)request.getParameter("course"));
-        CourseRequest.setName((String)request.getParameter("name"));
-        CourseRequest.setDepartment((String)request.getParameter("department"));
-        CourseRequest.setYear((String)request.getParameter("year"));
+        if (CourseRequest.isFormLoaded()) {
+            CourseRequest.setCourse((String)request.getParameter("course"));
+            CourseRequest.setName((String)request.getParameter("name"));
+            CourseRequest.setDepartment((String)request.getParameter("department"));
+            CourseRequest.setYear((String)request.getParameter("year"));
+        }
 %>
         <div class="hidden" name="context" value="addCourse" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup>

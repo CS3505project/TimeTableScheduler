@@ -9,9 +9,11 @@
         out.println(output.createHeader());
         
         ModuleRequest.setValues(request, user);
-        ModuleRequest.setCourse((String)request.getParameter("course"));
-        ModuleRequest.setModuleName((String)request.getParameter("moduleName"));
-        ModuleRequest.setModuleCode((String)request.getParameter("moduleCode"));
+        if (ModuleRequest.isFormLoaded()) {
+            ModuleRequest.setCourse((String)request.getParameter("course"));
+            ModuleRequest.setModuleName((String)request.getParameter("moduleName"));
+            ModuleRequest.setModuleCode((String)request.getParameter("moduleCode"));
+        }
 %>
         <div class="hidden" name="context" value="addModule" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup>
