@@ -552,7 +552,6 @@ public class Output {
      */
     public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, int priority, boolean clearPrevSuggestion){
         String finalHTML  = "";
-        System.out.println("length" + meetingLength);
         suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
         finalHTML += "<h1>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true, false);

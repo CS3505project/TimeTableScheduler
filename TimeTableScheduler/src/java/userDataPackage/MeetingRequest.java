@@ -287,7 +287,7 @@ public final class MeetingRequest extends UserRequest{
                     usersToMeet.add(groupOrUserId);
                     usersToMeet.add(getUser().getUserID());
                     break;
-                default:
+                case "personal":
                     usersToMeet.add(getUser().getUserID());
                     break;
             }
