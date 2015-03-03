@@ -239,8 +239,9 @@ public class PracticalRequest extends UserRequest{
                     Message message = new Message("You have a new practical", 
                                                   moduleCode, venue, format.format(startDate), timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.PRACTICAL);
-                    usersInvolved.remove(getUser());
+                    usersInvolved.remove(getUser().getUserID());
                     message.sendMessage(usersInvolved);
+                    usersInvolved.add(getUser().getUserID());
                 }
                 
                 // increment to the next time slot if the meeting is longer 

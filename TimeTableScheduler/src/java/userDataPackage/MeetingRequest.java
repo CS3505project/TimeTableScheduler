@@ -239,7 +239,9 @@ public final class MeetingRequest extends UserRequest{
                     Message message = new Message("You have a new meeting", 
                                                   description, venue, meetingDate, timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.MEETING);
+                    usersToMeet.remove(getUser().getUserID());
                     message.sendMessage(usersToMeet);
+                    usersToMeet.add(getUser().getUserID());
                 }
                 
                 // increment to the next time slot if the meeting is longer 

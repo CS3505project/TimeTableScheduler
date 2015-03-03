@@ -239,7 +239,9 @@ public class LectureRequest extends UserRequest{
                     Message message = new Message("You have a new lecture", 
                                                   moduleCode, venue, format.format(startDate), timeFormat.format(cal.getTime()), 
                                                   false, getUser().getUserID(), MessageType.LECTURE);
+                    usersInvolved.remove(getUser().getUserID());
                     message.sendMessage(usersInvolved);
+                    usersInvolved.add(getUser().getUserID());
                 }
                 
                 // increment to the next time slot if the meeting is longer 
