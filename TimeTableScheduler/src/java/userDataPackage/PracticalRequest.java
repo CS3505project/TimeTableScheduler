@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import messagePackage.Message;
+import messagePackage.MessageType;
 import timeTablePackage.Day;
 import static timeTablePackage.Event.DAY;
 import timeTablePackage.EventPriority;
@@ -231,7 +233,15 @@ public class PracticalRequest extends UserRequest{
                                     + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
                                     + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
-                //To-Do add to groups
+                
+                
+                if (result) {
+                    Message message = new Message("You have a new practical", 
+                                                  moduleCode, venue, format.format(startDate), timeFormat.format(cal.getTime()), 
+                                                  false, getUser().getUserID(), MessageType.PRACTICAL);
+                    usersInvolved.remove(getUser());
+                    message.sendMessage(usersInvolved);
+                }
                 
                 // increment to the next time slot if the meeting is longer 
                 // than one hour

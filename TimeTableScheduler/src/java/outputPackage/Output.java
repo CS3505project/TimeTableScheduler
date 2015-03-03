@@ -332,7 +332,7 @@ public class Output {
                                     "WHERE uid = " + user.getUserID() + ");");
         try {
             while (result.next()) {
-                finalHTML += "<div class='" + result.getString("messageType") + "'>" 
+                finalHTML += "<div class='message'>" 
                             + "<h1><span class='" + result.getString("messageType") + "'>" + result.getString("messageType") + "</span><h1><br>"
                             + "<h2>Subject: " + result.getString("subject") + "</h2>"
                             + "<p>Message: " + result.getString("body") + "</p><br>"

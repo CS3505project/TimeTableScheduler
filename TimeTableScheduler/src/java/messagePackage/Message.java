@@ -4,8 +4,13 @@
  */
 package messagePackage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import toolsPackage.Database;
 
 /**
@@ -98,9 +103,17 @@ public class Message {
     }
     
     public String createMessageBody() {
+        SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateObject = new Date();
+        try {
+            dateObject = dateTime.parse(date);
+        } catch (ParseException ex) {
+            dateObject = new Date();
+        }
+        dateTime.applyPattern("dd/MM/yyyy");
         return body + "<br>" +
                "Where: " + location + "<br>" +
-               "Date: " + date + "<br>" +
+               "Date: " + dateTime.format(dateObject) + "<br>" +
                "Time: " + time + "<br>";
     }
     
