@@ -92,6 +92,7 @@ section.main{
     top: 0px;
     margin-left: 132px;
     padding-right: 140px;
+    padding-left: 8px;
 }
 /***************/
 /* NAV SIDEBAR */
@@ -587,6 +588,16 @@ input[type="submit"]{
     color: #eef;
     cursor: pointer;
 }
+hgroup.menu input[type="submit"]{
+    width: auto;
+}
+section.main hgroup.menu{
+    width: 90%;
+    width: calc(100% - 148px);
+    position: fixed;
+    bottom: 8px;
+    left: 140px;
+}
 input[type="submit"]:hover{
     box-shadow: none;
 }
@@ -927,6 +938,9 @@ div.message{
     margin-top: 8px;
     box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
     border-radius: 6px;
+}
+div.message:last-child{
+    margin-bottom: 40px;
 }
 div.message span{
     font-size: 12px;
