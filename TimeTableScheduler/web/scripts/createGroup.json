@@ -1,6 +1,7 @@
 {
     "title": "Create a Group",
-    "instructions": "to create a group first you must fill in the name of\n\
-    your into the group colume next you must select the type of group you want\n\
-    you group to be from the group type drop down menu eg College work.finish"
+    "instructions": "to create a group first you must fill in the name of your group\n\
+     into the group column next you must select the type of group you want your group to\n\
+     be from the group type drop down menu eg College next click submit and a message will\n\
+     be sent to everyone in the group notifying them that the group has been created"
 }

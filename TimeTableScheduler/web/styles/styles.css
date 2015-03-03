@@ -80,6 +80,7 @@ body>nav{
     margin-bottom: -9000px;
 }
 section.main{
+    overflow-y:auto;
     position: fixed;
     width: 100%;
     min-width: 400px;
@@ -682,10 +683,11 @@ div.login label{
 body.login h1{
     text-align: center;
 }
-body.login a{
+body.login a, #signUpMenu a{
     text-decoration: none;
     color: #9494b7;
 }
+/*
 body.login p, div.signup p{
     position: relative;
     top: -22px;
@@ -698,6 +700,7 @@ body.login p, div.signup p{
 div.signup p{
     top: 8px;
 }
+*/
 div.login, div.signup{
     text-shadow: 1px 1px 2px #000;
     background: rgba(0,0,0,0.5);
@@ -764,6 +767,31 @@ div.login footer{
     font-size: 12px;
     padding: 8px;
 }
+body.login div.errors{
+    margin-left: auto;
+    margin-right: auto;
+}
+#signupMenu{
+    text-shadow: 1px 1px 2px #000;
+    background-image: url('footerbg.png');
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: inset 0 0 8px #000;
+    border-bottom: 1px solid rgba(240,240,255,0.4);
+    height: 32px;
+    padding: 8px;
+}
+#signupMenu li{
+    display: inline-block;
+    width: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+    float: right;
+}
 footer.loginFooter{
     text-shadow: 1px 1px 2px #000;
     background-image: url('footerbg.png');
@@ -793,7 +821,7 @@ footer.loginFooter ul li{
     display: inline-block;
     margin-left: 4px;
 }
-footer.loginFooter ul li:before{
+footer.loginFooter ul li:before, #signupMenu li:before{
     display: inline-block;
     content: "|";
     margin-right: 4px;

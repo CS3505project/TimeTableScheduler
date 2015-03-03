@@ -61,9 +61,10 @@ $(document).ready(function(){
     ////////////////////////////////////////////////////////////
     //Get User's Unread Messages with AJAX and display red box//
     ////////////////////////////////////////////////////////////
-
+    var userID = $("div[name='context']").attr("data-userID");
+    $.ajaxSetup({ cache: false });
     //get the number of messages from the servlet
-    $.get('UserMessageServlet',{userID:"1"},function(data, textStatus) {
+    $.get('UserMessageServlet',{userID:userID},function(data, textStatus) {
         numMessages = data;
         if(numMessages > 0){
             if(numMessages <=20){
@@ -121,8 +122,43 @@ $(document).ready(function(){
     ////////////////////////////////////////////////////////
     var splitByAmpersand = page.split('&');
     $("ul.filters li a[href='"+splitByAmpersand[0]+"']").addClass("selected");
+    
+    /////////////////////////////////////////////
+    //update the messagecounter every x seconds//
+    /////////////////////////////////////////////
+    var intervalLength = 10000;
+    
+    $(function(){
+        setInterval(function() {
+            var currentMessages = $("#msg span").text();
+            currentMessages = currentMessages.match(/\d+/g);
+            currentMessages = parseInt(currentMessages, 10);
+            
+            $.get('UserMessageServlet',{userID:userID},function(data, textStatus) {
+                numMessages = data;
+                numMessages = numMessages.match(/\d+/g);
+                numMessages = parseInt(numMessages, 10);
+                
+                if(numMessages !== currentMessages && numMessages > 0){
 
+                    $("#msg span").remove();
+                    
+                    if(numMessages <=20){
+                        $("#msg").append("<span class='unread'>" + numMessages + "</span>");
+                    }else{
+                        $("#msg").append("<span class='unread'>20+</span>");
+                    }
+                    $("#msg span").removeClass("unread");
+                    $("#msg span").addClass("unread");
+                }
+                if(numMessages === 0){
+                    $("#msg span").remove();
+                }
+            }, "text");
+        },intervalLength);}
+    );
 }); 
+
 
 function displayHelp(){
     var context = $("div[name='context']").attr("value");
@@ -138,15 +174,15 @@ function displayHelp(){
     }
     //Switch on the context name, if the context is meeting, get info from the meetong JSON file
     switch(context){
-    case "placeholder":
-         $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
-        break;
-    case "addMeeting":
-        $("#helpPopup div h1").html("Add a Meeting");
-        $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
-        break;
-    default:
-        $("#helpPopup div h1").html("Help");
-        $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
+        case "placeholder":
+             $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
+            break;
+        case "addMeeting":
+            $("#helpPopup div h1").html("Add a Meeting");
+            $("#helpPopup div p").html("Meeting help asdasd adg a dg adg a adg a a dg adg adg  adgf adg  gdag dag adg   gddgdgdgdggd<br> asdasdasd");//add ajax stuff to get the context help from JSON files
+            break;
+        default:
+            $("#helpPopup div h1").html("Help");
+            $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
     }
 }
