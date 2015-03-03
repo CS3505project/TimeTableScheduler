@@ -8,6 +8,12 @@
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         out.println(output.createMessages(user));
+%>  
+        <hgroup class="menu">
+            <h1>Messages</h1>
+            <h2>action: <input type="submit"></h2>
+        </hgroup>
+<%
         out.println(output.createFooter());
     } else {
         

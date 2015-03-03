@@ -157,7 +157,9 @@ public class TimeSlot {
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
                 if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
-                    removeLink += "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a>";
+                    removeLink += "<div class=\"innerEvent\"><a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
+                } else {
+                    removeLink = "";
                 }
                 
                 eventList += event.toString() + removeLink + "<br />";
