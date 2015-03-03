@@ -62,6 +62,7 @@ $(document).ready(function(){
     //Get User's Unread Messages with AJAX and display red box//
     ////////////////////////////////////////////////////////////
     var userID = $("div[name='context']").attr("data-userID");
+    $.ajaxSetup({ cache: false });
     //get the number of messages from the servlet
     $.get('UserMessageServlet',{userID:userID},function(data, textStatus) {
         numMessages = data;
