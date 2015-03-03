@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -20,7 +21,13 @@
         	<h2>Step 1 of 2</h2>
         </hgroup>
         <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
-            <% out.println(output.createMeetingFormGroupDropdown(user)); %>
+<% 
+            if (user.getUserType().equals(UserType.ADMIN)) {
+                out.println(output.createAdminMeetingFormDropdown());
+            } else {
+                out.println(output.createMeetingFormGroupDropdown(user));
+            }
+%>
             <div>
                 <label for="duration">Duration:</label>
         	<input type="duration" name="duration" id="date" required="required">

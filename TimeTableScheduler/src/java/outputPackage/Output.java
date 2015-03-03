@@ -173,7 +173,7 @@ public class Output {
             System.err.println("Error while getting group list.");
         }
         
-        groups += "</ul><div>";
+        groups += "</ul></div>";
         return groups;
     }
     
@@ -371,6 +371,53 @@ public class Output {
         finalHTML += createIndividualDropDown(user.getUserID());
         
         finalHTML += "</select></div>";
+        return finalHTML;
+    }
+    
+    /**
+     * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
+     * @param user User to create the form
+     * @return the html for the dropdown and radio selector 
+     */
+    public String createAdminMeetingFormDropdown(){
+        String finalHTML = "";
+        finalHTML += "<div class='radioBox'><span>Group</span><input type='radio' id='groupRadio' name='withType' value='group' checked>\n" +
+        "<span>Individual</span><input type='radio' id='individualRadio' name='withType' value='individual'>\n" +
+        "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
+        "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
+        //for loop for creating options for legit groups
+        finalHTML += createAllGroupList();
+        
+        finalHTML += "</select></div>\n" +
+        "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
+        //for loop for creating options for legit groups
+        finalHTML += createAllIndividualDropDown();
+        
+        finalHTML += "</select></div>";
+        return finalHTML;
+    }
+    
+    public String createAllIndividualDropDown() {
+        String finalHTML = "";
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select("SELECT uid, firstname, surname, studentid as 'id' " +
+                                    "FROM Student JOIN User " +
+                                    "ON Student.uid = userid " +
+                                    "UNION " +
+                                    "SELECT uid, firstname, surname, lecturerid as 'id' " +
+                                    "FROM Lecturer JOIN User " +
+                                    "ON Lecturer.uid = userid;");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("uid") + "\">" 
+                        + result.getString("id") + " : " + result.getString("firstName") + " " 
+                        + result.getString("surname") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving group list");
+        }
+        
         return finalHTML;
     }
     
