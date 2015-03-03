@@ -156,6 +156,10 @@ public class TimeTable {
         this.startTime = startTime;
     }
     
+    public EventTime getStartTime(){
+        return startTime;
+    }
+    
     /**
      * Set the time to stop displaying at in the timetable
      * 
@@ -165,6 +169,11 @@ public class TimeTable {
         this.endTime = endTime;
     }
 
+    
+    public EventTime getEndTime(){
+        return endTime;
+    }
+    
     /**
      * Set the day to start displaying from in the timetable
      * 
@@ -174,6 +183,10 @@ public class TimeTable {
         this.startDay = startDay;
     }
 
+    public Day getStartDay(){
+        return startDay;
+    }
+    
     /**
      * Set the day to stop displaying at in the timetable
      * 
@@ -181,6 +194,10 @@ public class TimeTable {
      */
     public void setEndDay(Day endDay) {
         this.endDay = endDay;
+    }
+    
+    public Day getEndDay(){
+        return endDay;
     }
     
     public void intialiseAdminTimeTable() {
