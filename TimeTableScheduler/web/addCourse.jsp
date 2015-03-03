@@ -20,7 +20,7 @@
         </hgroup>
         <form action="addCourse.jsp" method="GET">
             <div>
-                <label for="course">Course:</label>
+                <label for="course">Code:</label>
                 <input type="text" name="course" id="course" value="<%= CourseRequest.getCourse() %>" required="required"><br>
             </div>
             <div>

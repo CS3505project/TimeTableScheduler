@@ -23,7 +23,9 @@ public class DeleteRequest {
         try {
             if (db.getNumRows(result) == 1) {
                 while (result.next()) {
-                    result.getString("organiser_uid")
+                    if (result.getString("organiser_uid").equals(userId)) {
+                        db.insert("DELETE ");
+                    }
                 }
             }
         } catch (SQLException ex) {

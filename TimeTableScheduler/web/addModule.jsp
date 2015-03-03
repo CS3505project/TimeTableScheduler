@@ -47,6 +47,7 @@
         if(ModuleRequest.createModule()) {
             response.sendRedirect("index.jsp");
         }
+        ModuleRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         

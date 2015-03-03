@@ -290,6 +290,9 @@ public final class MeetingRequest extends UserRequest{
                 case "personal":
                     usersToMeet.add(getUser().getUserID());
                     break;
+                default:
+                    usersToMeet.add(getUser().getUserID());
+                    break;
             }
         } catch (SQLException ex) {
             System.err.println("Problem getting users in meeting.");
