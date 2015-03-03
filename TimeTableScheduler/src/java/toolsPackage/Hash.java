@@ -13,6 +13,7 @@ public class Hash {
      * 
      * @param message The string to be hashed
      * @param hashType The type of hash to be performed to the string
+     * @return The hashed string
      */
     public static String getHash(String message, String hashType) 
     {

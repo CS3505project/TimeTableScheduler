@@ -28,27 +28,32 @@
         out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName(), true));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
-        <div class="hidden" name="context" value="editEvent"></div>
+        <div class="hidden" name="context" value="editEvent" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup class="animate">
         	<h1>Edit Event</h1>
         </hgroup>
 
         <form id="editEvent" action="editEvent.jsp" method="GET">
-                <div><label for="date">Date:</label>
-        	<input type="date" name="date" id="date" value="<%= EditRequest.getDate() %>" required="required"><br>
-                </div>
-                <div><label for="time">Time:</label>
-        	<input type="text" name="time" id="time" value="<%= EditRequest.getTime() %>" required="required"><br>
-                </div>
-                <div><label for="description">Description:</label>
-        	<input type="textarea" name="description" id="description" value="<%= EditRequest.getDescription() %>" required="required"><br>
-                </div>
-                <div><label for="venue">Venue:</label>
-        	<input type="text" name="venue" id="venue" value="<%= EditRequest.getVenue() %>" required="required"><br>
-        	</div>
-                <div><label for="submit">Submit:</label>
-        	<input type="submit" id="submit" value="Next" class="animate">
-                </div>
+            <div>
+                <label for="date">Date:</label>
+                <input type="date" name="date" id="date" value="<%= EditRequest.getDate() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="time">Time:</label>
+                <input type="text" name="time" id="time" value="<%= EditRequest.getTime() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <input type="textarea" name="description" id="description" value="<%= EditRequest.getDescription() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="venue">Venue:</label>
+                <input type="text" name="venue" id="venue" value="<%= EditRequest.getVenue() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="submit">Submit:</label>
+                <input type="submit" id="submit" value="Next" class="animate">
+            </div>
         </form>
 <%      
         if (EditRequest.numErrors() > 0) {

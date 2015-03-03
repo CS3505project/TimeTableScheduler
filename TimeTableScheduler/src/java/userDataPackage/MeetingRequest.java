@@ -1,6 +1,5 @@
 package userDataPackage;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -11,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.EventPriority;
 import timeTablePackage.EventTime;
 import timeTablePackage.TimeTable;

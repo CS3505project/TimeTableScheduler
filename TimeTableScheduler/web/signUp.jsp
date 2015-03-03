@@ -23,9 +23,7 @@
         SignUpRequest.setTitle((String)request.getParameter("title"));
         SignUpRequest.setEmail((String)request.getParameter("email"));
     }
-
 %>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -36,7 +34,6 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
     <body>
-
 <%
     switch (SignUpRequest.getUserType()){
         case ADMIN:
@@ -47,19 +44,33 @@
 %>
             <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
-                    <label for="id">Admin ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
-                    <label for="firstName">First Name:</label> 
-                    <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
-                    <label for="surname">Surname:</label> 
-                    <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
-                    <label for="email">eMail:</label>
-                    <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
-                    <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
-                    <label for="rePassword">Re-enter Password:</label> 
-                    <input type="password" id="rePassword"name="rePassword" required="required"><br>
-                    <input type="submit" value="Signup">
+                    <div>
+                        <label for="id">Admin ID:</label> 
+                        <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="firstName">First Name:</label> 
+                        <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="surname">Surname:</label> 
+                        <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="email">eMail:</label>
+                        <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label> 
+                        <input type="password" id="password" name="password" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="rePassword">Re-enter Password:</label> 
+                        <input type="password" id="rePassword"name="rePassword" required="required"><br>
+                    </div>
+                    <div>
+                        <input type="submit" value="Signup">
+                    </div>
                 </form>
             </div>
 <%
@@ -76,21 +87,37 @@
             </ul>
             <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
-                    <label for="id">Lecturer ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
-                    <label for="title">Title:</label> 
-                    <input type="text" id="title" name="title" value="<%= SignUpRequest.getTitle() %>" required="required"><br>
-                    <label for="firstName">First Name:</label> 
-                    <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
-                    <label for="surname">Surname:</label> 
-                    <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
-                    <label for="email">eMail:</label> 
-                    <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
-                    <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
-                    <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
-                    <input type="submit" value="Sign Up">
+                    <div>
+                        <label for="id">Lecturer ID:</label> 
+                        <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="title">Title:</label> 
+                        <input type="text" id="title" name="title" value="<%= SignUpRequest.getTitle() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="firstName">First Name:</label> 
+                        <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="surname">Surname:</label> 
+                        <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="email">eMail:</label>
+                        <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label> 
+                        <input type="password" id="password" name="password" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="rePassword">Re-enter Password:</label> 
+                        <input type="password" id="rePassword"name="rePassword" required="required"><br>
+                    </div>
+                    <div>
+                        <input type="submit" value="Signup">
+                    </div>
                 </form>
             </div>
 <%
@@ -103,19 +130,33 @@
             </ul>
             <div class="signup">
                 <form id="signup" action="signUp.jsp" method="POST">
-                    <label for="id">Student ID:</label> 
-                    <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
-                    <label for="firstName">First Name:</label> 
-                    <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
-                    <label for="surname">Surname:</label> 
-                    <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
-                    <label for="email">eMail:</label> 
-                    <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
-                    <label for="password">Password:</label> 
-                    <input type="password" id="password" name="password" required="required"><br>
-                    <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
-                    <input type="submit" value="Signup">
+                    <div>
+                        <label for="id">Student ID:</label> 
+                        <input type="text" id="id" name="id" value="<%= SignUpRequest.getId() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="firstName">First Name:</label> 
+                        <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="surname">Surname:</label> 
+                        <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="email">eMail:</label>
+                        <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label> 
+                        <input type="password" id="password" name="password" required="required"><br>
+                    </div>
+                    <div>
+                        <label for="rePassword">Re-enter Password:</label> 
+                        <input type="password" id="rePassword"name="rePassword" required="required"><br>
+                    </div>
+                    <div>
+                        <input type="submit" value="Signup">
+                    </div>
                 </form>
             </div>
 <%

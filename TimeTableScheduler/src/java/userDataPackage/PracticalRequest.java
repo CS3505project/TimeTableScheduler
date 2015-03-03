@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import java.sql.Date;
@@ -50,10 +46,6 @@ public class PracticalRequest extends UserRequest{
         venue = "";
         time = null;
     }
-    
-    public void print() {
-        System.out.println("date: " + startDate + "venue: " + venue + "time: " + time);
-    }
      
     public boolean isSetup() {
         return setup;
@@ -68,7 +60,6 @@ public class PracticalRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        print();
         return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
@@ -219,7 +210,6 @@ public class PracticalRequest extends UserRequest{
      * @return True if the meeting was created successfully
      */
     public boolean createPractical() {System.out.println("error: 17");
-        print();
         if (isValid() && isSetup()) {
             boolean result = false;
             
@@ -260,15 +250,15 @@ public class PracticalRequest extends UserRequest{
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE	gid IN " +
-                                            "		(SELECT gid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE courseid IN " +
-                                            "			(SELECT courseid " +
-                                            "			FROM ModuleInCourse " +
-                                            "			WHERE moduleCode = 'cs3305')));");
+            ResultSet groupResult = db.select("SELECT uid " +
+                                              "	FROM InGroup " +
+                                              "	WHERE gid IN " +
+                                              "		(SELECT gid " +
+                                              "		FROM GroupTakesCourse " +
+                                              "		WHERE courseid IN " +
+                                              "			(SELECT courseid " +
+                                              "			FROM ModuleInCourse " +
+                                              "			WHERE moduleCode = \"" + moduleCode + "\"));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }

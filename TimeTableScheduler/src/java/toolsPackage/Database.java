@@ -8,8 +8,6 @@ package toolsPackage;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Utility class to handle interactions with the database.
@@ -46,6 +44,14 @@ public class Database {
         return db;
     }
     
+    /**
+     * Returns the previous auto-increment id for the table
+     * Used to get the id of events, meetings etc. when creating them for a
+     * group of users
+     * 
+     * @param table The table to get the id
+     * @return The previous id for the table
+     */
     public int getPreviousAutoIncrementID(String table) {
         int id = -1;
         try {
@@ -69,7 +75,7 @@ public class Database {
      * @param DSN The name of the database
      * @param username The username to login to the database
      * @param password The password to login to the database
-     * @return Error message if any errors occured
+     * @return Error message if any errors occurred
      */
     public String setup(String dbserver, String DSN, String username, String password)
     {

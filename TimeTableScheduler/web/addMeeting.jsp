@@ -8,7 +8,7 @@
         out.println(output.createUserTimeTable(user.getUserID(),(String)request.getAttribute("filter")));
         MeetingRequest.setValues(request, user);
 %>
-        <div class="hidden" name="context" value="addMeeting"></div>
+        <div class="hidden" name="context" value="addMeeting" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup class="animate">
         	<h1>Add Meeting</h1>
         	<h2>Step 1 of 2</h2>

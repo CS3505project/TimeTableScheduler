@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import java.sql.Date;
@@ -21,8 +17,7 @@ import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- *
- * @author cdol1
+ * A javaBean for handling requests to add a lecture
  */
 public class LectureRequest extends UserRequest{
     private java.util.Date startDate = new java.util.Date();//initialise to todays date
@@ -54,23 +49,42 @@ public class LectureRequest extends UserRequest{
     public void print() {
         System.out.println("date: " + startDate + "venue: " + venue + "time: " + time);
     }
-     
+    
+    /**
+     * Checks if the request is setup
+     * @return True if the request is setup for creation
+     */
     public boolean isSetup() {
         return setup;
     }
     
+    /**
+     * Gets the users involved in the lecture being organised
+     * @return List of users involved
+     */
     public List<String> getUsersInvolved() {
         return usersInvolved;
     }
     
+    /**
+     * Sets the timetable to schedule a lecture with
+     * @param timeTable 
+     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
     
+    /**
+     * Checks if the lecture is conflicting with other lectures
+     * @return True if there is a conflict
+     */
     public boolean checkConflict() {
         return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.LECTURE.getPriority());
     }
     
+    /**
+     * Resets the form after a successful lecture creation
+     */
     private void resetForm() {
         startDate = new java.util.Date();
         endDate = new java.util.Date();//initialise to todays date
@@ -80,11 +94,21 @@ public class LectureRequest extends UserRequest{
         clearErrors();
     }
     
+    /**
+     * Returns the duration for the lecture
+     * @return duration
+     */
     public int getDuration() {System.out.println("error: 7");
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) {System.out.println("error: 8");
+    /**
+     * Setup up the lecture creation form
+     * @param moduleCode module the lecture is created
+     * @param duration duration of the lecture
+     * @param semester semester the lecture is on
+     */
+    public void setup(String moduleCode, String duration, String semester) {System.out.println("error: 8");
         this.setup = true;
         
         try {
@@ -130,7 +154,7 @@ public class LectureRequest extends UserRequest{
     }
 
     /**
-     * sets the venue in which the meeting is to take place.
+     * sets the venue in which the lecture is to take place.
      * @param venue the venue from the form
      */
     public void setVenue(String venue){System.out.println("error: 10");
@@ -190,7 +214,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Gets the venue for the meeting
+     * Gets the venue for the lecture
      * @return venue
      */
     public String getVenue(){System.out.println("error: 14");
@@ -198,7 +222,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Returns the time for the meeting
+     * Returns the time for the lecture
      * @return In format hh:mm:ss
      */
     public String getTime() {System.out.println("error: 15");
@@ -216,9 +240,9 @@ public class LectureRequest extends UserRequest{
     
     
     /**
-     * Creates a meeting and inserts it into the database
+     * Creates a lecture and inserts it into the database
      * 
-     * @return True if the meeting was created successfully
+     * @return True if the lecture was created successfully
      */
     public boolean createLecture() {System.out.println("error: 17");
         print();
@@ -259,30 +283,22 @@ public class LectureRequest extends UserRequest{
         }
     }
     
+    /**
+     * Sets the users that the lecture being scheduled can impact
+     * @param moduleCode module being organised
+     */
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("SELECT weekday, time, 5 'priority' " +
-                                            "FROM Lecture " +
-                                            "WHERE moduleCode = 'cs3305' " +
-                                            "UNION " +
-                                            "SELECT weekday, time, 4 'priority' " +
-                                            "FROM Practical " +
-                                            "WHERE moduleCode = 'cs3305' " +
-                                            "UNION " +
-                                            "SELECT WEEKDAY(date) as 'weekday', time, priority " +
-                                            "FROM Meeting JOIN HasMeeting " +
-                                            "ON mid = meetingid " +
-                                            "WHERE uid IN " +
-                                            "	(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE	gid IN " +
-                                            "		(SELECT gid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE courseid IN " +
-                                            "			(SELECT courseid " +
-                                            "			FROM ModuleInCourse " +
-                                            "			WHERE moduleCode = 'cs3305')));");
+            ResultSet groupResult = db.select("SELECT uid " +
+                                              "	FROM InGroup " +
+                                              "	WHERE gid IN " +
+                                              "		(SELECT gid " +
+                                              "		FROM GroupTakesCourse " +
+                                              "		WHERE courseid IN " +
+                                              "			(SELECT courseid " +
+                                              "			FROM ModuleInCourse " +
+                                              "			WHERE moduleCode = \"" + moduleCode + "\"));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }
@@ -293,7 +309,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Cancel a practical or lecture for a specific module and adds the 
+     * Cancel a lecture for a specific module and adds the 
      * cancellation to the database
      * 
      * @param moduleCode Module of the practical or lecture being cancelled

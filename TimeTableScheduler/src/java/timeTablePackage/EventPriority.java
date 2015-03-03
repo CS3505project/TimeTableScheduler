@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 /**
@@ -14,8 +10,8 @@ public enum EventPriority {
     PRACTICAL(4, "Practical"),
     MEETING(3, "Meeting");
     
-    private int priority;
-    private String priorityName;
+    private final int priority;
+    private final String priorityName;
     
     /**
      * Number of different priorities

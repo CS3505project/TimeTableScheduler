@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.sql.ResultSet;
@@ -22,13 +18,13 @@ import toolsPackage.Database;
  * @author John O Riordan
  */
 public class TimeTable {
-    private TimeSlot[][] events;
+    private final TimeSlot[][] events;
     private EventTime startTime;
     private EventTime endTime;
     private Day startDay;
     private Day endDay;
     
-    private Calendar calendar = Calendar.getInstance(Locale.FRANCE);
+    private final Calendar calendar = Calendar.getInstance(Locale.FRANCE);
     private String displayDate;
     
     private int suggestedDay = -1;
@@ -45,10 +41,19 @@ public class TimeTable {
         this.endDay = endDay;
     }
     
+    /**
+     * Creates a standard timetable to display from 9am to 6pm Monday to Friday.
+     * @return Standard timetable
+     */
     public static TimeTable getPreSetTimeTable() {
         return new TimeTable(EventTime.NINE, EventTime.SEVENTEEN, Day.MONDAY, Day.FRIDAY);
     }
     
+    /**
+     * Sets the week to display events.
+     * Default is the current date if the displayDate is null
+     * @param displayDate The date to start displaying
+     */
     public void setDisplayWeek(String displayDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -68,6 +73,10 @@ public class TimeTable {
         }
     }
     
+    /**
+     * Gets the calendar for the displaying the events for the week
+     * @return Calendar
+     */
     public Calendar getDisplayWeek() {
         return calendar;
     }
@@ -76,8 +85,9 @@ public class TimeTable {
      * Checks if the event specified by the day and time indexes are conflicting
      * with existing events
      * 
-     * @param day Day the event is occurring
-     * @param times Times for the event
+     * @param date Date the event is occurring
+     * @param time Time for the event
+     * @param duration The duration of the event
      * @return True if the event doesn't conflict with existing events.
      */
     public boolean conflictWithEvents(Date date, Time time, int duration) {
@@ -106,9 +116,10 @@ public class TimeTable {
      * Checks if the event specified by the day and time indexes are conflicting
      * with existing events whose priority is greater than the max priority
      * 
-     * @param dayIndex The index of the day the event is occurring
-     * @param timeIndexes Array of time indexes for the duration of the event
-     * @param maxPriority Max priority that can be scheduled over
+     * @param date Date the event is occurring
+     * @param time Time for the event
+     * @param duration The duration of the event
+     * @param maxPriority The max priority to allow scheduling over
      * @return True if the event doesn't conflict with existing events.
      */
     public boolean conflictWithEvents(Date date, Time time, int duration, int maxPriority) {
@@ -145,14 +156,29 @@ public class TimeTable {
         this.startTime = startTime;
     }
     
+    /**
+     * Set the time to stop displaying at in the timetable
+     * 
+     * @param endTime The end time
+     */
     public void setEndTime(EventTime endTime) {
         this.endTime = endTime;
     }
 
+    /**
+     * Set the day to start displaying from in the timetable
+     * 
+     * @param startDay The start day
+     */
     public void setStartDay(Day startDay) {
         this.startDay = startDay;
     }
 
+    /**
+     * Set the day to stop displaying at in the timetable
+     * 
+     * @param endDay The start time
+     */
     public void setEndDay(Day endDay) {
         this.endDay = endDay;
     }
@@ -354,7 +380,7 @@ public class TimeTable {
     }
     
     /**
-     * Set ups the timeslot matrix to hold empty TimeSlot objects
+     * Sets up the time slot matrix to hold empty TimeSlot objects
      */
     public void setupTimeSlots() {  
 
@@ -380,16 +406,22 @@ public class TimeTable {
         events[event.getDayOfWeek()][event.getHourIndex()].addEvent(event);
     }
     
+    /**
+     * Returns the list of events occurring at the day and time
+     * @param dayIndex index for the day
+     * @param timeIndex index for the time
+     * @return List of events
+     */
     public List<Event> getEvents(int dayIndex, int timeIndex) {
         return events[dayIndex][timeIndex].getEvents();
     }
     
     /**
-     * Inserts a priority into the timeslots.
+     * Inserts a priority into the time slots.
      * 
      * @param priority Priority to be added
-     * @param dayIndex Index of the day for the timeslot
-     * @param timeIndex Index of the time for the timeslot
+     * @param dayIndex Index of the day for the time slot
+     * @param timeIndex Index of the time for the time slot
      */
     private void addEvent(int priority, int dayIndex, int timeIndex) {
         events[dayIndex][timeIndex].addPriority(priority);
@@ -403,6 +435,7 @@ public class TimeTable {
      * 
      * @param filterEvent The events to be displayed
      * @param hideDetail Hide the detail when displaying the timeslot
+     * @param clickable Sets whether the timetable is interactive on certain forms
      * @return Timetable as HTML code 
      */
     public String createTimeTable(EventType filterEvent, boolean hideDetail, boolean clickable) {
@@ -476,14 +509,6 @@ public class TimeTable {
         if (clearPrevious) {
             clearSuggestedTimeSlots();
         }
-                
-        // if reached end reset suggestion to start
-        if (suggestedDay == endDay.getIndex()) {
-            suggestedDay = -1;
-        }
-        if (suggestedTime == endTime.getTimeIndex()) {
-            suggestedTime = -1;
-        }
         
         boolean found = false;
         // loop through each timeslot in the timetable
@@ -495,7 +520,7 @@ public class TimeTable {
                 suggestedTime = time;
                 found = true;
                 for (int i = 0; i < meetingDuration && (time+ i) < endTime.getTimeIndex(); i++) {
-                    found = found && (events[day][time + i].getTotalPriority() <= maxPriority);
+                    found = found && ((events[day][time + i].getTotalPriority() <= maxPriority));
                 }
             }
         }

@@ -15,17 +15,17 @@
                     out.println("<p>Login Successful</p>");
                     session.setAttribute("user", user);
                     session.setAttribute("userType", user.getUserType());
-    %>
-    <jsp:forward page="/index.jsp" />
-    <%
+%>
+                    <jsp:forward page="/index.jsp" />
+<%
                 }
             } else {
                 out.println("<p>Try Again. Login Unsuccessful</p>");
             }
        }
     } else {
-    %>
-    <jsp:forward page="/index.jsp" />
-    <%
+%>
+        <jsp:forward page="/index.jsp" />
+<%
     }
 %>

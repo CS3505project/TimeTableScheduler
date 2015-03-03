@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Generic event that can be a lecture, practical or meeting.
@@ -20,7 +15,13 @@ public abstract class Event {
     private Time time;
     private String location;
     
+    /**
+     * Used to format the date print the full day name
+     */
     public static final String DAY = "EEEE";
+    /**
+     * Formats the time to display the hour index
+     */
     public static final String HOUR_INDEX = "k";
 
     public Event(String eventID, Date date, Time time, String location) {
@@ -33,7 +34,10 @@ public abstract class Event {
     @Override
     public abstract String toString();
     
-    
+    /**
+     * Returns the priority for the event
+     * @return event priority
+     */
     public abstract EventPriority getEventPriority();
     
     /**

@@ -1,19 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package inputPackage;
 
 import java.sql.ResultSet;
-import javax.servlet.http.HttpServletRequest;
 import toolsPackage.Database;
-import toolsPackage.Hash;
 import toolsPackage.Validator;
 import userPackage.Admin;
 import userPackage.Lecturer;
 import userPackage.Student;
 import userPackage.User;
-import userPackage.UserType;
 
 /**
  * Handles input from the UI to the system

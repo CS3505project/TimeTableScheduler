@@ -13,36 +13,38 @@
         ModuleRequest.setModuleName((String)request.getParameter("moduleName"));
         ModuleRequest.setModuleCode((String)request.getParameter("moduleCode"));
 %>
-        
+        <div class="hidden" name="context" value="addModule" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup>
         	<h1>Add Module</h1>
         </hgroup>
         <form action="addModule.jsp" method="GET">
-            <label for="course">Course:</label>
-            <select name="course" id="course">
-                <% out.println(output.createCourseList()); %>
-            </select>
-            <label for="moduleName">Name:</label>
-            <input type="text" name="moduleName" id="moduleName" value="<%= ModuleRequest.getModuleName() %>" required="required"><br>
-            <label for="moduleCode">Code:</label>
-            <input type="text" name="moduleCode" id="moduleCode" value="<%= ModuleRequest.getModuleCode() %>" required="required"><br>
-            <label for="submit">Submit:</label>
-            <input type="submit" id="submit" value="Next">
-        </form>
-        <% if (ModuleRequest.numErrors() > 0) { %>
-            <div class="errors">
-                <h1><span><% out.println(ModuleRequest.numErrors()); %></span></h1>
-                <p>
-                    <% out.println(ModuleRequest.getErrors()); %>
-                </p>
+            <div>
+                <label for="course">Course:</label>
+                <select name="course" id="course">
+                    <% out.println(output.createCourseList()); %>
+                </select>
             </div>
-<%
+            <div>
+                <label for="moduleName">Name:</label>
+                <input type="text" name="moduleName" id="moduleName" value="<%= ModuleRequest.getModuleName() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="moduleCode">Code:</label>
+                <input type="text" name="moduleCode" id="moduleCode" value="<%= ModuleRequest.getModuleCode() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="submit">Submit:</label>
+                <input type="submit" id="submit" value="Next">
+            </div>
+        </form>
+<% 
+        if (ModuleRequest.numErrors() > 0) {
+            out.println(output.displayErrors(ModuleRequest.numErrors(), ModuleRequest.getErrors()));
         }
         
         if(ModuleRequest.createModule()) {
             response.sendRedirect("index.jsp");
         }
-        ModuleRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         

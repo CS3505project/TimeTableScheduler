@@ -8,31 +8,29 @@
 
         GroupRequest.setValues(request, user);
 %>
+        <div class="hidden" name="context" value="joinGroup" data-userId="<%= user.getUserID() %>"></div> 
         <hgroup>
         	<h1>Join Group</h1>
         </hgroup>
         <form action="joinGroup.jsp" method="GET">
-        	<label for="gname">Group:</label>
+            <div>
+                <label for="gname">Group:</label>
         	<select name="gname" id="gname">
                 <% out.println(output.createJoinGroupDropDown(user.getUserID())); %>
                 </select><br>
+            </div>
+            <div>
         	<label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next">
-        </form>
-
-        <% if (GroupRequest.numErrors() > 0) { %>
-            <div class="errors">
-                <h1><span><% out.println(GroupRequest.numErrors()); %></span></h1>
-                <p>
-                    <% out.println(GroupRequest.getErrors()); %>
-                </p>
             </div>
-<%
+        </form>
+<% 
+        if (GroupRequest.numErrors() > 0) {
+            out.println(output.displayErrors(GroupRequest.numErrors(), GroupRequest.getErrors()));
         }
-        if(GroupRequest.joinGroup((String)request.getParameter("gname"))) {
+        if (GroupRequest.joinGroup((String)request.getParameter("gname"))) {
             response.sendRedirect("index.jsp");
         }
-        GroupRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         
