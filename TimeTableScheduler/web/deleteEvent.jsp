@@ -1,11 +1,13 @@
+<%@page import="userPackage.User"%>
 <%@page import="userDataPackage.DeleteRequest"%>
 <%
-    userPackage.User user = (userPackage.User)session.getAttribute("user");
+    User user = (User)session.getAttribute("user");
     if (user != null) {        
         
         DeleteRequest delete = new DeleteRequest();
-        delete.deleteMeeting((String)request.getParameter("meetingId"), (String)request.getParameter("userId"));
-        
+        if (delete.deleteMeeting((String)request.getParameter("eventId"), ((User)session.getAttribute("user")).getUserID())) {
+            response.sendRedirect("index.jsp");
+        }
     } else {
         
 %>

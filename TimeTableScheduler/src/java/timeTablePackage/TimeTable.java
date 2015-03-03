@@ -583,7 +583,7 @@ public class TimeTable {
      * @param clickable Sets whether the timetable is interactive on certain forms
      * @return Timetable as HTML code 
      */
-    public String createTimeTable(EventType filterEvent, boolean hideDetail, boolean clickable) {
+    public String createTimeTable() {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
@@ -596,17 +596,44 @@ public class TimeTable {
             //generate days of time table
             timetable += "<tr><th>" + day.getDay() + "</th>";
             for (EventTime time : hours) { 
-                if (hideDetail) {
-                    timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
-                }
-                else {
-                    timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent, clickable);
-                }
+                timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
             }
             //end tags 
             timetable += "</tr>";
         }
+
+        timetable += createTimeTableCaption();
+        timetable += "</table>";
         
+        return timetable;
+    }
+    
+    public String createTimeTable(EventType filterEvent, boolean clickable, String userId) {
+        List<EventTime> hours = EventTime.getTimes(startTime, endTime);
+        List<Day> days = Day.getDays(startDay, endDay);
+        
+        //create table
+        String timetable = "<table>";
+        //create header for timetable
+        timetable += createTimeTableHeader(hours);
+        // loop through days
+        for (Day day : days) {
+            //generate days of time table
+            timetable += "<tr><th>" + day.getDay() + "</th>";
+            for (EventTime time : hours) { 
+                timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent, clickable, userId);
+            }
+            //end tags 
+            timetable += "</tr>";
+        }
+
+        timetable += createTimeTableCaption();
+        timetable += "</table>";
+        
+        return timetable;
+    }
+    
+    public String createTimeTableCaption() {
         // Print dates of the current week starting on Monday
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String startDate = "";
@@ -620,10 +647,7 @@ public class TimeTable {
         cal.add(Calendar.DATE, 6);
         endDate = df.format(cal.getTime());
 
-        timetable += "<caption>" + startDate + " to " + endDate + "</caption>";
-        timetable += "</table>";
-        
-        return timetable;
+        return "<caption>" + startDate + " to " + endDate + "</caption>";
     }
 
     /**

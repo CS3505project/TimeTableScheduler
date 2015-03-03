@@ -104,7 +104,7 @@ public class Message {
     
     public String createMessageBody() {
         SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateObject = new Date();
+        Date dateObject;
         try {
             dateObject = dateTime.parse(date);
         } catch (ParseException ex) {
@@ -120,16 +120,13 @@ public class Message {
     public boolean sendMessage(List<String> userIds) {
         boolean result = false;
         Database db = Database.getSetupDatabase();
-        
         result = db.insert("INSERT INTO Messages (subject, messageType, body, from_uid, status)" +
-                           "VALUES ('" + subject + "', '" + type.getName() + "', '" + createMessageBody() + "', '" + sender + "', 0);");
+                           "VALUES ('" + subject + "', '" + type.getName() + "', '" + createMessageBody() + "', '" + sender + "', " + 0 + ");");
         
         if (result) {
             int messageId = db.getPreviousAutoIncrementID("Messages");
             String insertValues = getMessageInsertValues(messageId, userIds);
-            for (String id : userIds) {
-                result = db.insert("INSERT INTO MessageFor (uid, messageid) VALUES " + insertValues);
-            }
+            result = db.insert("INSERT INTO MessageFor (uid, messageid) VALUES " + insertValues);
         }
         
         return result;

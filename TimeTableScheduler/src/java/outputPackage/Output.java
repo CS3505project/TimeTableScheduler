@@ -356,7 +356,7 @@ public class Output {
         suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
         //suggestion.nextSuggestedTimeSlot(2, 0, true);
         finalHTML += "<h1>Availability</h1>";
-        finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true, false);
+        finalHTML += suggestion.createTimeTable();
         
         return finalHTML;
     }
@@ -524,7 +524,7 @@ public class Output {
      * @param clickable Sets whether the timetable is interactive for certain forms
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable){
+    public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable, String userId){
         String finalHTML = "";
         
         finalHTML += "<h1  class='banner'>Timetable for this week</h1>";
@@ -535,7 +535,7 @@ public class Output {
                          "<li><a href=\"index.jsp?filter=practical\">Practical<a/></li>" +
                          "<li><a href=\"index.jsp?filter=meeting\">Meeting<a/></li>" +
                      "</ul>"; 
-        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), false, clickable); 
+        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), clickable, userId); 
         
         return finalHTML;
     }
@@ -554,7 +554,7 @@ public class Output {
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
         finalHTML += "<h1>Availability</h1>";
-        finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true, false);
+        finalHTML += suggestion.createTimeTable();
         
         return finalHTML;
     }

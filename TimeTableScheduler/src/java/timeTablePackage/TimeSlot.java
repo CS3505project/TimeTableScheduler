@@ -149,16 +149,22 @@ public class TimeSlot {
      * @param clickable If true it makes the time slot interactive for certain forms
      * @return HTML to print into a table cell
      */
-    public String printDetailedTableCell(EventType filter, boolean clickable) {
+    public String printDetailedTableCell(EventType filter, boolean clickable, String userId) {
         EventPriority highPriority = EventPriority.MEETING;
         String eventList = "";
         String description = "";
+        String removeLink = "";
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
-                eventList += event.toString() + "<br />";
+                if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
+                    removeLink += "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a>";
+                }
+                
+                eventList += event.toString() + removeLink + "<br />";
                 description += getEventDescription(event);
                 highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
                                             ? event.getEventPriority() : highPriority);
+                
             }
         }
         String html = "<td class=\"";
