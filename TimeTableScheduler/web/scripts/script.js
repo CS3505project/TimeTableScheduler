@@ -125,13 +125,35 @@ $(document).ready(function(){
     /////////////////////////////////////////////
     //update the messagecounter every x seconds//
     /////////////////////////////////////////////
-    var intervalLength = 10000;// set interval to ten seconds to start off with
+    var intervalLength = 10000;
     
     $(function(){
         setInterval(function() {
-          $("h1.banner").append("<span>"+intervalLength+"</span>");
-          
-          intervalLength += (intervalLength < 150000)? 10000: 0;//add 10s  to interval, till it's 2.5 minutes
+            var currentMessages = $("#msg span").text();
+            currentMessages = currentMessages.match(/\d+/g);
+            currentMessages = parseInt(currentMessages, 10);
+            
+            $.get('UserMessageServlet',{userID:userID},function(data, textStatus) {
+                numMessages = data;
+                numMessages = numMessages.match(/\d+/g);
+                numMessages = parseInt(numMessages, 10);
+                
+                if(numMessages !== currentMessages && numMessages > 0){
+
+                    $("#msg span").remove();
+                    
+                    if(numMessages <=20){
+                        $("#msg").append("<span class='unread'>" + numMessages + "</span>");
+                    }else{
+                        $("#msg").append("<span class='unread'>20+</span>");
+                    }
+                    $("#msg span").removeClass("unread");
+                    $("#msg span").addClass("unread");
+                }
+                if(numMessages === 0){
+                    $("#msg span").remove();
+                }
+            }, "text");
         },intervalLength);}
     );
 }); 
