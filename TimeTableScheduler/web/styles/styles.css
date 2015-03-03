@@ -12,15 +12,18 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
+body,html{
+    height:100%;
+    overflow-x: hidden;
+}
 body{
+    position: relative;
     background-color: #244264;
     background: url('http://i.imgur.com/qmEO6sh.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
     color: #778;
     font-size: 18px;
-    overflow: hidden;
 }
 .hidden{
     display:none;
@@ -80,21 +83,21 @@ body>nav{
     margin-bottom: -9000px;
 }
 section.main{
-    overflow-y:auto;
-    position: fixed;
+    overflow-x: hidden;
+    position: absolute;
     width: 100%;
+    min-height: 100%;
     min-width: 400px;
     left: 0px;
     top: 0px;
     margin-left: 132px;
     padding-right: 140px;
-    padding-bottom: 9000px;
-    margin-bottom: -9000px;
 }
 /***************/
 /* NAV SIDEBAR */
 /***************/
 body>nav{
+    overflow: hidden;
     background-color: rgba(0,0,0,0.5);
     background-image: url('footerbg.png');
     color: #9494b7;
@@ -909,10 +912,12 @@ div.popup h1{
 /* MESSAGES*/
 /***********/
 div.message{
+    overflow: hidden;
     margin-right: 8px;
     float: left;
     font-size: 12px;
     position: relative;
+    min-width:330px;
     height: 96px;
     padding: 0;
     padding-left: 30px;
@@ -956,6 +961,7 @@ div.message span.cancellation{
     text-shadow: 1px 1px 2px #06c;
 }
 div.message h1{
+    display: block;
     font-size: 18px;
     height: 22px;
     line-height: 24px;
