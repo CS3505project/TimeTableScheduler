@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.util.ArrayList;
@@ -13,12 +9,12 @@ import java.util.List;
  * @author John O Riordan
  */
 public class TimeSlot {
-    private int[] eventPrioritys;
+    private final int[] eventPrioritys;
     private int totalPriority;
     private boolean suggested;
-    private List<Event> events;
-    private String date;
-    private String time;
+    private final List<Event> events;
+    private final String date;
+    private final String time;
     
     public TimeSlot(String date, String time) {
         this.date = date;
@@ -29,13 +25,17 @@ public class TimeSlot {
     }
 
     /**
-     * Checks if there are events in this timeslot
+     * Checks if there are events in this time slot
      * @return True if an event exists
      */
     public boolean hasEvents() {
         return totalPriority > 0 || !events.isEmpty();
     }
     
+    /**
+     * Returns the list of events scheduled for this time slot
+     * @return 
+     */
     public List<Event> getEvents() {
         return events;
     }
@@ -116,7 +116,8 @@ public class TimeSlot {
     
     /**
      * Returns the HTML representation of this timeslot that would display in
-     * an HTML table
+     * the html table for suggesting a timeslot for a meeting. Includes all the
+     * relevant classes and divs to make the timetable interactive
      * 
      * @return HTML td element
      */
@@ -145,6 +146,7 @@ public class TimeSlot {
     /**
      * Prints a detailed version of the events details
      * @param filter Filter the events displayed
+     * @param clickable If true it makes the time slot interactive for certain forms
      * @return HTML to print into a table cell
      */
     public String printDetailedTableCell(EventType filter, boolean clickable) {
@@ -180,6 +182,12 @@ public class TimeSlot {
         return html;
     }
     
+    /**
+     * Returns a string representation of the details for this event. 
+     * This is displayed in the timetable
+     * @param event Event to get details
+     * @return Details as string
+     */
     private String getEventDescription(Event event) {
         String description = "";
         if (event.getEventType().equals(EventType.MEETING)) {
@@ -200,7 +208,7 @@ public class TimeSlot {
     }
     
     /**
-     * Filters the events to be displayed from the timeslot
+     * Filters the events to be displayed from the time slot
      * 
      * @param eventType The type of the event
      * @param filterType The filter type 
@@ -208,19 +216,6 @@ public class TimeSlot {
      */
     private boolean filterEvent(EventType eventType, EventType filterType) {
         return (eventType.equals(filterType) || filterType.equals(EventType.ALL_EVENTS));
-    }
-    
-    /**
-     * Returns a string that represents the event scheduled in this timeslot with
-     * the highest priority.
-     * This is used when displaying the event in the HTML table
-     * 
-     * @return String to represent the highest priority event
-     */
-    private String highestPriorityEvent() {
-        return ((numLectures() > 0) ? EventPriority.LECTURE.getPriorityName() : 
-               ((numPracticals() > 0) ? EventPriority.PRACTICAL.getPriorityName() : 
-               ((numMeetings() > 0) ? EventPriority.MEETING.getPriorityName() : "")));
     }
      
     @Override

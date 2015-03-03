@@ -1,12 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userPackage;
-
-import java.sql.Date;
-import java.sql.Time;
-import toolsPackage.Database;
 
 /**
  * Generic user of the system

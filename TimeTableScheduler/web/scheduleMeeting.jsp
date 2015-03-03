@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,6 +11,7 @@
         
         MeetingRequest.setValues(request, user);
         if (!MeetingRequest.isSetup()) {
+            System.out.println("setting up");
             MeetingRequest.setup((String)request.getParameter("withType"),
                                  (String)request.getParameter("duration"),
                                  (String)request.getParameter("individualID"),
@@ -35,28 +37,32 @@
         
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
-        <div class="hidden" name="context" value="scheduleMeeting"></div>
+        <div class="hidden" name="context" value="scheduleMeeting" data-userId="<%= user.getUserID() %>"></div>
         <hgroup class="animate">
         	<h1>Add Meeting</h1>
         	<h2>Step 2 of 2</h2>
         </hgroup>
-
         <form id="createMeetingForm" action="scheduleMeeting.jsp" method="GET">
-                <div><label for="date">Date:</label>
-        	<input type="text" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
-                </div>
-                <div><label for="time">Time:</label>
-        	<input type="text" name="time" id="time" value="<%= MeetingRequest.getTime() %>" required="required"><br>
-                </div>
-                <div><label for="description">Description:</label>
-        	<input type="textarea" name="description" id="description" value="<%= MeetingRequest.getDescription() %>" required="required"><br>
-                </div>
-                <div><label for="venue">Venue:</label>
-        	<input type="text" name="venue" id="venue" value="<%= MeetingRequest.getVenue() %>" required="required"><br>
-        	</div>
-                <div><label for="submit">Submit:</label>
-        	<input type="submit" id="submit" value="Next" class="animate">
-                </div>
+            <div>
+                <label for="date">Date:</label>
+                <input type="text" name="date" id="date" value="<%= MeetingRequest.getDate() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="time">Time:</label>
+                <input type="text" name="time" id="time" value="<%= MeetingRequest.getTime() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <input type="textarea" name="description" id="description" value="<%= MeetingRequest.getDescription() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="venue">Venue:</label>
+                <input type="text" name="venue" id="venue" value="<%= MeetingRequest.getVenue() %>" required="required"><br>
+            </div>
+            <div>
+                <label for="submit">Submit:</label>
+                <input type="submit" id="submit" value="Next" class="animate">
+            </div>
         </form>
 <%      
         if (MeetingRequest.numErrors() > 0) {

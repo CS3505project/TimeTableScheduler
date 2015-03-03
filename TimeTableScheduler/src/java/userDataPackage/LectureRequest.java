@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import java.sql.Date;
@@ -50,10 +46,6 @@ public class LectureRequest extends UserRequest{
         venue = "";
         time = null;
     }
-    
-    public void print() {
-        System.out.println("date: " + startDate + "venue: " + venue + "time: " + time);
-    }
      
     public boolean isSetup() {
         return setup;
@@ -68,33 +60,30 @@ public class LectureRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.LECTURE.getPriority());
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
     private void resetForm() {
         startDate = new java.util.Date();
-        endDate = new java.util.Date();//initialise to todays date
+        endDate = new java.util.Date(); // initialise to todays date
         venue = "";
         time = null;
         usersInvolved = new ArrayList<String>();
         clearErrors();
     }
-    
+
     public int getDuration() {System.out.println("error: 7");
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) {System.out.println("error: 8");
+     public void setup(String moduleCode, String duration, String semester) { System.out.println("error: 8");
         this.setup = true;
         
         try {
             this.semester = Integer.parseInt(semester);
         } catch (Exception ex) {
-            System.err.println("Error with duration");
-        }
-        
-        if (this.semester != 1 || this.semester != 2) {
-            this.setup = false;
+            System.err.println("Error with semester");
+            this.semester = 1;
         }
         
         try {
@@ -221,13 +210,12 @@ public class LectureRequest extends UserRequest{
      * @return True if the meeting was created successfully
      */
     public boolean createLecture() {System.out.println("error: 17");
-        print();
         if (isValid() && isSetup()) {
             boolean result = false;
-            System.out.println("here");
+            
+            System.out.println("here exe");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String meetingDate = format.format(startDate);
             
             Database db = Database.getSetupDatabase();
 
@@ -240,10 +228,10 @@ public class LectureRequest extends UserRequest{
             for (int i = 0; i < duration; i++) {  
                 System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Lecture (modulecode, semester, weekday, time, room, startdate, enddate) "
-                                    + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
-                                    + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
+                                    + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
+                                    + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
-                //To-Do add to groups 
+                //To-Do add to groups
                 
                 // increment to the next time slot if the meeting is longer 
                 // than one hour
@@ -262,27 +250,15 @@ public class LectureRequest extends UserRequest{
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("SELECT weekday, time, 5 'priority' " +
-                                            "FROM Lecture " +
-                                            "WHERE moduleCode = 'cs3305' " +
-                                            "UNION " +
-                                            "SELECT weekday, time, 4 'priority' " +
-                                            "FROM Practical " +
-                                            "WHERE moduleCode = 'cs3305' " +
-                                            "UNION " +
-                                            "SELECT WEEKDAY(date) as 'weekday', time, priority " +
-                                            "FROM Meeting JOIN HasMeeting " +
-                                            "ON mid = meetingid " +
-                                            "WHERE uid IN " +
-                                            "	(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE	gid IN " +
-                                            "		(SELECT gid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE courseid IN " +
-                                            "			(SELECT courseid " +
-                                            "			FROM ModuleInCourse " +
-                                            "			WHERE moduleCode = 'cs3305')));");
+            ResultSet groupResult = db.select("SELECT uid " +
+                                              "	FROM InGroup " +
+                                              "	WHERE gid IN " +
+                                              "		(SELECT gid " +
+                                              "		FROM GroupTakesCourse " +
+                                              "		WHERE courseid IN " +
+                                              "			(SELECT courseid " +
+                                              "			FROM ModuleInCourse " +
+                                              "			WHERE moduleCode = \"" + moduleCode + "\"));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }

@@ -2,29 +2,21 @@ package userDataPackage;
 
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import timeTablePackage.Day;
 import timeTablePackage.Event;
 import timeTablePackage.EventPriority;
-import timeTablePackage.EventTime;
 import timeTablePackage.Meeting;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- * A javaBean for handling requests to add a meeting
+ * A javaBean for handling requests to edit a meeting
  */
 public final class EditRequest extends UserRequest{
     private Date date = new Date();//initialise to todays date
@@ -51,10 +43,21 @@ public final class EditRequest extends UserRequest{
         description = "";
     }
      
+    /**
+     * Checks if the form is setup
+     * @return True if setup
+     */
     public boolean isSetup() {
         return setup;
     }
     
+    /**
+     * Checks if the event is valid
+     * Only the user that organised the event can edit it
+     * @param event Event to edit
+     * @param userId User that organised it
+     * @return True if the event can be edited
+     */
     public boolean isValidEvent(Event event, String userId) {
         boolean valid = false;
         Database db = Database.getSetupDatabase();
@@ -72,10 +75,17 @@ public final class EditRequest extends UserRequest{
         return valid;
     }
     
+    /**
+     * Sets the timetable to be displayed
+     * @param timeTable 
+     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
      
+    /**
+     * Resets the form after successful edit
+     */
     private void resetForm() {
         date = new Date();
         venue = "";
@@ -85,6 +95,11 @@ public final class EditRequest extends UserRequest{
         clearErrors();
     }
     
+    /**
+     * Sets up the event to be edited
+     * @param date Date of event to edit
+     * @param time Timt of event to edit
+     */
     public void setup(String date, String time) {
         this.setup = true;
         
@@ -220,14 +235,18 @@ public final class EditRequest extends UserRequest{
         return Validator.unescapeJava(description);
     }
     
+    /**
+     * Checks if the event will conflict with others after the edit
+     * @return true if there is a conflict
+     */
     public boolean checkConflict() {
         return timeTable.conflictWithEvents(date, time, 1, EventPriority.MEETING.getPriority());
     }
     
     /**
-     * Creates a meeting and inserts it into the database
+     * Edits the meeting and inserts it into the database
      * 
-     * @return True if the meeting was created successfully
+     * @return True if the meeting was edited successfully
      */
     public boolean editEvent() {        
         if (isValid() && isSetup() && isValidEvent(meeting, getUser().getUserID())) {

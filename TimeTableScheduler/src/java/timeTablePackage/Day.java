@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.util.ArrayList;
@@ -23,8 +19,8 @@ public enum Day {
     SATURDAY("Saturday", 5),
     SUNDAY("Sunday", 6);
 
-    private String day;
-    private int index;
+    private final String day;
+    private final int index;
     
     public static final int numDays = 7;
     

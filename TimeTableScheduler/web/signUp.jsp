@@ -6,14 +6,18 @@
 </jsp:useBean>
 <%
     SignUpRequest.setValues(request, null);
+    
     if ((String)request.getParameter("type") == null) {
         if (SignUpRequest.getUserType() == null) {
             SignUpRequest.setUserType(UserType.STUDENT);
+            SignUpRequest.setFormLoaded(false);
         }
     } else if (((String)request.getParameter("type")).equals("lecturer")) {
         SignUpRequest.setUserType(UserType.LECTURER);
+        SignUpRequest.setFormLoaded(false);
     } else if (((String)request.getParameter("type")).equals("student")) {
         SignUpRequest.setUserType(UserType.STUDENT);
+        SignUpRequest.setFormLoaded(false);
     }
     
     if (SignUpRequest.isFormLoaded()) {
@@ -23,9 +27,7 @@
         SignUpRequest.setTitle((String)request.getParameter("title"));
         SignUpRequest.setEmail((String)request.getParameter("email"));
     }
-
 %>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -36,7 +38,6 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
     <body>
-
 <%
     switch (SignUpRequest.getUserType()){
         case ADMIN:
@@ -84,13 +85,13 @@
                     <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
                     <label for="surname">Surname:</label> 
                     <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
-                    <label for="email">eMail:</label> 
+                    <label for="email">eMail:</label>
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
                     <input type="password" id="password" name="password" required="required"><br>
-                    <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
-                    <input type="submit" value="Sign Up">
+                    <label for="rePassword">Re-enter Password:</label> 
+                    <input type="password" id="rePassword"name="rePassword" required="required"><br>
+                    <input type="submit" value="Signup">
                 </form>
             </div>
 <%
@@ -109,12 +110,12 @@
                     <input type="text" id="firstName" name="firstName" value="<%= SignUpRequest.getFirstName() %>" required="required"><br>
                     <label for="surname">Surname:</label> 
                     <input type="text" id="surname" name="surname" value="<%= SignUpRequest.getSurname() %>" required="required"><br>
-                    <label for="email">eMail:</label> 
+                    <label for="email">eMail:</label>
                     <input type="text" id="email" name="email" value="<%= SignUpRequest.getEmail() %>" required="required"><br>
                     <label for="password">Password:</label> 
                     <input type="password" id="password" name="password" required="required"><br>
-                    <label for="rePassword">Re-enter:</label> 
-                    <input type="password" id="rePassword" name="rePassword" required="required"><br>
+                    <label for="rePassword">Re-enter Password:</label> 
+                    <input type="password" id="rePassword"name="rePassword" required="required"><br>
                     <input type="submit" value="Signup">
                 </form>
             </div>
@@ -123,7 +124,7 @@
     } 
     
     // if the form has been loaded then errors are displayed if they occur
-    if (SignUpRequest.numErrors() > 0) { 
+    if (SignUpRequest.numErrors() > 0 && SignUpRequest.isFormLoaded()) { 
 %>
         <div class="errors">
             <h1><span><% out.println(SignUpRequest.numErrors()); %></span></h1>

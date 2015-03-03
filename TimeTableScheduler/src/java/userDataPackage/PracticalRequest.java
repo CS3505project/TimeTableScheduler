@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import java.sql.Date;
@@ -50,10 +46,6 @@ public class PracticalRequest extends UserRequest{
         venue = "";
         time = null;
     }
-    
-    public void print() {
-        System.out.println("date: " + startDate + "venue: " + venue + "time: " + time);
-    }
      
     public boolean isSetup() {
         return setup;
@@ -68,7 +60,6 @@ public class PracticalRequest extends UserRequest{
     }
     
     public boolean checkConflict() {
-        print();
         return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
@@ -219,14 +210,12 @@ public class PracticalRequest extends UserRequest{
      * @return True if the meeting was created successfully
      */
     public boolean createPractical() {System.out.println("error: 17");
-        print();
         if (isValid() && isSetup()) {
             boolean result = false;
             
             System.out.println("here exe");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String meetingDate = format.format(startDate);
             
             Database db = Database.getSetupDatabase();
 
@@ -239,8 +228,8 @@ public class PracticalRequest extends UserRequest{
             for (int i = 0; i < duration; i++) {  
                 System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Practical (modulecode, semester, weekday, time, room, startdate, enddate) "
-                                    + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
-                                    + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
+                                    + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
+                                    + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
                 //To-Do add to groups
                 
@@ -261,15 +250,15 @@ public class PracticalRequest extends UserRequest{
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
-            ResultSet groupResult = db.select("(SELECT uid " +
-                                            "	FROM InGroup " +
-                                            "	WHERE	gid IN " +
-                                            "		(SELECT gid " +
-                                            "		FROM GroupTakesCourse " +
-                                            "		WHERE courseid IN " +
-                                            "			(SELECT courseid " +
-                                            "			FROM ModuleInCourse " +
-                                            "			WHERE moduleCode = 'cs3305')));");
+            ResultSet groupResult = db.select("SELECT uid " +
+                                              "	FROM InGroup " +
+                                              "	WHERE gid IN " +
+                                              "		(SELECT gid " +
+                                              "		FROM GroupTakesCourse " +
+                                              "		WHERE courseid IN " +
+                                              "			(SELECT courseid " +
+                                              "			FROM ModuleInCourse " +
+                                              "			WHERE moduleCode = \"" + moduleCode + "\"));");
             while (groupResult.next()) {
                 usersInvolved.add(groupResult.getString("uid"));
             }

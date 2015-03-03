@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +17,7 @@
                                    (String)request.getParameter("semester"));
             
         } else {
-            LectureRequest.setStartDate((String)request.getParameter("startDate"));
+            LectureRequest.setStartDate((String)request.getParameter("date"));
             LectureRequest.setTime((String)request.getParameter("time"));
             LectureRequest.setVenue((String)request.getParameter("venue"));
             LectureRequest.setEndDate((String)request.getParameter("endDate"));
@@ -25,7 +26,11 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate")); 
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        if (user.getUserType().equals(UserType.ADMIN)) {
+            timeTable.intialiseAdminTimeTable();
+        } else {
+            timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        }
         
         LectureRequest.setTimeTable(timeTable);
         
@@ -35,23 +40,32 @@
                                                     true));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
-        <div class="hidden" name="context" value="scheduleMeeting"></div>
+        <div class="hidden" name="context" value="scheduleLecture" data-userId="<%= user.getUserID() %>"></div>
         <hgroup class="animate">
         	<h1>Add Lecture</h1>
         	<h2>Step 2 of 2</h2>
         </hgroup>
-
         <form id="createMeetingForm" action="scheduleLecture.jsp" method="GET">
-                <label for="startDate">Start Date:</label>
-        	<input type="date" name="startDate" id="startDate" value="<%= LectureRequest.getStartDate() %>" required="required"><br>
+            <div>
+                <label for="date">Start Date:</label>
+        	<input type="date" name="date" id="date" value="<%= LectureRequest.getStartDate() %>" required="required"><br>
+            </div>
+            <div>
                 <label for="time">Time:</label>
         	<input type="text" name="time" id="time" value="<%= LectureRequest.getTime() %>" required="required"><br>
+            </div>
+            <div>
                 <label for="endDate">End Date:</label>
         	<input type="date" name="endDate" id="endDate" value="<%= LectureRequest.getEndDate() %>" required="required"><br>
+            </div>
+            <div>
                 <label for="venue">Venue:</label>
         	<input type="text" name="venue" id="venue" value="<%= LectureRequest.getVenue() %>" required="required"><br>
-        	<label for="submit">Submit:</label>
+            </div>
+            <div>
+                <label for="submit">Submit:</label>
         	<input type="submit" id="submit" value="Next" class="animate">
+            </div>
         </form>
             <%-- print errors and comit valid values to database --%>
 <%
@@ -67,9 +81,9 @@
         out.println(output.createFooter());
     } else {
         
-    %>
-    <jsp:forward page="/login.jsp" />
-    <%
+%>
+        <jsp:forward page="/login.jsp" />
+<%
         
     }
 %>

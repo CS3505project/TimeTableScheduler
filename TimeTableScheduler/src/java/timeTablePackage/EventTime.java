@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.sql.Time;
@@ -40,9 +36,9 @@ public enum EventTime {
     TWENTYTHREE("23:00", Time.valueOf("23:00:00"), 23);
     
     
-    private String printTime;
-    private Time time;
-    private int timeIndex;
+    private final String printTime;
+    private final Time time;
+    private final int timeIndex;
     
     /**
      * Number of hours in the class
@@ -64,6 +60,10 @@ public enum EventTime {
         return timeIndex;
     }
     
+    /**
+     * Returns the time in the standard sql format hh:mm:ss
+     * @return sql time format
+     */
     public String printSQLTimeFormat() {
         return time.toString();
     }

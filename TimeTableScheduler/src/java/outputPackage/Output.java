@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package outputPackage;
 
 import groupPackage.GroupType;
@@ -31,10 +27,16 @@ import static userPackage.UserType.LECTURER;
  * @author lam1
  */
 public class Output {
-    
     HttpServletRequest request;
     UserType userType;
     
+    /**
+     * Creates an output object
+     * If the userType is null then the default is used STUDENT
+     * 
+     * @param request
+     * @param userType user type for displaying certain forms etc.
+     */
     public Output(HttpServletRequest request, UserType userType){
         this.request = request;
         this.userType = (userType == null ? userType.STUDENT : userType);
@@ -76,7 +78,8 @@ public class Output {
     }
     
     /**
-     * 
+     * Creates the login page
+     * @return html for the login page
      */
     public String createLogin(){
         String finalHTML = "";
@@ -93,6 +96,14 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a nav with two buttons to display the timetable for next
+     * week or last week
+     * 
+     * @param cal Calendar to get the dates for the next and last week
+     * @param request Used to construct the url used in the nav buttons
+     * @return html links to display the next and last week of events
+     */
     public String createTimeTableNav(Calendar cal, HttpServletRequest request) {
         String html = "<ul class='weekSelect'>";
                 
@@ -105,7 +116,7 @@ public class Output {
         String endDate = df.format(cal.getTime());
         cal.add(Calendar.DATE, -7);
                 
-        // reconstruct url to and add attribute to it
+        // reconstruct url to and add the date attributes to it
         StringBuffer startUrl = request.getRequestURL().append("?");
         Map<String, String[]> paramMap = request.getParameterMap();
         for (String key : paramMap.keySet()) {
@@ -122,6 +133,13 @@ public class Output {
         return html;
     }
     
+    /**
+     * Creates an error section to display errors from a form
+     * 
+     * @param numErrors number of error messages
+     * @param errorMessage Messages to display
+     * @return html to display the errors in a div
+     */
     public String displayErrors(int numErrors, String errorMessage) {
         return "<div class=\"errors\">" +
                     "<h1><span>" + numErrors + "</span></h1>" +
@@ -129,36 +147,6 @@ public class Output {
                         errorMessage +
                     "</p>" +
                "</div>";
-    }
-    
-    /**
-     * Creates the form for adding a lab,
-     * with appropriate dropdowns for the modules etc. depending on what the lecturer teaches
-     * @return A string with all the HTML for the form.
-     */
-    public String createAddLabForm(){
-        String finalHTML = "<hgroup>\n" +
-        "	<h1>Add Lab</h1>\n" +
-        "	<h2>Step 1 of 2</h2>\n" +
-        "</hgroup>\n" +
-        "<form>\n" +
-        "	<div><label for=\"day\">Day:</label>\n" +
-        "	<select id=\"day\">/div>\n" +
-        //stuff from database
-        "	</select></div>\n" +
-        "	<div><label for=\"select\">Group:</label>\n" +
-        "	<select id=\"select\">\n" +
-        //stuff from database
-        "	</select></div>\n" +
-        "	<div><label for=\"formText\">Module Code:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"></div>\n" +
-        "	<label for=\"venueText\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"></div>\n" +
-        "	<div><label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\"></div>\n" +
-        "</form>";
-        //add file include from htmlIncludesfolder, logic for appropopriate dropdowns etc.
-        return finalHTML;
     }
     
     /**
@@ -185,10 +173,14 @@ public class Output {
             System.err.println("Error while getting group list.");
         }
         
-        groups += "</ul><div>";
+        groups += "</ul></div>";
         return groups;
     }
     
+    /**
+     * Creates a html drop down for all year groups in the system
+     * @return html for the drop down
+     */
     public String createYearGroupList() {
         String groups = "";
         
@@ -208,6 +200,10 @@ public class Output {
         return groups;
     }
     
+    /**
+     * Create a drop down list of all the groups in the system
+     * @return html for the drop down
+     */
     public String createAllGroupList() {
         String groups = "";
         
@@ -227,6 +223,10 @@ public class Output {
         return groups;
     }
     
+    /**
+     * Create a drop down list of all the courses in the system
+     * @return html drop down list
+     */
     public String createCourseList() {
         String groups = "";
         
@@ -246,6 +246,11 @@ public class Output {
         return groups;
     }
     
+    /**
+     * Create a drop down list for the groups that the user is not a part of.
+     * @param userid user id to select from the groups
+     * @return html drop down
+     */
     public String createJoinGroupDropDown(String userid) {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
@@ -267,6 +272,10 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Create a drop down list of priority values in the system
+     * @return html drop down list
+     */
      public String createPriorityDropDown() {
         String finalHTML = "";
         for (EventPriority priority : EventPriority.values()) {
@@ -278,7 +287,7 @@ public class Output {
     /**
      * Creates a HTML drop down list of group names
      * 
-     * @param user User in the groups
+     * @param userid User in the groups
      * @return html of the drop down
      */
     public String createGroupDropDown(String userid) {
@@ -302,35 +311,6 @@ public class Output {
         
         return finalHTML;
     }
-    
-    /**
-    * Creates the form for joining a module,
-    * with appropriate dropdowns for the public groups etc.
-    * @return A string with all the HTML for the form.
-    */
-    public String createModuleForm(){
-        String finalHTML = "<hgroup>\n" +
-        "	<h1>Add Module</h1>\n" +
-        "	<h2>Step 1 of 2</h2>\n" +
-        "</hgroup>\n" +
-        "<form>\n" +
-        "	<label for=\"bday\">Day:</label>\n" +
-        "	<select id=\"bday\">\n" +
-        //stuff from database for dropdown goes here
-        "	</select><br>\n" +
-        "	<label for=\"select\">Group:</label>\n" +
-        "	<select id=\"select\">\n" +
-        //stuff from database for dropdown goes here
-        "	<label for=\"formText\">Module Name:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"formtext\" required=\"required\"><br>\n" +
-        "	<label for=\"venueText\">Venue:</label>\n" +
-        "	<input type=\"text\" name=\"text\" id=\"venuetext\" required=\"required\"><br>\n" +
-        "	<label for=\"submit\">Submit:</label>\n" +
-        "	<input type=\"submit\" id=\"submit\" value=\"Next\">\n" +
-        "</form>";
-        //add actual code
-        return finalHTML;
-    }
 
     /**
      * Creates a page section with the users messages
@@ -342,6 +322,7 @@ public class Output {
         
         Database db = Database.getSetupDatabase();
         
+        //To-Do
         ResultSet result = db.select("");
         try {
             while (result.next()) {
@@ -372,6 +353,7 @@ public class Output {
     }
     /**
      * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
+     * @param user User to create the form
      * @return the html for the dropdown and radio selector 
      */
     public String createMeetingFormGroupDropdown(User user){
@@ -392,13 +374,64 @@ public class Output {
         return finalHTML;
     }
     
-    public String createModuleDropDown(String userid) {
+    /**
+     * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
+     * @param user User to create the form
+     * @return the html for the dropdown and radio selector 
+     */
+    public String createAdminMeetingFormDropdown(){
+        String finalHTML = "";
+        finalHTML += "<div class='radioBox'><span>Group</span><input type='radio' id='groupRadio' name='withType' value='group' checked>\n" +
+        "<span>Individual</span><input type='radio' id='individualRadio' name='withType' value='individual'>\n" +
+        "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
+        "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
+        //for loop for creating options for legit groups
+        finalHTML += createAllGroupList();
+        
+        finalHTML += "</select></div>\n" +
+        "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
+        //for loop for creating options for legit groups
+        finalHTML += createAllIndividualDropDown();
+        
+        finalHTML += "</select></div>";
+        return finalHTML;
+    }
+    
+    public String createAllIndividualDropDown() {
+        String finalHTML = "";
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select("SELECT uid, firstname, surname, studentid as 'id' " +
+                                    "FROM Student JOIN User " +
+                                    "ON Student.uid = userid " +
+                                    "UNION " +
+                                    "SELECT uid, firstname, surname, lecturerid as 'id' " +
+                                    "FROM Lecturer JOIN User " +
+                                    "ON Lecturer.uid = userid;");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("uid") + "\">" 
+                        + result.getString("id") + " : " + result.getString("firstName") + " " 
+                        + result.getString("surname") + "</option>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving group list");
+        }
+        
+        return finalHTML;
+    }
+    
+    /**
+     * Create the drop down list of the modules for this user
+     * @param userid The user
+     * @return drop down list
+     */
+    public String createModuleDropDown() {
         String finalHTML = "<select name=\"moduleCode\">";
         
         Database db = Database.getSetupDatabase();
         
-        //TO-DO
-        ResultSet result = db.select("SELECT * FROM Module ");
+        ResultSet result = db.select("SELECT * FROM Module");
         try {
             while (result.next()) {
                 finalHTML += "<option value=\"" + result.getString("moduleCode") + "\">"
@@ -414,6 +447,10 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Create a drop down list for the group types in the system
+     * @return html drop down
+     */
     public String createGroupTypeDropDown() {
         String finalHTML = "";
         
@@ -425,6 +462,11 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a drop down list of users that this user can scheduled a meeting with.
+     * @param userid user organising the meeting
+     * @return html drop down
+     */
     public String createIndividualDropDown(String userid) {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
@@ -468,8 +510,9 @@ public class Output {
     /**
      * Create the main timetable for the users home page
      * 
-     * @param userID The users ID
+     * @param timeTable The time to display
      * @param filter Filter events to display
+     * @param clickable Sets whether the timetable is interactive for certain forms
      * @return HTML to display the timetable
      */
     public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable){
@@ -492,6 +535,7 @@ public class Output {
      * Create a timetable that suggests the free times for a meeting with 
      * a group of users
      * 
+     * @param suggestion Timetable to display
      * @param meetingLength The duration of the meeting
      * @param priority Highest priority of events that can be scheduled over
      * @param clearPrevSuggestion Clear the most recently suggested time slot
@@ -499,6 +543,7 @@ public class Output {
      */
     public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, int priority, boolean clearPrevSuggestion){
         String finalHTML  = "";
+        System.out.println("length" + meetingLength);
         suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
         finalHTML += "<h1>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, true, false);

@@ -10,36 +10,35 @@
         CourseRequest.setCourse((String)request.getParameter("course"));
         CourseRequest.setGroup((String)request.getParameter("group"));
 %>
-        
+        <div class="hidden" name="context" value="addGroupToCourse" data-userId="<%= user.getUserID() %>"></div>
         <hgroup>
         	<h1>Add Group To Course</h1>
         </hgroup>
         <form action="addGroupToCourse.jsp" method="GET">
-            <label for="course">Course:</label>
-            <select name="course" id="course">
-                <% out.println(output.createCourseList()); %>
-            </select>
-            <label for="group">Groups:</label>
-            <select name="group" id="group">
-                <% out.println(output.createAllGroupList()); %>
-            </select>
-            <label for="submit">Submit:</label>
-            <input type="submit" id="submit" value="Next">
-        </form>
-        <% if (CourseRequest.numErrors() > 0) { %>
-            <div class="errors">
-                <h1><span><% out.println(CourseRequest.numErrors()); %></span></h1>
-                <p>
-                    <% out.println(CourseRequest.getErrors()); %>
-                </p>
+            <div>
+                <label for="course">Course:</label>
+                <select name="course" id="course">
+                    <% out.println(output.createCourseList()); %>
+                </select>
             </div>
-<%
+            <div>
+                <label for="group">Groups:</label>
+                <select name="group" id="group">
+                    <% out.println(output.createAllGroupList()); %>
+                </select>
+            </div>
+            <div>
+                <label for="submit">Submit:</label>
+                <input type="submit" id="submit" value="Next">
+            </div>
+        </form>
+<% 
+        if (CourseRequest.numErrors() > 0) {
+            out.println(output.displayErrors(CourseRequest.numErrors(), CourseRequest.getErrors()));
         }
-        
         if(CourseRequest.addGroupToCourse()) {
             response.sendRedirect("index.jsp");
         }
-        CourseRequest.setFormLoaded(true);
         out.println(output.createFooter());
     } else {
         

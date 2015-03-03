@@ -1,15 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timeTablePackage;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import toolsPackage.Database;
 
 /**
@@ -91,6 +85,12 @@ public class Meeting extends Event {
         return organiser;
     }
     
+    /**
+     * Accesses the database to retrieve the details for the user that
+     * organised the event.
+     * 
+     * @return the organiser's first name and surname 
+     */
     public String retrieveOrganiserDetails() {
         String details = "";
         Database db = Database.getSetupDatabase();
