@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +17,7 @@
                                    (String)request.getParameter("semester"));
             
         } else {
-            LectureRequest.setStartDate((String)request.getParameter("startDate"));
+            LectureRequest.setStartDate((String)request.getParameter("date"));
             LectureRequest.setTime((String)request.getParameter("time"));
             LectureRequest.setVenue((String)request.getParameter("venue"));
             LectureRequest.setEndDate((String)request.getParameter("endDate"));
@@ -25,7 +26,11 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate")); 
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        if (user.getUserType().equals(UserType.ADMIN)) {
+            timeTable.intialiseAdminTimeTable();
+        } else {
+            timeTable.initialiseTimeTable(LectureRequest.getUsersInvolved());
+        }
         
         LectureRequest.setTimeTable(timeTable);
         
@@ -42,8 +47,8 @@
         </hgroup>
         <form id="createMeetingForm" action="scheduleLecture.jsp" method="GET">
             <div>
-                <label for="startDate">Start Date:</label>
-        	<input type="date" name="startDate" id="startDate" value="<%= LectureRequest.getStartDate() %>" required="required"><br>
+                <label for="date">Start Date:</label>
+        	<input type="date" name="date" id="date" value="<%= LectureRequest.getStartDate() %>" required="required"><br>
             </div>
             <div>
                 <label for="time">Time:</label>

@@ -183,6 +183,131 @@ public class TimeTable {
         this.endDay = endDay;
     }
     
+    public void intialiseAdminTimeTable() {
+        Database db = Database.getSetupDatabase();
+                
+        // get all events for each user in meeting
+        ResultSet usersEvents = db.select("SELECT weekday, Practical.time, " + EventPriority.PRACTICAL.getPriority() + " 'priority' " +
+                                        "FROM Practical " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date) " +
+                                        "	AND Cancellation.time = Practical.time " +
+                                        ") " +
+                                        "UNION " +
+                                        "SELECT weekday, Lecture.time, " + EventPriority.LECTURE.getPriority() + " 'priority' " +
+                                        "FROM Lecture " +
+                                        "WHERE moduleCode NOT IN " +
+                                        "( " +
+                                        "	SELECT moduleCode " +
+                                        "	FROM Cancellation " +
+                                        "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
+                                        "	AND weekday = WEEKDAY(Cancellation.date) " +
+                                        "	AND Cancellation.time = Lecture.time " +
+                                        ") " +
+                                        "UNION " +
+                                        "SELECT WEEKDAY(date) as 'weekday', time, priority " +
+                                        "FROM Meeting " +
+                                        "WHERE WEEK(date) = WEEK(\"" + displayDate + "\");");
+        try {            
+            while (usersEvents.next()) {
+                int dayIndex = usersEvents.getInt("weekday");
+                
+                SimpleDateFormat dateTime = new SimpleDateFormat(HOUR_INDEX);
+                Time time = usersEvents.getTime("time");
+                int timeIndex = Integer.parseInt(dateTime.format(time));
+                                
+                int priority = usersEvents.getInt("priority");
+                                
+                addEvent(priority, dayIndex, timeIndex);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error scheduling events");
+        }
+        
+        db.close();
+    }
+    
+    public void intialiseAdminTimeTable(String adminId) {
+        Database db = Database.getSetupDatabase();
+        
+        try {
+            // retrieve list of lectures for a particular user id
+            ResultSet lectureEvents = db.select("SELECT Lecture.moduleCode, semester, weekday, Lecture.time, room, startDate, endDate " +
+                                                "FROM Lecture " +
+                                                "WHERE moduleCode NOT IN " +
+                                                "(" +
+                                                "	SELECT moduleCode " +
+                                                "	FROM Cancellation " +
+                                                "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
+                                                "	AND weekday = WEEKDAY(Cancellation.date) " +
+                                                "	AND Cancellation.time = Lecture.time " +
+                                                ");");
+            
+            while (lectureEvents.next()) {
+                Lecture lecture = new Lecture(lectureEvents.getString("moduleCode"),
+                                            lectureEvents.getString("semester"),
+                                            lectureEvents.getInt("weekday"),
+                                            lectureEvents.getTime("time"),
+                                            lectureEvents.getString("room"),
+                                            lectureEvents.getDate("startDate"),
+                                            lectureEvents.getDate("endDate"));
+                addEvent(lecture);
+            }
+
+            // retrieve list of practicals for a particular user id
+            ResultSet practicalEvents = db.select("SELECT Practical.moduleCode, semester, weekday, Practical.time, room, startDate, endDate " +
+                                                    "FROM Practical " +
+                                                    "WHERE moduleCode NOT IN " +
+                                                    "(" +
+                                                    "	SELECT moduleCode " +
+                                                    "	FROM Cancellation " +
+                                                    "	WHERE WEEK(Cancellation.date) = WEEK(\"" + displayDate + "\") " +
+                                                    "	AND weekday = WEEKDAY(Cancellation.date) " +
+                                                    "	AND Cancellation.time = Practical.time " +
+                                                    ");");
+                    
+            while (practicalEvents.next()) {
+                Practical practical = new Practical(practicalEvents.getString("moduleCode"),
+                                                    practicalEvents.getString("semester"),
+                                                    practicalEvents.getInt("weekday"),
+                                                    practicalEvents.getTime("time"),
+                                                    practicalEvents.getString("room"),
+                                                    practicalEvents.getDate("startDate"),
+                                                    practicalEvents.getDate("endDate"));
+                addEvent(practical);
+            }
+            
+            // retrieve list of meetings that a particular user id is involved with
+            ResultSet userPersonalEvents = db.select("SELECT meetingid, date, time, room, description, priority, organiser_uid " +
+                                                    "FROM Meeting " +
+                                                    "WHERE meetingid IN " +
+                                                    "(	SELECT mid " +
+                                                    "	FROM HasMeeting " +
+                                                    "	WHERE uid = " + adminId + ") " +
+                                                    "AND WEEK(date) = WEEK(\"" + displayDate + "\");");
+                                                                    
+            while (userPersonalEvents.next()) {
+                Meeting meeting = new Meeting(userPersonalEvents.getString("meetingid"),
+                                            userPersonalEvents.getDate("date"),
+                                            userPersonalEvents.getTime("time"),
+                                            userPersonalEvents.getString("room"),
+                                            userPersonalEvents.getString("description"),
+                                            userPersonalEvents.getInt("priority"),
+                                            userPersonalEvents.getString("organiser_uid"));
+                addEvent(meeting);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving user events" + ex.getMessage());
+            db.writeLogSQL("Error retrieving users events");
+        } 
+        
+        db.close();
+    }
+    
     /**
      * Setups up the timetable by entering all events already scheduled for
      * the list of users
@@ -382,7 +507,11 @@ public class TimeTable {
     /**
      * Sets up the time slot matrix to hold empty TimeSlot objects
      */
-    public void setupTimeSlots() {  
+    public void setupTimeSlots() { 
+        
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        cal.setTime(calendar.getTime());
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         // Print dates of the current week starting on Monday
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -390,11 +519,10 @@ public class TimeTable {
         for (Day day : Day.values()) {
             for (EventTime time : EventTime.values()) {
                 events[day.getIndex()][time.getTimeIndex()] 
-                        = new TimeSlot(dateFormat.format(calendar.getTime()), time.printSQLTimeFormat());
+                        = new TimeSlot(dateFormat.format(cal.getTime()), time.printSQLTimeFormat());
             }
-            calendar.add(Calendar.DATE, 1);
+            cal.add(Calendar.DATE, 1);
         }
-        calendar.add(Calendar.DATE, -Day.numDays);
     }
     
     /**
@@ -467,10 +595,13 @@ public class TimeTable {
         String startDate = "";
         String endDate = "";
 
-        startDate = df.format(calendar.getTime());
-        calendar.add(Calendar.DATE, 6);
-        endDate = df.format(calendar.getTime());
-        calendar.add(Calendar.DATE, -6);
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        cal.setTime(calendar.getTime());
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        
+        startDate = df.format(cal.getTime());
+        cal.add(Calendar.DATE, 6);
+        endDate = df.format(cal.getTime());
 
         timetable += "<caption>" + startDate + " to " + endDate + "</caption>";
         timetable += "</table>";
@@ -510,17 +641,18 @@ public class TimeTable {
             clearSuggestedTimeSlots();
         }
         
+        
+        
         boolean found = false;
         // loop through each timeslot in the timetable
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 
                 !found && day < endDay.getIndex(); day++) {
             suggestedDay = day;
-            for (int time = (suggestedTime == -1 ? startTime.getTimeIndex() : suggestedTime); 
-                    !found && time < endTime.getTimeIndex(); time++) {
+            for (int time = startTime.getTimeIndex(); !found && time < endTime.getTimeIndex(); time++) {
                 suggestedTime = time;
                 found = true;
-                for (int i = 0; i < meetingDuration && (time+ i) < endTime.getTimeIndex(); i++) {
-                    found = found && ((events[day][time + i].getTotalPriority() <= maxPriority));
+                for (int i = 0; i < meetingDuration; i++) {
+                    found = found && (events[day][time + i].getTotalPriority() < maxPriority);
                 }
             }
         }

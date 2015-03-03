@@ -12,6 +12,7 @@
         </hgroup>
         <form id="createMeetingForm" action="scheduleLecture.jsp" method="GET">
             <div>
+                <label for="moduleCode">Module</label>
                 <% out.println(output.createModuleDropDown()); %>
             </div>
             <div>

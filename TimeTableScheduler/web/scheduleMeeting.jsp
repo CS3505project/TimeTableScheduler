@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,6 +11,7 @@
         
         MeetingRequest.setValues(request, user);
         if (!MeetingRequest.isSetup()) {
+            System.out.println("setting up");
             MeetingRequest.setup((String)request.getParameter("withType"),
                                  (String)request.getParameter("duration"),
                                  (String)request.getParameter("individualID"),

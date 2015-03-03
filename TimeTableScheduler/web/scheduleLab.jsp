@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page import="timeTablePackage.EventPriority"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,7 +24,11 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(PracticalRequest.getUsersInvolved());
+        if (user.getUserType().equals(UserType.ADMIN)) {
+            timeTable.intialiseAdminTimeTable();
+        } else {
+            timeTable.initialiseTimeTable(PracticalRequest.getUsersInvolved());
+        }
         
         PracticalRequest.setTimeTable(timeTable);
         

@@ -1,3 +1,4 @@
+<%@page import="userPackage.UserType"%>
 <%@page import="timeTablePackage.TimeTable"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -12,7 +13,11 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(user.getUserID());
+        if (user.getUserType().equals(UserType.ADMIN)) {
+            timeTable.intialiseAdminTimeTable(user.getUserID());
+        } else {
+            timeTable.initialiseTimeTable(user.getUserID());
+        }
         
         
         out.println(output.createUserTimeTable(timeTable, (String)request.getParameter("filter"), false));

@@ -17,7 +17,8 @@ import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- * A javaBean for handling requests to add a lecture
+ *
+ * @author cdol1
  */
 public class LectureRequest extends UserRequest{
     private java.util.Date startDate = new java.util.Date();//initialise to todays date
@@ -45,80 +46,44 @@ public class LectureRequest extends UserRequest{
         venue = "";
         time = null;
     }
-    
-    public void print() {
-        System.out.println("date: " + startDate + "venue: " + venue + "time: " + time);
-    }
-    
-    /**
-     * Checks if the request is setup
-     * @return True if the request is setup for creation
-     */
+     
     public boolean isSetup() {
         return setup;
     }
     
-    /**
-     * Gets the users involved in the lecture being organised
-     * @return List of users involved
-     */
     public List<String> getUsersInvolved() {
         return usersInvolved;
     }
     
-    /**
-     * Sets the timetable to schedule a lecture with
-     * @param timeTable 
-     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
     
-    /**
-     * Checks if the lecture is conflicting with other lectures
-     * @return True if there is a conflict
-     */
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.LECTURE.getPriority());
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
-    /**
-     * Resets the form after a successful lecture creation
-     */
     private void resetForm() {
         startDate = new java.util.Date();
-        endDate = new java.util.Date();//initialise to todays date
+        endDate = new java.util.Date(); // initialise to todays date
         venue = "";
         time = null;
         usersInvolved = new ArrayList<String>();
         clearErrors();
     }
-    
-    /**
-     * Returns the duration for the lecture
-     * @return duration
-     */
+
     public int getDuration() {System.out.println("error: 7");
         return duration;
     }
     
-    /**
-     * Setup up the lecture creation form
-     * @param moduleCode module the lecture is created
-     * @param duration duration of the lecture
-     * @param semester semester the lecture is on
-     */
-    public void setup(String moduleCode, String duration, String semester) {System.out.println("error: 8");
+     public void setup(String moduleCode, String duration, String semester) { System.out.println("error: 8");
         this.setup = true;
         
         try {
             this.semester = Integer.parseInt(semester);
         } catch (Exception ex) {
-            System.err.println("Error with duration");
-        }
-        
-        if (this.semester != 1 || this.semester != 2) {
-            this.setup = false;
+            System.err.println("Error with semester");
+            this.semester = 1;
         }
         
         try {
@@ -154,7 +119,7 @@ public class LectureRequest extends UserRequest{
     }
 
     /**
-     * sets the venue in which the lecture is to take place.
+     * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
      */
     public void setVenue(String venue){System.out.println("error: 10");
@@ -214,7 +179,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Gets the venue for the lecture
+     * Gets the venue for the meeting
      * @return venue
      */
     public String getVenue(){System.out.println("error: 14");
@@ -222,7 +187,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Returns the time for the lecture
+     * Returns the time for the meeting
      * @return In format hh:mm:ss
      */
     public String getTime() {System.out.println("error: 15");
@@ -240,18 +205,17 @@ public class LectureRequest extends UserRequest{
     
     
     /**
-     * Creates a lecture and inserts it into the database
+     * Creates a meeting and inserts it into the database
      * 
-     * @return True if the lecture was created successfully
+     * @return True if the meeting was created successfully
      */
     public boolean createLecture() {System.out.println("error: 17");
-        print();
         if (isValid() && isSetup()) {
             boolean result = false;
-            System.out.println("here");
+            
+            System.out.println("here exe");
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String meetingDate = format.format(startDate);
             
             Database db = Database.getSetupDatabase();
 
@@ -264,10 +228,10 @@ public class LectureRequest extends UserRequest{
             for (int i = 0; i < duration; i++) {  
                 System.out.println(db.getPreviousAutoIncrementID("Meeting"));
                 result = db.insert("INSERT INTO Lecture (modulecode, semester, weekday, time, room, startdate, enddate) "
-                                    + "VALUES ("+ moduleCode + "\", \""+ semester + "\", " + weekDay + ", \"" 
-                                    + timeFormat.format(cal.getTime()) + "\", " + venue + ", \"" + "\", " + startDate.toString() + ", \"" + endDate.toString() + "\");");
+                                    + "VALUES (\"" + moduleCode + "\", "+ semester + ", " + weekDay + ", \"" 
+                                    + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" + format.format(startDate) + "\", \"" + format.format(endDate) + "\");");
 
-                //To-Do add to groups 
+                //To-Do add to groups
                 
                 // increment to the next time slot if the meeting is longer 
                 // than one hour
@@ -283,10 +247,6 @@ public class LectureRequest extends UserRequest{
         }
     }
     
-    /**
-     * Sets the users that the lecture being scheduled can impact
-     * @param moduleCode module being organised
-     */
     public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
         Database db = Database.getSetupDatabase();
         try {
@@ -309,7 +269,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Cancel a lecture for a specific module and adds the 
+     * Cancel a practical or lecture for a specific module and adds the 
      * cancellation to the database
      * 
      * @param moduleCode Module of the practical or lecture being cancelled
