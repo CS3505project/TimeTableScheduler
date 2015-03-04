@@ -30,7 +30,7 @@
             out.println(output.displayErrors(JoinGroupRequest.numErrors(), JoinGroupRequest.getErrors()));
         }
         if (JoinGroupRequest.joinGroup((String)request.getParameter("gname"))) {
-            response.sendRedirect("index.jsp");
+            out.println("You joined the group.");
         }
         out.println(output.createFooter());
     } else {
