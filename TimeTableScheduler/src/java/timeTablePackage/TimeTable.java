@@ -667,7 +667,7 @@ public class TimeTable {
         }
         
         if (found) {
-            highlightSuggestions(meetingDuration);
+            events[suggestedDay][suggestedTime].setSuggested(true);
         }
         
         return found;
@@ -685,18 +685,6 @@ public class TimeTable {
                     events[day][time].setSuggested(false);
                 }
             }
-        }
-    }
-    
-    /**
-     * Cycles backwards through the timeslots starting at the suggested time for
-     * the length of the meeting
-     * 
-     * @param meetingDuration The duration of the meeting
-     */
-    private void highlightSuggestions(int meetingDuration) {
-        for (int time = 0; time < meetingDuration; time++) {
-            events[suggestedDay][suggestedTime + time].setSuggested(true);
         }
     }
 
