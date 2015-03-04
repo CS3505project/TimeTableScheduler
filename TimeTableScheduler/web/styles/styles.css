@@ -83,7 +83,6 @@ body>nav{
     margin-bottom: -9000px;
 }
 section.main{
-    overflow-x: hidden;
     position: absolute;
     width: 100%;
     min-height: 100%;
@@ -285,6 +284,12 @@ section.main>h1.banner:after{
 /* GROUP LISTS */
 /***************/
 ul.groupList>li{
+    margin-right: 8px;
+    margin-bottom: 4px;
+    display: block;
+    min-width:330px;
+    height: 120px;
+    float: left;
     position: relative;
     width: auto;
     background: #fff;
@@ -292,6 +297,12 @@ ul.groupList>li{
     padding: 6px;
     box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
     border-radius: 6px;
+}
+ul.groupList>li ul{
+    overflow-y: auto;
+    height: 80px;
+    padding-left: 8px;
+    font-size: 14px;
 }
 /*******************/
 /* FILTER/WEEK BAR */
@@ -627,8 +638,10 @@ hgroup.menu input[type="submit"]{
     width: auto;
 }
 section.main hgroup.menu{
+    overflow: hidden;
     width: 90%;
     width: calc(100% - 148px);
+    min-width: 400px;
     position: fixed;
     bottom: 8px;
     left: 140px;
@@ -1134,17 +1147,17 @@ div.profile>div>p{
 /*RESPONSIVE*/
 /************/
 @media screen and (max-width: 1200px) {
-    div.message{
+    div.message, ul.groupList>li{
         width: 49% !important;
     }
 }
 @media screen and (min-width: 1200px) {
-    div.message{
+    div.message, ul.groupList>li{
         width: 32% !important;
     }
 }
 @media screen and (max-width: 960px) {
-    div.message{
+    div.message, ul.groupList>li{
         width: 100% !important;
     }
 }
