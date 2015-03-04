@@ -191,5 +191,14 @@ function displayHelp(){
     }*/
 }
 function includeJSON(context){
-    var url = context + ".json";
+    var url = "http://localhost:8080/TimeTableScheduler/scripts/" +context + ".json";
+    $.ajax({
+        url: url
+        }).done(function(data) {
+            var json = JSON.parse(data);
+            $("#helpPopup h1").empty();
+            $("#helpPopup p").empty();
+            $("#helpPopup h1").append(json.title);
+            $("#helpPopup p").append(json.instructions);
+    });
 }
