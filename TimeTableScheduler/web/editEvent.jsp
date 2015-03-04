@@ -61,7 +61,7 @@
 <%      
         if (EditRequest.numErrors() > 0) {
             out.println(output.displayErrors(EditRequest.numErrors(), EditRequest.getErrors()));
-        } else if(EditRequest.isValid() && !EditRequest.checkConflict() ) {
+        } else if(EditRequest.isValid() && EditRequest.checkConflict() ) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
         } else {
             if (EditRequest.editEvent()) {
