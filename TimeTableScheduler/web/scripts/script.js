@@ -74,7 +74,6 @@ $(document).ready(function(){
             }
         }
     }, "text");
-
     ///////////////////////////////////////////////////////////
     //set flashing animation for clicked animated class nodes//
     ///////////////////////////////////////////////////////////
@@ -99,9 +98,11 @@ $(document).ready(function(){
     $(".hoverable").hover(
         function(){//on mouse over
             var description = $(this).attr("data-description");
-            $(this).append("<div class='relative'><div class='popupDescription' id='popupDescription'>"+ description+"</div></div>");
+            $(this).prepend("<div class='relative'><div class='popupDescription' id='popupDescription'>"+ description+"</div></div>");
             $('#popupDescription').hide();
-            $('#popupDescription').show("fade", {}, 150);
+            $('#popupDescription').show("fade", {}, 250);
+            
+            var mySound = new buzz.sound("Tinkerbell.ogg");
         },
         function(){//on mouse leave
             $('#popupDescription').hide("fade", {}, 150);
@@ -172,8 +173,9 @@ function displayHelp(){
         //set the helpToggle to show that help is now hidden
         helpToggle = false;
     }
+    includeJSON(context);
     //Switch on the context name, if the context is meeting, get info from the meetong JSON file
-    switch(context){
+    /*switch(context){
         case "placeholder":
              $("#helpPopup div p").html("this is placeholder text");//add ajax stuff to get the context help from JSON files
             break;
@@ -184,5 +186,8 @@ function displayHelp(){
         default:
             $("#helpPopup div h1").html("Help");
             $("#helpPopup div p").html("No help file for given context");//add ajax stuff to get the context help from JSON files
-    }
+    }*/
+}
+function includeJSON(context){
+    var url = context + ".json";
 }
