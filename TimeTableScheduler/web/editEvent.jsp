@@ -59,6 +59,7 @@
             </div>
         </form>
 <%      
+        EditRequest.setFormLoaded(true);
         if (EditRequest.numErrors() > 0) {
             out.println(output.displayErrors(EditRequest.numErrors(), EditRequest.getErrors()));
         } else if(EditRequest.isValid() && EditRequest.checkConflict() ) {
@@ -68,7 +69,7 @@
                 response.sendRedirect("index.jsp");
             }
         }
-        EditRequest.setFormLoaded(true);
+        
         out.println(output.createFooter());
         
     } else {

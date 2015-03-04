@@ -107,6 +107,7 @@ public final class GroupRequest extends UserRequest{
             }
             
             resetForm();
+            setFormLoaded(false);
             setup = false;
             db.close();
             return result;
@@ -127,27 +128,5 @@ public final class GroupRequest extends UserRequest{
             values += "(" + userIds.next() + ", " + meetingID + ")" + (userIds.hasNext() ? ", " : ";");
         }
         return values;
-    }
-    
-    /**
-     * Joins the user to this group
-     * @param groupId group to be added to this user
-     * @return True if added successfully
-     */
-    public boolean joinGroup(String groupId) {
-        boolean result = false;
-        if (!errorInString(groupId)) {
-            Database db = Database.getSetupDatabase();
-            // add the users to the group
-            result = db.insert("INSERT INTO InGroup (uid, gid) "
-                               + "VALUES (" + getUser().getUserID() + ", " + groupId + ");");
-            
-            resetForm();
-            setup = false;
-            db.close();
-            result = true;
-        }
-        
-        return result;
     }
 }
