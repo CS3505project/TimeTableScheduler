@@ -34,7 +34,12 @@
             </div>
             <div>
                 <label for="year">Year:</label>
-                <input type="text" name="year" id="year" value="<%= CourseRequest.getYear() %>" required="required"><br>
+                <select name="year">
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                    <option value="3">Year 3</option>
+                    <option value="4">Year 4</option>
+                </select>
             </div>
             <div>
                 <label for="submit">Submit:</label>

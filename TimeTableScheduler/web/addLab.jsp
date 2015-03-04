@@ -18,7 +18,9 @@
             </div>
             <div>
                 <label for="duration">Duration:</label>
-        	<input type="duration" name="duration" id="date" required="required"><br>
+                <select name="duration">
+                    <% out.println(output.createDurationDropDown()); %>
+                </select>
             </div>
             <div>
                 <label for="semester">Semester:</label>

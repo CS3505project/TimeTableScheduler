@@ -30,7 +30,9 @@
 %>
             <div>
                 <label for="duration">Duration:</label>
-        	<input type="duration" name="duration" id="date" required="required">
+                <select name="duration">
+                    <% out.println(output.createDurationDropDown()); %>
+                </select>
             </div>
             <div>
                 <label for="submit">Submit:</label>

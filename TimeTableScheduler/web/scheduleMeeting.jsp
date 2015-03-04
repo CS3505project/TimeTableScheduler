@@ -26,7 +26,11 @@
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(MeetingRequest.getUsersToMeet());
+        if (user.getUserType().equals(UserType.ADMIN)) {
+            timeTable.initialiseTimeTable(user.getUserID());
+        } else {
+            timeTable.initialiseTimeTable(MeetingRequest.getUsersToMeet());
+        }
         
         MeetingRequest.setTimeTable(timeTable);
         

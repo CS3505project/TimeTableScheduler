@@ -507,6 +507,14 @@ public class Output {
         return finalHTML;
     }
     
+    public String createDurationDropDown() {
+        return "<option value='1'>1 hour</option>" +
+               "<option value='2'>2 hour</option>" +
+               "<option value='3'>3 hour</option>" +
+               "<option value='4'>4 hour</option>" +
+               "<option value='5'>5 hour</option>";
+    }
+    
     /**
      * Create a drop down list for the group types in the system
      * @return html drop down
