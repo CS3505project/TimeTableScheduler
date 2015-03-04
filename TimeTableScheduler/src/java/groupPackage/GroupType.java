@@ -7,6 +7,7 @@ package groupPackage;
  */
 public enum GroupType {
     YEAR_GROUP("Year Group"),
+    //STUDY_GROUP("Study Group"),
     COLLEGE_WORK("College Work");
    
     private String name;

@@ -1,7 +1,12 @@
 package timeTablePackage;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import toolsPackage.Database;
 
 /**
  * Represents a specific time slot in timetable
@@ -143,8 +148,9 @@ public class TimeSlot {
         }
     }
     
-    public String addRemoveEventButton(Event event, String userId) {
+    public String addEditRemoveEventButtons(Event event, String userId) {
         String result = "";
+        
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
             result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
                       + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
@@ -154,6 +160,8 @@ public class TimeSlot {
         }
         return result;
     }
+   
+
     
     /**
      * Prints a detailed version of the events details
@@ -166,9 +174,10 @@ public class TimeSlot {
         String cellInfo = "";
         String description = "";
         String removeLink = "";
+        
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
-                cellInfo += addRemoveEventButton(event, userId);
+                cellInfo += addEditRemoveEventButtons(event, userId);
                 
                 description += getEventDescription(event);
                 highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 

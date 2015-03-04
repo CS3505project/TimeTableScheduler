@@ -523,7 +523,6 @@ public class TimeTable {
      * Sets up the time slot matrix to hold empty TimeSlot objects
      */
     public void setupTimeSlots() { 
-        
         Calendar cal = Calendar.getInstance(Locale.FRANCE);
         cal.setTime(calendar.getTime());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
