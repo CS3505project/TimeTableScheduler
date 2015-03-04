@@ -304,7 +304,7 @@ ul.groupList h1{
     width: 100%;
     border-radius: 6px 6px 0 0;
     background-color: #48e;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
 }
 ul.groupList>li ul{
     overflow-y: auto;
@@ -978,7 +978,6 @@ div.popup h1{
 /* MESSAGES*/
 /***********/
 div.message{
-    overflow: hidden;
     margin-right: 8px;
     float: left;
     font-size: 12px;
@@ -992,7 +991,7 @@ div.message{
     background: #fff;
     margin-top: 8px;
     box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
-    border-radius: 6px;
+    border-radius: 10px 6px 6px 10px;
 }
 div.message:last-child{
     margin-bottom: 40px;
