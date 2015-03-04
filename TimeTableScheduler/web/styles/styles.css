@@ -304,6 +304,7 @@ ul.groupList h1{
     width: 100%;
     border-radius: 6px 6px 0 0;
     background-color: #48e;
+    margin-bottom: 2px;
 }
 ul.groupList>li ul{
     overflow-y: auto;
