@@ -101,8 +101,6 @@ $(document).ready(function(){
             $(this).prepend("<div class='relative'><div class='popupDescription' id='popupDescription'>"+ description+"</div></div>");
             $('#popupDescription').hide();
             $('#popupDescription').show("fade", {}, 250);
-            
-            var mySound = new buzz.sound("Tinkerbell.ogg");
         },
         function(){//on mouse leave
             $('#popupDescription').hide("fade", {}, 150);
@@ -143,6 +141,10 @@ $(document).ready(function(){
                 if(numMessages !== currentMessages && numMessages > 0){
 
                     $("#msg span").remove();
+                    
+                    var mySound = new buzz.sound("http://localhost:8080/TimeTableScheduler/sounds/notification.ogg");
+                    mySound.load();
+                    mySound.play();
                     
                     if(numMessages <=20){
                         $("#msg").append("<span class='unread'>" + numMessages + "</span>");
