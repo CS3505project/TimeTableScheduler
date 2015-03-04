@@ -410,6 +410,26 @@ td:nth-child(even){
 td.animate{
     border: 1px solid #889;
 }
+td div.innerEvent{
+    color: #FFF;
+    background-color: #A56;
+    border-top: 1px solid #E89;
+    text-shadow: 1px 1px 2px #000;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+    border-radius: 2px;
+    text-align: center;
+    width: auto;
+    width: calc(100% - 16px);
+    margin-bottom: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+}
+td div.innerEvent a{
+    color: #fff;
+    display: block;
+    width: 100%;
+}
 /****************/
 /* priority bgs */
 /****************/
@@ -845,7 +865,7 @@ footer.loginFooter ul li:before, #signupMenu li:before{
 /*********/
 div.popupDescription{
     position: absolute;
-    bottom: 20px;
+    bottom: 8px;
     left: 5%;
     width: 90%;
     min-height: 50px;
