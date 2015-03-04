@@ -571,44 +571,8 @@ public class TimeTable {
     private void addEvent(int priority, int dayIndex, int timeIndex) {
         events[dayIndex][timeIndex].addPriority(priority);
     }
-
-    /**
-     * Generates a timetable from HTML with all the events listed
-     * in order of day and time
-     * N.B. Set the hideDetail parameter to true when scheduling an event with
-     * other users to display the timetable correctly.
-     * 
-     * @param filterEvent The events to be displayed
-     * @param hideDetail Hide the detail when displaying the timeslot
-     * @param clickable Sets whether the timetable is interactive on certain forms
-     * @return Timetable as HTML code 
-     */
-    public String createTimeTable() {
-        List<EventTime> hours = EventTime.getTimes(startTime, endTime);
-        List<Day> days = Day.getDays(startDay, endDay);
-        
-        //create table
-        String timetable = "<table>";
-        //create header for timetable
-        timetable += createTimeTableHeader(hours);
-        // loop through days
-        for (Day day : days) {
-            //generate days of time table
-            timetable += "<tr><th>" + day.getDay() + "</th>";
-            for (EventTime time : hours) { 
-                timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
-            }
-            //end tags 
-            timetable += "</tr>";
-        }
-
-        timetable += createTimeTableCaption();
-        timetable += "</table>";
-        
-        return timetable;
-    }
     
-    public String createTimeTable(EventType filterEvent, boolean clickable, String userId) {
+    public String createTimeTable(EventType filterEvent, String userId, boolean hideDetail) {
         List<EventTime> hours = EventTime.getTimes(startTime, endTime);
         List<Day> days = Day.getDays(startDay, endDay);
         
@@ -621,7 +585,11 @@ public class TimeTable {
             //generate days of time table
             timetable += "<tr><th>" + day.getDay() + "</th>";
             for (EventTime time : hours) { 
-                timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent, clickable, userId);
+                if (hideDetail) {
+                    timetable += events[day.getIndex()][time.getTimeIndex()].printTableCell();
+                } else {
+                    timetable += events[day.getIndex()][time.getTimeIndex()].printDetailedTableCell(filterEvent, userId);
+                }
             }
             //end tags 
             timetable += "</tr>";

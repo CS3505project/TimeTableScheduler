@@ -19,7 +19,7 @@
             timeTable.initialiseTimeTable(user.getUserID());
         }
         
-        out.println(output.createUserTimeTable(timeTable, (String)request.getParameter("filter"), false, user.getUserID()));
+        out.println(output.createUserTimeTable(timeTable, (String)request.getParameter("filter"), user.getUserID()));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
         out.println(output.createFooter());
     } else {

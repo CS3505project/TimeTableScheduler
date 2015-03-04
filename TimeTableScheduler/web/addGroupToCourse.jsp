@@ -26,7 +26,7 @@
             <div>
                 <label for="group">Groups:</label>
                 <select name="group" id="group">
-                    <% out.println(output.createAllGroupList()); %>
+                    <% out.println(output.createAllGroupDropDown()); %>
                 </select>
             </div>
             <div>

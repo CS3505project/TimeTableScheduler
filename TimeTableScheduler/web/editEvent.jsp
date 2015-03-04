@@ -25,7 +25,7 @@
         
         EditRequest.setTimeTable(timeTable);
         
-        out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName(), true, user.getUserID()));
+        out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName(), user.getUserID()));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="editEvent" data-userId="<%= user.getUserID() %>"></div> 

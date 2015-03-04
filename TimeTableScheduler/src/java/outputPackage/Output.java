@@ -205,7 +205,7 @@ public class Output {
      * Create a drop down list of all the groups in the system
      * @return html for the drop down
      */
-    public String createAllGroupList() {
+    public String createAllGroupDropDown() {
         String groups = "";
         
         Database db = Database.getSetupDatabase();
@@ -220,7 +220,55 @@ public class Output {
             System.err.println("Error while getting group list.");
         }
         
-        groups += "";
+        return groups;
+    }
+    
+    public String createAllGroupList(String userId, UserType type) {
+        String groups = "<ul>";
+        
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result;
+        if (type.equals(UserType.ADMIN)) {
+            // get list of all groups
+            result = db.select("SELECT * FROM Groups;");
+        } else {
+            result = db.select("SELECT groupid, groupName " + 
+                               "FROM Groups JOIN InGroup " +
+                               "WHERE groupid IN " + 
+                                    "(SELECT gid " +
+                                    "FROM InGroup " + 
+                                    "WHERE uid = " + userId +");");
+        }
+        try {
+            while (result.next()) {
+                groups += "<li>" + result.getString("groupName") + "</li>";
+                ResultSet users = db.select("SELECT Student.uid, firstname, surname, studentid as 'id' " +
+                                            "FROM Student JOIN User " +
+                                            "ON Student.uid = userid " +
+                                            "WHERE Student.uid IN " +
+                                                    "(SELECT uid " +
+                                                    "FROM InGroup " +
+                                                    "WHERE gid = " + result.getString("groupid") +
+                                            "UNION " +
+                                            "SELECT Lecturer.uid, firstname, surname, lecturerid as 'id' " +
+                                            "FROM Lecturer JOIN User " +
+                                            "ON Lecturer.uid = userid " +
+                                            "WHERE Lecturer.uid IN " +
+                                                    "(SELECT uid " +
+                                                    "FROM InGroup " +
+                                                    "WHERE gid = " + result.getString("groupid") + ");");
+                groups += "<ul>";
+                while (users.next()) {
+                    groups += "<li>" + users.getString("id") + " : " + users.getString("firstname") + " " + users.getString("surname") + "</li>";
+                }
+                groups += "</ul>";
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while getting group list.");
+        }
+        
+        groups += "</ul>";
         return groups;
     }
     
@@ -344,22 +392,7 @@ public class Output {
         
         return finalHTML;
     }
-    /**
-     * Creates a dummy table with hardcoded values,
-     * just for demonstration.
-     * @return A string with all the HTML for the table.
-     */
-    public String createDummyTable(){
-        String finalHTML = "";
-        
-        TimeTable suggestion = TimeTable.getPreSetTimeTable();
-        suggestion.initialiseTimeTable(Arrays.asList("1", "9"));
-        //suggestion.nextSuggestedTimeSlot(2, 0, true);
-        finalHTML += "<h1>Availability</h1>";
-        finalHTML += suggestion.createTimeTable();
-        
-        return finalHTML;
-    }
+
     /**
      * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
      * @param user User to create the form
@@ -395,7 +428,7 @@ public class Output {
         "<span>Personal</span><input type='radio' id='personalRadio' name='withType' value='personal'></div>\n" +
         "<div id='groupSelectDiv'><label for='groupSelect'>With Group:</label><select name=\"groupID\" id='groupSelect'>\n";
         //for loop for creating options for legit groups
-        finalHTML += createAllGroupList();
+        finalHTML += createAllGroupDropDown();
         
         finalHTML += "</select></div>\n" +
         "<div id='individualSelectDiv'><label for='individualSelect'>With:</label><select name=\"individualID\" id='individualSelect' disabled></div>\n";
@@ -524,18 +557,18 @@ public class Output {
      * @param clickable Sets whether the timetable is interactive for certain forms
      * @return HTML to display the timetable
      */
-    public String createUserTimeTable(TimeTable timeTable, String filter, boolean clickable, String userId){        
+    public String createUserTimeTable(TimeTable timeTable, String filter, String userId){        
         String finalHTML = "<h1  class='banner'>Timetable for this week</h1>";
         // filter menu for the timetable
         finalHTML += createTimeTableFilter();
-        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), clickable, userId); 
+        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), userId, false); 
         
         return finalHTML;
     }
     
-    public String createUserTimeTableNoFilter(TimeTable timeTable, String filter, boolean clickable, String userId){        
+    public String createUserTimeTableNoFilter(TimeTable timeTable, String filter, String userId){        
         String finalHTML = "<h1  class='banner'>Timetable for this week</h1>";
-        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), clickable, userId); 
+        finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), userId, false); 
         
         return finalHTML;
     }
@@ -563,7 +596,7 @@ public class Output {
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
         finalHTML += "<h1>Availability</h1>";
-        finalHTML += suggestion.createTimeTable();
+        finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, "", true);
         
         return finalHTML;
     }

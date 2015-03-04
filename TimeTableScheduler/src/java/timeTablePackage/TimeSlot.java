@@ -159,7 +159,7 @@ public class TimeSlot {
      * @param clickable If true it makes the time slot interactive for certain forms
      * @return HTML to print into a table cell
      */
-    public String printDetailedTableCell(EventType filter, boolean clickable, String userId) {
+    public String printDetailedTableCell(EventType filter, String userId) {
         EventPriority highPriority = EventPriority.MEETING;
         String cellInfo = "";
         String description = "";
@@ -175,21 +175,13 @@ public class TimeSlot {
         }
         String html = "<td class=\"";
         
-        if (clickable) {
-            html += "animate selectable";
-        }
-        
         if (cellInfo.equals("")) {
             html = "<td>";
         } else {
             html += " " + highPriority.getPriorityName() + " hoverable\"" +
                     " data-description=\"" + description + "\">" ;
         }
-        if (clickable) {
-            html += "<div class=\"hidden\""
-                    + " data-date=\"" + date + "\""
-                    + " data-time=\"" + time + "\"></div>";
-        }
+        
         html += cellInfo + "</td>";
         return html;
     }

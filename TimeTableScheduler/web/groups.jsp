@@ -7,7 +7,7 @@
 <%      
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
-        out.println(output.createAllGroupList());
+        out.println(output.createAllGroupList(user.getUserID(), user.getUserType()));
         out.println(output.createFooter());
     } else {
         
