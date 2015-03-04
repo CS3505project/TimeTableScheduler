@@ -486,6 +486,27 @@ public class Output {
         return finalHTML;
     }
     
+    public String createLecturerDropDown() {
+        String finalHTML = "<select name=\"lecturer\">";
+        
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet result = db.select("SELECT * FROM User JOIN Lecturer ON User.userid = Lecturer.uid");
+        try {
+            while (result.next()) {
+                finalHTML += "<option value=\"" + result.getString("userid") + "\">"
+                             + result.getString("firstname") + ": " + result.getString("surname")
+                             + "</option>";
+            }
+        } catch (SQLException ex) {
+        }
+        
+        db.close();
+        
+        finalHTML += "</select>";
+        return finalHTML;
+    }
+    
     /**
      * Create a drop down list for the group types in the system
      * @return html drop down
