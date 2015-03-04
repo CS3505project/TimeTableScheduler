@@ -14,12 +14,12 @@
             AddLecturerRequest.setModuleCode((String)request.getParameter("moduleCode"));
         }
 %>
-        <div class="hidden" name="context" value="addModule" data-userId="<%= user.getUserID() %>"></div> 
+        <div class="hidden" name="context" value="addLecturer" data-userId="<%= user.getUserID() %>"></div> 
         <h1 class="banner">Add Lecturer to Module</h1>
         <hgroup>
         	<h1>Add Lecturer to Module</h1>
         </hgroup>
-        <form action="addModule.jsp" method="GET">
+        <form action="addLecturer.jsp" method="GET">
             <div>
                 <label for="moduleCode">Module:</label>
                     <% out.println(output.createModuleDropDown()); %>

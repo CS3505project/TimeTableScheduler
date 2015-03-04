@@ -71,11 +71,8 @@ public final class AddLecturerRequest extends UserRequest{
             
             Database db = Database.getSetupDatabase();
             
-            result = db.insert("INSERT INTO Module (moduleCode, name, description) "
-                               + "VALUES (\""+ moduleCode + "\", \"" + lecturer + "\", \"" + "" + "\");");
-            
-            result = db.insert("INSERT INTO ModuleInCourse (moduleCode, courseid) "
-                               + "VALUES (\"" + moduleCode + "\", \"" + "\");");
+            result = db.insert("INSERT INTO TeachesModule (uid, moduleCode) "
+                               + "VALUES (\""+ lecturer + "\", \"" + moduleCode + "\");");
                 
             resetForm();
             setFormLoaded(false);
