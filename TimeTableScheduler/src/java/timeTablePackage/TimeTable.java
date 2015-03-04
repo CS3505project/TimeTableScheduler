@@ -647,8 +647,6 @@ public class TimeTable {
             clearSuggestedTimeSlots();
         }
         
-        
-        
         boolean found = false;
         // loop through each timeslot in the timetable
         for (int day = (suggestedDay == -1 ? startDay.getIndex() : suggestedDay); 

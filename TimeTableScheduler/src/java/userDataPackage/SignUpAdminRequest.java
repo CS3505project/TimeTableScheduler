@@ -8,24 +8,20 @@ import toolsPackage.Database;
 import toolsPackage.Hash;
 import toolsPackage.Validator;
 import userPackage.UserType;
-import static userPackage.UserType.ADMIN;
-import static userPackage.UserType.LECTURER;
 
 /**
  *
  * @author cdol1
  */
-public class SignUpRequest extends UserRequest {
-    private String id = "";
+public class SignUpAdminRequest extends UserRequest {
+    private int id;
     private String title = "";
     private String firstName = "";
     private String surname = "";
     private String email = "";
-    private UserType userType;
     
-    public SignUpRequest() {
-        initialiseErrorArray(6);
-        id = "";
+    public SignUpAdminRequest() {
+        initialiseErrorArray(5);
         title = "";
         firstName = "";
         surname = "";
@@ -33,89 +29,55 @@ public class SignUpRequest extends UserRequest {
     }
     
     public void resetForm() {
-        id = "";
         title = "";
         firstName = "";
         surname = "";
         email = "";
         clearErrors();
     }
-    
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
-    
-    public UserType getUserType() {
-        return userType;
-    }
 
     public void setId(String id) {
-        switch (userType) {
-            case LECTURER:
-                if (errorInString(id)) {
-                    addErrorMessage(0, "Please enter your lecturer ID.");
-                } else {
-                    this.id = Validator.escapeJava(id);
-                    setValidData(0, true);
-                }
-                break;
-            default:
-                if (errorInString(id)) {
-                    addErrorMessage(0, "Please enter your student ID.");
-                } else {
-                    this.id = Validator.escapeJava(id);
-                    setValidData(0, true);
-                }
-                break;
-        }
-    }
-    
-    public void setTitle(String title) {
-        if (userType.equals(UserType.LECTURER)) {
-            if (errorInString(title)) {
-                addErrorMessage(1, "Incorrect title entered.");
-                System.err.println("Error with title.");
-            } else {
-                this.title = Validator.escapeJava(title);
-                setValidData(1, true);
-            }
-        } else {
-            setValidData(1, true);
+        try {
+            this.id = Integer.parseInt(id);
+            setValidData(0, true);
+        } catch (Exception ex) {
+            System.err.println("Error with duration");
+            addErrorMessage(0, "Please enter your administrator ID.");
         }
     }
     
     public void setFirstName(String firstName) {
         if (errorInString(firstName)) {
-            addErrorMessage(2, "Incorrect first name entered.");
+            addErrorMessage(1, "Incorrect first name entered.");
             System.err.println("Error with first name.");
         } else {
             this.firstName = Validator.escapeJava(firstName);
-            setValidData(2, true);
+            setValidData(1, true);
         }
     }
     
     public void setSurname(String surname) {
         if (errorInString(surname)) {
-            addErrorMessage(3, "Incorrect surname entered.");
+            addErrorMessage(2, "Incorrect surname entered.");
             System.err.println("Error with surname.");
         } else {
             this.surname = Validator.escapeJava(surname);
-            setValidData(3, true);
+            setValidData(2, true);
         }
     }
     
     public void setEmail(String email) {
         if (Validator.isValidEmail(email)) {
             this.email = Validator.escapeJava(email);
-            setValidData(4, true);
+            setValidData(3, true);
         } else {
-            addErrorMessage(4, "Incorrect email entered.");
+            addErrorMessage(3, "Incorrect email entered.");
             System.err.println("Error with email.");
         }
     }
     
     public String getId() {
-        return Validator.unescapeJava(id);
+        return Integer.toString(id);
     }
     
     public String getTitle() {
@@ -141,16 +103,16 @@ public class SignUpRequest extends UserRequest {
         String secondPassword = (String)getRequest().getParameter("rePassword");
         
         if (errorInString(firstPassword)) {
-            addErrorMessage(5, "Enter a password");
+            addErrorMessage(4, "Enter a password");
             result = false;
         } else if (errorInString(secondPassword)) {
-            addErrorMessage(5, "Please re-enter your password");
+            addErrorMessage(4, "Please re-enter your password");
             result = false;
         } else if (!firstPassword.equals(secondPassword)) {
-            addErrorMessage(5, "Passwords are different.");
+            addErrorMessage(4, "Passwords are different.");
             result = false;
         } else {
-            setValidData(5, result);
+            setValidData(4, result);
         }
         return result;
     }
@@ -161,7 +123,7 @@ public class SignUpRequest extends UserRequest {
      * 
      * @return True if insert can be executed
      */
-    public boolean signUp() {
+    public boolean signUpAdmin() {System.out.println("here: 14");
         boolean result = false;
         if (validPasswords() && isValid()) {
             Database db = Database.getSetupDatabase();
@@ -172,23 +134,15 @@ public class SignUpRequest extends UserRequest {
             
             if (result) {
                 int uid = db.getPreviousAutoIncrementID("User");
-                switch (userType) {
-                    case STUDENT:
-                        result = db.insert("INSERT INTO Student (uid, studentid) "
-                                   + "VALUES (\"" + uid + "\", \"" + id + "\");");
-                        break;
-                    case LECTURER:
-                        result = db.insert("INSERT INTO Lecturer (uid, lecturerid, title) "
-                                   + "VALUES (\"" + uid + "\", \"" + id + "\", \"" + title + "\");");
-                        break;
-                }
+                result = db.insert("INSERT INTO Admin (uid, adminid) "
+                                   + "VALUES (" + uid + ", " + id + ");");
             }
             
             if (!result) {
                 System.err.println("Problem creating user in database.");
             } else {
-                resetForm();
                 setFormLoaded(false);
+                resetForm();
             }
             db.close();
         }        

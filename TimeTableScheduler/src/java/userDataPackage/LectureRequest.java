@@ -74,11 +74,11 @@ public class LectureRequest extends UserRequest{
         clearErrors();
     }
 
-    public int getDuration() {System.out.println("error: 7");
+    public int getDuration() {
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) { System.out.println("error: 8");
+     public void setup(String moduleCode, String duration, String semester) { 
         this.setup = true;
         
         try {
@@ -104,7 +104,7 @@ public class LectureRequest extends UserRequest{
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.
      * @param date the date string in HTML's format dd/MM/yyyy, inputted by the user
      */
-    public void setStartDate(String date) {System.out.println("error: 9.3");
+    public void setStartDate(String date) {
         if (this.errorInString(date)) {
             this.addErrorMessage(0, "Invalid date entered.");
         } else {
@@ -124,7 +124,7 @@ public class LectureRequest extends UserRequest{
      * sets the venue in which the meeting is to take place.
      * @param venue the venue from the form
      */
-    public void setVenue(String venue){System.out.println("error: 10");
+    public void setVenue(String venue){
         if (this.errorInString(venue)) {
             this.addErrorMessage(1, "Venue is incorrect.");
         } else {
@@ -137,7 +137,7 @@ public class LectureRequest extends UserRequest{
      * Sets the time for the event
      * @param time Time in format hh:mm:ss
      */
-    public void setTime(String time) {System.out.println("error: 11");
+    public void setTime(String time) {
         try {
             this.time = Time.valueOf(time);
             Calendar cal = Calendar.getInstance();
@@ -155,7 +155,7 @@ public class LectureRequest extends UserRequest{
      * validates the user input for the date, and sets it if valid, creating an error message otherwise.
      * @param date the date string in HTML's format dd/MM/yyyy, inputted by the user
      */
-    public void setEndDate(String date) {System.out.println("error: 9.2");
+    public void setEndDate(String date) {
         if (this.errorInString(date)) {
             this.addErrorMessage(3, "Invalid date entered.");
         } else {
@@ -175,7 +175,7 @@ public class LectureRequest extends UserRequest{
      * gets the date
      * @return the date in dd/mm/yyyy format as a string
      */
-    public String getStartDate(){System.out.println("error: 13.2");
+    public String getStartDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.startDate);
     }
@@ -184,7 +184,7 @@ public class LectureRequest extends UserRequest{
      * Gets the venue for the meeting
      * @return venue
      */
-    public String getVenue(){System.out.println("error: 14");
+    public String getVenue(){
         return Validator.unescapeJava(this.venue);
     }
     
@@ -192,7 +192,7 @@ public class LectureRequest extends UserRequest{
      * Returns the time for the meeting
      * @return In format hh:mm:ss
      */
-    public String getTime() {System.out.println("error: 15");
+    public String getTime() {
         return (time == null ? "" : time.toString());
     }
     
@@ -200,7 +200,7 @@ public class LectureRequest extends UserRequest{
      * gets the date
      * @return the date in dd/mm/yyyy format as a string
      */
-    public String getEndDate(){System.out.println("error: 13.4");
+    public String getEndDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.endDate);
     }
@@ -211,7 +211,7 @@ public class LectureRequest extends UserRequest{
      * 
      * @return True if the meeting was created successfully
      */
-    public boolean createLecture() {System.out.println("error: 17");
+    public boolean createLecture() {
         if (isValid() && isSetup()) {
             boolean result = false;
             
@@ -255,7 +255,7 @@ public class LectureRequest extends UserRequest{
         }
     }
     
-    public void setUsersInvolved(String moduleCode) {System.out.println("error: 20");
+    public void setUsersInvolved(String moduleCode) {
         Database db = Database.getSetupDatabase();
         try {
             ResultSet groupResult = db.select("SELECT uid " +
