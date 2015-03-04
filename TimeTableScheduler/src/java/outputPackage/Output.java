@@ -235,10 +235,8 @@ public class Output {
         } else {
             result = db.select("SELECT groupid, groupName " + 
                                "FROM Groups JOIN InGroup " +
-                               "WHERE groupid IN " + 
-                                    "(SELECT gid " +
-                                    "FROM InGroup " + 
-                                    "WHERE uid = " + userId +");");
+                               "ON Groups.groupid = InGroup.gid " +
+                               "WHERE uid = " + userId +";");
         }
         try {
             while (result.next()) {
@@ -249,8 +247,8 @@ public class Output {
                                             "WHERE Student.uid IN " +
                                                     "(SELECT uid " +
                                                     "FROM InGroup " +
-                                                    "WHERE gid = " + result.getString("groupid") +
-                                            "UNION " +
+                                                    "WHERE gid = " + result.getString("groupid") + " )" +
+                                            " UNION " +
                                             "SELECT Lecturer.uid, firstname, surname, lecturerid as 'id' " +
                                             "FROM Lecturer JOIN User " +
                                             "ON Lecturer.uid = userid " +

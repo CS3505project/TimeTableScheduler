@@ -2,11 +2,17 @@ package userDataPackage;
 
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import timeTablePackage.Day;
 import timeTablePackage.Event;
 import timeTablePackage.EventPriority;
@@ -24,11 +30,15 @@ public final class EditRequest extends UserRequest{
     private String description = "";
     private String venue = "";
     private String meetingId = "";
-    private Meeting meeting;
     private TimeTable timeTable;
+    private List<String> usersInMeeting = new ArrayList<String>();
+    private Date originalDate;
+    private Time originalTime;
     
     private boolean setup = false;
     
+    public static final String DAY = "EEEE";
+    public static final String HOUR = "k";
     public static final String TIME_FORMAT = "HH:mm:ss";
             
     /**
@@ -39,8 +49,24 @@ public final class EditRequest extends UserRequest{
         date = new Date();//initialise to todays date
         venue = "";
         time = null;
-        meetingId = "";
         description = "";
+    }
+    
+    public List<String> getUsersInMeeting() {
+        return usersInMeeting;
+    }
+    
+    public void setUsersInMeeting() {
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet users = db.select("SELECT uid FROM HasMeeting WHERE mid = " + meetingId + ";");
+        try {
+            while (users.next()) {
+                usersInMeeting.add(users.getString("uid"));
+            }
+        } catch (SQLException ex) {
+        }
+        db.close();
     }
      
     /**
@@ -58,20 +84,15 @@ public final class EditRequest extends UserRequest{
      * @param userId User that organised it
      * @return True if the event can be edited
      */
-    public boolean isValidEvent(Event event, String userId) {
+    public boolean isValidEvent(String userId) {
         boolean valid = false;
         Database db = Database.getSetupDatabase();
-        if (event != null) {
-            switch (event.getEventType()) {
-                case MEETING:
-                    ResultSet result = db.select("SELECT * FROM MEETING WHERE meetingid = " + event.getEventID() + " AND organiser_id = " + userId + ");");
+        ResultSet result = db.select("SELECT * FROM Meeting WHERE meetingid = " + meetingId + " AND organiser_uid = " + userId + ";");
 
-                    if (db.getNumRows(result) > 0) {
-                        valid = true;
-                    }
-                    break;
-            }
+        if (db.getNumRows(result) > 0) {
+            valid = true;
         }
+        db.close();
         return valid;
     }
     
@@ -100,42 +121,32 @@ public final class EditRequest extends UserRequest{
      * @param date Date of event to edit
      * @param time Timt of event to edit
      */
-    public void setup(String date, String time) {
+    public void setup(String meetingId) {
         this.setup = true;
+        Database db = Database.getSetupDatabase();
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        this.meetingId = meetingId;
+        ResultSet meetingDetails = db.select("SELECT * FROM Meeting WHERE meetingid = " + meetingId + ";");
         try {
-            dateFormat.parse(date);
-            this.date = java.sql.Date.valueOf(date);
-        } catch (Exception ex) {
-            this.setup = false;
-            System.out.println("her 1");
+            if (db.getNumRows(meetingDetails) == 1) {
+                while (meetingDetails.next()) {
+                    
+                    this.date = meetingDetails.getDate("date");
+                    this.originalDate = this.date;
+                    this.time = meetingDetails.getTime("time");
+                    this.originalTime = this.time;
+                    this.description = meetingDetails.getString("description");
+                    this.venue = meetingDetails.getString("room");
+                }
+            } else {
+                this.setup = false;
+            }
+        } catch (SQLException ex) {
         }
         
-        dateFormat.applyPattern(TIME_FORMAT);
-        try {
-            dateFormat.parse(time);
-            this.time = Time.valueOf(time);
-        } catch (Exception ex) {
-            this.setup = false;
-            System.out.println("her 2");
-        }
-        System.out.println("her 3");
-        if (setup) {
-            System.out.println("herer");
-            dateFormat.applyPattern("k");
-            int timeIndex = Integer.parseInt(dateFormat.format(this.time));
-            dateFormat.applyPattern("EEEE");
-            int dayIndex = Day.convertToDay(dateFormat.format(this.date)).getIndex();
-            // store one event
-            meeting = (Meeting)timeTable.getEvents(dayIndex, timeIndex).get(0);
-            
-            this.date = meeting.getDate();
-            this.description = meeting.getDescription();
-            this.time = meeting.getTime();
-            this.meetingId = meeting.getEventID();
-            this.venue = meeting.getLocation();
-        }
+        setUsersInMeeting();
+        System.out.println("usrs" + usersInMeeting);
+        db.close();
     }
     
     /**
@@ -240,7 +251,30 @@ public final class EditRequest extends UserRequest{
      * @return true if there is a conflict
      */
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(date, time, 1, EventPriority.MEETING.getPriority());
+        boolean conflict = true;
+        // Print dates of the current week starting on Monday
+        SimpleDateFormat format = new SimpleDateFormat(HOUR);
+        
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        // Set the calendar to monday of the current week
+        cal.setTime(time);
+        int hour = Integer.parseInt(format.format(cal.getTime()));
+        
+        format.applyPattern(DAY);
+        int day = Day.convertToDay(format.format(date)).getIndex();
+        for (Event event : timeTable.getEvents(day, hour)) {
+            if (((Meeting)event).getOrganiser().equals(getUser().getUserID()) 
+                    && event.getDate().equals(this.originalDate) 
+                    && event.getTime().equals(this.originalTime)) {
+                conflict = false;
+            }
+        }
+        
+        if (conflict) {
+            conflict = timeTable.conflictWithEvents(date, time, 1, EventPriority.MEETING.getPriority());
+        }
+        
+        return conflict;
     }
     
     /**
@@ -249,7 +283,7 @@ public final class EditRequest extends UserRequest{
      * @return True if the meeting was edited successfully
      */
     public boolean editEvent() {        
-        if (isValid() && isSetup() && isValidEvent(meeting, getUser().getUserID())) {
+        if (isValid() && isSetup() && isValidEvent(getUser().getUserID())) {
             boolean result = true;
             
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -260,9 +294,10 @@ public final class EditRequest extends UserRequest{
             Calendar cal = Calendar.getInstance();
             cal.setTime(this.time);
             SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-            result = result && db.insert("UPDATE Meeting (date, time, room, description, priority, organiser_uid) "
-                                        + "VALUES (\""+ meetingDate + "\", \"" + timeFormat.format(cal.getTime()) + "\", \"" + venue + "\", \"" 
-                                        + description + "\", " + EventPriority.MEETING.getPriority() + ", " + getUser().getUserID() + ");");
+            result = result && db.insert("UPDATE Meeting "
+                                        + "SET date = \""+ meetingDate + "\", time = \"" + timeFormat.format(cal.getTime()) + "\", room = \"" + venue + "\", description = \"" 
+                                        + description + "\", priority = " + EventPriority.MEETING.getPriority() + ", organiser_uid = " + getUser().getUserID() + " "
+                                        + "WHERE meetingid = " + meetingId + ";");
             
             resetForm();
             setup = false;

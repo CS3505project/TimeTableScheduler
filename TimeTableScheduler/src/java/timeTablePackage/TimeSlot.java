@@ -146,7 +146,9 @@ public class TimeSlot {
     public String addRemoveEventButton(Event event, String userId) {
         String result = "";
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
-            result += "<div class=\"innerEvent\">" + event.toString() + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div><br />";
+            result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
+                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a><br />"
+                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div><br />";
         } else {
             result += event.toString() + "<br />";
         }
