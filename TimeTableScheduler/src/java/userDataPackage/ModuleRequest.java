@@ -98,6 +98,7 @@ public final class ModuleRequest extends UserRequest{
                                + "VALUES (\"" + moduleCode + "\", \"" + course + "\");");
                 
             resetForm();
+            setFormLoaded(false);
             setup = false;
             db.close();
             return result;

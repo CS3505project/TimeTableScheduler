@@ -41,14 +41,14 @@
             </div>
         </form>
 <% 
+        ModuleRequest.setFormLoaded(true);
         if (ModuleRequest.numErrors() > 0) {
             out.println(output.displayErrors(ModuleRequest.numErrors(), ModuleRequest.getErrors()));
         }
-        
         if(ModuleRequest.createModule()) {
-            response.sendRedirect("index.jsp");
+            out.println("Module created successfully.");
         }
-        ModuleRequest.setFormLoaded(true);
+        
         out.println(output.createFooter());
     } else {
         

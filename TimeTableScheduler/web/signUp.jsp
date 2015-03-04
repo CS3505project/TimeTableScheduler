@@ -72,6 +72,7 @@
         case LECTURER:
 %>
             <ul id="signUpMenu">
+                <li><a href="login.jsp">Login</a></li>
                 <li><a href="signUp.jsp?type=student">Student</a></li>
                 <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
             </ul>
@@ -99,6 +100,7 @@
         default:
 %>
             <ul id="signUpMenu">
+                <li><a href="login.jsp">Login</a></li>
                 <li><a href="signUp.jsp?type=student">Student</a></li>
                 <li><a href="signUp.jsp?type=lecturer">Lecturer</a></li>
             </ul>
