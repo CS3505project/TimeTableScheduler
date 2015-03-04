@@ -10,22 +10,25 @@
         out.println(output.createHeader());
         
         EditRequest.setValues(request, user);
-        if (!EditRequest.isFormLoaded()) {
-            EditRequest.setup((String)request.getParameter("date"), (String)request.getParameter("time"));
+        if (EditRequest.isFormLoaded()) {
             EditRequest.setDate((String)request.getParameter("date"));
             EditRequest.setTime((String)request.getParameter("time"));
             EditRequest.setDescription((String)request.getParameter("description"));
             EditRequest.setVenue((String)request.getParameter("venue"));
+        } else {
+            EditRequest.setup((String)request.getParameter("eventId"));
         }
         
         TimeTable timeTable = TimeTable.getPreSetTimeTable();
         timeTable.setDisplayWeek((String)request.getParameter("displayDate"));
         timeTable.setupTimeSlots();
-        timeTable.initialiseTimeTable(user.getUserID());
+        timeTable.initialiseTimeTable(EditRequest.getUsersInMeeting());
         
         EditRequest.setTimeTable(timeTable);
         
-        out.println(output.createUserTimeTable(timeTable, EventType.MEETING.getName(), user.getUserID()));
+        out.println(output.createSuggestedTimeTable(timeTable, 1,
+                                                    EventPriority.MEETING.getPriority(),
+                                                    true));
         out.println(output.createTimeTableNav(timeTable.getDisplayWeek(), request));
 %>
         <div class="hidden" name="context" value="editEvent" data-userId="<%= user.getUserID() %>"></div> 
@@ -58,7 +61,7 @@
 <%      
         if (EditRequest.numErrors() > 0) {
             out.println(output.displayErrors(EditRequest.numErrors(), EditRequest.getErrors()));
-        } else if(EditRequest.isValid() && EditRequest.checkConflict() ) {
+        } else if(EditRequest.isValid() && !EditRequest.checkConflict() ) {
             out.println(output.displayErrors(1, "You are trying to schedule over an existing event"));
         } else {
             if (EditRequest.editEvent()) {
