@@ -152,6 +152,7 @@ public class TimeSlot {
         String result = "";
         
         List<String> userTeaches = getUserThoughtModules(event.getEventID(), userId);
+        //boolean isAdmin = isAmin(userId)
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
             result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
                       + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
@@ -176,12 +177,15 @@ public class TimeSlot {
         
         ResultSet moduleCodes = db.select("SELECT * FROM TeachesModule WHERE uid = " + userId + ";");
         try {
-            while (moduleCodes.next()) {
-                modules.add(moduleCodes.getString("moduleCode"));
+            if (db.getNumRows(moduleCodes) > 0) {
+                while (moduleCodes.next()) {
+                    modules.add(moduleCodes.getString("moduleCode"));
+                }
             }
         } catch (SQLException ex) {
             
         }
+        db.close();
         
         return modules;
     }
