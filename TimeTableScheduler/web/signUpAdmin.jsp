@@ -62,6 +62,11 @@
              out.println("Admin created.");
          } 
          out.println(output.createFooter());
+    } else {
+        
+%>
+        <jsp:forward page="/login.jsp" />
+<%
+        
     }
 %>
-

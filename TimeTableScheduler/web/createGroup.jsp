@@ -20,7 +20,7 @@
         </hgroup>
         <form action="createGroup.jsp" method="GET">
             <div>
-                <label for="groupName">Group Name:</label>
+                <label for="groupName">Name:</label>
                 <input type="text" name="groupName" id="groupName" value="<%= GroupRequest.getGroupName() %>" required="required">
             </div>
             <div>
