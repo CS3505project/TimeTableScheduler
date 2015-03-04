@@ -104,7 +104,9 @@ body>nav{
     color: #9494b7;
     box-shadow: inset 0 0 10px #000;
 }
-body>nav div.logo{
+body>nav a.logo, body>nav a.logo:hover, body>nav a.logo:focus{
+    display: block;
+    background: transparent;
     background-image: url("ucc.png");
     height: 50px;
     background-size: 132px 52px;
@@ -991,6 +993,10 @@ div.message span.meeting{
     text-shadow: 1px 1px 2px #723;
 }
 div.message span.cancellation{
+    background-color: #48e;
+    text-shadow: 1px 1px 2px #06c;
+}
+div.message span.practical{
     background-color: #48e;
     text-shadow: 1px 1px 2px #06c;
 }
