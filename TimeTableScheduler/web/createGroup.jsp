@@ -14,6 +14,7 @@
         }
 %>
         <div class="hidden" name="context" value="createGroup" data-userId="<%= user.getUserID() %>"></div> 
+        <h1 class="banner">Create Group</h1>
         <hgroup>
         	<h1>Create Group</h1>
         </hgroup>

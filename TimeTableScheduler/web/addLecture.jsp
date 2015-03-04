@@ -6,6 +6,7 @@
         out.println(output.createHeader());
 %>
         <div class="hidden" name="context" value="addLecture" data-userId="<%= user.getUserID() %>"></div> 
+        <h1 class="banner">Add Lecture</h1>
         <hgroup class="animate">
         	<h1>Add Lecture</h1>
         	<h2>Step 1 of 2</h2>

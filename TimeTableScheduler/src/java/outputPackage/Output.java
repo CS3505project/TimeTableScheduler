@@ -224,7 +224,7 @@ public class Output {
     }
     
     public String createAllGroupList(String userId, UserType type) {
-        String groups = "<ul class=\"groupList\">";
+        String groups = "<h1 class='banner'>Groups</h1><ul class=\"groupList\">";
         
         Database db = Database.getSetupDatabase();
         
@@ -364,8 +364,7 @@ public class Output {
      * @return the html representing the messages
      */
     public String createMessages(User user){        
-        String finalHTML = "";
-        finalHTML += "<h1 class='banner'>Messages</h1>";
+        String finalHTML = "<h1 class='banner'>Messages</h1>";
         
         Database db = Database.getSetupDatabase();
         
@@ -593,33 +592,12 @@ public class Output {
     public String createSuggestedTimeTable(TimeTable suggestion, int meetingLength, int priority, boolean clearPrevSuggestion){
         String finalHTML  = "";
         suggestion.nextSuggestedTimeSlot(meetingLength, priority, clearPrevSuggestion);
-        finalHTML += "<h1>Availability</h1>";
+        finalHTML += "<h1  class='banner'>Availability</h1>";
         finalHTML += suggestion.createTimeTable(EventType.ALL_EVENTS, "", true);
         
         return finalHTML;
     }
-    
-    /**
-     * A helper method for generating the html for a single message
-     * Takes in a notification object and generates a html representation of it
-     */
-    private String createMessageBox(String messageType){
-        String finalHTML = "";
-        finalHTML += "<div class='message'>";
-        switch(messageType){
-            case "meeting":
-                finalHTML += "<span class='meeting'>Meeting</span>"
-                        + "<h1></h1>"
-                        + "<p></p>"
-                        + "<p></p>"
-                        + "<input type='checkbox' name='accept' value='notificationNumber'>";
-                break;
-            default:
-                break;
-        }
-        finalHTML += "</div>";
-        return finalHTML;
-    }
+
     /**
      * A helper method for including the contents of a file.
      * @param fileName The name of the file to retrieve the contents of.
