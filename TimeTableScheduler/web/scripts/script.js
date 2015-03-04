@@ -91,6 +91,9 @@ $(document).ready(function(){
         var time = infoNode.attr("data-time");
         $('#date').val(date);
         $('#time').val(time);
+        var mySound = new buzz.sound("http://localhost:8080/TimeTableScheduler/sounds/click.ogg");
+        mySound.load();
+        mySound.play();
     });
     //////////////////////////////////////////////////////////////////
     //Show event description when event in timetable is hovered over//
