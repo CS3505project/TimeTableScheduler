@@ -19,7 +19,8 @@ body,html{
 body{
     position: relative;
     background-color: #244264;
-    background: url('http://i.imgur.com/qmEO6sh.jpg') no-repeat center center fixed;
+    /*background: url('http://i.imgur.com/qmEO6sh.jpg') no-repeat center center fixed;*/
+    background: url('http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-68788.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: "sintony",Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica,sans-serif;
     color: #778;
