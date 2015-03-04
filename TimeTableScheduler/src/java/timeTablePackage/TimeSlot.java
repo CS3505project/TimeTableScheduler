@@ -148,18 +148,10 @@ public class TimeSlot {
         }
     }
     
-    public String addEditRemoveEventButtons(Event event, String userId, List<String> userTeaches, boolean isAdmin) {
+    public String addEditRemoveEventButtons(Event event, String userId) {
         String result = "";
         
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
-            result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
-                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
-                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
-        } else if (event.getEventType().equals(EventType.PRACTICAL) && userTeaches.contains(event.getEventID())) {
-            result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
-                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
-                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
-        } else if (event.getEventType().equals(EventType.LECTURE) && isAdmin) {
             result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
                       + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
                       + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
@@ -168,37 +160,8 @@ public class TimeSlot {
         }
         return result;
     }
-    
-    public boolean isAdminUser(String userId) {
-        Database db = Database.getSetupDatabase();
-        
-        ResultSet adminDetails = db.select("SELECT * FROM Admin WHERE uid = " + userId + ";");
-        db.close();
-        if (db.getNumRows(adminDetails) == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    public List<String> getUserThoughtModules(String userId) {
-        List<String> modules = new ArrayList<String>();
-        Database db = Database.getSetupDatabase();
-        
-        ResultSet moduleCodes = db.select("SELECT * FROM TeachesModule WHERE uid = " + userId + ";");
-        try {
-            if (db.getNumRows(moduleCodes) > 0) {
-                while (moduleCodes.next()) {
-                    modules.add(moduleCodes.getString("moduleCode"));
-                }
-            }
-        } catch (SQLException ex) {
-            
-        }
-        db.close();
-        
-        return modules;
-    }
+   
+
     
     /**
      * Prints a detailed version of the events details
@@ -212,12 +175,9 @@ public class TimeSlot {
         String description = "";
         String removeLink = "";
         
-        List<String> userTeaches = getUserThoughtModules(userId);
-        boolean isAdmin = isAdminUser(userId);
-        
         for (Event event : events) {
             if (filterEvent(event.getEventType(), filter)) {
-                cellInfo += addEditRemoveEventButtons(event, userId, userTeaches, isAdmin);
+                cellInfo += addEditRemoveEventButtons(event, userId);
                 
                 description += getEventDescription(event);
                 highPriority = (event.getEventPriority().getPriority() > highPriority.getPriority() 
