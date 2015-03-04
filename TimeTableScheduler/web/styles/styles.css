@@ -268,6 +268,7 @@ section.main>h1.banner{
     padding-left: 12px;
     padding-top: 12px;
     padding-bottom: 4px;
+    margin-bottom: 4px;
 }
 section.main>h1.banner:after{
     position: relative;
@@ -279,6 +280,18 @@ section.main>h1.banner:after{
     height: 1px;
     background: #fff;
     border-top: #06c;
+}
+/***************/
+/* GROUP LISTS */
+/***************/
+ul.groupList>li{
+    position: relative;
+    width: auto;
+    background: #fff;
+    margin-top: 4px;
+    padding: 6px;
+    box-shadow: 0 2px 6px -1px rgba(0,0,0,0.8);
+    border-radius: 6px;
 }
 /*******************/
 /* FILTER/WEEK BAR */
