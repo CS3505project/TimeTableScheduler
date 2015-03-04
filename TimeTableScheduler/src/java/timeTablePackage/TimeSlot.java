@@ -1,7 +1,12 @@
 package timeTablePackage;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import toolsPackage.Database;
 
 /**
  * Represents a specific time slot in timetable
@@ -145,7 +150,17 @@ public class TimeSlot {
     
     public String addRemoveEventButton(Event event, String userId) {
         String result = "";
+        
+        List<String> userTeaches = getUserThoughtModules(event.getEventID(), userId);
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
+            result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
+                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
+                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
+        } else if (event.getEventType().equals(EventType.PRACTICAL) && userTeaches.contains(event.getEventID())) {
+            result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
+                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
+                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
+        } else if (event.getEventType().equals(EventType.LECTURE) && userTeaches.contains(event.getEventID())) {
             result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
                       + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
                       + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
@@ -153,6 +168,22 @@ public class TimeSlot {
             result += event.toString() + "<br />";
         }
         return result;
+    }
+    
+    public List<String> getUserThoughtModules(String module, String userId) {
+        List<String> modules = new ArrayList<String>();
+        Database db = Database.getSetupDatabase();
+        
+        ResultSet moduleCodes = db.select("SELECT * FROM TeachesModule WHERE uid = " + userId + ";");
+        try {
+            while (moduleCodes.next()) {
+                modules.add(moduleCodes.getString("moduleCode"));
+            }
+        } catch (SQLException ex) {
+            
+        }
+        
+        return modules;
     }
     
     /**
