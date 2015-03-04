@@ -1,12 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="GroupRequest" class="userDataPackage.GroupRequest" scope="request" />
+<jsp:useBean id="JoinGroupRequest" class="userDataPackage.JoinGroupRequest" scope="request" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
 
-        GroupRequest.setValues(request, user);
+        JoinGroupRequest.setValues(request, user);
 %>
         <div class="hidden" name="context" value="joinGroup" data-userId="<%= user.getUserID() %>"></div> 
         <h1 class="banner">Join Group</h1>
@@ -26,10 +26,10 @@
             </div>
         </form>
 <% 
-        if (GroupRequest.numErrors() > 0) {
-            out.println(output.displayErrors(GroupRequest.numErrors(), GroupRequest.getErrors()));
+        if (JoinGroupRequest.numErrors() > 0) {
+            out.println(output.displayErrors(JoinGroupRequest.numErrors(), JoinGroupRequest.getErrors()));
         }
-        if (GroupRequest.joinGroup((String)request.getParameter("gname"))) {
+        if (JoinGroupRequest.joinGroup((String)request.getParameter("gname"))) {
             response.sendRedirect("index.jsp");
         }
         out.println(output.createFooter());

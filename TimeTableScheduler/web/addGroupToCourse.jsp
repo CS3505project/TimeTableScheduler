@@ -1,15 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="CourseRequest" class="userDataPackage.CourseRequest" scope="session" />
+<jsp:useBean id="GroupJoinCourseRequest" class="userDataPackage.GroupJoinCourseRequest" scope="session" />
 <%
     userPackage.User user = (userPackage.User)session.getAttribute("user");
     if (user != null) {
         outputPackage.Output output = new outputPackage.Output(request, (userPackage.UserType)(session.getAttribute("userType")));
         out.println(output.createHeader());
         
-        CourseRequest.setValues(request, user);
-        if (CourseRequest.isFormLoaded()) {
-            CourseRequest.setCourse((String)request.getParameter("course"));
-            CourseRequest.setGroup((String)request.getParameter("group"));
+        GroupJoinCourseRequest.setValues(request, user);
+        if (GroupJoinCourseRequest.isFormLoaded()) {
+            GroupJoinCourseRequest.setCourse((String)request.getParameter("course"));
+            GroupJoinCourseRequest.setGroup((String)request.getParameter("group"));
         }
 %>
         <div class="hidden" name="context" value="addGroupToCourse" data-userId="<%= user.getUserID() %>"></div>
@@ -36,14 +36,15 @@
             </div>
         </form>
 <% 
-        if (CourseRequest.numErrors() > 0) {
-            out.println(output.displayErrors(CourseRequest.numErrors(), CourseRequest.getErrors()));
-        } else if(CourseRequest.addGroupToCourse()) {
-            response.sendRedirect("index.jsp");
+        GroupJoinCourseRequest.setFormLoaded(true);
+        if (GroupJoinCourseRequest.numErrors() > 0) {
+            out.println(output.displayErrors(GroupJoinCourseRequest.numErrors(), GroupJoinCourseRequest.getErrors()));
+        } else if(GroupJoinCourseRequest.addGroupToCourse()) {
+            out.println("Group added to course");
         } else {
             out.println(output.displayErrors(1, "Group already added to course"));
         }
-        CourseRequest.setFormLoaded(true);
+        
         out.println(output.createFooter());
     } else {
         

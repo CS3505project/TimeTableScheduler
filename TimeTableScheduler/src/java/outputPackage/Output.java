@@ -240,7 +240,7 @@ public class Output {
         }
         try {
             while (result.next()) {
-                groups += "<li>" + result.getString("groupName");
+                groups += "<li><h1>" + result.getString("groupName") + "</h1>";
                 ResultSet users = db.select("SELECT Student.uid, firstname, surname, studentid as 'id' " +
                                             "FROM Student JOIN User " +
                                             "ON Student.uid = userid " +

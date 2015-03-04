@@ -41,14 +41,14 @@
             </div>
         </form>
 <% 
+        GroupRequest.setFormLoaded(true);
         if (GroupRequest.numErrors() > 0) {
             out.println(output.displayErrors(GroupRequest.numErrors(), GroupRequest.getErrors()));
         }
-        
         if (GroupRequest.createGroup()) {
-            response.sendRedirect("index.jsp");
+            out.println("Group created successfully.");
         }
-        GroupRequest.setFormLoaded(true);
+        
         out.println(output.createFooter());
     } else {
         

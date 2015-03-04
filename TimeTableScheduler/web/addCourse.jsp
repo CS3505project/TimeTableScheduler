@@ -45,17 +45,15 @@
         if (CourseRequest.numErrors() > 0) {
             out.println(output.displayErrors(CourseRequest.numErrors(), CourseRequest.getErrors()));
         }
-        if(CourseRequest.createCourse()) {
-                response.sendRedirect("index.jsp");
-        }
         CourseRequest.setFormLoaded(true);
+        if(CourseRequest.createCourse()) {
+            out.println("Course created successfully.");
+        }
         out.println(output.createFooter());
     } else {
-        
 %>
     <jsp:forward page="/login.jsp" />
 <%
-        
     }
 %>
 
