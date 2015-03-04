@@ -16,6 +16,7 @@
         }
 %>
         <div class="hidden" name="context" value="addModule" data-userId="<%= user.getUserID() %>"></div> 
+        <h1 class="banner">Add Module</h1>
         <hgroup>
         	<h1>Add Module</h1>
         </hgroup>

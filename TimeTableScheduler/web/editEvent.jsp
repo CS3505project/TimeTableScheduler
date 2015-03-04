@@ -10,7 +10,7 @@
         out.println(output.createHeader());
         
         EditRequest.setValues(request, user);
-        if (EditRequest.isFormLoaded()) {
+        if (EditRequest.isSetup()) {
             EditRequest.setDate((String)request.getParameter("date"));
             EditRequest.setTime((String)request.getParameter("time"));
             EditRequest.setDescription((String)request.getParameter("description"));

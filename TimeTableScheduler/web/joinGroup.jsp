@@ -9,8 +9,9 @@
         GroupRequest.setValues(request, user);
 %>
         <div class="hidden" name="context" value="joinGroup" data-userId="<%= user.getUserID() %>"></div> 
+        <h1 class="banner">Join Group</h1>
         <hgroup>
-        	<h1>Join Group</h1>
+        	<h1 class="banner">Join Group</h1>
         </hgroup>
         <form action="joinGroup.jsp" method="GET">
             <div>

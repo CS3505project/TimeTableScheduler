@@ -145,7 +145,6 @@ public final class EditRequest extends UserRequest{
         }
         
         setUsersInMeeting();
-        System.out.println("usrs" + usersInMeeting);
         db.close();
     }
     
