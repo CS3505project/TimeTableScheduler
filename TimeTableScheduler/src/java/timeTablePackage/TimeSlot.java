@@ -147,8 +147,8 @@ public class TimeSlot {
         String result = "";
         if (event.getEventType().equals(EventType.MEETING) && ((Meeting)event).getOrganiser().equals(userId)) {
             result += "<div class=\"innerEvent\">" + event.toString() + "<br />"
-                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a><br />"
-                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div><br />";
+                      + "<a href=\"editEvent.jsp?eventId=" + event.getEventID() + "\">Edit</a>"
+                      + "<a href=\"deleteEvent.jsp?eventId=" + event.getEventID() + "\">Remove</a></div>";
         } else {
             result += event.toString() + "<br />";
         }

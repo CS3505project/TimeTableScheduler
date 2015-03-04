@@ -263,8 +263,7 @@ public final class EditRequest extends UserRequest{
         format.applyPattern(DAY);
         int day = Day.convertToDay(format.format(date)).getIndex();
         for (Event event : timeTable.getEvents(day, hour)) {
-            if (((Meeting)event).getOrganiser().equals(getUser().getUserID()) 
-                    && event.getDate().equals(this.originalDate) 
+            if (event.getDate().equals(this.originalDate) 
                     && event.getTime().equals(this.originalTime)) {
                 conflict = false;
             }

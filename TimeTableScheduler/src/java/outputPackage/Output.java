@@ -224,7 +224,7 @@ public class Output {
     }
     
     public String createAllGroupList(String userId, UserType type) {
-        String groups = "<ul>";
+        String groups = "<ul class=\"groupList\">";
         
         Database db = Database.getSetupDatabase();
         
@@ -240,7 +240,7 @@ public class Output {
         }
         try {
             while (result.next()) {
-                groups += "<li>" + result.getString("groupName") + "</li>";
+                groups += "<li>" + result.getString("groupName");
                 ResultSet users = db.select("SELECT Student.uid, firstname, surname, studentid as 'id' " +
                                             "FROM Student JOIN User " +
                                             "ON Student.uid = userid " +
@@ -260,7 +260,7 @@ public class Output {
                 while (users.next()) {
                     groups += "<li>" + users.getString("id") + " : " + users.getString("firstname") + " " + users.getString("surname") + "</li>";
                 }
-                groups += "</ul>";
+                groups += "</ul></li>";
             }
         } catch (SQLException ex) {
             System.err.println("Error while getting group list.");
