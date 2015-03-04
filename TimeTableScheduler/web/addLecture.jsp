@@ -24,7 +24,10 @@
             </div>
             <div>
                 <label for="semester">Semester:</label>
-        	<input type="semester" name="semester" id="semester" required="required"><br>
+                <select name="semester">
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                </select>
             </div>
             <div>
         	<label for="submit">Submit:</label>
