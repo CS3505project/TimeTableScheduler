@@ -11,7 +11,10 @@
 %>  
         <hgroup class="menu">
             <h1>Messages</h1>
-            <h2>action: <input type="submit"></h2>
+            <h2>action: <input value="Accept" type="submit"> 
+            <input value="Mark as Read" type="submit"> 
+            <input value="Delete" type="submit"> 
+              <input value="Decline" type="submit"></h2>
         </hgroup>
 <%
         out.println(output.createFooter());

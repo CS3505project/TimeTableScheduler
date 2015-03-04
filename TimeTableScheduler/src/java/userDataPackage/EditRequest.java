@@ -252,27 +252,14 @@ public final class EditRequest extends UserRequest{
      */
     public boolean checkConflict() {
         boolean conflict = true;
-        // Print dates of the current week starting on Monday
-        SimpleDateFormat format = new SimpleDateFormat(HOUR);
-        
-        Calendar cal = Calendar.getInstance(Locale.FRANCE);
-        // Set the calendar to monday of the current week
-        cal.setTime(time);
-        int hour = Integer.parseInt(format.format(cal.getTime()));
-        
-        format.applyPattern(DAY);
-        int day = Day.convertToDay(format.format(date)).getIndex();
-        for (Event event : timeTable.getEvents(day, hour)) {
-            if (event.getDate().equals(this.originalDate) 
-                    && event.getTime().equals(this.originalTime)) {
-                conflict = false;
-            }
-        }
-        
-        if (conflict) {
+
+        if (this.date.equals(this.originalDate) 
+                && this.time.equals(this.originalTime)) {
+            conflict = false;
+        } else {
             conflict = timeTable.conflictWithEvents(date, time, 1, EventPriority.MEETING.getPriority());
         }
-        
+                
         return conflict;
     }
     
