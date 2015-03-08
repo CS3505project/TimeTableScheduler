@@ -1,11 +1,10 @@
 package userDataPackage;
 
-
 import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- * A javaBean for handling requests to add a meeting
+ * A javaBean for handling requests to add a lecturer to a module
  */
 public final class AddLecturerRequest extends UserRequest{
     private String moduleCode = "";
@@ -24,23 +23,34 @@ public final class AddLecturerRequest extends UserRequest{
         lecturer = "";
     }
     
+    /**
+     * Reset the form fields
+     */
     private void resetForm() {
         moduleCode = "";
         lecturer = "";
         clearErrors();
     }
     
+    /**
+     * Gets the module to add lecturer
+     * @return Module code
+     */
     public String getModuleCode() {
         return moduleCode;
     }
     
+    /**
+     * Gets the lecturer being added
+     * @return Lecturer id
+     */
     public String getLecturer() {
         return lecturer;
     }
     
     /**
-     * Sets the description
-     * @param description description
+     * Sets the module code
+     * @param moduleCode module code
      */
     public void setModuleCode(String moduleCode) {
         if (this.errorInString(moduleCode)) {
@@ -51,19 +61,23 @@ public final class AddLecturerRequest extends UserRequest{
         }
     }
     
-    public void setLecturer(String moduleName) {
-        if (this.errorInString(moduleName)) {
+    /**
+     * Sets the lecturer id
+     * @param lecturerId lecturer id
+     */
+    public void setLecturer(String lecturerId) {
+        if (this.errorInString(lecturerId)) {
             addErrorMessage(1, "Module name is incorrect.");
         } else {
-            this.lecturer = Validator.escapeJava(moduleName);
+            this.lecturer = Validator.escapeJava(lecturerId);
             setValidData(1, true);
         }
     }
 
     /**
-     * Creates a meeting and inserts it into the database
+     * Adds a lecturer to a module so the lecturer can teach that module
      * 
-     * @return True if the meeting was created successfully
+     * @return True if the lecturer added successfully
      */
     public boolean addLecturer() {
         if (isValid()) {

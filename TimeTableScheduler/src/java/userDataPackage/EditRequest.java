@@ -1,6 +1,5 @@
 package userDataPackage;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -10,13 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import timeTablePackage.Day;
-import timeTablePackage.Event;
 import timeTablePackage.EventPriority;
-import timeTablePackage.Meeting;
 import timeTablePackage.TimeTable;
 import toolsPackage.Database;
 import toolsPackage.Validator;
@@ -52,10 +45,17 @@ public final class EditRequest extends UserRequest{
         description = "";
     }
     
+    /**
+     * Gets the list of user id in the meeting
+     * @return user id list
+     */
     public List<String> getUsersInMeeting() {
         return usersInMeeting;
     }
     
+    /**
+     * Retrieves the list of user ids involved in the meeting from the database
+     */
     public void setUsersInMeeting() {
         Database db = Database.getSetupDatabase();
         
@@ -80,7 +80,6 @@ public final class EditRequest extends UserRequest{
     /**
      * Checks if the event is valid
      * Only the user that organised the event can edit it
-     * @param event Event to edit
      * @param userId User that organised it
      * @return True if the event can be edited
      */
@@ -117,9 +116,9 @@ public final class EditRequest extends UserRequest{
     }
     
     /**
-     * Sets up the event to be edited
-     * @param date Date of event to edit
-     * @param time Timt of event to edit
+     * Sets up the event to be edited by retrieving relevant information from
+     * the database
+     * @param meetingId Meeting to be edited
      */
     public void setup(String meetingId) {
         this.setup = true;

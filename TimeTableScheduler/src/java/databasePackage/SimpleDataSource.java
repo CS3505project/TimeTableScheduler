@@ -1,10 +1,11 @@
+package databasePackage;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.sql.Statement;
 
 /**
     A simple data source for getting database connections.

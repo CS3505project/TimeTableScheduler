@@ -154,6 +154,10 @@ public class TimeTable {
         this.startTime = startTime;
     }
     
+    /**
+     * Gets the start time for the timetable display
+     * @return Timetable start display time
+     */
     public EventTime getStartTime(){
         return startTime;
     }
@@ -167,7 +171,10 @@ public class TimeTable {
         this.endTime = endTime;
     }
 
-    
+    /**
+     * Gets the end time for the timetable display
+     * @return Timetable end display time
+     */
     public EventTime getEndTime(){
         return endTime;
     }
@@ -181,6 +188,10 @@ public class TimeTable {
         this.startDay = startDay;
     }
 
+    /**
+     * Gets the start day for the timetable display
+     * @return Timetable day to display from
+     */
     public Day getStartDay(){
         return startDay;
     }
@@ -188,16 +199,25 @@ public class TimeTable {
     /**
      * Set the day to stop displaying at in the timetable
      * 
-     * @param endDay The start time
+     * @param endDay The end day
      */
     public void setEndDay(Day endDay) {
         this.endDay = endDay;
     }
     
+    /**
+     * Gets the end day for the timetable display
+     * @return Timetable day to stop displaying at
+     */
     public Day getEndDay(){
         return endDay;
     }
     
+    /**
+     * Initialises the timetable for an administrator
+     * Admins can see all lectures, practical in the system but not meetings
+     * as they are private to each user
+     */
     public void intialiseAdminTimeTable() {
         Database db = Database.getSetupDatabase();
                 
@@ -246,6 +266,13 @@ public class TimeTable {
         db.close();
     }
     
+     /**
+     * Initialises the timetable for an administrator
+     * Admins can see all lectures, practical in the system but not meetings
+     * as they are private to each user
+     * 
+     * @param adminId The admins id
+     */
     public void intialiseAdminTimeTable(String adminId) {
         Database db = Database.getSetupDatabase();
         
@@ -598,19 +625,21 @@ public class TimeTable {
         return timetable;
     }
     
+    /**
+     * Create the timetable caption that indicates the week being displayed
+     * @return HTML caption for the timetable
+     */
     public String createTimeTableCaption() {
         // Print dates of the current week starting on Monday
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String startDate = "";
-        String endDate = "";
 
         Calendar cal = Calendar.getInstance(Locale.FRANCE);
         cal.setTime(calendar.getTime());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         
-        startDate = df.format(cal.getTime());
+        String startDate = df.format(cal.getTime());
         cal.add(Calendar.DATE, 6);
-        endDate = df.format(cal.getTime());
+        String endDate = df.format(cal.getTime());
 
         return "<caption>" + startDate + " to " + endDate + "</caption>";
     }

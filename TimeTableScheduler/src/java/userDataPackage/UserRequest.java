@@ -20,31 +20,62 @@ public abstract class UserRequest {
     
     public UserRequest(){ }
     
+    /**
+     * Sets the request being validated and user making the request
+     * @param request request
+     * @param user user
+     */
     public void setValues(HttpServletRequest request, userPackage.User user) {
         this.request = request;
         this.user = user;
     }
     
+    /**
+     * Returns true if the data is  valid
+     * @param index index of the date 
+     * @return true if valid
+     */
     public boolean isValidData(int index) {
         return data.isValidEntry(index);
     }
      
+    /**
+     * Returns the number of errors
+     * @return number of errors
+     */
     public int numErrors() {
         return data.numErrors();
     }
     
+    /**
+     * Sets that the form has been loaded
+     * @param loaded 
+     */
     public void setFormLoaded(boolean loaded) {
         this.formLoaded = loaded;
     }
     
+    /**
+     * Checks if the form was loaded
+     * @return true if loaded
+     */
     public boolean isFormLoaded() {
         return formLoaded;
     }
     
+    /**
+     * Sets up the array for holding the errors
+     * @param length number of errors to hold
+     */
     public void initialiseErrorArray(int length) {
         data = new DataEntry(length);
     }
 
+    /**
+     * Sets a particular entry in the error array
+     * @param index index in the array
+     * @param value value to set
+     */
     public void setValidData(int index, boolean value) {
         data.setValidEntry(index, value);
     }
@@ -58,6 +89,9 @@ public abstract class UserRequest {
         return user;
     }
     
+    /**
+     * Clears the errors from the array.
+     */
     public void clearErrors() {
         data.clear();
     }

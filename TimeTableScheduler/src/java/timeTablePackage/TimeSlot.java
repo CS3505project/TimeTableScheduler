@@ -1,12 +1,7 @@
 package timeTablePackage;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import toolsPackage.Database;
 
 /**
  * Represents a specific time slot in timetable
@@ -148,6 +143,13 @@ public class TimeSlot {
         }
     }
     
+    /**
+     * Creates the HTML needed to create buttons in the timeslot for editing
+     * or removing the meeting for the organiser of the meeting
+     * @param event Event to display
+     * @param userId user id. If the user is the organiser then add buttons
+     * @return HTML for the table cell
+     */
     public String addEditRemoveEventButtons(Event event, String userId) {
         String result = "";
         
@@ -166,7 +168,7 @@ public class TimeSlot {
     /**
      * Prints a detailed version of the events details
      * @param filter Filter the events displayed
-     * @param clickable If true it makes the time slot interactive for certain forms
+     * @param userId The users id
      * @return HTML to print into a table cell
      */
     public String printDetailedTableCell(EventType filter, String userId) {

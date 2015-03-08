@@ -1,10 +1,5 @@
 package toolsPackage;
- 
-/**
- * Handles database connections and executing queries
- * 
- * @author Shiny & John O Riordan
- */
+
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;

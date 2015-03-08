@@ -5,7 +5,7 @@ import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- * A javaBean for handling requests to add a meeting
+ * A javaBean for handling requests to add a module
  */
 public final class ModuleRequest extends UserRequest{
     private String course = "";
@@ -26,6 +26,9 @@ public final class ModuleRequest extends UserRequest{
         moduleName = "";
     }
     
+    /**
+     * Resets the form fields
+     */
     private void resetForm() {
         course = "";
         moduleCode = "";
@@ -33,21 +36,33 @@ public final class ModuleRequest extends UserRequest{
         clearErrors();
     }
     
+    /**
+     * Gets the course of the module
+     * @return 
+     */
     public String getCourse() {
         return course;
     }
     
+    /**
+     * Gets the code for the module
+     * @return 
+     */
     public String getModuleCode() {
         return moduleCode;
     }
     
+    /**
+     * Gets the module name
+     * @return 
+     */
     public String getModuleName() {
         return moduleName;
     }
 
     /**
-     * sets the venue in which the meeting is to take place.
-     * @param venue the venue from the form
+     * Sets the course of the module created
+     * @param course Course of the module
      */
     public void setCourse(String course){
         if (this.errorInString(course)) {
@@ -59,8 +74,8 @@ public final class ModuleRequest extends UserRequest{
     }
     
     /**
-     * Sets the description
-     * @param description description
+     * Sets the code for the module
+     * @param moduleCode Module code
      */
     public void setModuleCode(String moduleCode) {
         if (this.errorInString(moduleCode)) {
@@ -71,6 +86,10 @@ public final class ModuleRequest extends UserRequest{
         }
     }
     
+    /**
+     * Sets the name for the module
+     * @param moduleName Module name
+     */
     public void setModuleName(String moduleName) {
         if (this.errorInString(moduleName)) {
             addErrorMessage(2, "Module name is incorrect.");
@@ -81,9 +100,8 @@ public final class ModuleRequest extends UserRequest{
     }
 
     /**
-     * Creates a meeting and inserts it into the database
-     * 
-     * @return True if the meeting was created successfully
+     * Creates the module for the specified course
+     * @return True if the module was created successfully
      */
     public boolean createModule() {
         if (isValid()) {

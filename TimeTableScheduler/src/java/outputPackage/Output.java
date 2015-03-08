@@ -7,13 +7,11 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import javax.servlet.http.HttpServletRequest;
-import messagePackage.MessageType;
 import timeTablePackage.EventPriority;
 import timeTablePackage.EventType;
 import timeTablePackage.TimeTable;
@@ -151,8 +149,8 @@ public class Output {
     }
     
     /**
-     * Return an HTML list of the groups
-     * 
+     * Return an HTML list of the groups for the specified user
+     * @param userid User id
      * @return HTML list of groups
      */
     public String createGroupList(String userid) {
@@ -223,6 +221,13 @@ public class Output {
         return groups;
     }
     
+    /**
+     * Creates a list of all the groups in the system.
+     * This is uses by the admin
+     * @param userId Admin id
+     * @param type User type
+     * @return HTML unordered list of the groups and their members
+     */
     public String createAllGroupList(String userId, UserType type) {
         String groups = "<h1 class='banner'>Groups</h1><ul class=\"groupList\">";
         
@@ -361,6 +366,7 @@ public class Output {
 
     /**
      * Creates a page section with the users messages
+     * @param user The user to display messages for
      * @return the html representing the messages
      */
     public String createMessages(User user){        
@@ -414,8 +420,7 @@ public class Output {
     }
     
     /**
-     * finds all the appropriate groups etc that a user can have meetings with and puts them in seperate lists
-     * @param user User to create the form
+     * finds all groups that the admin can have meetings with and puts them in separate lists
      * @return the html for the dropdown and radio selector 
      */
     public String createAdminMeetingFormDropdown(){
@@ -436,6 +441,11 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a drop down list of all the users in the database
+     * Used by admins
+     * @return HTML drop down option list of users
+     */
     public String createAllIndividualDropDown() {
         String finalHTML = "";
         Database db = Database.getSetupDatabase();
@@ -461,8 +471,7 @@ public class Output {
     }
     
     /**
-     * Create the drop down list of the modules for this user
-     * @param userid The user
+     * Create the drop down list of the modules
      * @return drop down list
      */
     public String createModuleDropDown() {
@@ -486,6 +495,10 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a drop down list of the lecturers in the system
+     * @return HTML drop down list
+     */
     public String createLecturerDropDown() {
         String finalHTML = "<select name=\"lecturer\">";
         
@@ -507,6 +520,10 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a drop for the various duration values a meeting can last
+     * @return HTML drop down list
+     */
     public String createDurationDropDown() {
         return "<option value='1'>1 hour</option>" +
                "<option value='2'>2 hour</option>" +
@@ -580,7 +597,7 @@ public class Output {
      * 
      * @param timeTable The time to display
      * @param filter Filter events to display
-     * @param clickable Sets whether the timetable is interactive for certain forms
+     * @param userId The user to create the timetable
      * @return HTML to display the timetable
      */
     public String createUserTimeTable(TimeTable timeTable, String filter, String userId){        
@@ -592,6 +609,13 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates a timetable that doesn't include a filter menu
+     * @param timeTable Timetable to display
+     * @param filter filter to be applied
+     * @param userId user to create the timetable for
+     * @return HTML to display timetable
+     */
     public String createUserTimeTableNoFilter(TimeTable timeTable, String filter, String userId){        
         String finalHTML = "<h1  class='banner'>Timetable for this week</h1>";
         finalHTML += timeTable.createTimeTable(EventType.getEventType(filter), userId, false); 
@@ -599,6 +623,10 @@ public class Output {
         return finalHTML;
     }
     
+    /**
+     * Creates HTMl menu for the different filter options of the timetable
+     * @return HTML filter menu
+     */
     public String createTimeTableFilter() {
         return "<ul class=\"filters\">" +
                      "<li><a href=\"index.jsp?filter=all\">All<a/></li>" +

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import java.sql.ResultSet;
@@ -13,10 +9,17 @@ import messagePackage.MessageType;
 import toolsPackage.Database;
 
 /**
- *
- * @author jjor1
+ * Handles deleting a meeting for the organiser of the meeting
+ * @author John O Riordan
  */
 public class DeleteRequest {
+    
+    /**
+     * Removes the meeting from the database if the information is valid
+     * @param meetingId Meeting to be removed
+     * @param organiser Organiser id of the meeting
+     * @return True if removed successfully
+     */
     public boolean deleteMeeting(String meetingId, String organiser) {
         boolean delete = false;
         Database db = Database.getSetupDatabase();

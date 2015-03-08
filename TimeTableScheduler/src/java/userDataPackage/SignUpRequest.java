@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import toolsPackage.Database;
 import toolsPackage.Hash;
 import toolsPackage.Validator;
 import userPackage.UserType;
-import static userPackage.UserType.ADMIN;
 import static userPackage.UserType.LECTURER;
 
 /**
- *
+ * Handles a request to sign up to the system
+ * 
  * @author cdol1
  */
 public class SignUpRequest extends UserRequest {
@@ -32,6 +28,9 @@ public class SignUpRequest extends UserRequest {
         email = "";
     }
     
+    /**
+     * Resets the form fields
+     */
     public void resetForm() {
         id = "";
         title = "";
@@ -41,14 +40,26 @@ public class SignUpRequest extends UserRequest {
         clearErrors();
     }
     
+    /**
+     * Sets the typs of user signing in
+     * @param userType 
+     */
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
     
+    /**
+     * Gets the user type
+     * @return User type
+     */
     public UserType getUserType() {
         return userType;
     }
 
+    /**
+     * Sets the id of the user
+     * @param id user id
+     */
     public void setId(String id) {
         switch (userType) {
             case LECTURER:
@@ -70,6 +81,11 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the title of the lecturer
+     * Only valid for lecturers
+     * @param title Lecturer title e.g. Dr.
+     */
     public void setTitle(String title) {
         if (userType.equals(UserType.LECTURER)) {
             if (errorInString(title)) {
@@ -84,6 +100,10 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the users first name
+     * @param firstName 
+     */
     public void setFirstName(String firstName) {
         if (errorInString(firstName)) {
             addErrorMessage(2, "Incorrect first name entered.");
@@ -94,6 +114,10 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the users surname
+     * @param surname 
+     */
     public void setSurname(String surname) {
         if (errorInString(surname)) {
             addErrorMessage(3, "Incorrect surname entered.");
@@ -104,6 +128,10 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the email address for the user
+     * @param email 
+     */
     public void setEmail(String email) {
         if (Validator.isValidEmail(email)) {
             this.email = Validator.escapeJava(email);
@@ -114,26 +142,50 @@ public class SignUpRequest extends UserRequest {
         }
     }
     
+    /**
+     * Gets the id of the user
+     * @return 
+     */
     public String getId() {
         return Validator.unescapeJava(id);
     }
     
+    /**
+     * Gets the title of the lecturer
+     * @return 
+     */
     public String getTitle() {
         return Validator.unescapeJava(title);
     }
     
+    /**
+     * Gets the users first name
+     * @return 
+     */
     public String getFirstName() {
         return Validator.unescapeJava(firstName);
     }
     
+    /**
+     * Gets the users surname
+     * @return 
+     */
     public String getSurname() {
         return Validator.unescapeJava(surname);
     }
     
+    /**
+     * Gets the email address of the user
+     * @return 
+     */
     public String getEmail() {
         return Validator.unescapeJava(email);
     }
  
+    /**
+     * Validates the passwords entered by the user on the form
+     * @return true if valid
+     */
     private boolean validPasswords() {
         boolean result = true;
         

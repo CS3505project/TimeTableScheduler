@@ -49,14 +49,25 @@ public final class MeetingRequest extends UserRequest{
         usersToMeet = new ArrayList<String>();
     }
      
+    /**
+     * Checks if the request is setup correctly
+     * @return True if setup
+     */
     public boolean isSetup() {
         return setup;
     }
     
+    /**
+     * Sets the timetable that the meeting is being scheduled on
+     * @param timeTable 
+     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
      
+    /**
+     * Reset the form fields
+     */
     private void resetForm() {
         date = new Date();
         venue = "";
@@ -66,15 +77,30 @@ public final class MeetingRequest extends UserRequest{
         clearErrors();
     }
     
+    /**
+     * Get the list of user ids in the meeting
+     * @return List of user ids
+     */
     public List<String> getUsersToMeet() {
         return usersToMeet;
     }
     
+    /**
+     * Gets the duration of the meeting
+     * @return 
+     */
     public int getDuration() {
         return duration;
     }
     
-     public void setup(String withType, String duration, String individualID, String groupID) {
+    /**
+     * Sets up the meeting request
+     * @param withType The type of the meeting group, individual or personal
+     * @param duration duration of the meeting
+     * @param individualID id of individual in meeting if individual type meeting
+     * @param groupID id of group if meeting type is group
+     */
+    public void setup(String withType, String duration, String individualID, String groupID) {
         this.setup = true;
          
         try {
@@ -204,6 +230,10 @@ public final class MeetingRequest extends UserRequest{
         return Validator.unescapeJava(description);
     }
     
+    /**
+     * Checks if the meeting is conflicting with any other existing events
+     * @return true if conflict
+     */
     public boolean checkConflict() {
         return timeTable.conflictWithEvents(date, time, duration, EventPriority.MEETING.getPriority());
     }
@@ -259,6 +289,9 @@ public final class MeetingRequest extends UserRequest{
         }
     }
     
+    /**
+     * Retrieves the list of user involved in the meeting from the database
+     */
     public void setUsersToMeet() {
         Database db = Database.getSetupDatabase();
         try {
@@ -300,6 +333,11 @@ public final class MeetingRequest extends UserRequest{
         db.close();
     }
     
+    /**
+     * Create a SQL insert values list of user ids and meeting ids
+     * @param meetingID meeting id 
+     * @return SQL insert values
+     */
     private String getMeetingInsertValues(int meetingID) {
         String values = "";
         Iterator<String> userIds = usersToMeet.iterator();

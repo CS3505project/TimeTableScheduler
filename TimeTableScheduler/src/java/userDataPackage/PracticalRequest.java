@@ -19,7 +19,7 @@ import toolsPackage.Database;
 import toolsPackage.Validator;
 
 /**
- *
+ * Handles the request to create a new practical
  * @author cdol1
  */
 public class PracticalRequest extends UserRequest{
@@ -48,23 +48,42 @@ public class PracticalRequest extends UserRequest{
         venue = "";
         time = null;
     }
-     
+    
+    /**
+     * Checks if the request is setup
+     * @return true if setup
+     */
     public boolean isSetup() {
         return setup;
     }
     
+    /**
+     * Gets the list of user id involved in the practical
+     * @return List of user ids
+     */
     public List<String> getUsersInvolved() {
         return usersInvolved;
     }
     
+    /**
+     * Sets the timetable that the practical is organised on
+     * @param timeTable 
+     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
     
+    /**
+     * Checks if the practical is causing a conflict with other events
+     * @return true if conflict
+     */
     public boolean checkConflict() {
         return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
     }
     
+    /**
+     * Resets the form fields
+     */
     private void resetForm() {
         startDate = new java.util.Date();
         endDate = new java.util.Date(); // initialise to todays date
@@ -74,11 +93,21 @@ public class PracticalRequest extends UserRequest{
         clearErrors();
     }
 
-    public int getDuration() {System.out.println("error: 7");
+    /**
+     * Gets the duration of the practical
+     * @return duration of the practical
+     */
+    public int getDuration() {
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) {
+    /**
+     * Sets up the request for the practical
+     * @param moduleCode module for the practical
+     * @param duration duration of the practical
+     * @param semester semester the practical is on
+     */
+    public void setup(String moduleCode, String duration, String semester) {
         this.setup = true;
         
         try {
@@ -121,7 +150,7 @@ public class PracticalRequest extends UserRequest{
     }
 
     /**
-     * sets the venue in which the meeting is to take place.
+     * sets the venue in which the practical is to take place.
      * @param venue the venue from the form
      */
     public void setVenue(String venue){
@@ -181,7 +210,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     /**
-     * Gets the venue for the meeting
+     * Gets the venue for the practical
      * @return venue
      */
     public String getVenue(){
@@ -189,7 +218,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     /**
-     * Returns the time for the meeting
+     * Returns the time for the practical
      * @return In format hh:mm:ss
      */
     public String getTime() {
@@ -207,9 +236,9 @@ public class PracticalRequest extends UserRequest{
     
     
     /**
-     * Creates a meeting and inserts it into the database
+     * Creates a practical for the module
      * 
-     * @return True if the meeting was created successfully
+     * @return True if the practical was created successfully
      */
     public boolean createPractical() {
         if (isValid() && isSetup()) {
@@ -255,6 +284,11 @@ public class PracticalRequest extends UserRequest{
         }
     }
     
+    /**
+     * Retrieves the list of user ids that are affected by the pratical
+     * being created
+     * @param moduleCode module of the new practical
+     */
     public void setUsersInvolved(String moduleCode) {
         Database db = Database.getSetupDatabase();
         try {
@@ -277,7 +311,7 @@ public class PracticalRequest extends UserRequest{
     }
     
     /**
-     * Cancel a practical or lecture for a specific module and adds the 
+     * Cancel a practical for a specific module and adds the 
      * cancellation to the database
      * 
      * @param moduleCode Module of the practical or lecture being cancelled

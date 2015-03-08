@@ -49,22 +49,41 @@ public class LectureRequest extends UserRequest{
         time = null;
     }
      
+    /**
+     * Checks if the request is setup to be executed
+     * @return true if setup
+     */
     public boolean isSetup() {
         return setup;
     }
     
+    /**
+     * Gets the list of users affected by the lecture
+     * @return 
+     */
     public List<String> getUsersInvolved() {
         return usersInvolved;
     }
     
+    /**
+     * Sets the timetable the lecture is being organised in
+     * @param timeTable timetable
+     */
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
     }
     
+    /**
+     * Checks if there is a conflict with an existing lecture
+     * @return True if there is a conflict
+     */
     public boolean checkConflict() {
-        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.PRACTICAL.getPriority());
+        return timeTable.conflictWithEvents(startDate, time, duration, EventPriority.LECTURE.getPriority());
     }
     
+    /**
+     * Resets the form fields
+     */
     private void resetForm() {
         startDate = new java.util.Date();
         endDate = new java.util.Date(); // initialise to todays date
@@ -74,11 +93,21 @@ public class LectureRequest extends UserRequest{
         clearErrors();
     }
 
+    /**
+     * Gets the duration for the lecture
+     * @return 
+     */
     public int getDuration() {
         return duration;
     }
     
-     public void setup(String moduleCode, String duration, String semester) { 
+    /**
+     * Sets up the request to create a new lecture
+     * @param moduleCode module to create a lecture for
+     * @param duration duration of the lecture
+     * @param semester semester the lecture is scheduled for
+     */
+    public void setup(String moduleCode, String duration, String semester) { 
         this.setup = true;
         
         try {
@@ -121,7 +150,7 @@ public class LectureRequest extends UserRequest{
     }
 
     /**
-     * sets the venue in which the meeting is to take place.
+     * sets the venue in which the lecture is to take place.
      * @param venue the venue from the form
      */
     public void setVenue(String venue){
@@ -181,7 +210,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Gets the venue for the meeting
+     * Gets the venue for the lecture
      * @return venue
      */
     public String getVenue(){
@@ -189,7 +218,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Returns the time for the meeting
+     * Returns the time for the lecture
      * @return In format hh:mm:ss
      */
     public String getTime() {
@@ -207,9 +236,9 @@ public class LectureRequest extends UserRequest{
     
     
     /**
-     * Creates a meeting and inserts it into the database
+     * Creates a lecture for the selected module
      * 
-     * @return True if the meeting was created successfully
+     * @return True if the lecture was created successfully
      */
     public boolean createLecture() {
         if (isValid() && isSetup()) {
@@ -255,6 +284,11 @@ public class LectureRequest extends UserRequest{
         }
     }
     
+    /**
+     * Retrieves the list of user ids that could be affected by the 
+     * creation of the new lecture
+     * @param moduleCode module code of the lecture being created
+     */
     public void setUsersInvolved(String moduleCode) {
         Database db = Database.getSetupDatabase();
         try {
@@ -277,7 +311,7 @@ public class LectureRequest extends UserRequest{
     }
     
     /**
-     * Cancel a practical or lecture for a specific module and adds the 
+     * Cancel a lecture for a specific module and adds the 
      * cancellation to the database
      * 
      * @param moduleCode Module of the practical or lecture being cancelled

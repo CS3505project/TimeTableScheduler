@@ -1,41 +1,40 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package userDataPackage;
 
 import toolsPackage.Database;
 import toolsPackage.Hash;
 import toolsPackage.Validator;
-import userPackage.UserType;
 
 /**
- *
+ * Handles a request to create a new administrator
  * @author cdol1
  */
 public class SignUpAdminRequest extends UserRequest {
     private int id;
-    private String title = "";
     private String firstName = "";
     private String surname = "";
     private String email = "";
     
     public SignUpAdminRequest() {
         initialiseErrorArray(5);
-        title = "";
         firstName = "";
         surname = "";
         email = "";
     }
     
+    /**
+     * Resets the form fields
+     */
     public void resetForm() {
-        title = "";
         firstName = "";
         surname = "";
         email = "";
         clearErrors();
     }
 
+    /**
+     * Sets the admins id
+     * @param id 
+     */
     public void setId(String id) {
         try {
             this.id = Integer.parseInt(id);
@@ -46,6 +45,10 @@ public class SignUpAdminRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the admins first name
+     * @param firstName 
+     */
     public void setFirstName(String firstName) {
         if (errorInString(firstName)) {
             addErrorMessage(1, "Incorrect first name entered.");
@@ -56,6 +59,10 @@ public class SignUpAdminRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the admins surname
+     * @param surname 
+     */
     public void setSurname(String surname) {
         if (errorInString(surname)) {
             addErrorMessage(2, "Incorrect surname entered.");
@@ -66,6 +73,10 @@ public class SignUpAdminRequest extends UserRequest {
         }
     }
     
+    /**
+     * Sets the admins email address
+     * @param email 
+     */
     public void setEmail(String email) {
         if (Validator.isValidEmail(email)) {
             this.email = Validator.escapeJava(email);
@@ -76,26 +87,42 @@ public class SignUpAdminRequest extends UserRequest {
         }
     }
     
+    /**
+     * Gets the id for the admin
+     * @return 
+     */
     public String getId() {
         return Integer.toString(id);
     }
     
-    public String getTitle() {
-        return Validator.unescapeJava(title);
-    }
-    
+    /**
+     * Gets the admin first name
+     * @return 
+     */
     public String getFirstName() {
         return Validator.unescapeJava(firstName);
     }
     
+    /**
+     * Gets the admins surname
+     * @return 
+     */
     public String getSurname() {
         return Validator.unescapeJava(surname);
     }
     
+    /**
+     * Gets the admins email address
+     * @return 
+     */
     public String getEmail() {
         return Validator.unescapeJava(email);
     }
  
+    /**
+     * Validates the admins passwords entered on the form
+     * @return true if valid
+     */
     private boolean validPasswords() {
         boolean result = true;
         
@@ -118,8 +145,8 @@ public class SignUpAdminRequest extends UserRequest {
     }
     
     /**
-     * Inserts the new user into the database
-     * Used when user signs up to the system
+     * Inserts the new admin into the database
+     * Used when admin is created by another admin
      * 
      * @return True if insert can be executed
      */
