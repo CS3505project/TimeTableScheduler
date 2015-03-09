@@ -40,6 +40,8 @@
         }
         if(AddLecturerRequest.addLecturer()) {
             out.println("Lecturer added successfully.");
+        } else {
+            out.println("Lecturer already assigned to module.");
         }
         
         out.println(output.createFooter());
