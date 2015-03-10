@@ -10,7 +10,7 @@ import userPackage.User;
  * @author jjor1 & donncha o leary
  */
 public class UserGroup extends Group{
-     private List<User> listOfUsers;
+     private List<String> listOfUsers;
      
      
     /**
@@ -21,7 +21,7 @@ public class UserGroup extends Group{
      */
     public UserGroup(int groupId, String groupName, String groupType,List<User> listOfUsers){
         super(groupId,groupName,groupType);
-        this.listOfUsers = new ArrayList<User>();
+        this.listOfUsers = new ArrayList<String>();
     }
     
     // retrive list of users from database . 

@@ -1,10 +1,13 @@
 package groupPackage;
 
+import java.util.List;
+
 /**
  *
  * @author jjor1 & donncha o leary
  */
 public class ModuleGroup extends Group{
+    private List<String> listOfUsers;
     
     /**
      * 
@@ -17,7 +20,10 @@ public class ModuleGroup extends Group{
     }
     
     
-    
+    public boolean retriveModulesFromDB(){
+       this.executeDbQuery("");
+       return false;
+   } 
     
     
 }
