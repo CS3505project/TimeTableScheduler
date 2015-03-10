@@ -16,6 +16,10 @@ public enum UserType {
         this.name = name;
     }
     
+    public String getName() {
+        return name;
+    }
+    
     /**
      * Returns the enum that represents the string
      * 
