@@ -150,7 +150,7 @@ public class SignUpAdminRequest extends UserRequest {
      * 
      * @return True if insert can be executed
      */
-    public boolean signUpAdmin() {System.out.println("here: 14");
+    public boolean signUpAdmin() {
         boolean result = false;
         if (validPasswords() && isValid()) {
             Database db = Database.getSetupDatabase();
